@@ -17,7 +17,6 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 import org.xmlcml.cml.base.CMLBuilder;
 import org.xmlcml.cml.element.CMLAtom;
 import org.xmlcml.cml.element.CMLAtomSet;
-import org.xmlcml.cml.element.CMLCml;
 
 public class App {
     public static void main( String[] args ) throws Exception
@@ -26,15 +25,6 @@ public class App {
         Builder builder = new CMLBuilder();
         Document doc = builder.build(file, "");
         System.out.println(doc.toXML());
-
-        CMLCml cmlRoot = null;
-        if (!(doc.getRootElement() instanceof CMLCml)) {
-        	cmlRoot = new CMLCml();
-        	cmlRoot.appendChild(doc.getRootElement().copy());
-        	doc.setRootElement(cmlRoot);
-        } else {
-        	cmlRoot = (CMLCml)doc.getRootElement();
-        }
 
         file = App.class.getClassLoader().getResourceAsStream("sterane.cml");
         CMLReader reader = new CMLReader(file);
@@ -58,8 +48,8 @@ public class App {
                 Nodes nodes = doc.query(query);
                 System.out.println(nodes.get(0).toXML());
                 set.addAtom((CMLAtom)nodes.get(0));
+                nodes.get(0).getParent().getParent().appendChild(set);
         	}
-        	cmlRoot.appendChild(set);
         }
 
         System.out.println(doc.toXML());
