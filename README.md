@@ -7,8 +7,7 @@ structures. "It's a phenyl ring with a hydroxyl attached."
 compile & install
 -----------------
 
-    mvn install
-
+    mvn appassembler:assemble
 
 run
 ---
