@@ -1,5 +1,6 @@
 package io.github.egonw;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -19,9 +20,14 @@ import org.xmlcml.cml.element.CMLAtom;
 import org.xmlcml.cml.element.CMLAtomSet;
 
 public class App {
-    public static void main( String[] args ) throws Exception
-    {
-        InputStream file = App.class.getClassLoader().getResourceAsStream("sterane.cml");
+    public static void main( String[] args ) throws Exception {
+    	if (args.length < 1) {
+    		System.out.println("enrich.sf [CMLFILE]");
+    		System.exit(-1);
+    	};
+    	String fileName = args[0];
+
+        InputStream file = new FileInputStream(fileName);
         Builder builder = new CMLBuilder();
         Document doc = builder.build(file, "");
         System.out.println(doc.toXML());
