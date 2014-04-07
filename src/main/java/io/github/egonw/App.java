@@ -38,7 +38,7 @@ public class App {
         reader.close();
         IAtomContainer mol = ChemFileManipulator.getAllAtomContainers(cFile).get(0); // the first only
         System.out.println(mol.toString());
-        
+
         RingSearch ringSearch = new RingSearch(mol);
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         int system = 0;
@@ -54,7 +54,7 @@ public class App {
                 Nodes nodes = doc.query(query);
                 System.out.println(nodes.get(0).toXML());
                 set.addAtom((CMLAtom)nodes.get(0));
-                nodes.get(0).getParent().getParent().appendChild(set);
+                nodes.get(0).getParent().appendChild(set);
         	}
         }
 
