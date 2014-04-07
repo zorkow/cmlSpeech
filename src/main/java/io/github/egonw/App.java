@@ -32,7 +32,7 @@ public class App {
         Document doc = builder.build(file, "");
         System.out.println(doc.toXML());
 
-        file = App.class.getClassLoader().getResourceAsStream("sterane.cml");
+        file = new FileInputStream(fileName);
         CMLReader reader = new CMLReader(file);
         IChemFile cFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(IChemFile.class));
         reader.close();
