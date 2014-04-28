@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class Logger {
@@ -38,11 +37,15 @@ public class Logger {
     }
 
     public void error (String str) {
-	this.errFile.println(str);
+        if (debug) {
+            this.errFile.print(str);
+        }
     }
 
     public void logging (String str) {
-	this.logFile.println(str);
+        if (verbose) {
+            this.logFile.print(str);
+        }
     }
 
     public void finalize () {

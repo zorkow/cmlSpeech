@@ -38,6 +38,7 @@ public class Cli {
 	options.addOption("l", "log", true, "Log File");
 	options.addOption("x", "error", true, "Debug File");
 	// Processing Options
+        options.addOption("s", "subrings", false, "Compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
 
         CommandLineParser parser = new BasicParser();
