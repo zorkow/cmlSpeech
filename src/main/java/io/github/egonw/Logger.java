@@ -8,6 +8,7 @@ import java.io.PrintStream;
 
 import java.util.function.Consumer;
 
+// Eventually inherit from Logger class. Currently I am too lazy.
 public class Logger {
     public Boolean debug = false;
     public Boolean verbose = false;

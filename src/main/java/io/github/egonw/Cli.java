@@ -25,8 +25,6 @@ public class Cli {
     }
 
     public void parse( String[] args ) {
-        Option help = new Option("help", "print this message");
-
         Options options = new Options();
 	// Basic Options
         options.addOption("help", false, "Print this message");
@@ -47,7 +45,7 @@ public class Cli {
         }
         catch (ParseException e) {
             usage(options);
-            return;
+            System.exit(1);
         }
 
 	for (int i = 0; i < this.cl.getArgList().size(); i++) {
