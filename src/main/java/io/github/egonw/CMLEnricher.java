@@ -86,7 +86,7 @@ public class CMLEnricher {
     }
 
     /** 
-     * Convenience method to enrich a CML file.
+     * Convenience method to enrich a CML file. Does all the error catching.
      * 
      * @param fileName File to enrich.
      */
@@ -97,7 +97,8 @@ public class CMLEnricher {
             buildXOM();
             enrichCML();
             writeFile(fileName);
-        } catch (Exception e) { // TODO: Meaningful exception handling by exceptions/functions.
+        } catch (Exception e) { 
+            // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName);
             return;
         }
@@ -107,7 +108,9 @@ public class CMLEnricher {
      * Loads current file into the molecule IAtomContainer.
      * 
      * @param fileName File to load.
-     * @throws Exception When file can not be loaded or is not a proper CML file.
+     * 
+     * @throws IOException Problems with loading file.
+     * @throws CDKException Problems with CML file format.
      */
     private void readFile(String fileName) throws IOException, CDKException {
         InputStream file = new BufferedInputStream
@@ -121,6 +124,13 @@ public class CMLEnricher {
         this.logger.logging(this.molecule);
     }
 
+    /** 
+     * Build the CML XOM element.
+     * 
+     * @throws IOException Problems with StringWriter
+     * @throws CDKException Problems with CMLWriter
+     * @throws ParsingException Problems with building CML XOM.
+     */
     private void buildXOM() throws IOException, CDKException, ParsingException {
         StringWriter outStr = new StringWriter();
         CMLWriter cmlwriter = new CMLWriter(outStr);
@@ -137,7 +147,10 @@ public class CMLEnricher {
     /** 
      * Writes current document to a CML file.
      * 
-     * @param fileName 
+     * @param fileName
+     *
+     * @throws IOException Problems with opening output file.
+     * @throws CDKException Problems with writing the CML XOM.
      */
     private void writeFile(String fileName) throws IOException, CDKException {
         FilenameUtils fileUtil = new FilenameUtils();
@@ -150,10 +163,7 @@ public class CMLEnricher {
         output.close();
     }
 
-    /** 
-     * Enriches the current CML documment.
-     *
-     */
+    /** Enriches the current CML documment. */
     private void enrichCML() {
         RingSearch ringSearch = new RingSearch(this.molecule);
 
@@ -169,9 +179,8 @@ public class CMLEnricher {
         this.logger.logging(chain);
     }
 
-    /** 
+    /**
      * Computes the longest aliphatic chain for the molecule.
-     *
      * @return The value of the aliphatic chain.
      */
     private Object getAliphaticChain() {
@@ -187,7 +196,7 @@ public class CMLEnricher {
     /** 
      * Computes Isolated rings.
      * 
-     * @param ringSearch 
+     * @param ringSearch The current ringsearch.
      */
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
@@ -200,7 +209,7 @@ public class CMLEnricher {
     /**
      * Computes fused rings without subsystems.
      * 
-     * @param ringSearch 
+     * @param ringSearch The current ringsearch.
      */    
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();

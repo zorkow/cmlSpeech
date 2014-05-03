@@ -8,7 +8,8 @@ import java.io.PrintWriter;
 
 import java.util.function.Consumer;
 
-// Eventually inherit from Logger class. Currently I am too lazy.
+// TODO: Eventually inherit from Logger class. Currently I am too lazy.
+/** Description for Logger. */
 public class Logger {
     public Boolean debug = false;
     public Boolean verbose = false;
