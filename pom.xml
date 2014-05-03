@@ -36,6 +36,11 @@
       <artifactId>cdk-bundle</artifactId>
       <version>1.5.6-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.4</version>
+	</dependency>
   </dependencies>
 
   <repositories>

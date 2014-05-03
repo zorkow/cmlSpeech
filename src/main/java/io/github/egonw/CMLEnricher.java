@@ -10,56 +10,56 @@
 
 package io.github.egonw;
 
-import io.github.egonw.Cli;
-import io.github.egonw.Logger;
+import com.google.common.collect.Lists;
 
-import java.util.function.Function;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import nu.xom.Builder;
 import nu.xom.Document;
+import nu.xom.ParsingException;
 import nu.xom.Nodes;
+
+import org.apache.commons.io.FilenameUtils;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemFile;
 import org.openscience.cdk.interfaces.IRingSet;
-import org.openscience.cdk.io.CMLReader;
 import org.openscience.cdk.io.CMLWriter;
-import org.openscience.cdk.io.MDLV2000Reader;
-import org.openscience.cdk.ringsearch.RingSearch;
+import org.openscience.cdk.io.ISimpleChemObjectReader;
+import org.openscience.cdk.io.ReaderFactory;
+import org.openscience.cdk.qsar.DescriptorValue;
+import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
 import org.openscience.cdk.ringsearch.AllRingsFinder;
+import org.openscience.cdk.ringsearch.RingSearch;
 import org.openscience.cdk.ringsearch.SSSRFinder;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
+
 import org.xmlcml.cml.base.CMLBuilder;
 import org.xmlcml.cml.element.CMLAtom;
 import org.xmlcml.cml.element.CMLAtomSet;
-
-import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.qsar.DescriptorSpecification;
-import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
-import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;
-
-
-import com.google.common.collect.Lists; 
+import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
 
 public class CMLEnricher {
     private final Cli cli;
     private final Logger logger;
 
     private Document doc;
-    private IAtomContainer mol;
+    private IAtomContainer molecule;
     private int idCount;
 
     /** 
@@ -71,8 +71,8 @@ public class CMLEnricher {
      * @return The newly created object.
      */    
     public CMLEnricher(Cli initCli, Logger initLogger) {
-	cli = initCli;
-	logger = initLogger;
+        cli = initCli;
+        logger = initLogger;
     }
 
     /** 
@@ -80,9 +80,9 @@ public class CMLEnricher {
      * 
      */
     public void enrichFiles() {
-	for (String file : cli.files) {
-	    enrichFile(file);
-	}
+        for (String file : cli.files) {
+            enrichFile(file);
+        }
     }
 
     /** 
@@ -91,47 +91,63 @@ public class CMLEnricher {
      * @param fileName File to enrich.
      */
     private void enrichFile(String fileName) {
-	this.idCount = 0;
-	try {
-	    readFile(fileName);
-	} catch (Exception e) {
-	    this.logger.error("Something went wrong when parsing File " + fileName);
-	    return;
-	}
-	enrichCML();
+        this.idCount = 0;
+        try {
+            readFile(fileName);
+            buildXOM();
+            enrichCML();
+            writeFile(fileName);
+        } catch (Exception e) { // TODO: Meaningful exception handling by exceptions/functions.
+            this.logger.error("Something went wrong when parsing File " + fileName);
+            return;
+        }
     }
 
     /** 
-     * Loads current CML file and IAtomContainer.
+     * Loads current file into the molecule IAtomContainer.
      * 
      * @param fileName File to load.
      * @throws Exception When file can not be loaded or is not a proper CML file.
      */
-    private void readFile(String fileName) throws Exception {
-	InputStream file = new FileInputStream(fileName);
-	Builder builder = new CMLBuilder(); 
-	this.doc = builder.build(file, "");
-	this.logger.logging(this.doc.toXML());
-	file = new FileInputStream(fileName);
-        CMLReader reader = new CMLReader(file);
-        IChemFile cFile = reader.read(SilentChemObjectBuilder.getInstance().
-				      newInstance(IChemFile.class));
+    private void readFile(String fileName) throws IOException, CDKException {
+        InputStream file = new BufferedInputStream
+            (new FileInputStream(fileName));
+        ISimpleChemObjectReader reader = new ReaderFactory().createReader(file);
+        IChemFile cFile = null;
+        cFile = reader.read(SilentChemObjectBuilder.getInstance().
+                            newInstance(IChemFile.class));
         reader.close();
-        this.mol = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
+        this.molecule = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
+        this.logger.logging(this.molecule);
     }
+
+    private void buildXOM() throws IOException, CDKException, ParsingException {
+        StringWriter outStr = new StringWriter();
+        CMLWriter cmlwriter = new CMLWriter(outStr);
+        cmlwriter.write(this.molecule);
+        cmlwriter.close();
+        String cmlcode = outStr.toString();
+
+        Builder builder = new CMLBuilder(); 
+        this.doc = builder.build(cmlcode, "");
+        this.logger.logging(this.doc.toXML());
+    }
+
 
     /** 
      * Writes current document to a CML file.
      * 
      * @param fileName 
      */
-    private void writeFile(String fileName) throws Exception {
-	OutputStream outFile = new FileOutputStream(fileName);
-	OutputStreamWriter output = new OutputStreamWriter(outFile);
-	CMLWriter cmlwriter = new CMLWriter(output);
-	cmlwriter.write(this.mol);
-	output.flush();
-	cmlwriter.close();
+    private void writeFile(String fileName) throws IOException, CDKException {
+        FilenameUtils fileUtil = new FilenameUtils();
+        String basename = fileUtil.getBaseName(fileName);
+        OutputStream outFile = new BufferedOutputStream
+            (new FileOutputStream(basename + "-enr.cml"));
+        PrintWriter output = new PrintWriter(outFile);
+        output.write(this.doc.toXML());
+        output.flush();
+        output.close();
     }
 
     /** 
@@ -139,17 +155,18 @@ public class CMLEnricher {
      *
      */
     private void enrichCML() {
-        RingSearch ringSearch = new RingSearch(mol);
+        RingSearch ringSearch = new RingSearch(this.molecule);
 
-	if (this.cli.cl.hasOption("s")) {
-	    getFusedRings(ringSearch);
-	} else {
-	    getFusedRings(ringSearch, this.cli.cl.hasOption("sssr") ?
-			  (ring) -> sssrSubRings(ring) : 
-			  (ring) -> smallestSubRings(ring));
-	}
-	getIsolatedRings(ringSearch);
-	Object chain = getAliphaticChain();
+        if (this.cli.cl.hasOption("s")) {
+            getFusedRings(ringSearch);
+        } else {
+            getFusedRings(ringSearch, this.cli.cl.hasOption("sssr") ?
+                          (ring) -> sssrSubRings(ring) : 
+                          (ring) -> smallestSubRings(ring));
+        }
+        getIsolatedRings(ringSearch);
+        Object chain = getAliphaticChain();
+        this.logger.logging(chain);
     }
 
     /** 
@@ -158,13 +175,13 @@ public class CMLEnricher {
      * @return The value of the aliphatic chain.
      */
     private Object getAliphaticChain() {
-	LongestAliphaticChainDescriptor chain = 
-	    new LongestAliphaticChainDescriptor();
-	DescriptorValue result = chain.calculate(this.mol);
-	this.logger.logging(result.getValue().toString());
-	return(result.getValue());
-    }	
-	
+        LongestAliphaticChainDescriptor chain = 
+            new LongestAliphaticChainDescriptor();
+        DescriptorValue result = chain.calculate(this.molecule);
+        this.logger.logging(result.getValue());
+        return(result.getValue());
+    }   
+    
 
 
     /** 
@@ -187,7 +204,7 @@ public class CMLEnricher {
      */    
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-	for (IAtomContainer ring : ringSystems) {
+        for (IAtomContainer ring : ringSystems) {
             appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
             this.idCount++;
         }
@@ -200,19 +217,19 @@ public class CMLEnricher {
      * @param subRingMethod Method to compute subrings.
      */    
     private void getFusedRings(RingSearch ringSearch,
-			       Function<IAtomContainer, List<IAtomContainer>> 
-			       subRingMethod) {
+                               Function<IAtomContainer, List<IAtomContainer>> 
+                               subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-	for (IAtomContainer ring : ringSystems) {
+        for (IAtomContainer ring : ringSystems) {
             appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
-	    List<IAtomContainer> subRings = subRingMethod.apply(ring);
-	    int subSystem = 0;
-	    // TODO: Sort out the id count properly.
-	    for (IAtomContainer subRing : subRings) {
-		appendAtomSet("Subring " + subSystem + " of ring system " + 
-			      this.idCount, subRing.atoms());
-		subSystem++;
-	    }
+            List<IAtomContainer> subRings = subRingMethod.apply(ring);
+            int subSystem = 0;
+            // TODO: Sort out the id count properly.
+            for (IAtomContainer subRing : subRings) {
+                appendAtomSet("Subring " + subSystem + " of ring system " + 
+                              this.idCount, subRing.atoms());
+                subSystem++;
+            }
             this.idCount++;
         }
     }
@@ -228,18 +245,18 @@ public class CMLEnricher {
     // This is quadratic and should be done better!
     // All the iterator to list operations should be done exactly once!
     private static boolean isSmallest(IAtomContainer ring, 
-				      List<IAtomContainer> restRings) {
-	List<IAtom> ringAtoms = Lists.newArrayList(ring.atoms());
-	for (IAtomContainer restRing : restRings) {
-	    if (ring == restRing) {
-		continue;
-	    }
-	    List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
-	    if (ringAtoms.containsAll(restRingAtoms)) {
-		return false;
-	    };
-	}
-	return true;
+                                      List<IAtomContainer> restRings) {
+        List<IAtom> ringAtoms = Lists.newArrayList(ring.atoms());
+        for (IAtomContainer restRing : restRings) {
+            if (ring == restRing) {
+                continue;
+            }
+            List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
+            if (ringAtoms.containsAll(restRingAtoms)) {
+                return false;
+            };
+        }
+        return true;
     };
 
     /** 
@@ -250,25 +267,25 @@ public class CMLEnricher {
      * @return Subrings as atom containers.
      */    
     private List<IAtomContainer> smallestSubRings(IAtomContainer ring) {
-	AllRingsFinder arf = new AllRingsFinder();
-	List<IAtomContainer> subRings = new ArrayList<IAtomContainer>();
-	IRingSet rs;
-	try {
-	    rs = arf.findAllRings(ring);
-	} catch (CDKException e) {
-	    this.logger.error("Error " + e.getMessage());
-	    return subRings;
-	}
+        AllRingsFinder arf = new AllRingsFinder();
+        List<IAtomContainer> subRings = new ArrayList<IAtomContainer>();
+        IRingSet rs;
+        try {
+            rs = arf.findAllRings(ring);
+        } catch (CDKException e) {
+            this.logger.error("Error " + e.getMessage());
+            return subRings;
+        }
 
-	List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
-	int length = allRings.size();
-	for (int i = 0; i < length; i++) {
-	    IAtomContainer subRing = allRings.get(i);
-	    if (isSmallest(subRing, allRings)) {
-		subRings.add(subRing);
-	    }
-	}
-	return subRings;
+        List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
+        int length = allRings.size();
+        for (int i = 0; i < length; i++) {
+            IAtomContainer subRing = allRings.get(i);
+            if (isSmallest(subRing, allRings)) {
+                subRings.add(subRing);
+            }
+        }
+        return subRings;
     };
 
     /** 
@@ -279,10 +296,10 @@ public class CMLEnricher {
      * @return Subrings as atom containers.
      */
     private List<IAtomContainer> sssrSubRings(IAtomContainer ring) {
-	this.logger.logging("SSSR sub ring computation.\n");
-    	SSSRFinder sssr = new SSSRFinder(ring);
-    	IRingSet essentialRings = sssr.findSSSR();
-    	return Lists.newArrayList(essentialRings.atomContainers());
+        this.logger.logging("SSSR sub ring computation.\n");
+        SSSRFinder sssr = new SSSRFinder(ring);
+        IRingSet essentialRings = sssr.findSSSR();
+        return Lists.newArrayList(essentialRings.atomContainers());
     }
 
     /** 
@@ -294,15 +311,15 @@ public class CMLEnricher {
     private void appendAtomSet(String title, Iterable<IAtom> atoms) {
         CMLAtomSet set = new CMLAtomSet();
         set.setTitle(title);
-	this.logger.logging(title + " has atoms:");
+        this.logger.logging(title + " has atoms:");
         for (IAtom atom : atoms) {
             this.logger.logging(" " + atom.getID());
             String query = "//*[@id='" + atom.getID() + "']";
             Nodes nodes = this.doc.query(query);
             set.addAtom((CMLAtom)nodes.get(0));
         }
-	this.logger.logging("\n");
-	this.doc.getRootElement().appendChild(set);
+        this.logger.logging("\n");
+        this.doc.getRootElement().appendChild(set);
     };
 
 }
