@@ -97,6 +97,7 @@ public class CMLEnricher {
             buildXOM();
             enrichCML();
             writeFile(fileName);
+            Cactus.getIUPAC(this.molecule);
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName);
@@ -201,7 +202,7 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Isolated ring system " + this.idCount, ring.atoms());
+            appendAtomSet("Isolated ring system " + this.idCount, ring);
             this.idCount++;
         }
     }
@@ -214,7 +215,7 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
+            appendAtomSet("Fused ring system " + this.idCount, ring);
             this.idCount++;
         }
     }
@@ -230,13 +231,13 @@ public class CMLEnricher {
                                subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
+            appendAtomSet("Fused ring system " + this.idCount, ring);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
             int subSystem = 0;
             // TODO: Sort out the id count properly.
             for (IAtomContainer subRing : subRings) {
                 appendAtomSet("Subring " + subSystem + " of ring system " + 
-                              this.idCount, subRing.atoms());
+                              this.idCount, subRing);
                 subSystem++;
             }
             this.idCount++;
@@ -309,6 +310,11 @@ public class CMLEnricher {
         SSSRFinder sssr = new SSSRFinder(ring);
         IRingSet essentialRings = sssr.findSSSR();
         return Lists.newArrayList(essentialRings.atomContainers());
+    }
+
+    private void appendAtomSet(String title, IAtomContainer container) {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + container.getClass().getName());
+        appendAtomSet(title, container.atoms());
     }
 
     /** 
