@@ -53,6 +53,10 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
+import nu.xom.Namespace;
+import nu.xom.Element;
+import nu.xom.Attribute;
+import nu.xom.Node;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -60,7 +64,8 @@ public class CMLEnricher {
 
     private Document doc;
     private IAtomContainer molecule;
-    private int idCount;
+    private int atomSetCount;
+
 
     /** 
      * Constructor
@@ -91,7 +96,7 @@ public class CMLEnricher {
      * @param fileName File to enrich.
      */
     private void enrichFile(String fileName) {
-        this.idCount = 0;
+        this.atomSetCount = 0;
         try {
             readFile(fileName);
             buildXOM();
@@ -158,6 +163,8 @@ public class CMLEnricher {
         OutputStream outFile = new BufferedOutputStream
             (new FileOutputStream(basename + "-enr.cml"));
         PrintWriter output = new PrintWriter(outFile);
+        this.doc.getRootElement().addNamespaceDeclaration
+            (SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
         output.write(this.doc.toXML());
         output.flush();
         output.close();
@@ -201,8 +208,7 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Isolated ring system " + this.idCount, ring.atoms());
-            this.idCount++;
+            appendAtomSet("Isolated ring", ring.atoms());
         }
     }
 
@@ -214,8 +220,7 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
-            this.idCount++;
+            appendAtomSet("Fused Ring", ring.atoms());
         }
     }
 
@@ -230,16 +235,12 @@ public class CMLEnricher {
                                subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring.atoms());
+            String ringId = appendAtomSet("Fused ring", ring.atoms());
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
-            int subSystem = 0;
             // TODO: Sort out the id count properly.
             for (IAtomContainer subRing : subRings) {
-                appendAtomSet("Subring " + subSystem + " of ring system " + 
-                              this.idCount, subRing.atoms());
-                subSystem++;
+                appendAtomSet("Subring", subRing.atoms(), ringId);
             }
-            this.idCount++;
         }
     }
 
@@ -311,24 +312,59 @@ public class CMLEnricher {
         return Lists.newArrayList(essentialRings.atomContainers());
     }
 
+    private String getAtomSetId() {
+        atomSetCount++;
+        return "as" + atomSetCount;
+    }
+
+    private Element getElementById(String id) {
+        String query = "//*[@id='" + id + "']";
+        Nodes nodes = this.doc.query(query);
+        return (Element)nodes.get(0);
+    }
+
     /** 
-     * Append Atom Sets to the CML documents.
+     * Append an Atom Set to the CML documents.
      * 
      * @param title Title of the atom set to be added. 
      * @param atoms Iterable atom list.
+     * 
+     * @return The atom set id.
      */
-    private void appendAtomSet(String title, Iterable<IAtom> atoms) {
+    private String appendAtomSet(String title, Iterable<IAtom> atoms) {
         CMLAtomSet set = new CMLAtomSet();
+        String id = getAtomSetId();
         set.setTitle(title);
+        set.setId(id);
         this.logger.logging(title + " has atoms:");
         for (IAtom atom : atoms) {
             this.logger.logging(" " + atom.getID());
-            String query = "//*[@id='" + atom.getID() + "']";
-            Nodes nodes = this.doc.query(query);
-            set.addAtom((CMLAtom)nodes.get(0));
+            Node node = getElementById(atom.getID());
+            set.addAtom((CMLAtom)node);
         }
         this.logger.logging("\n");
         this.doc.getRootElement().appendChild(set);
+        return(id);
+    };
+
+    /** 
+     * Append an Atom Set to the CML documents.
+     * 
+     * @param title Title of the atom set to be added. 
+     * @param atoms Iterable atom list.
+     * @param superSystem Id of the super set.
+     * 
+     * @return The atom set id.
+     */
+    private String appendAtomSet(String title, Iterable<IAtom> atoms, String superSystem) {
+        String id = appendAtomSet(title, atoms);
+        Element sup = getElementById(superSystem);
+        Element sub = getElementById(id);
+        SreAttribute subAttr = new SreAttribute("subsystem", id);
+        SreAttribute supAttr = new SreAttribute("supersystem", superSystem);
+        subAttr.addValue(sup);
+        supAttr.addValue(sub);
+        return(id);
     };
 
 }
