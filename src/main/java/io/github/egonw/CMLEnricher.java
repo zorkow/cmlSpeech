@@ -53,6 +53,12 @@ import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
+import nu.xom.Namespace;
+import nu.xom.Element;
+import nu.xom.Attribute;
+import nu.xom.Node;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import org.openscience.cdk.tools.CDKHydrogenAdder;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -60,7 +66,8 @@ public class CMLEnricher {
 
     private Document doc;
     private IAtomContainer molecule;
-    private int idCount;
+    private int atomSetCount;
+
 
     /** 
      * Constructor
@@ -91,16 +98,16 @@ public class CMLEnricher {
      * @param fileName File to enrich.
      */
     private void enrichFile(String fileName) {
-        this.idCount = 0;
+        this.atomSetCount = 0;
         try {
             readFile(fileName);
             buildXOM();
             enrichCML();
+            nameMolecule(this.doc.getRootElement(), this.molecule);
             writeFile(fileName);
-            Cactus.getIUPAC(this.molecule);
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
-            this.logger.error("Something went wrong when parsing File " + fileName);
+            this.logger.error("Something went wrong when parsing File " + fileName + ":" + e);
             return;
         }
     }
@@ -159,6 +166,8 @@ public class CMLEnricher {
         OutputStream outFile = new BufferedOutputStream
             (new FileOutputStream(basename + "-enr.cml"));
         PrintWriter output = new PrintWriter(outFile);
+        this.doc.getRootElement().addNamespaceDeclaration
+            (SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
         output.write(this.doc.toXML());
         output.flush();
         output.close();
@@ -202,8 +211,7 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Isolated ring system " + this.idCount, ring);
-            this.idCount++;
+            appendAtomSet("Isolated ring", ring);
         }
     }
 
@@ -215,8 +223,7 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring);
-            this.idCount++;
+            appendAtomSet("Fused Ring", ring);
         }
     }
 
@@ -231,16 +238,11 @@ public class CMLEnricher {
                                subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused ring system " + this.idCount, ring);
+            String ringId = appendAtomSet("Fused ring", ring);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
-            int subSystem = 0;
-            // TODO: Sort out the id count properly.
             for (IAtomContainer subRing : subRings) {
-                appendAtomSet("Subring " + subSystem + " of ring system " + 
-                              this.idCount, subRing);
-                subSystem++;
+                appendAtomSet("Subring", subRing, ringId);
             }
-            this.idCount++;
         }
     }
 
@@ -312,29 +314,85 @@ public class CMLEnricher {
         return Lists.newArrayList(essentialRings.atomContainers());
     }
 
-    private void appendAtomSet(String title, IAtomContainer container) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + container.getClass().getName());
-        appendAtomSet(title, container.atoms());
+    private String getAtomSetId() {
+        atomSetCount++;
+        return "as" + atomSetCount;
     }
 
+    private Element getElementById(String id) {
+        String query = "//*[@id='" + id + "']";
+        Nodes nodes = this.doc.query(query);
+        return (Element)nodes.get(0);
+    }
+
+    
     /** 
-     * Append Atom Sets to the CML documents.
+     * Append an Atom Set to the CML documents.
      * 
      * @param title Title of the atom set to be added. 
      * @param atoms Iterable atom list.
+     * 
+     * @return The atom set id.
      */
-    private void appendAtomSet(String title, Iterable<IAtom> atoms) {
+    private String appendAtomSet(String title, IAtomContainer container) {
         CMLAtomSet set = new CMLAtomSet();
+        String id = getAtomSetId();
         set.setTitle(title);
+        set.setId(id);
         this.logger.logging(title + " has atoms:");
-        for (IAtom atom : atoms) {
+        for (IAtom atom : container.atoms()) {
             this.logger.logging(" " + atom.getID());
-            String query = "//*[@id='" + atom.getID() + "']";
-            Nodes nodes = this.doc.query(query);
-            set.addAtom((CMLAtom)nodes.get(0));
+            Element node = getElementById(atom.getID());
+            set.addAtom((CMLAtom)node);
         }
         this.logger.logging("\n");
+        nameMolecule(set, container);
         this.doc.getRootElement().appendChild(set);
+        return(id);
     };
+
+    /** 
+     * Append an Atom Set to the CML documents.
+     * 
+     * @param title Title of the atom set to be added. 
+     * @param atoms Iterable atom list.
+     * @param superSystem Id of the super set.
+     * 
+     * @return The atom set id.
+     */
+    private String appendAtomSet(String title, IAtomContainer atoms, String superSystem) {
+        String id = appendAtomSet(title, atoms);
+        Element sup = getElementById(superSystem);
+        Element sub = getElementById(id);
+        SreAttribute subAttr = new SreAttribute("subsystem", id);
+        SreAttribute supAttr = new SreAttribute("supersystem", superSystem);
+        subAttr.addValue(sup);
+        supAttr.addValue(sub);
+        return(id);
+    };
+
+    private void nameMolecule(Element molecule, IAtomContainer container) {
+        // TODO: catch the right exception.
+        try {
+            AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(container);
+            CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(container);
+        }
+        catch (Throwable e) {
+            System.out.println("Error " + e.getMessage());
+            e.printStackTrace();
+        }
+        try {
+            molecule.addAttribute(new SreAttribute("iupac", Cactus.getIUPAC(container)));
+        }
+        catch (CactusException e) {
+            this.logger.error("Cactus IUPAC Error " + e.getMessage() + "\n");
+        }
+        try {
+            molecule.addAttribute(new SreAttribute("name", Cactus.getName(container)));
+        }
+        catch (CactusException e) {
+            this.logger.error("Cactus Naming Error " + e.getMessage() + "\n");
+        }
+    }
 
 }
