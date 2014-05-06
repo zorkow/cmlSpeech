@@ -30,10 +30,36 @@ import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.exception.CDKException;
 import java.util.stream.Collectors;
+import java.util.function.Function;
 
 
 public class Cactus {
     
+    /** Enum type for different translations via Cactus */
+    public enum Type {
+        IUPAC ("iupac", (IAtomContainer molecule) -> getIUPAC(molecule)),
+        NAME ("name", (IAtomContainer molecule) -> getIUPAC(molecule)),
+        FORMULA ("formula", (IAtomContainer molecule) -> getFormula(molecule));
+        
+        public final String tag;
+        public final Function<IAtomContainer, String> caller;
+        /**
+         * Enum type for different translations via Cactus with two parameters.
+         * @param tag String for tag.
+         * @param caller Closure with call to Cactus for that tag.
+         */
+        private Type (String tag, Function<IAtomContainer, String> caller) {
+            this.caller = caller;
+            this.tag = tag;
+        }
+    }
+
+    /**
+     * Send a call to the Cactus web service.
+     * @param input String with input structure.
+     * @param output Output format.
+     * @return Result if any.
+     */
     private final static List<String> getCactus(String input, String output) throws CactusException {
         URL url = null;
         BufferedReader br = null;
@@ -54,6 +80,11 @@ public class Cactus {
         return lines;
     }
 
+    /**
+     * Translates a molecule to Inchi format.
+     * @param molecule The input molecule.
+     * @return String containing molecule in Inchi format.
+     */
     private final static String translate(IAtomContainer molecule) throws CactusException {
         try {
             InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
@@ -64,11 +95,31 @@ public class Cactus {
         }
     }
 
+    /**
+     * Compute IUPAC name for molecule.
+     * @param molecule Input molecule.
+     * @return The IUPAC name if it exists.
+     */
     public final static String getIUPAC(IAtomContainer molecule) throws CactusException {
         String inchi = translate(molecule);
         return getCactus(inchi, "IUPAC_Name").get(0);
     }
 
+    /**
+     * Compute chemical formula for molecule.
+     * @param molecule Input molecule.
+     * @return The chemical formula.
+     */
+    public final static String getFormula(IAtomContainer molecule) throws CactusException {
+        String inchi = translate(molecule);
+        return getCactus(inchi, "formula").get(0);
+    }
+
+    /**
+     * Compute common name for molecule.
+     * @param molecule Input molecule.
+     * @return Common name if it exists.
+     */
     public final static String getName(IAtomContainer molecule) throws CactusException {
         String inchi = translate(molecule);
         List<String> names = getCactus(inchi, "Names");

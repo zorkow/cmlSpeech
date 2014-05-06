@@ -11,11 +11,11 @@ package io.github.egonw;
 
 
 /**
- * Exception for the Cactus Utility class to allow easy communication with
- * loggers.
+ * Exception for the Cactus classes.
+ * To allow passing through closures it is unchecked!
  */
 
-public class CactusException extends Exception {
+public class CactusException extends RuntimeException {
 
     public CactusException(String message) {
 	super(message);

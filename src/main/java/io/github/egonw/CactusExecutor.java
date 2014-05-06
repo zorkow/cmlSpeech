@@ -1,3 +1,12 @@
+/**
+ * @file   CactusExector.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Mon Apr 28 01:41:35 2014
+ * 
+ * @brief  Class for multi-threaded Cactus call.
+ * 
+ */
+
 
 //
 package io.github.egonw;
@@ -25,14 +34,21 @@ import nu.xom.Nodes;
 
 public class CactusExecutor {
     
+    /** Pool of callables for Cactus. */
     private static List<CactusCallable> pool = new ArrayList<>();
+    /** Registry for futures expecting results from Cactus calls. */
     private static Multimap<String, Future<SreAttribute>> registry = HashMultimap.create();
     private static ExecutorService executor;
         
+    /**
+     * Register callables for cactus in the pool.
+     * @param callable A callable to register.
+     */
     public static void register(CactusCallable callable) {
         pool.add(callable);
     }
 
+    /** Execute all callables currently in the pool. */
     public void execute() {
         this.executor = Executors.newFixedThreadPool(pool.size());
         for (CactusCallable callable : pool) {
@@ -41,6 +57,11 @@ public class CactusExecutor {
         }
     }
 
+    /**
+     * Adds attributes from returned by all current Cactus futures to a document.
+     * @param doc The current document.
+     * @param logger A logger to write error messages to.
+     */
     public static void addResults(Document doc, Logger logger) {
         for (Map.Entry<String, Future<SreAttribute>> entry : registry.entries()) {
             String id = entry.getKey();
@@ -57,6 +78,7 @@ public class CactusExecutor {
         }
     }
 
+    /** Shut down the Cactus executor. */
     public void shutdown() {
         this.executor.shutdown();
     }

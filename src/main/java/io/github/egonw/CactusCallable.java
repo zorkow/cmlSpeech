@@ -5,7 +5,6 @@
  * 
  * @brief  Callable class for Cactus Futures.
  * 
- * 
  */
 
 
@@ -18,32 +17,23 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 /**
  *
  */
-
 public class CactusCallable implements Callable<SreAttribute> {
 
     public String id = "";
-    private String output = "";
+    private Cactus.Type type;
     private IAtomContainer container = null;
 
-    public CactusCallable(String id, String output, IAtomContainer container) {
+    public CactusCallable(String id, Cactus.Type type, IAtomContainer container) {
         super();
         this.id = id;
-        this.output = output;
+        this.type = type;
         this.container = container;
     }
 
     @Override
         public SreAttribute call() throws CactusException {
-        String result = "";
-        switch (this.output) {
-        case "iupac": 
-            result = Cactus.getIUPAC(container);
-            break;
-        case "name":
-            result = Cactus.getName(container);
-            break;
-        }
-        return new SreAttribute(this.output, result);
+        String result = this.type.caller.apply(this.container);
+        return new SreAttribute(this.type.tag, result);
     }
 
    

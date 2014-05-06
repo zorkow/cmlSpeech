@@ -104,7 +104,7 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             enrichCML();
-            //nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
+            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);
@@ -318,6 +318,10 @@ public class CMLEnricher {
         return Lists.newArrayList(essentialRings.atomContainers());
     }
 
+    /**
+     * Returns atom set id and increments id counter.
+     * @return A new unique atom set id.
+     */
     private String getAtomSetId() {
         atomSetCount++;
         return "as" + atomSetCount;
@@ -376,8 +380,9 @@ public class CMLEnricher {
         catch (Throwable e) {
             this.logger.error("Error " + e.getMessage());
         }
-        this.executor.register(new CactusCallable(id, "iupac", container));
-        this.executor.register(new CactusCallable(id, "name", container));
+        this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC, container));
+        this.executor.register(new CactusCallable(id, Cactus.Type.NAME, container));
+        this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, container));
     }
 
 }
