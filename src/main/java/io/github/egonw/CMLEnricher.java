@@ -68,8 +68,8 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private int atomSetCount;
-
     private CactusExecutor executor = new CactusExecutor();
+
 
     /** 
      * Constructor
@@ -84,6 +84,7 @@ public class CMLEnricher {
         logger = initLogger;
     }
 
+
     /** 
      * Enriches all CML files given as input arguments.
      * 
@@ -93,6 +94,7 @@ public class CMLEnricher {
             enrichFile(file);
         }
     }
+
 
     /** 
      * Convenience method to enrich a CML file. Does all the error catching.
@@ -112,10 +114,12 @@ public class CMLEnricher {
             executor.shutdown();
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
-            this.logger.error("Something went wrong when parsing File " + fileName + ":" + e);
+            this.logger.error("Something went wrong when parsing File " + fileName +
+                              ":" + e.getMessage() + "\n");
             return;
         }
     }
+
 
     /** 
      * Loads current file into the molecule IAtomContainer.
@@ -136,6 +140,7 @@ public class CMLEnricher {
         this.molecule = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
         this.logger.logging(this.molecule);
     }
+
 
     /** 
      * Build the CML XOM element.
@@ -178,6 +183,7 @@ public class CMLEnricher {
         output.close();
     }
 
+
     /** Enriches the current CML documment. */
     private void enrichCML() {
         RingSearch ringSearch = new RingSearch(this.molecule);
@@ -190,23 +196,45 @@ public class CMLEnricher {
                           (ring) -> smallestSubRings(ring));
         }
         getIsolatedRings(ringSearch);
-        Object chain = getAliphaticChain();
-        this.logger.logging(chain);
+        //Object chain = getAliphaticChain();
+        //this.logger.logging(chain);
     }
+
+
+    /**
+     * Creates a deep clone of an atom container catching possible errors.
+     * @param container The container to be cloned.
+     * @return The cloned container. Possibly null if cloning failed!
+     */
+    private IAtomContainer checkedClone(IAtomContainer container) {
+        IAtomContainer newcontainer = null;
+        try {
+            newcontainer = container.clone();
+            AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
+            CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(newcontainer);
+        } catch (CloneNotSupportedException e){
+            this.logger.error("Something went wrong cloning atom container: " + e.getMessage());
+        } catch (Throwable e) {
+            this.logger.error("Error " + e.getMessage());
+        }
+        return newcontainer;
+    }
+
 
     /**
      * Computes the longest aliphatic chain for the molecule.
      * @return The value of the aliphatic chain.
      */
     private Object getAliphaticChain() {
+        IAtomContainer container = checkedClone(this.molecule);
+        if (container == null) { return 0; }
         LongestAliphaticChainDescriptor chain = 
             new LongestAliphaticChainDescriptor();
-        DescriptorValue result = chain.calculate(this.molecule);
+        DescriptorValue result = chain.calculate(container);
         this.logger.logging(result.getValue());
         return(result.getValue());
     }   
     
-
 
     /** 
      * Computes Isolated rings.
@@ -220,6 +248,7 @@ public class CMLEnricher {
         }
     }
 
+
     /**
      * Computes fused rings without subsystems.
      * 
@@ -231,6 +260,7 @@ public class CMLEnricher {
             appendAtomSet("Fused Ring", ring);
         }
     }
+
 
     /** 
      * Computes fused rings and their subsystems.
@@ -250,6 +280,7 @@ public class CMLEnricher {
             }
         }
     }
+
 
     /** 
      * Predicate that tests if a particular ring has no other ring as proper subset.
@@ -276,6 +307,7 @@ public class CMLEnricher {
         return true;
     };
 
+
     /** 
      * Method to compute smallest rings via subset coverage.
      * 
@@ -293,7 +325,6 @@ public class CMLEnricher {
             this.logger.error("Error " + e.getMessage());
             return subRings;
         }
-
         List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
         int length = allRings.size();
         for (int i = 0; i < length; i++) {
@@ -304,6 +335,7 @@ public class CMLEnricher {
         }
         return subRings;
     };
+
 
     /** 
      * Method to compute smallest rings via SSSR finder.
@@ -319,6 +351,7 @@ public class CMLEnricher {
         return Lists.newArrayList(essentialRings.atomContainers());
     }
 
+
     /**
      * Returns atom set id and increments id counter.
      * @return A new unique atom set id.
@@ -327,6 +360,7 @@ public class CMLEnricher {
         atomSetCount++;
         return "as" + atomSetCount;
     }
+
 
     /** 
      * Append an Atom Set to the CML documents.
@@ -353,6 +387,7 @@ public class CMLEnricher {
         return(id);
     };
 
+
     /** 
      * Append an Atom Set to the CML documents.
      * 
@@ -372,19 +407,21 @@ public class CMLEnricher {
         return(id);
     };
 
+
+    /**
+     * Computes some names for a molecule by registering calls to Cactus.
+     * @param id The id of the atom set.
+     * @param container The molecule to be named.
+     */
     private void nameMolecule(String id, IAtomContainer container) {
         // TODO: catch the right exception.
         this.logger.logging("Registering calls for " + id);
-        try {
-            AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(container);
-            CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(container);
+        IAtomContainer newcontainer = checkedClone(container);
+        if (newcontainer != null) {
+            this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC, newcontainer));
+            this.executor.register(new CactusCallable(id, Cactus.Type.NAME, newcontainer));
+            this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, newcontainer));
         }
-        catch (Throwable e) {
-            this.logger.error("Error " + e.getMessage());
-        }
-        this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC, container));
-        this.executor.register(new CactusCallable(id, Cactus.Type.NAME, container));
-        this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, container));
     }
 
 }
