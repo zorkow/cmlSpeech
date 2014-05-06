@@ -38,7 +38,7 @@ public class Cactus {
     /** Enum type for different translations via Cactus */
     public enum Type {
         IUPAC ("iupac", (IAtomContainer molecule) -> getIUPAC(molecule)),
-        NAME ("name", (IAtomContainer molecule) -> getIUPAC(molecule)),
+        NAME ("name", (IAtomContainer molecule) -> getName(molecule)),
         FORMULA ("formula", (IAtomContainer molecule) -> getFormula(molecule));
         
         public final String tag;
@@ -71,7 +71,7 @@ public class Cactus {
                 lines.add(br.readLine());
             }
         } catch (FileNotFoundException e) {
-            throw new CactusException("No name for " + input + " " + output);
+            throw new CactusException("No result for " + input + " " + output);
         } catch (MalformedURLException e) {
             throw new CactusException("Can't make URL from input " + input + " " + output);
         } catch (IOException e) {

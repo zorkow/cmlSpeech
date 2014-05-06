@@ -72,7 +72,7 @@ public class CactusExecutor {
                 element.addAttribute(result);
             }
             catch (Throwable e) {
-                logger.error("Cactus Error: " + e.getMessage());
+                logger.error("Cactus Error: " + e.getMessage() + "\n");
                 continue;
             }
         }
