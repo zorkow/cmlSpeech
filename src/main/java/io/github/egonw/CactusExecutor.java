@@ -41,20 +41,12 @@ public class CactusExecutor {
         }
     }
 
-    // Needs to go into a Util class.
-    private static Element getElementById(Document doc, String id) {
-        String query = "//*[@id='" + id + "']";
-        Nodes nodes = doc.query(query);
-        return (Element)nodes.get(0);
-    }
-
-
     public static void addResults(Document doc, Logger logger) {
         for (Map.Entry<String, Future<SreAttribute>> entry : registry.entries()) {
             String id = entry.getKey();
             Future<SreAttribute> future = entry.getValue();
             try {
-                Element element = getElementById(doc, id);
+                Element element = SreUtil.getElementById(doc, id);
                 SreAttribute result = future.get();
                 element.addAttribute(result);
             }
