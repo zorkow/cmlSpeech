@@ -59,6 +59,7 @@ import nu.xom.Attribute;
 import nu.xom.Node;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
+import java.util.Collection;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -363,6 +364,7 @@ public class CMLEnricher {
      */
     private String appendAtomSet(String title, IAtomContainer atoms, String superSystem) {
         String id = appendAtomSet(title, atoms);
+        System.out.println(atoms.getBondCount());
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
         SreUtil.appendAttribute(sup, "subsystem", id);
