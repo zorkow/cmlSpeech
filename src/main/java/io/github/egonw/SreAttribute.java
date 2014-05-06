@@ -18,7 +18,6 @@ public class SreAttribute extends Attribute {
     }
 
     public void addValue(String value) {
-        System.out.println(getValue() + " " + value);
         setValue(getValue() + " " + value);
     }
 

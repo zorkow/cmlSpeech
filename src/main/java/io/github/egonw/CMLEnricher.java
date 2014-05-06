@@ -317,12 +317,6 @@ public class CMLEnricher {
         return "as" + atomSetCount;
     }
 
-    private Element getElementById(String id) {
-        String query = "//*[@id='" + id + "']";
-        Nodes nodes = this.doc.query(query);
-        return (Element)nodes.get(0);
-    }
-
     /** 
      * Append an Atom Set to the CML documents.
      * 
@@ -339,7 +333,7 @@ public class CMLEnricher {
         this.logger.logging(title + " has atoms:");
         for (IAtom atom : atoms) {
             this.logger.logging(" " + atom.getID());
-            Node node = getElementById(atom.getID());
+            Node node = SreUtil.getElementById(this.doc, atom.getID());
             set.addAtom((CMLAtom)node);
         }
         this.logger.logging("\n");
@@ -358,12 +352,10 @@ public class CMLEnricher {
      */
     private String appendAtomSet(String title, Iterable<IAtom> atoms, String superSystem) {
         String id = appendAtomSet(title, atoms);
-        Element sup = getElementById(superSystem);
-        Element sub = getElementById(id);
-        SreAttribute subAttr = new SreAttribute("subsystem", id);
-        SreAttribute supAttr = new SreAttribute("supersystem", superSystem);
-        subAttr.addValue(sup);
-        supAttr.addValue(sub);
+        Element sup = SreUtil.getElementById(this.doc, superSystem);
+        Element sub = SreUtil.getElementById(this.doc, id);
+        SreUtil.appendAttribute(sup, "subsystem", id);
+        SreUtil.appendAttribute(sub, "supersystem", superSystem);
         return(id);
     };
 
