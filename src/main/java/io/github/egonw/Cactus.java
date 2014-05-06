@@ -66,7 +66,6 @@ public class Cactus {
 
     public final static String getIUPAC(IAtomContainer molecule) throws CactusException {
         String inchi = translate(molecule);
-        System.out.println("Translating\n" + molecule + "\n" + "inchi: " + inchi);
         return getCactus(inchi, "IUPAC_Name").get(0);
     }
 

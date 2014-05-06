@@ -68,6 +68,7 @@ public class CMLEnricher {
     private IAtomContainer molecule;
     private int atomSetCount;
 
+    private CactusExecutor executor = new CactusExecutor();
 
     /** 
      * Constructor
@@ -103,8 +104,11 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             enrichCML();
-            nameMolecule(this.doc.getRootElement(), this.molecule);
+            //nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
+            executor.execute();
+            executor.addResults(this.doc, this.logger);
             writeFile(fileName);
+            executor.shutdown();
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName + ":" + e);
@@ -319,6 +323,7 @@ public class CMLEnricher {
         return "as" + atomSetCount;
     }
 
+    // Needs to go into a Util class.
     private Element getElementById(String id) {
         String query = "//*[@id='" + id + "']";
         Nodes nodes = this.doc.query(query);
@@ -346,8 +351,8 @@ public class CMLEnricher {
             set.addAtom((CMLAtom)node);
         }
         this.logger.logging("\n");
-        nameMolecule(set, container);
         this.doc.getRootElement().appendChild(set);
+        nameMolecule(id, container);
         return(id);
     };
 
@@ -371,28 +376,18 @@ public class CMLEnricher {
         return(id);
     };
 
-    private void nameMolecule(Element molecule, IAtomContainer container) {
+    private void nameMolecule(String id, IAtomContainer container) {
         // TODO: catch the right exception.
+        this.logger.logging("Registering calls for " + id);
         try {
             AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(container);
             CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(container);
         }
         catch (Throwable e) {
-            System.out.println("Error " + e.getMessage());
-            e.printStackTrace();
+            this.logger.error("Error " + e.getMessage());
         }
-        try {
-            molecule.addAttribute(new SreAttribute("iupac", Cactus.getIUPAC(container)));
-        }
-        catch (CactusException e) {
-            this.logger.error("Cactus IUPAC Error " + e.getMessage() + "\n");
-        }
-        try {
-            molecule.addAttribute(new SreAttribute("name", Cactus.getName(container)));
-        }
-        catch (CactusException e) {
-            this.logger.error("Cactus Naming Error " + e.getMessage() + "\n");
-        }
+        this.executor.register(new CactusCallable(id, "iupac", container));
+        this.executor.register(new CactusCallable(id, "name", container));
     }
 
 }

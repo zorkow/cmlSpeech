@@ -13,16 +13,38 @@
 package io.github.egonw;
 
 import java.util.concurrent.Callable;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  *
  */
 
-public class CactusCallable implements Callable<String> {
+public class CactusCallable implements Callable<SreAttribute> {
+
+    public String id = "";
+    private String output = "";
+    private IAtomContainer container = null;
+
+    public CactusCallable(String id, String output, IAtomContainer container) {
+        super();
+        this.id = id;
+        this.output = output;
+        this.container = container;
+    }
 
     @Override
-        public String call() throws Exception {
-        return("");
+        public SreAttribute call() throws CactusException {
+        String result = "";
+        switch (this.output) {
+        case "iupac": 
+            result = Cactus.getIUPAC(container);
+            break;
+        case "name":
+            result = Cactus.getName(container);
+            break;
+        }
+        return new SreAttribute(this.output, result);
     }
-    
+
+   
 }
