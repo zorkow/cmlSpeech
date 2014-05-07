@@ -378,7 +378,7 @@ public class CMLEnricher {
         set.setTitle(title);
         set.setId(id);
         this.logger.logging(title + " has atoms:");
-        // TODO Refactor that eventually.
+        // TODO (sorge) Refactor that eventually together with appendAtomSet.
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
