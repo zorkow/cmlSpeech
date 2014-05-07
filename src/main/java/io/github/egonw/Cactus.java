@@ -37,9 +37,9 @@ public class Cactus {
     
     /** Enum type for different translations via Cactus */
     public enum Type {
-        IUPAC ("iupac", (IAtomContainer molecule) -> getIUPAC(molecule)),
-        NAME ("name", (IAtomContainer molecule) -> getName(molecule)),
-        FORMULA ("formula", (IAtomContainer molecule) -> getFormula(molecule));
+        IUPAC ("iupac", Cactus::getIUPAC),
+        NAME ("name", Cactus::getName),
+        FORMULA ("formula", Cactus::getFormula);
         
         public final String tag;
         public final Function<IAtomContainer, String> caller;
@@ -124,7 +124,7 @@ public class Cactus {
         String inchi = translate(molecule);
         List<String> names = getCactus(inchi, "Names");
         List<String> alpha = names.stream().filter
-            (line -> {return line.matches("^[a-zA-Z- ]+$");}).collect(Collectors.toList());
+            (line -> line.matches("^[a-zA-Z- ]+$")).collect(Collectors.toList());
         if (alpha.isEmpty()) {
             return names.get(0);
         }
