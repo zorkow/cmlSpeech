@@ -71,7 +71,7 @@ public class Cactus {
                 lines.add(br.readLine());
             }
         } catch (FileNotFoundException e) {
-            throw new CactusException("No result for " + input + " " + output);
+            throw new CactusException("No result for " + url);
         } catch (MalformedURLException e) {
             throw new CactusException("Can't make URL from input " + input + " " + output);
         } catch (IOException e) {

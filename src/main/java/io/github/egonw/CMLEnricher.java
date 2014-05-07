@@ -60,6 +60,7 @@ import nu.xom.Node;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
+import org.openscience.cdk.interfaces.IBond;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -325,6 +326,7 @@ public class CMLEnricher {
             this.logger.error("Error " + e.getMessage());
             return subRings;
         }
+        // TODO: Refactor, as we don't need the i anymore.
         List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
         int length = allRings.size();
         for (int i = 0; i < length; i++) {
@@ -382,6 +384,9 @@ public class CMLEnricher {
             set.addAtom((CMLAtom)node);
         }
         this.logger.logging("\n");
+        for (IBond bond : container.bonds()) {
+            SreUtil.appendAttribute(set, "bonds", bond.getID());
+        }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
         return(id);
@@ -399,7 +404,6 @@ public class CMLEnricher {
      */
     private String appendAtomSet(String title, IAtomContainer atoms, String superSystem) {
         String id = appendAtomSet(title, atoms);
-        System.out.println(atoms.getBondCount());
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
         SreUtil.appendAttribute(sup, "subsystem", id);
