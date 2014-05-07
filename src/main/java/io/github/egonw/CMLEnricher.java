@@ -378,14 +378,20 @@ public class CMLEnricher {
         set.setTitle(title);
         set.setId(id);
         this.logger.logging(title + " has atoms:");
+        // TODO Refactor that eventually.
         for (IAtom atom : container.atoms()) {
-            this.logger.logging(" " + atom.getID());
-            Node node = SreUtil.getElementById(this.doc, atom.getID());
+            String atomId = atom.getID();
+            Element node = SreUtil.getElementById(this.doc, atomId);
+            SreUtil.appendAttribute(node, "componentOf", id);
             set.addAtom((CMLAtom)node);
+            this.logger.logging(" " + atomId);
         }
         this.logger.logging("\n");
         for (IBond bond : container.bonds()) {
-            SreUtil.appendAttribute(set, "bonds", bond.getID());
+            String bondId = bond.getID();
+            Element node = SreUtil.getElementById(this.doc, bondId);
+            SreUtil.appendAttribute(node, "componentOf", id);
+            SreUtil.appendAttribute(set, "bonds", bondId);
         }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
