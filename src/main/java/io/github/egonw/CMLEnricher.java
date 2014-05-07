@@ -11,6 +11,7 @@
 package io.github.egonw;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,6 +62,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
 import org.openscience.cdk.interfaces.IBond;
+import java.util.Set;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -393,6 +395,10 @@ public class CMLEnricher {
             SreUtil.appendAttribute(node, "componentOf", id);
             SreUtil.appendAttribute(set, "bonds", bondId);
         }
+        for (IBond bond : connectingBonds(container)) {
+            String bondId = bond.getID();
+            SreUtil.appendAttribute(set, "externalBonds", bondId);
+        }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
         return(id);
@@ -416,6 +422,38 @@ public class CMLEnricher {
         SreUtil.appendAttribute(sub, "supersystem", superSystem);
         return(id);
     };
+
+
+    /**
+     * Compute the bonds that connects this atom container to the rest of the
+     * molecule.
+     * @param container The substructure under consideration.
+     * @return List of bonds attached to but not contained in the container.
+     */
+    private Set<IBond> connectingBonds(IAtomContainer container) {
+        Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
+        Set<IBond> allBonds = Sets.newHashSet();
+        for (IAtom atom : container.atoms()) {
+            allBonds.addAll(this.molecule.getConnectedBondsList(atom));
+        }
+        return Sets.difference(allBonds, internalBonds);
+    }
+
+
+    /**
+     * Compute the atoms that have bonds not internal to the molecule.
+     * @param container The substructure under consideration.
+     * @param bonds External bonds.
+     * @return List of atoms with connecting bonds.
+     */
+       // private Set<IBond> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
+       //     Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
+       //     Set<IAtom> connectedAtoms = Sets.newHashSet();
+       //     for (IBond bond : bonds) {
+       //         connectedAtoms.addAll(bond.atoms().filter(a -> not(allAtoms.contains(a))).collect(Collectors.toSet()));
+       //  }
+       //  return Sets.difference(allBonds, internalBonds);
+       // }
 
 
     /**
