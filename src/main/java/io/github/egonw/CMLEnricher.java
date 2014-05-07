@@ -11,6 +11,7 @@
 package io.github.egonw;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,6 +62,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
 import org.openscience.cdk.interfaces.IBond;
+import java.util.Set;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -193,8 +195,7 @@ public class CMLEnricher {
             getFusedRings(ringSearch);
         } else {
             getFusedRings(ringSearch, this.cli.cl.hasOption("sssr") ?
-                          (ring) -> sssrSubRings(ring) : 
-                          (ring) -> smallestSubRings(ring));
+                          this::sssrSubRings : this::smallestSubRings);
         }
         getIsolatedRings(ringSearch);
         //Object chain = getAliphaticChain();
@@ -269,9 +270,8 @@ public class CMLEnricher {
      * @param ringSearch 
      * @param subRingMethod Method to compute subrings.
      */    
-    private void getFusedRings(RingSearch ringSearch,
-                               Function<IAtomContainer, List<IAtomContainer>> 
-                               subRingMethod) {
+    private void getFusedRings(RingSearch ringSearch, Function<IAtomContainer,
+                               List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
             String ringId = appendAtomSet("Fused ring", ring);
@@ -391,7 +391,7 @@ public class CMLEnricher {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
             SreUtil.appendAttribute(node, "componentOf", id);
-            SreUtil.appendAttribute(set, "bonds", bondId);
+            SreUtil.appendAttribute(set, "internalBonds", bondId);
         }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
