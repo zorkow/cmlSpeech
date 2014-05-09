@@ -449,7 +449,7 @@ public class CMLEnricher {
      * Compute the atoms that have bonds not internal to the molecule.
      * @param container The substructure under consideration.
      * @param bonds External bonds.
-     * @return List of atoms with connecting bonds.
+     * @return List of atoms with external connections.
      */
     private Set<IAtom> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
         Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
@@ -460,6 +460,17 @@ public class CMLEnricher {
                  filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
         }
         return connectedAtoms;
+    }
+
+
+    /**
+     * Compute the atoms that have bonds not internal to the molecule.
+     * @param container The substructure under consideration.
+     * @return List of atoms with external connections.
+     */
+    private Set<IAtom> connectingAtoms(IAtomContainer container) {
+        Set<IBond> bonds = connectingBonds(container);
+        return connectingAtoms(container, bonds);
     }
 
 
