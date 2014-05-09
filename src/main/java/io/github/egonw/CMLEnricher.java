@@ -74,7 +74,7 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private int atomSetCount;
-    private List<IAtomContainer> rings = new ArrayList<IAtomContainer>();
+    private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
 
 
@@ -249,9 +249,8 @@ public class CMLEnricher {
      */
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
-        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Isolated ring", ring);
+            createAtomSet("Isolated ring", ring);
         }
     }
 
@@ -263,9 +262,8 @@ public class CMLEnricher {
      */    
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused Ring", ring);
+            createAtomSet("Fused Ring", ring);
         }
     }
 
@@ -279,13 +277,11 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch, Function<IAtomContainer,
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
-            String ringId = appendAtomSet("Fused ring", ring);
+            String ringId = createAtomSet("Fused ring", ring);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
-            this.rings.addAll(subRings);
             for (IAtomContainer subRing : subRings) {
-                appendAtomSet("Subring", subRing, ringId);
+                createAtomSet("Subring", subRing, ringId);
             }
         }
     }
@@ -377,13 +373,13 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, IAtomContainer container) {
-        CMLAtomSet set = new CMLAtomSet();
+    private String createAtomSet(String title, IAtomContainer container) {
+        RichAtomSet set = new RichAtomSet(container);
         String id = getAtomSetId();
         set.setTitle(title);
         set.setId(id);
         this.logger.logging(title + " has atoms:");
-        // TODO (sorge) Refactor that eventually together with appendAtomSet.
+        // TODO (sorge) Refactor that eventually together with createAtomSet.
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
@@ -398,23 +394,42 @@ public class CMLEnricher {
             SreUtil.appendAttribute(node, "componentOf", id);
             SreUtil.appendAttribute(set, "internalBonds", bondId);
         }
+        finaliseAtomSet(set);
+        appendAtomSet(set);
+        return(id);
+    }
+
+
+    private void finaliseAtomSets() {
+        for (RichAtomSet atomSet : this.atomSets) {
+            finaliseAtomSet(atomSet);
+            appendAtomSet(atomSet);
+        }
+    }
+
+    private void finaliseAtomSet(RichAtomSet atomSet) {
+        IAtomContainer container = atomSet.container;
         Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
-            SreUtil.appendAttribute(set, "externalBonds", bondId);
+            SreUtil.appendAttribute(atomSet, "externalBonds", bondId);
             if (isConnecting(container, bond)) {
-                SreUtil.appendAttribute(set, "connectingBonds", bondId);
+                SreUtil.appendAttribute(atomSet, "connectingBonds", bondId);
             }
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
-            SreUtil.appendAttribute(set, "externalAtoms", atomId);
+            SreUtil.appendAttribute(atomSet, "externalAtoms", atomId);
         }
-        this.doc.getRootElement().appendChild(set);
-        nameMolecule(id, container);
-        return(id);
-    };
 
+    }
+
+    private void appendAtomSet(RichAtomSet atomSet) {
+        this.doc.getRootElement().appendChild(atomSet);
+        System.out.println(atomSet.container.getAtomCount());
+        nameMolecule(atomSet.getId(), atomSet.container);
+    }
+    
     
     /**
      * Checks if a bond is a connecting bond for this atom container. A
@@ -426,7 +441,8 @@ public class CMLEnricher {
      * @return True if the bond is truely connecting.
      */
     private Boolean isConnecting(IAtomContainer atoms, IBond bond) {
-        return this.rings.stream().allMatch(ring -> !(ring.contains(bond)));
+        return this.atomSets.stream().
+            allMatch(ring -> !(ring.container.contains(bond)));
     }
 
 
@@ -439,8 +455,8 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, IAtomContainer atoms, String superSystem) {
-        String id = appendAtomSet(title, atoms);
+    private String createAtomSet(String title, IAtomContainer atoms, String superSystem) {
+        String id = createAtomSet(title, atoms);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
         SreUtil.appendAttribute(sup, "subsystem", id);
