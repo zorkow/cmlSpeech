@@ -399,6 +399,9 @@ public class CMLEnricher {
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
             SreUtil.appendAttribute(set, "externalBonds", bondId);
+            if (isConnecting(container, bond)) {
+                SreUtil.appendAttribute(set, "connectingBonds", bondId);
+            }
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
@@ -408,6 +411,21 @@ public class CMLEnricher {
         nameMolecule(id, container);
         return(id);
     };
+
+    
+    /**
+     * Checks if a bond is a connecting bond for this atom container. A
+     * connecting bond is an external bond that is not internal to any other
+     * structure. For example >-< is a connecting bond, while >< is not, and
+     * only contains a connecting atom.
+     * @param atoms The system.
+     * @param bond An external bond of that system.
+     * @return True if the bond is truely connecting.
+     */
+    private Boolean isConnecting(IAtomContainer atoms, IBond bond) {
+        //foreach
+        return true;
+    }
 
 
     /** 
