@@ -200,8 +200,11 @@ public class CMLEnricher {
                           this::sssrSubRings : this::smallestSubRings);
         }
         getIsolatedRings(ringSearch);
-        //Object chain = getAliphaticChain();
-        //this.logger.logging(chain);
+        IAtomContainer chain = getAliphaticChain();
+        if (chain != null) {
+            this.logger.logging(chain);
+            appendAtomSet("Aliphatic chain", chain);
+        }
     }
 
 
@@ -229,14 +232,14 @@ public class CMLEnricher {
      * Computes the longest aliphatic chain for the molecule.
      * @return The value of the aliphatic chain.
      */
-    private Object getAliphaticChain() {
+    private IAtomContainer getAliphaticChain() {
         IAtomContainer container = checkedClone(this.molecule);
-        if (container == null) { return 0; }
-        LongestAliphaticChainDescriptor chain = 
-            new LongestAliphaticChainDescriptor();
-        DescriptorValue result = chain.calculate(container);
-        this.logger.logging(result.getValue());
-        return(result.getValue());
+        if (container == null) { return null; }
+        LongestAliphaticChain chain = new LongestAliphaticChain();
+        DescriptorValue descr = chain.calculate(container);
+        IAtomContainer result = chain.extract();
+        this.logger.logging("Longest Chain Count: " + descr.getValue());
+        return(result);
     }   
     
 
