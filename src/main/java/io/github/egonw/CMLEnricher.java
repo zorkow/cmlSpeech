@@ -426,8 +426,7 @@ public class CMLEnricher {
      * @return True if the bond is truely connecting.
      */
     private Boolean isConnecting(IAtomContainer atoms, IBond bond) {
-        //foreach
-        return true;
+        return this.rings.stream().allMatch(ring -> !(ring.contains(bond)));
     }
 
 
