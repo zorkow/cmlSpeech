@@ -66,6 +66,7 @@ import org.openscience.cdk.interfaces.IBond;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 public class CMLEnricher {
     private final Cli cli;
     private final Logger logger;
@@ -73,6 +74,7 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private int atomSetCount;
+    private List<IAtomContainer> rings = new ArrayList<IAtomContainer>();
     private CactusExecutor executor = new CactusExecutor();
 
 
@@ -247,6 +249,7 @@ public class CMLEnricher {
      */
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
+        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
             appendAtomSet("Isolated ring", ring);
         }
@@ -260,6 +263,7 @@ public class CMLEnricher {
      */    
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
+        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
             appendAtomSet("Fused Ring", ring);
         }
@@ -275,9 +279,11 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch, Function<IAtomContainer,
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
+        this.rings.addAll(ringSystems);
         for (IAtomContainer ring : ringSystems) {
             String ringId = appendAtomSet("Fused ring", ring);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
+            this.rings.addAll(subRings);
             for (IAtomContainer subRing : subRings) {
                 appendAtomSet("Subring", subRing, ringId);
             }
@@ -328,11 +334,8 @@ public class CMLEnricher {
             this.logger.error("Error " + e.getMessage());
             return subRings;
         }
-        // TODO: Refactor, as we don't need the i anymore.
         List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
-        int length = allRings.size();
-        for (int i = 0; i < length; i++) {
-            IAtomContainer subRing = allRings.get(i);
+        for (IAtomContainer subRing : allRings) {
             if (isSmallest(subRing, allRings)) {
                 subRings.add(subRing);
             }
