@@ -16,6 +16,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>nux</groupId>
+      <artifactId>nux</artifactId>
+      <version>1.6</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.collections</groupId>
       <artifactId>google-collections</artifactId>
       <version>1.0-rc2</version>
@@ -62,6 +67,10 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+    </repository>
+    <repository>
+      <id>jboss-3rd-party-releases</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
     </repository>
   </repositories>
 

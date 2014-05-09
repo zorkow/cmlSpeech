@@ -29,6 +29,7 @@ import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;
 import nu.xom.Nodes;
+import nux.xom.pool.XOMUtil;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -63,6 +64,7 @@ import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
 import org.openscience.cdk.interfaces.IBond;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -181,7 +183,7 @@ public class CMLEnricher {
         PrintWriter output = new PrintWriter(outFile);
         this.doc.getRootElement().addNamespaceDeclaration
             (SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
-        output.write(this.doc.toXML());
+        output.write(XOMUtil.toPrettyXML(this.doc));
         output.flush();
         output.close();
     }
@@ -393,9 +395,14 @@ public class CMLEnricher {
             SreUtil.appendAttribute(node, "componentOf", id);
             SreUtil.appendAttribute(set, "internalBonds", bondId);
         }
+        Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
             SreUtil.appendAttribute(set, "externalBonds", bondId);
+        }
+        for (IAtom atom : connectingAtoms(container, ibonds)) {
+            String atomId = atom.getID();
+            SreUtil.appendAttribute(set, "externalAtoms", atomId);
         }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
@@ -444,14 +451,16 @@ public class CMLEnricher {
      * @param bonds External bonds.
      * @return List of atoms with connecting bonds.
      */
-       // private Set<IBond> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
-       //     Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
-       //     Set<IAtom> connectedAtoms = Sets.newHashSet();
-       //     for (IBond bond : bonds) {
-       //         connectedAtoms.addAll(bond.atoms().filter(a -> not(allAtoms.contains(a))).collect(Collectors.toSet()));
-       //  }
-       //  return Sets.difference(allBonds, internalBonds);
-       // }
+    private Set<IAtom> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
+        Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
+        Set<IAtom> connectedAtoms = Sets.newHashSet();
+        for (IBond bond : bonds) {
+            connectedAtoms.addAll
+                (Lists.newArrayList(bond.atoms()).stream().
+                 filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
+        }
+        return connectedAtoms;
+    }
 
 
     /**
