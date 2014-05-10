@@ -2,8 +2,6 @@
 //
 package io.github.egonw;
 
-import io.github.egonw.SreAttribute;
-import io.github.egonw.SreNamespace;
 import nu.xom.Element;
 import nu.xom.Attribute;
 import nu.xom.Nodes;
@@ -15,11 +13,6 @@ import nu.xom.Document;
 
 public class SreUtil {
 
-    public static Element createElement(String tag) {
-        return new Element(SreNamespace.getInstance().prefix + ":" + tag,
-                           SreNamespace.getInstance().uri);
-    }
-    
     public static void appendAttribute (Element element, SreAttribute attr) {
         String localName = attr.getLocalName();
         String namespace = attr.getNamespaceURI();
@@ -47,4 +40,10 @@ public class SreUtil {
         return (Element)nodes.get(0);
     }
 
+
+    public static void appendNode(Element element, String tag, String value) {
+        Element sreElement = new SreElement(tag);
+        sreElement.appendChild(value);
+        element.appendChild(sreElement);
+    };
 }

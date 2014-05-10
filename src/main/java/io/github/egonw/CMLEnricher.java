@@ -387,7 +387,7 @@ public class CMLEnricher {
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
-            SreUtil.appendAttribute(node, "componentOf", id);
+            SreUtil.appendNode(node, "componentOf", id);
             set.addAtom((CMLAtom)node);
             this.logger.logging(" " + atomId);
         }
@@ -395,17 +395,17 @@ public class CMLEnricher {
         for (IBond bond : container.bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
-            SreUtil.appendAttribute(node, "componentOf", id);
-            SreUtil.appendAttribute(set, "internalBonds", bondId);
+            SreUtil.appendNode(node, "componentOf", id);
+            SreUtil.appendNode(set, "internalBonds", bondId);
         }
         Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
-            SreUtil.appendAttribute(set, "externalBonds", bondId);
+            SreUtil.appendNode(set, "externalBonds", bondId);
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
-            SreUtil.appendAttribute(set, "externalAtoms", atomId);
+            SreUtil.appendNode(set, "externalAtoms", atomId);
         }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
@@ -426,8 +426,8 @@ public class CMLEnricher {
         String id = appendAtomSet(title, atoms);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
-        SreUtil.appendAttribute(sup, "subsystem", id);
-        SreUtil.appendAttribute(sub, "supersystem", superSystem);
+        SreUtil.appendNode(sup, "subsystem", id);
+        SreUtil.appendNode(sub, "supersystem", superSystem);
         return(id);
     };
 
