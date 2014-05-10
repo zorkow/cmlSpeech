@@ -76,6 +76,8 @@ public class CMLEnricher {
     private int atomSetCount;
     private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
+    private SreAnnotations annotations;
+
 
 
     /** 
@@ -110,6 +112,7 @@ public class CMLEnricher {
      */
     private void enrichFile(String fileName) {
         this.atomSetCount = 0;
+        this.annotations = new SreAnnotations();
         try {
             readFile(fileName);
             buildXOM();
@@ -117,6 +120,8 @@ public class CMLEnricher {
             this.atomSets.stream().forEach(this::finaliseAtomSet);
             //finaliseAtomSets();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
+            this.annotations.finalize();
+            this.doc.getRootElement().appendChild(this.annotations);
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);
@@ -125,6 +130,7 @@ public class CMLEnricher {
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName +
                               ":" + e.getMessage() + "\n");
+            e.printStackTrace();
             return;
         }
     }
@@ -385,7 +391,7 @@ public class CMLEnricher {
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
-            SreUtil.appendAttribute(node, "componentOf", id);
+            this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
             set.addAtom((CMLAtom)node);
             this.logger.logging(" " + atomId);
         }
@@ -393,8 +399,8 @@ public class CMLEnricher {
         for (IBond bond : container.bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
-            SreUtil.appendAttribute(node, "componentOf", id);
-            SreUtil.appendAttribute(set, "internalBonds", bondId);
+            this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
+            this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
         }
         this.atomSets.add(set);
         this.doc.getRootElement().appendChild(set);
@@ -414,16 +420,12 @@ public class CMLEnricher {
         Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
-            SreUtil.appendAttribute(atomSet, "externalBonds", bondId);
-            if (isConnecting(container, bond)) {
-                SreUtil.appendAttribute(atomSet, "connectingBonds", bondId);
-            }
+            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
-            SreUtil.appendAttribute(atomSet, "externalAtoms", atomId);
+            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.EXTERNALATOMS, new SreElement(atom));
         }
-
     }
 
 
@@ -455,8 +457,10 @@ public class CMLEnricher {
         String id = appendAtomSet(title, atoms);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
-        SreUtil.appendAttribute(sup, "subsystem", id);
-        SreUtil.appendAttribute(sub, "supersystem", superSystem);
+        this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
+                                          new SreElement(SreNamespace.Tag.ATOMSET, id));
+        this.annotations.appendAnnotation(sub, id, SreNamespace.Tag.SUPERSYSTEM, 
+                                          new SreElement(SreNamespace.Tag.ATOMSET, superSystem));
         return(id);
     };
 

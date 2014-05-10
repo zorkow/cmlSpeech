@@ -20,5 +20,34 @@ public class SreNamespace {
             instance = new SreNamespace();
         }
         return instance;
-   }
+    }
+
+    public enum Tag {
+        ANNOTATIONS ("annotations"),
+        ANNOTATION ("annotation"),
+
+        COMPONENT ("componentOf"),
+
+        SUBSYSTEM ("subSystem"),
+        SUPERSYSTEM ("superSystem"),
+        
+        INTERNALBONDS ("internalBonds"),
+        EXTERNALBONDS ("externalBonds"),
+        EXTERNALATOMS ("externalAtoms"),
+
+        BOND ("bond"),
+        ATOM ("atom"),
+        ATOMSET ("atomSet"),
+
+        DESCRIPTIONS ("descriptions"),
+        DESCRIPTION ("description");
+
+        public final String tag;
+        
+        private Tag (String tag) {
+            this.tag = "sre:" + tag;
+        }
+
+    }
+
 }
