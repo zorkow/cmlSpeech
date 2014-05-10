@@ -393,7 +393,6 @@ public class CMLEnricher {
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
-            //            SreUtil.appendNode(node, "componentOf", id);
             this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
             set.addAtom((CMLAtom)node);
             this.logger.logging(" " + atomId);
@@ -402,20 +401,16 @@ public class CMLEnricher {
         for (IBond bond : container.bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
-            //SreUtil.appendNode(node, "componentOf", id);
-            //SreUtil.appendNode(set, "internalBonds", bondId);
             this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
             this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
         }
         Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
-            //            SreUtil.appendNode(set, "externalBonds", bondId);
             this.annotations.appendAnnotation(set, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
-            //SreUtil.appendNode(set, "externalAtoms", atomId);
             this.annotations.appendAnnotation(set, SreNamespace.Tag.EXTERNALATOMS, new SreElement(atom));
         }
         this.doc.getRootElement().appendChild(set);
@@ -437,8 +432,6 @@ public class CMLEnricher {
         String id = appendAtomSet(title, atoms);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
-        // SreUtil.appendNode(sup, "subSystem", id);
-        // SreUtil.appendNode(sub, "superSystem", superSystem);
         this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
                                           new SreElement(SreNamespace.Tag.ATOMSET, id));
         this.annotations.appendAnnotation(sub, id, SreNamespace.Tag.SUPERSYSTEM, 

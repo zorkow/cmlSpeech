@@ -26,37 +26,28 @@ public class SreAnnotations extends SreElement {
             String reg1 = "[0-9]*";
             String alpha1 = name1.replaceAll(reg1, "");
             String alpha2 = name2.replaceAll(reg1, "");
-            // System.out.println(alpha1);
-            // System.out.println(alpha2);
             if (alpha1.equals(alpha2)) {
                 String reg2 = "[a-z]*";
                 Integer numer1 = Integer.parseInt(name1.replaceAll(reg2, ""));
                 Integer numer2 = Integer.parseInt(name2.replaceAll(reg2, ""));
-                // System.out.println(numer1);
-                // System.out.println(numer2);
                 if (numer1 == numer2) {
-                    // System.out.println("Case 0");
                     return 0;
                 }
                 if (numer1 < numer2) {
-                    // System.out.println("Case 1");
                     return -1;
                 }
-                    // System.out.println("Case 2");
                 return 1;
                 }
             if (alpha1.equals("as") && alpha2.equals("b")) {
-                // System.out.println("Case 3");
                 return 1;
             }
             if (alpha1.equals("b") && alpha2.equals("as")) {
-                // System.out.println("Case 3");
                 return -1;
             }
-                    // System.out.println("Case 4");
             return alpha1.compareTo(alpha2);
         }
     };
+
 
     private static SortedMap<String, Element> annotationNodes = new TreeMap(CMLNameComparator);
 
@@ -84,7 +75,6 @@ public class SreAnnotations extends SreElement {
         xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
         Nodes nodes = annotate.query("//" + tag.tag, xc);
         Element node = null;
-        System.out.println("here2: " + tag.tag);
         if (nodes.size() == 0) {
             node = new SreElement(tag);
             annotate.appendChild(node);
@@ -96,7 +86,6 @@ public class SreAnnotations extends SreElement {
     
     public void appendAnnotation(Element annotate, String id, SreNamespace.Tag tag, Element entry) {
         SreNamespace.Tag elementTag = null;
-        System.out.println("hereA: " + tag.tag);
         switch (annotate.getLocalName()) {
         case "atom":
             elementTag = SreNamespace.Tag.ATOM;
@@ -114,32 +103,12 @@ public class SreAnnotations extends SreElement {
         this.appendAnnotation(node, tag, entry);
     }
 
-    // private Element getNodeToAnnotate(String id) {
-    //     Nodes nodes = this.query("//" + SreNamespace.Tag.ANNOTATION + "/*[1][text()=" + id + "]");
-    //     if (nodes.size() != 0) {
-    //         return (Element)nodes.get(0).getParent();
-    //     }
-    // }
 
     private Nodes xpathQuery(String query) {
         XPathContext xc = new XPathContext();
         xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
         return this.query(query, xc);
     }
-
-
-    // private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
-    //     Nodes nodes = xpathQuery("//" + SreNamespace.Tag.ANNOTATION + "/*[1][text()=" + id + "]");
-    //     if (nodes.size() != 0) {
-    //         System.out.println("Nodes found: " + nodes);
-    //         return (Element)nodes.get(0).getParent();
-    //     }
-    //     Element annotation = new SreElement(SreNamespace.Tag.ANNOTATION);
-    //     Element node = new SreElement(tag, id);
-    //     this.appendChild(annotation);
-    //     annotation.appendChild(node);
-    //     return node;
-    // }
 
 
     private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
@@ -156,9 +125,7 @@ public class SreAnnotations extends SreElement {
 
 
     public void finalize() {
-        System.out.println("Finalizing...");
         for (String key : this.annotationNodes.keySet()) {
-            System.out.println(key + " : " + this.annotationNodes.get(key));
             this.appendChild(this.annotationNodes.get(key));
         }
     }
