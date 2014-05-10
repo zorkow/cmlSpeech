@@ -76,6 +76,8 @@ public class CMLEnricher {
     private int atomSetCount;
     private List<IAtomContainer> rings = new ArrayList<IAtomContainer>();
     private CactusExecutor executor = new CactusExecutor();
+    private SreAnnotations annotations;
+
 
 
     /** 
@@ -110,11 +112,14 @@ public class CMLEnricher {
      */
     private void enrichFile(String fileName) {
         this.atomSetCount = 0;
+        this.annotations = new SreAnnotations();
         try {
             readFile(fileName);
             buildXOM();
             enrichCML();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
+            this.annotations.finalize();
+            this.doc.getRootElement().appendChild(this.annotations);
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);
@@ -123,6 +128,7 @@ public class CMLEnricher {
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName +
                               ":" + e.getMessage() + "\n");
+            e.printStackTrace();
             return;
         }
     }
@@ -387,7 +393,8 @@ public class CMLEnricher {
         for (IAtom atom : container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
-            SreUtil.appendNode(node, "componentOf", id);
+            //            SreUtil.appendNode(node, "componentOf", id);
+            this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
             set.addAtom((CMLAtom)node);
             this.logger.logging(" " + atomId);
         }
@@ -395,17 +402,21 @@ public class CMLEnricher {
         for (IBond bond : container.bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
-            SreUtil.appendNode(node, "componentOf", id);
-            SreUtil.appendNode(set, "internalBonds", bondId);
+            //SreUtil.appendNode(node, "componentOf", id);
+            //SreUtil.appendNode(set, "internalBonds", bondId);
+            this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
+            this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
         }
         Set<IBond> ibonds = connectingBonds(container);
         for (IBond bond : connectingBonds(container)) {
             String bondId = bond.getID();
-            SreUtil.appendNode(set, "externalBonds", bondId);
+            //            SreUtil.appendNode(set, "externalBonds", bondId);
+            this.annotations.appendAnnotation(set, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
         for (IAtom atom : connectingAtoms(container, ibonds)) {
             String atomId = atom.getID();
-            SreUtil.appendNode(set, "externalAtoms", atomId);
+            //SreUtil.appendNode(set, "externalAtoms", atomId);
+            this.annotations.appendAnnotation(set, SreNamespace.Tag.EXTERNALATOMS, new SreElement(atom));
         }
         this.doc.getRootElement().appendChild(set);
         nameMolecule(id, container);
@@ -426,8 +437,12 @@ public class CMLEnricher {
         String id = appendAtomSet(title, atoms);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
-        SreUtil.appendNode(sup, "subsystem", id);
-        SreUtil.appendNode(sub, "supersystem", superSystem);
+        // SreUtil.appendNode(sup, "subSystem", id);
+        // SreUtil.appendNode(sub, "superSystem", superSystem);
+        this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
+                                          new SreElement(SreNamespace.Tag.ATOMSET, id));
+        this.annotations.appendAnnotation(sub, id, SreNamespace.Tag.SUPERSYSTEM, 
+                                          new SreElement(SreNamespace.Tag.ATOMSET, superSystem));
         return(id);
     };
 

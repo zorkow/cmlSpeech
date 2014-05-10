@@ -6,6 +6,11 @@ import nu.xom.Element;
 import nu.xom.Attribute;
 import nu.xom.Nodes;
 import nu.xom.Document;
+import nu.xom.Node;
+import org.openscience.cdk.interfaces.IChemObject;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IBond;
+import org.xmlcml.cml.element.CMLAtomSet;
 
 /**
  *
@@ -46,4 +51,47 @@ public class SreUtil {
         sreElement.appendChild(value);
         element.appendChild(sreElement);
     };
+
+
+    public Element createSreAnnotations() {
+        return new SreElement(SreNamespace.Tag.ANNOTATIONS);
+    }
+
+    public Element createSreAnnotation(Node node) {
+        Element element = new SreElement(SreNamespace.Tag.ANNOTATION);
+        element.appendChild(node);
+        return element;
+    }
+
+    public Element createSreAnnotation(IAtom atom) {
+        return createSreAnnotation(createSreObject(atom));
+    }
+
+    public Element createSreAnnotation(IBond bond) {
+        return createSreAnnotation(createSreObject(bond));
+    }
+
+    public Element createSreAnnotation(CMLAtomSet atomSet) {
+        return createSreAnnotation(createSreObject(atomSet));
+    }
+
+    public Element createSreObject (IAtom obj) {
+        Element element = new SreElement(SreNamespace.Tag.ATOM);
+        element.appendChild(obj.getID());
+        return element;
+    }
+
+    public Element createSreObject (IBond obj) {
+        Element element = new SreElement(SreNamespace.Tag.BOND);
+        element.appendChild(obj.getID());
+        return element;
+    }
+
+    public Element createSreObject (CMLAtomSet obj) {
+        Element element = new SreElement(SreNamespace.Tag.ATOMSET);
+        element.appendChild(obj.getId());
+        return element;
+    }
+
+
 }

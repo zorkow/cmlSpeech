@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import nu.xom.Document;
 import java.util.stream.Collectors;
 import java.util.concurrent.Future;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 import nu.xom.Element;
