@@ -12,7 +12,7 @@ import nu.xom.Element;
 public class SreElement extends Element {
 
     SreElement(String tag) {
-        super(SreNamespace.getInstance().prefix + tag,
+        super(SreNamespace.getInstance().prefix + ":" + tag,
               SreNamespace.getInstance().uri);
     }
 
