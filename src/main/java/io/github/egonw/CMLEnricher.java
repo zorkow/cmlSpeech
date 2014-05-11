@@ -420,6 +420,30 @@ public class CMLEnricher {
             String atomId = atom.getID();
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
         }
+        Set<IBond> connectingBonds = connectingBonds(container, externalBonds);
+        for (IBond bond : connectingBonds) {
+            String bondId = bond.getID();
+            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
+        }
+    }
+
+
+    /**
+     * Compute the connecting bonds for tha atom container from the set of
+     * external bonds.
+     * @param container The substructure under consideration.
+     * @param externalBonds Bonds external to the substructure.
+     * @return List of connecting bonds, i.e., external but not part of another
+     *         substructure.
+     */
+    private Set<IBond> connectingBonds(IAtomContainer container, Set<IBond> externalBonds) {
+        Set<IBond> connectingBonds = Sets.newHashSet();
+        for (IBond bond : externalBonds) {
+            if (isConnecting(container, bond)) {
+                connectingBonds.add(bond);
+            }
+        }
+        return connectingBonds;
     }
 
 

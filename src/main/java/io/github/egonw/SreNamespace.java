@@ -47,6 +47,7 @@ public class SreNamespace {
         
         INTERNALBONDS ("internalBonds"),
         EXTERNALBONDS ("externalBonds"),
+        CONNECTINGBONDS ("connectingBonds"),
         CONNECTINGATOMS ("connectingAtoms"),
 
         BOND ("bond"),
