@@ -249,6 +249,8 @@ public class CMLEnricher {
     }   
     
 
+    // TODO(sorge): With the RichAtomSet class it should be possible to simply 
+    //              append all the atomsets at the end of the computation.
     /** 
      * Computes Isolated rings.
      * 
@@ -257,7 +259,8 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Isolated ring", ring);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.ISOLATED);
+            appendAtomSet("Isolated ring", set);
         }
     }
 
@@ -270,7 +273,8 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            appendAtomSet("Fused Ring", ring);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED);
+            appendAtomSet("Fused Ring", set);
         }
     }
 
@@ -285,10 +289,13 @@ public class CMLEnricher {
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            String ringId = appendAtomSet("Fused ring", ring);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED);
+            String ringId = appendAtomSet("Fused ring", set);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
             for (IAtomContainer subRing : subRings) {
-                appendAtomSet("Subring", subRing, ringId);
+                RichAtomSet subSet = new RichAtomSet(subRing, RichAtomSet.Type.SMALLEST);
+                set.addSub(appendAtomSet("Subring", subSet, ringId));
+                subSet.addSup(ringId);
             }
         }
     }
@@ -380,14 +387,13 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, IAtomContainer container) {
-        RichAtomSet set = new RichAtomSet(container);
+    private String appendAtomSet(String title, RichAtomSet set) {
         String id = getAtomSetId();
         set.setTitle(title);
         set.setId(id);
         this.logger.logging(title + " has atoms:");
         // TODO (sorge) Refactor that eventually together with appendAtomSet.
-        for (IAtom atom : container.atoms()) {
+        for (IAtom atom : set.container.atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
             this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
@@ -395,7 +401,7 @@ public class CMLEnricher {
             this.logger.logging(" " + atomId);
         }
         this.logger.logging("\n");
-        for (IBond bond : container.bonds()) {
+        for (IBond bond : set.container.bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
             this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
@@ -427,6 +433,10 @@ public class CMLEnricher {
         }
     }
 
+
+    // public void hee (args) {
+        
+    // }
 
     /**
      * Compute the connecting bonds for tha atom container from the set of
@@ -471,8 +481,8 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, IAtomContainer atoms, String superSystem) {
-        String id = appendAtomSet(title, atoms);
+    private String appendAtomSet(String title, RichAtomSet set, String superSystem) {
+        String id = appendAtomSet(title, set);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);
         this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
