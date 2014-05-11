@@ -117,8 +117,7 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             enrichCML();
-            this.atomSets.stream().forEach(this::finaliseAtomSet);
-            //finaliseAtomSets();
+            this.atomSets.stream().forEach(this::finalizeAtomSet);
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
             this.doc.getRootElement().appendChild(this.annotations);
@@ -409,22 +408,17 @@ public class CMLEnricher {
     }
 
 
-    // private void finaliseAtomSets() {
-    //     for (RichAtomSet atomSet : this.atomSets) {
-    //         finaliseAtomSet(atomSet);
-    //     }
-    // }
-
-    private void finaliseAtomSet(RichAtomSet atomSet) {
+    private void finalizeAtomSet(RichAtomSet atomSet) {
         IAtomContainer container = atomSet.container;
-        Set<IBond> ibonds = connectingBonds(container);
-        for (IBond bond : connectingBonds(container)) {
+        Set<IBond> externalBonds = externalBonds(container);
+        for (IBond bond : externalBonds) {
             String bondId = bond.getID();
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
-        for (IAtom atom : connectingAtoms(container, ibonds)) {
+        Set<IAtom> connectingAtoms = connectingAtoms(container, externalBonds);
+        for (IAtom atom : connectingAtoms) {
             String atomId = atom.getID();
-            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.EXTERNALATOMS, new SreElement(atom));
+            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
         }
     }
 
@@ -471,7 +465,7 @@ public class CMLEnricher {
      * @param container The substructure under consideration.
      * @return List of bonds attached to but not contained in the container.
      */
-    private Set<IBond> connectingBonds(IAtomContainer container) {
+    private Set<IBond> externalBonds(IAtomContainer container) {
         Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
         Set<IBond> allBonds = Sets.newHashSet();
         for (IAtom atom : container.atoms()) {
@@ -505,7 +499,7 @@ public class CMLEnricher {
      * @return List of atoms with external connections.
      */
     private Set<IAtom> connectingAtoms(IAtomContainer container) {
-        Set<IBond> bonds = connectingBonds(container);
+        Set<IBond> bonds = externalBonds(container);
         return connectingAtoms(container, bonds);
     }
 
