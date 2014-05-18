@@ -212,7 +212,8 @@ public class CMLEnricher {
         IAtomContainer chain = getAliphaticChain();
         if (chain != null) {
             this.logger.logging(chain);
-            appendAtomSet("Aliphatic chain", chain);
+            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ISOLATED);
+            appendAtomSet("Aliphatic chain", set);
         }
     }
 
