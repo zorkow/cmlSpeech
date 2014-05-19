@@ -11,6 +11,7 @@ import nu.xom.XPathContext;
 import java.util.TreeMap;
 import java.util.SortedMap;
 import java.util.Comparator;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 
 /**
@@ -55,6 +56,15 @@ public class SreAnnotations extends SreElement {
         super(SreNamespace.Tag.ANNOTATIONS);
     }
 
+    SreAnnotations(IAtomContainer molecule) {
+        super(SreNamespace.Tag.ANNOTATIONS);
+        for (IAtom atom : molecule.atoms()) {
+            this.getNodeToAnnotate(atom.getID(), SreNamespace.Tag.ATOM);
+        }
+        for (IBond bond : molecule.bonds()) {
+            this.getNodeToAnnotate(bond.getID(), SreNamespace.Tag.BOND);
+        }
+    }
 
     public void appendAnnotation(IAtom annotate, SreNamespace.Tag tag, Element entry) {
         this.appendAnnotation(this.getNodeToAnnotate(annotate.getID(), SreNamespace.Tag.ATOM), tag, entry);

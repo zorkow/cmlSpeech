@@ -111,10 +111,10 @@ public class CMLEnricher {
      */
     private void enrichFile(String fileName) {
         this.atomSetCount = 0;
-        this.annotations = new SreAnnotations();
         try {
             readFile(fileName);
             buildXOM();
+            this.annotations = new SreAnnotations(this.molecule);
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
@@ -437,10 +437,6 @@ public class CMLEnricher {
         }
     }
 
-
-    // public void hee (args) {
-        
-    // }
 
     /**
      * Compute the connecting bonds for tha atom container from the set of
