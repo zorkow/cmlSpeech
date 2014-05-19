@@ -33,6 +33,8 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
  *  Class that returns a list of aliphatic chains in a given container.
  *
  */
+// TODO (sorge): Refactor this to return the chains rather than a descriptor.
+// TODO (sorge): Chains of length 2 don't seem to work.
 public class AliphaticChain extends AbstractMolecularDescriptor implements IMolecularDescriptor {
     // VS: changed this to true.
     private boolean checkRingSystem = true;
@@ -40,7 +42,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     private static final String[] names = {"nAtomLAC"};
 
     /**
-     *  Constructor for the LongestAliphaticChainDescriptor object.
+     *  Constructor for the AliphaticChainDescriptor object.
      */
     public AliphaticChain() { }
 
@@ -72,9 +74,9 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     @TestMethod("testGetSpecification")
     public DescriptorSpecification getSpecification() {
         return new DescriptorSpecification(
-                "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/#longestAliphaticChain",
-                this.getClass().getName(),
-                "The Chemistry Development Kit");
+                                           "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/#longestAliphaticChain",
+                                           this.getClass().getName(),
+                                           "The Chemistry Development Kit");
     }
 
 
@@ -123,7 +125,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
 
     private DescriptorValue getDummyDescriptorValue(Exception e) {
         return new DescriptorValue(getSpecification(), getParameterNames(),
-                getParameters(), new IntegerResult((int) Double.NaN), getDescriptorNames(), e);
+                                   getParameters(), new IntegerResult((int) Double.NaN), getDescriptorNames(), e);
     }
 
     /**
@@ -138,15 +140,15 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
      */
     @TestMethod("testCalculate_IAtomContainer")
     public DescriptorValue calculate(IAtomContainer atomContainer) {
-
+        
         IAtomContainer container;
         try {
             container = (IAtomContainer) atomContainer.clone();
             container = AtomContainerManipulator.removeHydrogens(container);
         } catch (CloneNotSupportedException e) {
             return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(),
-                    new IntegerResult((int) Double.NaN),
-                    getDescriptorNames());
+                                       new IntegerResult((int) Double.NaN),
+                                       getDescriptorNames());
         }
         IRingSet rs;
     	if (checkRingSystem) {
@@ -157,7 +159,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
             }
             for (int i=0;i<container.getAtomCount();i++){
             	if (rs.contains(container.getAtom(i))){
-            		container.getAtom(i).setFlag(CDKConstants.ISINRING,true);
+                    container.getAtom(i).setFlag(CDKConstants.ISINRING,true);
             	}
             }
         }
@@ -168,42 +170,45 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     	List<IAtom> path;
 
     	for (int i =0;i<container.getAtomCount();i++){
-    		container.getAtom(i).setFlag(CDKConstants.VISITED, false);
-		}
+            container.getAtom(i).setFlag(CDKConstants.VISITED, false);
+        }
 
     	for (int i =0;i<container.getAtomCount();i++){
-    		IAtom atomi = container.getAtom(i);
+            IAtom atomi = container.getAtom(i);
             if (atomi.getSymbol().equals("H")) continue;
 
             if ((!atomi.getFlag(CDKConstants.ISAROMATIC) && !atomi.getFlag(CDKConstants.ISINRING) & atomi.getSymbol().equals("C")) & !atomi.getFlag(CDKConstants.VISITED)){
                 
                 startSphere = new ArrayList<IAtom>();
-    			path = new ArrayList<IAtom>();
-    			startSphere.add(atomi);
+                path = new ArrayList<IAtom>();
+                startSphere.add(atomi);
                 try {
                     breadthFirstSearch(container, startSphere, path);
                 } catch (CDKException e) {
                     return getDummyDescriptorValue(e);
                 }
-                 IAtomContainer aliphaticChain =createAtomContainerFromPath(container,path);
-                 if (aliphaticChain.getAtomCount()>1){
-     				double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
-     				int[][] apsp = PathTools.computeFloydAPSP(conMat);
-     				tmpLongestChainAtomCount=getLongestChainPath(apsp);
-                                // VS: added this.
-                                // The longest chain container.
-                                this.chain.add(aliphaticChain);
-                                System.out.println("Chain Length: " + tmpLongestChainAtomCount);
-     				if (tmpLongestChainAtomCount>=longestChainAtomsCount){
-     					longestChainAtomsCount=tmpLongestChainAtomCount;
-     				}
-     			}
-     		}    		
+                IAtomContainer aliphaticChain =createAtomContainerFromPath(container,path);
+                if (aliphaticChain.getAtomCount()>1){
+                    double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
+                    printDoubMatrix(conMat);
+                    int[][] apsp = PathTools.computeFloydAPSP(conMat);
+                    printIntMatrix(apsp);
+                    tmpLongestChainAtomCount=getLongestChainPath(apsp);
+                    // VS: added this.
+                    // The longest chain container.
+                    this.chain.add(aliphaticChain);
+                    if (tmpLongestChainAtomCount>=longestChainAtomsCount){
+                        longestChainAtomsCount=tmpLongestChainAtomCount;
+                    }
+                }
+            }    		
     	}
 
+        System.out.println(longestChainAtomsCount);
+        
         return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(),
-                new IntegerResult(longestChainAtomsCount),
-                getDescriptorNames());
+                                   new IntegerResult(longestChainAtomsCount),
+                                   getDescriptorNames());
     }
 
     /**
@@ -222,13 +227,29 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
         return new IntegerResult(1);
     }
 
+    private void printIntMatrix (int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
+            }
+        }
+    }
+    
+    private void printDoubMatrix (double[][] matrix) {
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
+            }
+        }
+    }
+    
     private int getLongestChainPath(int[][] apsp){
         int longestPath=0;
         for (int i = 0; i < apsp.length; i++){
             for (int j = 0; j < apsp.length; j++){
-                    if (apsp[i][j]+1 > longestPath){
-                        longestPath = apsp[i][j]+1;
-                    }
+                if (apsp[i][j]+1 > longestPath){
+                    longestPath = apsp[i][j]+1;
+                }
             }
         }
         return longestPath;
@@ -239,17 +260,22 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     private IAtomContainer createAtomContainerFromPath(IAtomContainer container, List<IAtom> path){
     	IAtomContainer aliphaticChain = container.getBuilder().newInstance(IAtomContainer.class);
         for (int i=0;i<path.size()-1;i++){
-    		if (!aliphaticChain.contains(path.get(i))){
-    			aliphaticChain.addAtom(path.get(i));
-    		}
-    		for (int j=1;j<path.size();j++){
-    			if (container.getBond(path.get(i), path.get(j))!=null){
-    				if (!aliphaticChain.contains(path.get(j))){
-    	    			aliphaticChain.addAtom(path.get(j));
-    	    		}
-    				aliphaticChain.addBond(container.getBond(path.get(i), path.get(j)));
-    			}
-    		}
+            IAtom iAtom = path.get(i);
+            if (!aliphaticChain.contains(iAtom)){
+                aliphaticChain.addAtom(iAtom);
+            }
+            for (int j=1;j<path.size();j++){
+                IAtom jAtom = path.get(j);
+                IBond bond = container.getBond(iAtom, jAtom);
+                if (bond != null){
+                    if (!aliphaticChain.contains(jAtom)){
+                        aliphaticChain.addAtom(jAtom);
+                    }
+                    if (!aliphaticChain.contains(bond)){
+                        aliphaticChain.addBond(bond);
+                    }
+                }
+            }
     	}
     	
     	//for (int i=0;i<aliphaticChain.getAtomCount();i++){
@@ -257,27 +283,27 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     	//}
     	//logger.debug("BondCount:"+aliphaticChain.getBondCount());
     	if (aliphaticChain.getBondCount()==0){
-    		aliphaticChain.removeAllElements();
+            aliphaticChain.removeAllElements();
     	}
     	return aliphaticChain;
     }
     
-	/**
-	 *  Performs a breadthFirstSearch in an AtomContainer starting with a
-	 *  particular sphere, which usually consists of one start atom, and searches
-	 *  for a pi system. 
-	 *
-	 *@param  container                                              The AtomContainer to
-	 *      be searched
-	 *@param  sphere                                          A sphere of atoms to
-	 *      start the search with
-	 *@param  path                                          A vector which stores the atoms belonging to the pi system
-	 *@exception  org.openscience.cdk.exception.CDKException  Description of the
-	 *      Exception
-	 */
-	private void breadthFirstSearch(IAtomContainer container, List<IAtom> sphere, List<IAtom> path) throws CDKException{
-		IAtom nextAtom;
-		List<IAtom> newSphere = new ArrayList<IAtom>();
+    /**
+     *  Performs a breadthFirstSearch in an AtomContainer starting with a
+     *  particular sphere, which usually consists of one start atom, and searches
+     *  for a pi system. 
+     *
+     *@param  container                                              The AtomContainer to
+     *      be searched
+     *@param  sphere                                          A sphere of atoms to
+     *      start the search with
+     *@param  path                                          A vector which stores the atoms belonging to the pi system
+     *@exception  org.openscience.cdk.exception.CDKException  Description of the
+     *      Exception
+     */
+    private void breadthFirstSearch(IAtomContainer container, List<IAtom> sphere, List<IAtom> path) throws CDKException{
+        IAtom nextAtom;
+        List<IAtom> newSphere = new ArrayList<IAtom>();
         for (IAtom atom : sphere) {
             List<IBond> bonds = container.getConnectedBondsList(atom);
             for (IBond bond : bonds) {
@@ -293,10 +319,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
                 }
             }
         }
-		if (newSphere.size() > 0){
-			breadthFirstSearch(container, newSphere, path);
-		}
-	}
+        if (newSphere.size() > 0){
+            breadthFirstSearch(container, newSphere, path);
+        }
+    }
 
     
     /**
