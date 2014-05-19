@@ -42,7 +42,6 @@ import org.openscience.cdk.io.CMLWriter;
 import org.openscience.cdk.io.ISimpleChemObjectReader;
 import org.openscience.cdk.io.ReaderFactory;
 import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
 import org.openscience.cdk.ringsearch.AllRingsFinder;
 import org.openscience.cdk.ringsearch.RingSearch;
 import org.openscience.cdk.ringsearch.SSSRFinder;
@@ -209,10 +208,10 @@ public class CMLEnricher {
                           this::sssrSubRings : this::smallestSubRings);
         }
         getIsolatedRings(ringSearch);
-        IAtomContainer chain = getAliphaticChain();
-        if (chain != null) {
+        List<IAtomContainer> chains = getAliphaticChain();
+        for (IAtomContainer chain : chains) {
             this.logger.logging(chain);
-            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ISOLATED);
+            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC);
             appendAtomSet("Aliphatic chain", set);
         }
     }
@@ -242,12 +241,13 @@ public class CMLEnricher {
      * Computes the longest aliphatic chain for the molecule.
      * @return The value of the aliphatic chain.
      */
-    private IAtomContainer getAliphaticChain() {
+    private List<IAtomContainer> getAliphaticChain() {
         IAtomContainer container = checkedClone(this.molecule);
+        //IAtomContainer container = this.molecule;
         if (container == null) { return null; }
-        LongestAliphaticChain chain = new LongestAliphaticChain();
+        AliphaticChain chain = new AliphaticChain();
         DescriptorValue descr = chain.calculate(container);
-        IAtomContainer result = chain.extract();
+        List<IAtomContainer> result = chain.extract();
         this.logger.logging("Longest Chain Count: " + descr.getValue());
         return(result);
     }   

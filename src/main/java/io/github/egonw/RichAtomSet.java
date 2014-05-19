@@ -16,6 +16,7 @@ import java.util.List;
 public class RichAtomSet extends CMLAtomSet {
     
     public enum Type {
+        ALIPHATIC,
         FUSED,
         ISOLATED,
         SMALLEST;

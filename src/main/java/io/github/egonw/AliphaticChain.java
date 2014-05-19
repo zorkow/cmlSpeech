@@ -1,27 +1,10 @@
-/* This is the original LongestAliphaticChainDescriptor class from the CDK.
- * For the time being I have copied it to get the actual chain out.
+/* This is based on the LongestAliphaticChainDescriptor class from the CDK.  The
+ * intention is to get the actual chains out, not just a number for the longest
+ * chain.
  */
 //
 package io.github.egonw;
 
-/*  Copyright (C) 2005-2007  Christian Hoppe <chhoppe@users.sf.net>
- *
- *  Contact: cdk-devel@lists.sourceforge.net
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  as published by the Free Software Foundation; either version 2.1
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,48 +30,27 @@ import org.openscience.cdk.qsar.result.IntegerResult;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 /**
- *  Class that returns the number of atoms in the longest aliphatic chain.
+ *  Class that returns a list of aliphatic chains in a given container.
  *
- * <p>This descriptor uses these parameters:
- * <table border="1">
- *   <tr>
- *     <td>Name</td>
- *     <td>Default</td>
- *     <td>Description</td>
- *   </tr>
- *   <tr>
- *     <td>checkRingSystem</td>
- *     <td>false</td>
- *     <td>True is the CDKConstant.ISINRING has to be set</td>
- *   </tr>
- * </table>
- *
- * Returns a single value named <i>nAtomLAC</i>
- * @author      chhoppe from EUROSCREEN
- * @cdk.created 2006-1-03
- * @cdk.module  qsarmolecular
- * @cdk.githash
- * @cdk.set     qsar-descriptors
- * @cdk.dictref qsar-descriptors:largestAliphaticChain
  */
-@TestClass("org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptorTest")
-public class LongestAliphaticChain extends AbstractMolecularDescriptor implements IMolecularDescriptor {
-	private boolean checkRingSystem = false;
+public class AliphaticChain extends AbstractMolecularDescriptor implements IMolecularDescriptor {
+    // VS: changed this to true.
+    private boolean checkRingSystem = true;
 
     private static final String[] names = {"nAtomLAC"};
 
     /**
      *  Constructor for the LongestAliphaticChainDescriptor object.
      */
-    public LongestAliphaticChain() { }
+    public AliphaticChain() { }
+
+    // VS: added this.
+    // Containers of chains.
+    private List<IAtomContainer> chain = new ArrayList<>();
 
     // VS: added this.
     // The longest chain container.
-    private IAtomContainer chain = null;
-
-    // VS: added this.
-    // The longest chain container.
-    public IAtomContainer extract() {
+    public List<IAtomContainer> extract() {
         return chain;
     };
 
@@ -129,7 +91,7 @@ public class LongestAliphaticChain extends AbstractMolecularDescriptor implement
     @TestMethod("testSetParameters_arrayObject")
     public void setParameters(Object[] params) throws CDKException {
         if (params.length > 1) {
-            throw new CDKException("LongestAliphaticChainDescriptor only expects one parameter");
+            throw new CDKException("AliphaticChainDescriptor only expects one parameter");
         }
         if (!(params[0] instanceof Boolean)) {
             throw new CDKException("Both parameters must be of type Boolean");
@@ -140,7 +102,7 @@ public class LongestAliphaticChain extends AbstractMolecularDescriptor implement
 
 
     /**
-     *  Gets the parameters attribute of the LongestAliphaticChainDescriptor object.
+     *  Gets the parameters attribute of the AliphaticChainDescriptor object.
      *
      * @return    The parameters value
      * @see #setParameters
@@ -228,12 +190,12 @@ public class LongestAliphaticChain extends AbstractMolecularDescriptor implement
      				double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
      				int[][] apsp = PathTools.computeFloydAPSP(conMat);
      				tmpLongestChainAtomCount=getLongestChainPath(apsp);
+                                // VS: added this.
+                                // The longest chain container.
+                                this.chain.add(aliphaticChain);
+                                System.out.println("Chain Length: " + tmpLongestChainAtomCount);
      				if (tmpLongestChainAtomCount>=longestChainAtomsCount){
      					longestChainAtomsCount=tmpLongestChainAtomCount;
-                                        // VS: added this.
-                                        // The longest chain container.
-                                        this.chain = aliphaticChain;
-                                        System.out.println("Chain Length: " + longestChainAtomsCount + "Atoms: " + aliphaticChain);
      				}
      			}
      		}    		
@@ -338,7 +300,7 @@ public class LongestAliphaticChain extends AbstractMolecularDescriptor implement
 
     
     /**
-     *  Gets the parameterNames attribute of the LongestAliphaticChainDescriptor object.
+     *  Gets the parameterNames attribute of the AliphaticChainDescriptor object.
      *
      *@return    The parameterNames value
      */
@@ -352,7 +314,7 @@ public class LongestAliphaticChain extends AbstractMolecularDescriptor implement
 
 
     /**
-     *  Gets the parameterType attribute of the LongestAliphaticChainDescriptor object.
+     *  Gets the parameterType attribute of the AliphaticChainDescriptor object.
      *
      *@param  name  Description of the Parameter
      *@return       An Object of class equal to that of the parameter being requested

@@ -75,7 +75,7 @@ public class Cactus {
         } catch (MalformedURLException e) {
             throw new CactusException("Can't make URL from input " + input + " " + output);
         } catch (IOException e) {
-            throw new CactusException("IO exception when translating "  + input + " " + output);
+            throw new CactusException("IO exception when translating "  + url);
         }
         return lines;
     }
