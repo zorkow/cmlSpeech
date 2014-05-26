@@ -28,6 +28,8 @@ import org.openscience.cdk.qsar.IMolecularDescriptor;
 import org.openscience.cdk.qsar.result.IDescriptorResult;
 import org.openscience.cdk.qsar.result.IntegerResult;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import java.util.HashMap;
+import com.google.common.collect.Lists;
 
 /**
  *  Class that returns a list of aliphatic chains in a given container.
@@ -39,7 +41,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
     // VS: changed this to true.
     private boolean checkRingSystem = true;
 
-    private static final String[] names = {"nAtomLAC"};
+    private static final String[] names = {"allLAC"};
 
     /**
      *  Constructor for the AliphaticChainDescriptor object.
@@ -177,7 +179,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
             IAtom atomi = container.getAtom(i);
             if (atomi.getSymbol().equals("H")) continue;
 
-            if ((!atomi.getFlag(CDKConstants.ISAROMATIC) && !atomi.getFlag(CDKConstants.ISINRING) & atomi.getSymbol().equals("C")) & !atomi.getFlag(CDKConstants.VISITED)){
+            if (!atomi.getFlag(CDKConstants.ISAROMATIC) &&
+                !atomi.getFlag(CDKConstants.ISINRING) &&
+                atomi.getSymbol().equals("C") &&
+                !atomi.getFlag(CDKConstants.VISITED)) {
                 
                 startSphere = new ArrayList<IAtom>();
                 path = new ArrayList<IAtom>();
@@ -190,13 +195,16 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
                 IAtomContainer aliphaticChain =createAtomContainerFromPath(container,path);
                 if (aliphaticChain.getAtomCount()>1){
                     double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
-                    printDoubMatrix(conMat);
-                    int[][] apsp = PathTools.computeFloydAPSP(conMat);
-                    printIntMatrix(apsp);
-                    tmpLongestChainAtomCount=getLongestChainPath(apsp);
+                    Integer[][] pathMatrix = new Integer[conMat.length][conMat.length];
+                    int[][] apsp = computeFloydAPSP(conMat, pathMatrix);
+                    int pathCoordinates[] = new int[] {0, 0};
+                    tmpLongestChainAtomCount=getLongestChainPath(apsp, pathCoordinates);
+                    IAtomContainer longestAliphaticChain =
+                    createAtomContainerFromPath(aliphaticChain,
+                                                longestPath(pathMatrix, pathCoordinates[0], pathCoordinates[1], aliphaticChain));
                     // VS: added this.
                     // The longest chain container.
-                    this.chain.add(aliphaticChain);
+                    this.chain.add(longestAliphaticChain);
                     if (tmpLongestChainAtomCount>=longestChainAtomsCount){
                         longestChainAtomsCount=tmpLongestChainAtomCount;
                     }
@@ -204,12 +212,59 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
             }    		
     	}
 
-        System.out.println(longestChainAtomsCount);
-        
         return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(),
                                    new IntegerResult(longestChainAtomsCount),
                                    getDescriptorNames());
     }
+
+    public List<IAtom> longestPath(Integer pathMatrix[][], int pathStart,
+                                   int pathEnd, IAtomContainer chain) {
+        List<IAtom> path = new ArrayList<>();
+        if (pathMatrix[pathStart][pathEnd] == null) {
+            return path;
+        }
+        List<IAtom> chainAtoms = Lists.newArrayList(chain.atoms());
+        path.add(chainAtoms.get(pathStart));
+        while (pathStart != pathEnd) {
+            pathStart = pathMatrix[pathStart][pathEnd];
+            path.add(chainAtoms.get(pathStart));
+        }
+        return path;
+    }
+        
+    public int[][] computeFloydAPSP(double costMatrix[][], Integer pathMatrix[][]) {
+        int i, j, k;
+        int nrow = costMatrix.length;
+        int[][] distMatrix = new int[nrow][nrow];
+        //logger.debug("Matrix size: " + n);
+        for (i = 0; i < nrow; i++) {
+            for (j = 0; j < nrow; j++) {
+                if (costMatrix[i][j] == 0) {
+                    distMatrix[i][j] = 999999999;
+                    pathMatrix[i][j] = null;
+                } else {
+                    distMatrix[i][j] = 1;
+                    pathMatrix[i][j] = j;
+                }
+            }
+        }
+        for (i = 0; i < nrow; i++) {
+            distMatrix[i][i] = 0;
+        }
+        for (k = 0; k < nrow; k++) {
+            for (i = 0; i < nrow; i++) {
+                for (j = 0; j < nrow; j++) {
+                    if (distMatrix[i][k] + distMatrix[k][j] < distMatrix[i][j]) {
+                        distMatrix[i][j] = distMatrix[i][k] + distMatrix[k][j];
+                        pathMatrix[i][j] = pathMatrix[i][k];        // k is included in the shortest path
+                    }
+                }
+            }
+        }
+        return distMatrix;
+    }
+
+
 
     /**
      * Returns the specific type of the DescriptorResult object.
@@ -227,7 +282,25 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
         return new IntegerResult(1);
     }
 
+    private void printAtomMatrix (IAtom[][] matrix) {
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                if (matrix[i][j] != null) {
+                    System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j].getID());
+                }
+            }
+        }
+    }
+    
     private void printIntMatrix (int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[i].length; j++){
+                System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
+            }
+        }
+    }
+    
+    private void printIntMatrix (Integer[][] matrix) {
         for (int i = 0; i < matrix.length; i++){
             for (int j = 0; j < matrix[i].length; j++){
                 System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
@@ -243,11 +316,22 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
         }
     }
     
-    private int getLongestChainPath(int[][] apsp){
+
+    private void printAtomList (List<IAtom> atoms) {
+        int i = 0;
+        for (IAtom atom : atoms) {
+            System.out.println("Atom " + i + ": " + atom.getID());
+            i++;
+        }
+    }
+
+    private int getLongestChainPath(int[][] apsp, int[] path){
         int longestPath=0;
         for (int i = 0; i < apsp.length; i++){
             for (int j = 0; j < apsp.length; j++){
                 if (apsp[i][j]+1 > longestPath){
+                    path[0] = i;
+                    path[1] = j;
                     longestPath = apsp[i][j]+1;
                 }
             }
