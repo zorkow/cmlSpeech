@@ -55,7 +55,13 @@ public class SreNamespace {
         ATOMSET ("atomSet"),
 
         DESCRIPTIONS ("descriptions"),
-        DESCRIPTION ("description");
+        DESCRIPTION ("description"),
+
+        CONNECTIONS ("connections"),
+        SHAREDBOND ("sharedBond"),
+        SHAREDATOM ("sharedAtom"),
+        CONNECTION ("connection")
+        ;
 
         public final String tag;
         

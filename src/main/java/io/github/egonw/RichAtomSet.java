@@ -57,13 +57,47 @@ public class RichAtomSet extends CMLAtomSet {
         this.sup.addAll(sups);
     }
 
+
+    public boolean isSub(String atomSet) {
+        return this.sub.stream().anyMatch(as -> as == atomSet);
+    };
+
+    public boolean isSub(RichAtomSet atomSet) {
+        return this.isSub(atomSet.getId());
+    };
+
+
+    public boolean isSup(String atomSet) {
+        return this.sup.stream().anyMatch(as -> as == atomSet);
+    };
+
+    public boolean isSup(RichAtomSet atomSet) {
+        return this.isSup(atomSet.getId());
+    };
+
+
     public Set<String> siblings(List<RichAtomSet> atomSets) {
         Set<String> result = new HashSet<String>();
         if (this.type == RichAtomSet.Type.SMALLEST) {
             for (String atomSet : this.sup) {
-                result.addAll(sub);
+                result.addAll((retrieveAtomSet(atomSets, atomSet)).sub);
             }
         }
+        result.remove(this.getId());
         return result;
+    }
+
+    
+    /**
+     * Retrieves an enriched atom set by its name.
+     * @param atomSets List of atom sets to search.
+     * @param name Name of atom set to retrieve. 
+     * @return Atomset.
+     */
+    public static RichAtomSet retrieveAtomSet(List<RichAtomSet> atomSets, String name) {
+        return atomSets.stream()
+            .filter(as -> name == as.getId())
+            .findFirst()
+            .get();
     }
 }

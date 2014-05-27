@@ -28,19 +28,25 @@ public class SreElement extends Element {
         this.appendChild(text);
     }
 
-    SreElement (IAtom obj) {
+    SreElement(IAtom obj) {
         this(SreNamespace.Tag.ATOM);
         this.appendChild(obj.getID());
     }
 
-    SreElement (IBond obj) {
+    SreElement(IBond obj) {
         this(SreNamespace.Tag.BOND);
         this.appendChild(obj.getID());
     }
 
-    SreElement (CMLAtomSet obj) {
+    SreElement(CMLAtomSet obj) {
         this(SreNamespace.Tag.ATOMSET);
         this.appendChild(obj.getId());
+    }
+
+    SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
+        super(tag.tag, SreNamespace.getInstance().uri);
+        this.appendChild(child1);
+        this.appendChild(child2);
     }
 
 }

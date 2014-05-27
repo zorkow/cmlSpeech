@@ -420,6 +420,7 @@ public class CMLEnricher {
 
     private void finalizeAtomSet(RichAtomSet atomSet) {
         IAtomContainer container = atomSet.container;
+        System.out.println("Finalising: " + atomSet.getId());
         Set<IBond> externalBonds = externalBonds(container);
         for (IBond bond : externalBonds) {
             String bondId = bond.getID();
@@ -434,6 +435,7 @@ public class CMLEnricher {
         for (IBond bond : connectingBonds) {
             String bondId = bond.getID();
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
+            addConnection(atomSet, bond);
         }
         computeConnections(atomSet);
     }
@@ -443,14 +445,67 @@ public class CMLEnricher {
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             sharedBonds(atomSet);
         }
-        //sharedAtoms(atomSet);
-        //computeSharedBonds(atomSet);
+        sharedAtoms(atomSet);
     }
-    
+
+    private void addConnection(RichAtomSet atomSet, IBond bond) {
+        // For now we assume that the bond has exactly two atoms.
+        IAtom atom = bond.getAtom(0);
+        if (atomSet.container.contains(atom)) {
+            atom = bond.getAtom(1);
+        }
+        boolean simple = true;
+        for (RichAtomSet otherSet : this.atomSets) {
+            if (otherSet.container.contains(atom)) {
+                simple = false;
+                this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                                                  new SreElement(SreNamespace.Tag.CONNECTION,
+                                                                 new SreElement(bond),
+                                                                 new SreElement(otherSet)));
+            }
+        }
+        if (simple) {
+            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                                              new SreElement(SreNamespace.Tag.CONNECTION,
+                                                             new SreElement(bond),
+                                                             new SreElement(atom)));
+        }
+    }
 
     private void sharedBonds(RichAtomSet atomSet) {
-        System.out.println(atomSet.siblings(atomSets));
-        
+        Set<String> siblings = atomSet.siblings(atomSets);
+        Set<RichAtomSet> siblingSets = siblings.stream()
+            .map(as -> RichAtomSet.retrieveAtomSet(this.atomSets, as))
+            .collect(Collectors.toSet());
+        for (IBond bond : atomSet.container.bonds()) {
+            for (RichAtomSet sibling : siblingSets) {
+                if (sibling.container.contains(bond)) {
+                    this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                                                      new SreElement(SreNamespace.Tag.SHAREDBOND,
+                                                                     new SreElement(bond),
+                                                                     new SreElement(sibling)));
+                }
+            }
+        };
+    }
+    
+    private void sharedAtoms(RichAtomSet atomSet) {
+        for (IAtom atom : atomSet.container.atoms()) {
+            for (RichAtomSet otherSet : this.atomSets) {
+                // Cases: No shared Atom if sub or super
+                if (atomSet.isSub(otherSet) ||
+                    atomSet.isSup(otherSet) || 
+                    otherSet.getId() == atomSet.getId()) {
+                    continue;
+                }
+                if (otherSet.container.contains(atom)) {
+                    this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                                                      new SreElement(SreNamespace.Tag.SHAREDATOM,
+                                                                     new SreElement(atom),
+                                                                     new SreElement(otherSet)));
+                }
+            }
+        };
     }
     
 
