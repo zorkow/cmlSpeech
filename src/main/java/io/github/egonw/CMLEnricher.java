@@ -420,7 +420,6 @@ public class CMLEnricher {
 
     private void finalizeAtomSet(RichAtomSet atomSet) {
         IAtomContainer container = atomSet.container;
-        System.out.println("Finalising: " + atomSet.getId());
         Set<IBond> externalBonds = externalBonds(container);
         for (IBond bond : externalBonds) {
             String bondId = bond.getID();
