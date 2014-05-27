@@ -142,16 +142,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
      */
     @TestMethod("testCalculate_IAtomContainer")
     public DescriptorValue calculate(IAtomContainer atomContainer) {
-        
-        IAtomContainer container;
-        try {
-            container = (IAtomContainer) atomContainer.clone();
-            container = AtomContainerManipulator.removeHydrogens(container);
-        } catch (CloneNotSupportedException e) {
-            return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(),
-                                       new IntegerResult((int) Double.NaN),
-                                       getDescriptorNames());
-        }
+         
+        IAtomContainer container = atomContainer;
         IRingSet rs;
     	if (checkRingSystem) {
             try {
