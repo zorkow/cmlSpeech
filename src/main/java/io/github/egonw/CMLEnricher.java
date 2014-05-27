@@ -242,8 +242,8 @@ public class CMLEnricher {
      * @return The value of the aliphatic chain.
      */
     private List<IAtomContainer> getAliphaticChain() {
-        IAtomContainer container = checkedClone(this.molecule);
-        //IAtomContainer container = this.molecule;
+        //IAtomContainer container = checkedClone(this.molecule);
+        IAtomContainer container = this.molecule;
         if (container == null) { return null; }
         AliphaticChain chain = new AliphaticChain();
         DescriptorValue descr = chain.calculate(container);
@@ -435,8 +435,24 @@ public class CMLEnricher {
             String bondId = bond.getID();
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
         }
+        computeConnections(atomSet);
     }
 
+
+    private void computeConnections(RichAtomSet atomSet) {
+        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+            sharedBonds(atomSet);
+        }
+        //sharedAtoms(atomSet);
+        //computeSharedBonds(atomSet);
+    }
+    
+
+    private void sharedBonds(RichAtomSet atomSet) {
+        System.out.println(atomSet.siblings(atomSets));
+        
+    }
+    
 
     /**
      * Compute the connecting bonds for tha atom container from the set of

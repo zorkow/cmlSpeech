@@ -56,4 +56,14 @@ public class RichAtomSet extends CMLAtomSet {
     public void addSups(List<String> sups) {
         this.sup.addAll(sups);
     }
+
+    public Set<String> siblings(List<RichAtomSet> atomSets) {
+        Set<String> result = new HashSet<String>();
+        if (this.type == RichAtomSet.Type.SMALLEST) {
+            for (String atomSet : this.sup) {
+                result.addAll(sub);
+            }
+        }
+        return result;
+    }
 }
