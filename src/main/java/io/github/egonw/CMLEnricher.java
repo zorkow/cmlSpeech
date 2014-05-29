@@ -683,7 +683,9 @@ public class CMLEnricher {
         
         MinimumSpanningTree tree = new KruskalMinimumSpanningTree(this.structure);
         System.out.println(tree.toString());
-        this.structure.visualize();
+        // TODO (sorge) refactor to have major/minor systems and singletons held
+        // globally.
+        this.structure.visualize(majorSystems, this.singletonAtoms);
         //        System.out.println(this.structure.degreeOf());
         // System.out.println(this.annotations.toString());
     };

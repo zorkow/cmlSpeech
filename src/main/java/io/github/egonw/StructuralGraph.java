@@ -16,6 +16,10 @@ import org.jgrapht.graph.SimpleGraph;
 
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import java.util.List;
+import java.util.Set;
+import org.openscience.cdk.interfaces.IAtom;
+
 // import org.jgrapht.ListenableGraph;
 // import org.jgrapht.graph.ListenableUndirectedGraph;
 
@@ -35,11 +39,9 @@ public class StructuralGraph extends SimpleGraph {
         return edge;
     }
 
-    public void visualize () {
-        //fList<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
-        //        ListenableGraph g = new ListenableUndirectedGraph(this);
+    public void visualize (List<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
         StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
-        vis.init(this);
+        vis.init(this, majorSystems, singletonAtoms);
     }
 
 

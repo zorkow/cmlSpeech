@@ -28,6 +28,12 @@ import org.jgrapht.graph.DefaultEdge;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JScrollPane;
 
+import java.util.List;
+import java.util.Set;
+import org.openscience.cdk.interfaces.IAtom;
+import java.util.ArrayList;
+import javax.vecmath.Point2d;
+
 /**
  * A demo applet that shows how to use JGraph to visualize JGraphT graphs.
  *
@@ -35,22 +41,49 @@ import javax.swing.JScrollPane;
  *
  * @since Aug 3, 2003
  */
-public class StructuralGraphVisualizer extends JApplet {
+public class StructuralGraphVisualizer {
     private static final Color     DEFAULT_BG_COLOR = Color.decode( "#FAFBFF" );
     private static final Dimension DEFAULT_SIZE = new Dimension( 530, 320 );
 
+    private static final int scale = 150;
+    private static final int offset = 10;
+    private static int minX = 0;
+    private static int minY = 0;
+
+    class NamedPoint {
+        private int x;
+        private int y;
+        private String name;
+        
+        NamedPoint(String name, int x, int y) {
+            this.x = x;
+            this.y = y;
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public int getX() {
+            return this.x;
+        }
+
+        public int getY() {
+            return this.y;
+        }
+    }
+    
     // 
     private JGraphModelAdapter m_jgAdapter;
 
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg) {
-        // create a JGraphT graph
+    public void init(SimpleGraph sg, List<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
         ListenableGraph g = new ListenableUndirectedGraph( sg );
 
-        // create a visualization using JGraph, via an adapter
-        m_jgAdapter = new JGraphModelAdapter( g );// , null, null);
+        m_jgAdapter = new JGraphModelAdapter( g );
 
         JGraph jgraph = new JGraph( m_jgAdapter );
 
@@ -60,52 +93,83 @@ public class StructuralGraphVisualizer extends JApplet {
         frame.add(scroller);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        adjustDisplaySettings( jgraph );
-        //        getContentPane(  ).add( jgraph );
-        // resize( DEFAULT_SIZE );
 
-        // add some sample data (graph manipulated via JGraphT)
-        // g.addVertex( "v1" );
-        // g.addVertex( "v2" );
-        // g.addVertex( "v3" );
-        // g.addVertex( "v4" );
+        List<NamedPoint> points = new ArrayList();
+        points.addAll(computeCentroids(majorSystems));
+        points.addAll(computeAtoms(singletonAtoms));
+        positionPoints(points);
 
-        // g.addEdge( "v1", "v2" );
-        // g.addEdge( "v2", "v3" );
-        // g.addEdge( "v3", "v1" );
-        // g.addEdge( "v4", "v3" );
-
-        // position vertices nicely within JGraph component
+        
         jgraph.getGraphLayoutCache().reload();
-        // positionVertexAt( "v1", 130, 40 );
-        // positionVertexAt( "v2", 60, 200 );
-        // positionVertexAt( "v3", 310, 230 );
-        // positionVertexAt( "v4", 380, 70 );
         jgraph.repaint();
 
-        // that's all there is to it!...
+    }
 
-
+    private void positionPoints(List<NamedPoint> points) {
+        points.stream()
+            .forEach(p -> positionVertexAt(p.getName(),
+                                           p.getX() - this.minX + this.offset,
+                                           p.getY() - this.minY + this.offset));
     }
 
 
-    private void adjustDisplaySettings( JGraph jg ) {
-        jg.setPreferredSize( DEFAULT_SIZE );
-
-        Color  c        = DEFAULT_BG_COLOR;
-        String colorStr = null;
-
-        try {
-            colorStr = getParameter( "bgcolor" );
+    private List<NamedPoint> computeCentroids(List<RichAtomSet> systems) {
+        List<NamedPoint> points = new ArrayList();
+        for (RichAtomSet system : systems) {
+            double x = 0;
+            double y = 0;
+            int n = 0;
+            for (IAtom atom : system.container.atoms()) {
+                Point2d x2d = atom.getPoint2d();
+                System.out.printf("%s %f %f\n", x2d, x2d.x, x2d.y);
+                x += (x2d.x * scale);
+                y += (x2d.y * scale);
+                n++;
+            }
+            NamedPoint point = new NamedPoint(system.getId(), (int)x/n, (int)y/n);
+            this.minX = Math.min(this.minX, point.getX());
+            this.minY = Math.min(this.minY, point.getY());
+            points.add(point);
         }
-         catch( Exception e ) {}
-
-        if( colorStr != null ) {
-            c = Color.decode( colorStr );
-        }
-
-        jg.setBackground( c );
+        return points;
     }
+    
+
+    private List<NamedPoint> computeAtoms(Set<IAtom> atoms) {
+        List<NamedPoint> points = new ArrayList();
+        System.out.println("Atoms");
+        for (IAtom atom : atoms) {
+            Point2d x2d = atom.getPoint2d();
+            System.out.printf("%s %f %f\n", x2d, x2d.x, x2d.y);
+            NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
+            this.minX = Math.min(this.minX, point.getX());
+            this.minY = Math.min(this.minY, point.getY());
+            points.add(point);
+        }
+        return points;
+    }
+    
+    // private void adjustDisplaySettings( JGraph jg ) {
+    //     jg.setPreferredSize( DEFAULT_SIZE );
+
+    //     Color  c        = DEFAULT_BG_COLOR;
+    //     String colorStr = null;
+
+    //     try {
+    //         colorStr = getParameter( "bgcolor" );
+    //     }
+    //      catch( Exception e ) {}
+
+    //     if( colorStr != null ) {
+    //         c = Color.decode( colorStr );
+    //     }
+
+    //     jg.setBackground( c );
+
+    //     // positionVertexAt( "v2", 60, 200 );
+    //     // positionVertexAt( "v3", 310, 230 );
+    //     // positionVertexAt( "v4", 380, 70 );
+    // }
 
 
     private void positionVertexAt( Object vertex, int x, int y ) {
@@ -117,6 +181,6 @@ public class StructuralGraphVisualizer extends JApplet {
 
         Map cellAttr = new HashMap(  );
         cellAttr.put( cell, attr );
-        //m_jgAdapter.edit( cellAttr, null, null, null, null );
+        m_jgAdapter.edit( cellAttr, null, null, null );
     }
 }
