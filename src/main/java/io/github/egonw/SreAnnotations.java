@@ -81,9 +81,7 @@ public class SreAnnotations extends SreElement {
     }
 
     public void appendAnnotation(Element annotate, SreNamespace.Tag tag, Element entry) {
-        XPathContext xc = new XPathContext();
-        xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
-        Nodes nodes = annotate.query("//" + tag.tag, xc);
+        Nodes nodes = xpathQuery(annotate, "//" + tag.tag);
         Element node = null;
         if (nodes.size() == 0) {
             node = new SreElement(tag);
@@ -114,10 +112,10 @@ public class SreAnnotations extends SreElement {
     }
 
 
-    private Nodes xpathQuery(String query) {
+    private static Nodes xpathQuery(Element element, String query) {
         XPathContext xc = new XPathContext();
         xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
-        return this.query(query, xc);
+        return element.query(query, xc);
     }
 
 
@@ -134,9 +132,27 @@ public class SreAnnotations extends SreElement {
     }
 
 
+    public SreElement retrieveAnnotation(String id, SreNamespace.Tag tag) {
+        Element element = this.annotationNodes.get(id);
+        if (element == null) {
+            return null;
+        }
+        return (SreElement)xpathQuery(element, "//" + tag.tag).get(0);
+    }
+
+
     public void finalize() {
         for (String key : this.annotationNodes.keySet()) {
             this.appendChild(this.annotationNodes.get(key));
         }
     }
+
+    public String toString() {
+        String result = "";
+        for (String key : this.annotationNodes.keySet()) {
+            result += key + ": " + this.annotationNodes.get(key).toXML() + "\n";
+        }
+        return result;
+    }
+
 }

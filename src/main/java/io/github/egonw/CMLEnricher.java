@@ -56,6 +56,7 @@ import java.io.BufferedOutputStream;
 import java.io.PrintWriter;
 import nu.xom.Namespace;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.Attribute;
 import nu.xom.Node;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
@@ -64,6 +65,9 @@ import java.util.Collection;
 import org.openscience.cdk.interfaces.IBond;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.HashSet;
+import org.jgrapht.alg.KruskalMinimumSpanningTree;
+import org.jgrapht.alg.interfaces.MinimumSpanningTree;
 
 
 public class CMLEnricher {
@@ -76,7 +80,8 @@ public class CMLEnricher {
     private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
     private SreAnnotations annotations;
-
+    private Set<IAtom> singletonAtoms = new HashSet<IAtom>();
+    private StructuralGraph structure = new StructuralGraph();
 
 
     /** 
@@ -118,6 +123,7 @@ public class CMLEnricher {
             this.annotations = new SreAnnotations(this.molecule);
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
+            getMajorPath();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
             this.doc.getRootElement().appendChild(this.annotations);
@@ -441,11 +447,11 @@ public class CMLEnricher {
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
             addConnection(atomSet, bond);
         }
-        computeConnections(atomSet);
+        computeSharedConnections(atomSet);
     }
 
 
-    private void computeConnections(RichAtomSet atomSet) {
+    private void computeSharedConnections(RichAtomSet atomSet) {
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             sharedBonds(atomSet);
         }
@@ -473,7 +479,31 @@ public class CMLEnricher {
                                               new SreElement(SreNamespace.Tag.CONNECTION,
                                                              new SreElement(bond),
                                                              new SreElement(atom)));
+            addSingletonAtom(atom);
+            this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
+                                              new SreElement(SreNamespace.Tag.CONNECTION,
+                                                             new SreElement(bond),
+                                                             new SreElement(atomSet)));
         }
+    }
+
+    private void addConnection(IAtom atom) {
+        for (IBond bond : this.molecule.getConnectedBondsList(atom)) {
+            IAtom atomA = bond.getAtom(0);
+            if (atomA == atom) {
+                atomA = bond.getAtom(1);
+            }
+            this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
+                                              new SreElement(SreNamespace.Tag.CONNECTION,
+                                                             new SreElement(bond),
+                                                             new SreElement(atomA)));
+        }
+    }
+    
+
+    private void addSingletonAtom(IAtom atom) {
+        // Maybe put this into an enriched container.
+        this.singletonAtoms.add(atom);
     }
 
     private void sharedBonds(RichAtomSet atomSet) {
@@ -619,13 +649,76 @@ public class CMLEnricher {
      * @param container The molecule to be named.
      */
     private void nameMolecule(String id, IAtomContainer container) {
-        // TODO: catch the right exception.
+        // TODO (sorge) catch the right exception.
         this.logger.logging("Registering calls for " + id);
         IAtomContainer newcontainer = checkedClone(container);
         if (newcontainer != null) {
             this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC, newcontainer));
             this.executor.register(new CactusCallable(id, Cactus.Type.NAME, newcontainer));
             this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, newcontainer));
+        }
+    }
+
+    
+    /** Computes the major path in the molecule. */
+    private void getMajorPath() {
+        List<RichAtomSet> majorSystems = getMajorSystems();
+        // TODO (sorge) Maybe refactor this out of path computation.
+        completeSingletonAtoms(majorSystems);
+        List<String> msNames = majorSystems.stream()
+            .map(RichAtomSet::getId)
+            .collect(Collectors.toList());
+        msNames.addAll(this.singletonAtoms.stream()
+                       .map(IAtom::getID)
+                       .collect(Collectors.toList()));
+        msNames.stream().forEach(ms -> this.structure.addVertex(ms));
+
+        for (String ms : msNames) {
+            SreElement connections = this.annotations.retrieveAnnotation(ms, SreNamespace.Tag.CONNECTIONS);
+            if (connections != null) {
+                addSingleEdges(ms, connections, msNames);
+            }
+        }
+        System.out.println(this.structure.toString());
+        
+        MinimumSpanningTree tree = new KruskalMinimumSpanningTree(this.structure);
+        System.out.println(tree.toString());
+        this.structure.visualize();
+        //        System.out.println(this.structure.degreeOf());
+        // System.out.println(this.annotations.toString());
+    };
+
+
+    private void addSingleEdges(String source, SreElement connections, List<String> systems) {
+        Elements children = connections.getChildElements();
+        for (int i = 0; i < children.size(); i++) {
+            Elements grandkids = children.get(i).getChildElements();
+            String target = grandkids.get(1).getValue();
+            if (systems.contains(target)) {
+                this.structure.addEdge(source, target,
+                                       (SreElement)grandkids.get(0));
+            }
+        }
+    }
+    
+    
+    private List<RichAtomSet> getMajorSystems() {
+        return this.atomSets.stream()
+            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
+            .collect(Collectors.toList());
+    }
+
+
+    private void completeSingletonAtoms(List<RichAtomSet> majorSystems) {
+        Set<IAtom> majorAtoms = new HashSet<IAtom>();
+        majorSystems.stream().
+            forEach(ms -> majorAtoms.
+                    addAll(Lists.newArrayList(ms.container.atoms())));
+        for (IAtom atom : this.molecule.atoms()) {
+            if (!majorAtoms.contains(atom) && !this.singletonAtoms.contains(atom)) {
+                addConnection(atom);
+                addSingletonAtom(atom);
+            }
         }
     }
 
