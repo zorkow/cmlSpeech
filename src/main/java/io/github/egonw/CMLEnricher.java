@@ -80,9 +80,10 @@ public class CMLEnricher {
     private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
     private SreAnnotations annotations;
+    private List<RichAtomSet> majorSystems;
+    private List<RichAtomSet> minorSystems;
     private Set<IAtom> singletonAtoms = new HashSet<IAtom>();
     private StructuralGraph structure = new StructuralGraph();
-
 
     /** 
      * Constructor
@@ -123,7 +124,7 @@ public class CMLEnricher {
             this.annotations = new SreAnnotations(this.molecule);
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
-            getMajorPath();
+            getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
             this.doc.getRootElement().appendChild(this.annotations);
@@ -138,6 +139,9 @@ public class CMLEnricher {
             e.printStackTrace();
             return;
         }
+        if (this.cli.cl.hasOption("vis")) {
+            this.structure.visualize(this.majorSystems, this.singletonAtoms);
+        } 
     }
 
 
@@ -661,11 +665,13 @@ public class CMLEnricher {
 
     
     /** Computes the major path in the molecule. */
-    private void getMajorPath() {
-        List<RichAtomSet> majorSystems = getMajorSystems();
+    private void getAbstractionGraph() {
         // TODO (sorge) Maybe refactor this out of path computation.
-        completeSingletonAtoms(majorSystems);
-        List<String> msNames = majorSystems.stream()
+        // TODO (sorge) refactor to have major/minor systems and singletons held
+        // globally.
+        this.majorSystems = getMajorSystems();
+        completeSingletonAtoms(this.majorSystems);
+        List<String> msNames = this.majorSystems.stream()
             .map(RichAtomSet::getId)
             .collect(Collectors.toList());
         msNames.addAll(this.singletonAtoms.stream()
@@ -679,15 +685,6 @@ public class CMLEnricher {
                 addSingleEdges(ms, connections, msNames);
             }
         }
-        System.out.println(this.structure.toString());
-        
-        MinimumSpanningTree tree = new KruskalMinimumSpanningTree(this.structure);
-        System.out.println(tree.toString());
-        // TODO (sorge) refactor to have major/minor systems and singletons held
-        // globally.
-        this.structure.visualize(majorSystems, this.singletonAtoms);
-        //        System.out.println(this.structure.degreeOf());
-        // System.out.println(this.annotations.toString());
     };
 
 

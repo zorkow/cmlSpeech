@@ -38,14 +38,17 @@ public class Cli {
 	// Processing Options
         options.addOption("s", "subrings", false, "Compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
+        options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
 
         CommandLineParser parser = new BasicParser();
         try {
             this.cl = parser.parse(options, args);
         }
         catch (ParseException e) {
-            usage(options);
-            System.exit(1);
+            usage(options, 1);
+        }
+        if (this.cl.hasOption("help")) {
+            usage(options, 0);
         }
 
 	for (int i = 0; i < this.cl.getArgList().size(); i++) {
@@ -60,10 +63,11 @@ public class Cli {
 
     }
 
-    private static void usage(Options options) {
+    private static void usage(Options options, int exitValue) {
 
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("enrich.sh", options);
+        System.exit(exitValue);
     }
 
     private static void warning(String fileName) {

@@ -13,7 +13,6 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 
 import org.jgraph.JGraph;
@@ -42,8 +41,8 @@ import javax.vecmath.Point2d;
  * @since Aug 3, 2003
  */
 public class StructuralGraphVisualizer {
-    private static final Color     DEFAULT_BG_COLOR = Color.decode( "#FAFBFF" );
-    private static final Dimension DEFAULT_SIZE = new Dimension( 530, 320 );
+    private static final Color DEFAULT_BG_COLOR = Color.decode("#B6D1C2");
+    private static final Dimension DEFAULT_SIZE = new Dimension(750, 750);
 
     private static final int scale = 150;
     private static final int offset = 10;
@@ -81,29 +80,30 @@ public class StructuralGraphVisualizer {
      * @see java.applet.Applet#init().
      */
     public void init(SimpleGraph sg, List<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
-        ListenableGraph g = new ListenableUndirectedGraph( sg );
+        ListenableGraph g = new ListenableUndirectedGraph(sg);
 
-        m_jgAdapter = new JGraphModelAdapter( g );
+        m_jgAdapter = new JGraphModelAdapter(g);
 
-        JGraph jgraph = new JGraph( m_jgAdapter );
+        JGraph jgraph = new JGraph(m_jgAdapter);
+        jgraph.setBackground(DEFAULT_BG_COLOR);
 
         JScrollPane scroller = new JScrollPane(jgraph);
-        JFrame frame = new JFrame("The Body");
-        frame.setSize(600,600);
+        JFrame frame = new JFrame("Molecule Abstraction");
+        frame.setSize(DEFAULT_SIZE);
         frame.add(scroller);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         List<NamedPoint> points = new ArrayList();
         points.addAll(computeCentroids(majorSystems));
         points.addAll(computeAtoms(singletonAtoms));
         positionPoints(points);
 
-        
         jgraph.getGraphLayoutCache().reload();
         jgraph.repaint();
-
     }
+
 
     private void positionPoints(List<NamedPoint> points) {
         points.stream()
@@ -121,7 +121,6 @@ public class StructuralGraphVisualizer {
             int n = 0;
             for (IAtom atom : system.container.atoms()) {
                 Point2d x2d = atom.getPoint2d();
-                System.out.printf("%s %f %f\n", x2d, x2d.x, x2d.y);
                 x += (x2d.x * scale);
                 y += (x2d.y * scale);
                 n++;
@@ -137,10 +136,8 @@ public class StructuralGraphVisualizer {
 
     private List<NamedPoint> computeAtoms(Set<IAtom> atoms) {
         List<NamedPoint> points = new ArrayList();
-        System.out.println("Atoms");
         for (IAtom atom : atoms) {
             Point2d x2d = atom.getPoint2d();
-            System.out.printf("%s %f %f\n", x2d, x2d.x, x2d.y);
             NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
             this.minX = Math.min(this.minX, point.getX());
             this.minY = Math.min(this.minY, point.getY());
@@ -149,38 +146,16 @@ public class StructuralGraphVisualizer {
         return points;
     }
     
-    // private void adjustDisplaySettings( JGraph jg ) {
-    //     jg.setPreferredSize( DEFAULT_SIZE );
 
-    //     Color  c        = DEFAULT_BG_COLOR;
-    //     String colorStr = null;
+    private void positionVertexAt(Object vertex, int x, int y) {
+        DefaultGraphCell cell = m_jgAdapter.getVertexCell(vertex);
+        Map attr = cell.getAttributes();
+        Rectangle2D b = GraphConstants.getBounds(attr);
 
-    //     try {
-    //         colorStr = getParameter( "bgcolor" );
-    //     }
-    //      catch( Exception e ) {}
+        GraphConstants.setBounds(attr, new Rectangle(x, y, (int)b.getWidth(), (int)b.getHeight()));
 
-    //     if( colorStr != null ) {
-    //         c = Color.decode( colorStr );
-    //     }
-
-    //     jg.setBackground( c );
-
-    //     // positionVertexAt( "v2", 60, 200 );
-    //     // positionVertexAt( "v3", 310, 230 );
-    //     // positionVertexAt( "v4", 380, 70 );
-    // }
-
-
-    private void positionVertexAt( Object vertex, int x, int y ) {
-        DefaultGraphCell cell = m_jgAdapter.getVertexCell( vertex );
-        Map              attr = cell.getAttributes(  );
-        Rectangle2D      b    = GraphConstants.getBounds( attr );
-
-        GraphConstants.setBounds( attr, new Rectangle( x, y, (int)b.getWidth(), (int)b.getHeight() ) );
-
-        Map cellAttr = new HashMap(  );
-        cellAttr.put( cell, attr );
-        m_jgAdapter.edit( cellAttr, null, null, null );
+        Map cellAttr = new HashMap();
+        cellAttr.put(cell, attr);
+        m_jgAdapter.edit(cellAttr, null, null, null);
     }
 }
