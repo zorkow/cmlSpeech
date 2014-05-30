@@ -54,19 +54,34 @@ public class SreNamespace {
         ATOM ("atom"),
         ATOMSET ("atomSet"),
 
-        DESCRIPTIONS ("descriptions"),
-        DESCRIPTION ("description"),
 
         CONNECTIONS ("connections"),
         SHAREDBOND ("sharedBond"),
         SHAREDATOM ("sharedAtom"),
-        CONNECTION ("connection")
+        CONNECTION ("connection"),
+
+        DESCRIPTIONS ("descriptions"),
+        DESC ("desc"),
+        SUBDESC ("subdesc"),
         ;
 
         public final String tag;
         
         private Tag (String tag) {
             this.tag = "sre:" + tag;
+        }
+
+    }
+
+    public enum Attribute {
+        LEVEL ("level"),
+        ELEMENTS ("elements"),
+        ;
+
+        public final String attribute;
+
+        private Attribute (String attribute) {
+            this.attribute = attribute;
         }
 
     }

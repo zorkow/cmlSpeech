@@ -7,6 +7,7 @@ import nu.xom.Attribute;
 import nu.xom.Nodes;
 import nu.xom.Document;
 import nu.xom.Node;
+import nu.xom.XPathContext;
 import org.openscience.cdk.interfaces.IChemObject;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
@@ -93,5 +94,10 @@ public class SreUtil {
         return element;
     }
 
+    public static Nodes xpathQuery(Element element, String query) {
+        XPathContext xc = new XPathContext();
+        xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
+        return element.query(query, xc);
+    }
 
 }

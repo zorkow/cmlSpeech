@@ -7,7 +7,6 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import org.xmlcml.cml.element.CMLAtomSet;
 import nu.xom.Nodes;
-import nu.xom.XPathContext;
 import java.util.TreeMap;
 import java.util.SortedMap;
 import java.util.Comparator;
@@ -81,7 +80,7 @@ public class SreAnnotations extends SreElement {
     }
 
     public void appendAnnotation(Element annotate, SreNamespace.Tag tag, Element entry) {
-        Nodes nodes = xpathQuery(annotate, "//" + tag.tag);
+        Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.tag);
         Element node = null;
         if (nodes.size() == 0) {
             node = new SreElement(tag);
@@ -112,13 +111,6 @@ public class SreAnnotations extends SreElement {
     }
 
 
-    private static Nodes xpathQuery(Element element, String query) {
-        XPathContext xc = new XPathContext();
-        xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
-        return element.query(query, xc);
-    }
-
-
     private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
         Element element = this.annotationNodes.get(id);
         if (element != null) {
@@ -137,7 +129,7 @@ public class SreAnnotations extends SreElement {
         if (element == null) {
             return null;
         }
-        return (SreElement)xpathQuery(element, "//" + tag.tag).get(0);
+        return (SreElement)SreUtil.xpathQuery(element, "//" + tag.tag).get(0);
     }
 
 

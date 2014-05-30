@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 import java.util.HashSet;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.alg.interfaces.MinimumSpanningTree;
+import nu.xom.XPathContext;
 
 
 public class CMLEnricher {
@@ -80,6 +81,7 @@ public class CMLEnricher {
     private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
     private SreAnnotations annotations;
+    private SreDescription description = new SreDescription();
     private List<RichAtomSet> majorSystems;
     private List<RichAtomSet> minorSystems;
     private Set<IAtom> singletonAtoms = new HashSet<IAtom>();
@@ -130,8 +132,10 @@ public class CMLEnricher {
             this.doc.getRootElement().appendChild(this.annotations);
             executor.execute();
             executor.addResults(this.doc, this.logger);
-            writeFile(fileName);
             executor.shutdown();
+            generateDescription();
+            this.doc.getRootElement().appendChild(this.description);
+            writeFile(fileName);
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName +
@@ -721,4 +725,14 @@ public class CMLEnricher {
         }
     }
 
+    private void generateDescription() {
+        Nodes names = SreUtil.xpathQuery(this.doc.getRootElement(), "//@sre:name");
+        Nodes components = this.doc.getRootElement().query("//*[local-name()='atom' and name()!='sre:atom'] | //*[local-name()='bond' and name()!='sre:bond']");
+        List<String> ids = new ArrayList();
+        for (int i = 0; i < components.size(); i++) {
+            ids.add(((Element)components.get(i)).getAttribute("id").getValue());
+        }
+        this.description.addDescription(1, names.get(0).getValue(), ids);
+        this.description.finalize();
+    }
 }
