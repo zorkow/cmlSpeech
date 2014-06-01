@@ -69,6 +69,11 @@ import java.util.HashSet;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.alg.interfaces.MinimumSpanningTree;
 import nu.xom.XPathContext;
+import java.util.Arrays;
+import java.util.regex.PatternSyntaxException;
+import java.util.Map;
+import java.util.TreeMap;
+import com.google.common.base.Joiner;
 
 
 public class CMLEnricher {
@@ -185,6 +190,8 @@ public class CMLEnricher {
         String cmlcode = outStr.toString();
 
         Builder builder = new CMLBuilder(); 
+        // this.doc.getRootElement().addNamespaceDeclaration
+        //     ("cml", "http://www.xml-cml.org/schema");
         this.doc = builder.build(cmlcode, "");
         this.logger.logging(this.doc.toXML());
     }
@@ -456,6 +463,7 @@ public class CMLEnricher {
             addConnection(atomSet, bond);
         }
         computeSharedConnections(atomSet);
+        atomSet.computePositions();
     }
 
 
@@ -468,14 +476,19 @@ public class CMLEnricher {
 
     private void addConnection(RichAtomSet atomSet, IBond bond) {
         // For now we assume that the bond has exactly two atoms.
-        IAtom atom = bond.getAtom(0);
-        if (atomSet.container.contains(atom)) {
-            atom = bond.getAtom(1);
+        IAtom internalAtom = bond.getAtom(0);
+        IAtom externalAtom;
+        if (atomSet.container.contains(internalAtom)) {
+            externalAtom = bond.getAtom(1);
+        } else {
+            externalAtom = internalAtom;
+            internalAtom = bond.getAtom(1);
         }
         boolean simple = true;
         for (RichAtomSet otherSet : this.atomSets) {
-            if (otherSet.container.contains(atom)) {
+            if (otherSet.container.contains(externalAtom)) {
                 simple = false;
+                atomSet.addConnection(internalAtom, otherSet, bond);
                 this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
                                                   new SreElement(SreNamespace.Tag.CONNECTION,
                                                                  new SreElement(bond),
@@ -486,9 +499,10 @@ public class CMLEnricher {
             this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
                                               new SreElement(SreNamespace.Tag.CONNECTION,
                                                              new SreElement(bond),
-                                                             new SreElement(atom)));
-            addSingletonAtom(atom);
-            this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
+                                                             new SreElement(externalAtom)));
+            atomSet.addConnection(internalAtom, externalAtom, bond);
+            addSingletonAtom(externalAtom);
+            this.annotations.appendAnnotation(externalAtom, SreNamespace.Tag.CONNECTIONS,
                                               new SreElement(SreNamespace.Tag.CONNECTION,
                                                              new SreElement(bond),
                                                              new SreElement(atomSet)));
@@ -725,14 +739,161 @@ public class CMLEnricher {
         }
     }
 
+
+    // TODO (sorge): This needs serious refactoring! Generating descriptions could be 
+    // done easier when keeping some of the information in more dedicated data structures!
+    
     private void generateDescription() {
-        Nodes names = SreUtil.xpathQuery(this.doc.getRootElement(), "//@sre:name");
-        Nodes components = this.doc.getRootElement().query("//*[local-name()='atom' and name()!='sre:atom'] | //*[local-name()='bond' and name()!='sre:bond']");
-        List<String> ids = new ArrayList();
-        for (int i = 0; i < components.size(); i++) {
-            ids.add(((Element)components.get(i)).getAttribute("id").getValue());
-        }
-        this.description.addDescription(1, names.get(0).getValue(), ids);
+        // Currently using fixed levels!
+        descriptionTopLevel();
+        //descriptionMajorLevel();
+        //        this.description.addDescription(2, "Aliphatic Chain", descriptionAtomSetElements("as1"));
+        descriptionMajorLevel();
         this.description.finalize();
     }
+
+
+    private void descriptionMajorLevel() {
+        this.majorSystems.stream().forEach(this::descriptionMajorSystem);
+    }
+
+    private void descriptionMajorSystem(RichAtomSet system) {
+        // This is what we need.
+        Element systemElement;
+        Element systemAnnotation;
+        List<Element> atoms = new ArrayList<Element>();
+        List<String> atomNames = new ArrayList<String>();
+        List<Element> bonds = new ArrayList<Element>();
+        List<String> bondNames = new ArrayList<String>();
+        List<Element> connections = new ArrayList<Element>(); 
+        
+        // Filling things in.
+        String id = system.getId();
+        systemElement = (Element)SreUtil.xpathQueryElement
+            (this.doc.getRootElement(), 
+             "//cml:atomSet[@id='" + id + "']");
+        System.out.println(1);
+        systemAnnotation = (Element)SreUtil.xpathQueryElement
+            (this.annotations, 
+             "//sre:annotation[sre:atomSet='" + id + "']");
+        System.out.println(2);
+        atomNames = this.splitAttribute(systemElement.getValue());
+        System.out.println(3);
+        bondNames = SreUtil.xpathValueList(systemAnnotation,
+                                           "//sre:internalBonds/sre:bond");
+        System.out.println(4);
+        for (String atomName : atomNames) {
+            atoms.add((Element)SreUtil.xpathQueryElement
+                      (this.doc.getRootElement(), 
+                       "//cml:atom[@id='" + atomName + "']"));
+        }
+        System.out.println(5);
+        for (String bondName : bondNames) {
+            bonds.add((Element)SreUtil.xpathQueryElement
+                      (this.doc.getRootElement(), 
+                       "//cml:bond[@id='" + bondName + "']"));
+        }
+        System.out.println(6);
+        Nodes aux = SreUtil.xpathQuery(systemAnnotation, ".//sre:connection");
+        for (int i = 0; i < aux.size(); i++) {
+            connections.add((Element)aux.get(i));
+        } 
+        // System.out.println(systemElement.toXML());
+        System.out.println(systemAnnotation.toXML());
+        // atomNames.stream().forEach(System.out::println);
+        // bondNames.stream().forEach(System.out::println);
+        // bonds.stream().forEach(x -> System.out.println(x.toXML()));
+        // atoms.stream().forEach(x -> System.out.println(x.toXML()));
+        connections.stream().forEach(x -> System.out.println(x.toXML()));
+
+        switch (system.type) {
+        case ALIPHATIC:
+            descriptionAliphaticChain
+                (system, systemElement, systemAnnotation, atoms, atomNames, bonds, bondNames, connections);
+            // descriptionAliphaticChain(system, (Element)systemElement.get(0));
+            break;
+        }
+    }
+
+    private void descriptionAliphaticChain(RichAtomSet system,
+                                           Element systemElement,
+                                           Element systemAnnotation,
+                                           List<Element> atoms,
+                                           List<String> atomNames,
+                                           List<Element> bonds,
+                                           List<String> bondNames,
+                                           List<Element> connections) {
+        String length = SreUtil.xpathValue(systemElement, "@size");
+        String content = describeName(systemElement);
+        String specialBonds = getMultiBonds(system, bonds);
+        List<String> nextSystems = new ArrayList<String>();
+        String substitutions = getSubstitutions(system, bonds, connections, nextSystems);
+        this.description.addDescription(2, "Aliphatic Chain of size " + length, 
+                                        atomNames, bondNames);
+    };
+
+    
+    private String getSubstitutions(RichAtomSet system, List<Element> bonds, 
+                                    List<Element> connections, List<String> nextSystems) {
+        return "";
+    }
+
+
+    private String getMultiBonds(RichAtomSet system, List<Element> bonds) {
+        Map<Integer, String> bounded = new TreeMap<Integer, String>();
+        for (Element bond : bonds) {
+            String order = bond.getAttribute("order").getValue();
+            System.out.println(order);
+            
+            if (order.equals("S")) {
+                continue;
+            }
+            List<String> atoms = splitAttribute(bond.getAttribute("atomRefs2").getValue());
+            Integer atomA = system.getAtomPosition(atoms.get(0));
+            Integer atomB = system.getAtomPosition(atoms.get(1));
+            if (atomA > atomB) {
+                Integer aux = atomA;
+                atomA = atomB;
+                atomB = aux;
+            }
+            bounded.put(atomA, ((order.equals("D")) ? "Double" : "Triple") + 
+                        " bond between position " + atomA + " and " + atomB + ".");
+        }
+        Joiner joiner = Joiner.on(" ");
+        return joiner.join(bounded.values());
+    }
+
+
+    private List<String> descriptionAtomSetElements(String id) {
+        String atoms = SreUtil.xpathValue(this.doc.getRootElement(),
+                                          "//cml:atomSet[@id='" + id + "']");
+        List<String> bonds = SreUtil.xpathValueList(this.annotations,
+                                                    "//sre:annotation/sre:atomSet[text()='" + id + 
+                                                    "']/following-sibling::sre:internalBonds/sre:bond"
+                                                    );
+        bonds.add(0, atoms);
+        bonds.stream().forEach(System.out::println);
+        return bonds;
+    };
+
+    private void descriptionTopLevel() {
+        String content = describeName(this.doc.getRootElement());
+        List<String> elements = SreUtil.xpathValueList(this.doc.getRootElement(), 
+                                                         "//cml:atom/@id | //cml:bond/@id");
+        this.description.addDescription(3, content, elements);
+    }
+
+    private String describeName(Element element) {
+        return SreUtil.xpathValue(element, "//@sre:name | //@sre:iupac | //@sre:formula");
+    }
+
+
+    private List<String> splitAttribute(String attribute) {
+        try {
+            return Arrays.asList(attribute.split("\\s+"));
+        } catch (PatternSyntaxException ex) {
+            return new ArrayList<String>();
+        }
+    }
 }
+
