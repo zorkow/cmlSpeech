@@ -209,7 +209,7 @@ public class RichAtomSet extends CMLAtomSet {
     }
 
 
-    private void printConnections () {
+    public void printConnections () {
         for (Integer key : this.elementPositions.keySet()) {
             System.out.printf("%d: %s\n", key, this.elementPositions.get(key));
         }

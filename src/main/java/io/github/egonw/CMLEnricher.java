@@ -775,12 +775,12 @@ public class CMLEnricher {
         System.out.println(1);
         systemAnnotation = (Element)SreUtil.xpathQueryElement
             (this.annotations, 
-             "//sre:annotation[sre:atomSet='" + id + "']");
+             ".//sre:annotation[sre:atomSet='" + id + "']");
         System.out.println(2);
         atomNames = this.splitAttribute(systemElement.getValue());
         System.out.println(3);
         bondNames = SreUtil.xpathValueList(systemAnnotation,
-                                           "//sre:internalBonds/sre:bond");
+                                           ".//sre:internalBonds/sre:bond");
         System.out.println(4);
         for (String atomName : atomNames) {
             atoms.add((Element)SreUtil.xpathQueryElement
@@ -801,7 +801,7 @@ public class CMLEnricher {
         // System.out.println(systemElement.toXML());
         System.out.println(systemAnnotation.toXML());
         // atomNames.stream().forEach(System.out::println);
-        // bondNames.stream().forEach(System.out::println);
+        bondNames.stream().forEach(System.out::println);
         // bonds.stream().forEach(x -> System.out.println(x.toXML()));
         // atoms.stream().forEach(x -> System.out.println(x.toXML()));
         connections.stream().forEach(x -> System.out.println(x.toXML()));
@@ -840,6 +840,7 @@ public class CMLEnricher {
 
 
     private String getMultiBonds(RichAtomSet system, List<Element> bonds) {
+        system.printConnections();
         Map<Integer, String> bounded = new TreeMap<Integer, String>();
         for (Element bond : bonds) {
             String order = bond.getAttribute("order").getValue();
@@ -849,8 +850,11 @@ public class CMLEnricher {
                 continue;
             }
             List<String> atoms = splitAttribute(bond.getAttribute("atomRefs2").getValue());
+            System.out.println(atoms.get(0));
+            System.out.println(atoms.get(1));
             Integer atomA = system.getAtomPosition(atoms.get(0));
             Integer atomB = system.getAtomPosition(atoms.get(1));
+            System.out.println("here" + atomA + atomB);
             if (atomA > atomB) {
                 Integer aux = atomA;
                 atomA = atomB;
