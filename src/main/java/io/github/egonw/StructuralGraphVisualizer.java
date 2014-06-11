@@ -119,7 +119,7 @@ public class StructuralGraphVisualizer {
             double x = 0;
             double y = 0;
             int n = 0;
-            for (IAtom atom : system.container.atoms()) {
+            for (IAtom atom : system.getStructure().atoms()) {
                 Point2d x2d = atom.getPoint2d();
                 x += (x2d.x * scale);
                 y += (x2d.y * scale);

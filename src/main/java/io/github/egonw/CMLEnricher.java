@@ -226,7 +226,7 @@ public class CMLEnricher {
         List<IAtomContainer> chains = getAliphaticChain();
         for (IAtomContainer chain : chains) {
             this.logger.logging(chain);
-            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC);
+            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC, getAtomSetId());
             appendAtomSet("Aliphatic chain", set);
         }
     }
@@ -257,7 +257,6 @@ public class CMLEnricher {
      * @return The value of the aliphatic chain.
      */
     private List<IAtomContainer> getAliphaticChain() {
-        //IAtomContainer container = checkedClone(this.molecule);
         IAtomContainer container = this.molecule;
         if (container == null) { return null; }
         AliphaticChain chain = new AliphaticChain();
@@ -278,7 +277,7 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.ISOLATED);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.ISOLATED, getAtomSetId());
             appendAtomSet("Isolated ring", set);
         }
     }
@@ -292,7 +291,7 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
             appendAtomSet("Fused Ring", set);
         }
     }
@@ -308,11 +307,11 @@ public class CMLEnricher {
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED);
+            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
             String ringId = appendAtomSet("Fused ring", set);
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
             for (IAtomContainer subRing : subRings) {
-                RichAtomSet subSet = new RichAtomSet(subRing, RichAtomSet.Type.SMALLEST);
+                RichAtomSet subSet = new RichAtomSet(subRing, RichAtomSet.Type.SMALLEST, getAtomSetId());
                 set.addSub(appendAtomSet("Subring", subSet, ringId));
                 subSet.addSup(ringId);
             }
@@ -406,13 +405,11 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, RichAtomSet set) {
-        String id = getAtomSetId();
-        set.setTitle(title);
-        set.setId(id);
+    private String appendAtomSet(String title, RichAtomSet richSet) {
+        CMLAtomSet set = richSet.getCML();
         this.logger.logging(title + " has atoms:");
         // TODO (sorge) Refactor that eventually together with appendAtomSet.
-        for (IAtom atom : set.container.atoms()) {
+        for (IAtom atom : richSet.getStructure().atoms()) {
             String atomId = atom.getID();
             Element node = SreUtil.getElementById(this.doc, atomId);
             this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
@@ -420,35 +417,35 @@ public class CMLEnricher {
             this.logger.logging(" " + atomId);
         }
         this.logger.logging("\n");
-        for (IBond bond : set.container.bonds()) {
+        for (IBond bond : richSet.getStructure().bonds()) {
             String bondId = bond.getID();
             Element node = SreUtil.getElementById(this.doc, bondId);
             this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
             this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
         }
-        this.atomSets.add(set);
+        this.atomSets.add(richSet);
         this.doc.getRootElement().appendChild(set);
-        nameMolecule(set.getId(), set.container);
-        return(id);
+        nameMolecule(richSet.getId(), richSet.getStructure());
+        return(richSet.getId());
     }
 
 
     private void finalizeAtomSet(RichAtomSet atomSet) {
-        IAtomContainer container = atomSet.container;
+        IAtomContainer container = atomSet.getStructure();
         Set<IBond> externalBonds = externalBonds(container);
         for (IBond bond : externalBonds) {
             String bondId = bond.getID();
-            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
+            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
         Set<IAtom> connectingAtoms = connectingAtoms(container, externalBonds);
         for (IAtom atom : connectingAtoms) {
             String atomId = atom.getID();
-            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
+            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
         }
         Set<IBond> connectingBonds = connectingBonds(container, externalBonds);
         for (IBond bond : connectingBonds) {
             String bondId = bond.getID();
-            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
+            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
             addConnection(atomSet, bond);
         }
         computeSharedConnections(atomSet);
@@ -465,21 +462,21 @@ public class CMLEnricher {
     private void addConnection(RichAtomSet atomSet, IBond bond) {
         // For now we assume that the bond has exactly two atoms.
         IAtom atom = bond.getAtom(0);
-        if (atomSet.container.contains(atom)) {
+        if (atomSet.getStructure().contains(atom)) {
             atom = bond.getAtom(1);
         }
         boolean simple = true;
         for (RichAtomSet otherSet : this.atomSets) {
-            if (otherSet.container.contains(atom)) {
+            if (otherSet.getStructure().contains(atom)) {
                 simple = false;
-                this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                                   new SreElement(SreNamespace.Tag.CONNECTION,
                                                                  new SreElement(bond),
-                                                                 new SreElement(otherSet)));
+                                                                 new SreElement(otherSet.getCML())));
             }
         }
         if (simple) {
-            this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                               new SreElement(SreNamespace.Tag.CONNECTION,
                                                              new SreElement(bond),
                                                              new SreElement(atom)));
@@ -487,7 +484,7 @@ public class CMLEnricher {
             this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
                                               new SreElement(SreNamespace.Tag.CONNECTION,
                                                              new SreElement(bond),
-                                                             new SreElement(atomSet)));
+                                                             new SreElement(atomSet.getCML())));
         }
     }
 
@@ -515,20 +512,20 @@ public class CMLEnricher {
         Set<RichAtomSet> siblingSets = siblings.stream()
             .map(as -> RichAtomSet.retrieveAtomSet(this.atomSets, as))
             .collect(Collectors.toSet());
-        for (IBond bond : atomSet.container.bonds()) {
+        for (IBond bond : atomSet.getStructure().bonds()) {
             for (RichAtomSet sibling : siblingSets) {
-                if (sibling.container.contains(bond)) {
-                    this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                if (sibling.getStructure().contains(bond)) {
+                    this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                                       new SreElement(SreNamespace.Tag.SHAREDBOND,
                                                                      new SreElement(bond),
-                                                                     new SreElement(sibling)));
+                                                                     new SreElement(sibling.getCML())));
                 }
             }
         };
     }
     
     private void sharedAtoms(RichAtomSet atomSet) {
-        for (IAtom atom : atomSet.container.atoms()) {
+        for (IAtom atom : atomSet.getStructure().atoms()) {
             for (RichAtomSet otherSet : this.atomSets) {
                 // Cases: No shared Atom if sub or super
                 if (atomSet.isSub(otherSet) ||
@@ -536,11 +533,11 @@ public class CMLEnricher {
                     otherSet.getId() == atomSet.getId()) {
                     continue;
                 }
-                if (otherSet.container.contains(atom)) {
-                    this.annotations.appendAnnotation(atomSet, SreNamespace.Tag.CONNECTIONS, 
+                if (otherSet.getStructure().contains(atom)) {
+                    this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                                       new SreElement(SreNamespace.Tag.SHAREDATOM,
                                                                      new SreElement(atom),
-                                                                     new SreElement(otherSet)));
+                                                                     new SreElement(otherSet.getCML())));
                 }
             }
         };
@@ -577,7 +574,7 @@ public class CMLEnricher {
      */
     private Boolean isConnecting(IAtomContainer atoms, IBond bond) {
         return this.atomSets.stream().
-            allMatch(ring -> !(ring.container.contains(bond)));
+            allMatch(ring -> !(ring.getStructure().contains(bond)));
     }
 
 
@@ -712,7 +709,7 @@ public class CMLEnricher {
         Set<IAtom> majorAtoms = new HashSet<IAtom>();
         majorSystems.stream().
             forEach(ms -> majorAtoms.
-                    addAll(Lists.newArrayList(ms.container.atoms())));
+                    addAll(Lists.newArrayList(ms.getStructure().atoms())));
         for (IAtom atom : this.molecule.atoms()) {
             if (!majorAtoms.contains(atom) && !this.singletonAtoms.contains(atom)) {
                 addConnection(atom);

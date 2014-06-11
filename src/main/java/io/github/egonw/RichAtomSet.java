@@ -13,33 +13,45 @@ import java.util.List;
  *
  */
 
-public class RichAtomSet extends CMLAtomSet {
+public class RichAtomSet extends RichChemObject {
     
     public enum Type {
-        ALIPHATIC,
-        FUSED,
-        ISOLATED,
-        SMALLEST;
+        ALIPHATIC ("Aliphatic chain"),
+        FUSED ("Fused ring"),
+        ISOLATED ("Isolated ring"),
+        SMALLEST ("Subring");
 
-        private Type () {
+        protected final String name;
+
+        private Type (String name) {
+            this.name = name;
         }
     }
 
-    public IAtomContainer container;
     public Type type;
+    public CMLAtomSet cml;
+
     public Set<String> sup = new HashSet<String>();
     public Set<String> sub = new HashSet<String>();
  
-    public RichAtomSet (IAtomContainer container) {
-        super();
-        this.container = container;
+    private RichAtomSet (IAtomContainer container) {
+        super(container);
     }
 
-    public RichAtomSet (IAtomContainer container, Type type) {
-        super();
-        this.container = container;
+    private RichAtomSet (IAtomContainer container, Type type) {
+        super(container);
         this.type = type;
     }
+
+    public RichAtomSet (IAtomContainer container, Type type, String id) {
+        super(container);
+        this.getStructure().setID(id);
+        this.type = type;
+        this.cml = new CMLAtomSet();
+        this.cml.setTitle(this.type.name);
+        this.cml.setId(this.getId());
+    }
+
 
     public void addSub(String sub) {
         this.sub.add(sub);
@@ -100,4 +112,15 @@ public class RichAtomSet extends CMLAtomSet {
             .findFirst()
             .get();
     }
+
+    @Override
+    public IAtomContainer getStructure() {
+        return (IAtomContainer)this.structure;
+    }
+
+    
+    public CMLAtomSet getCML() {
+        return cml;
+    }
+
 }

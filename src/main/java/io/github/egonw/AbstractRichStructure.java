@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     
-    protected S structure;
+    protected final S structure;
 
     AbstractRichStructure(S structure) {
         this.structure = structure;
