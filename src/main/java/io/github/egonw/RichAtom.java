@@ -23,4 +23,9 @@ public class RichAtom extends RichChemObject {
         super(structure);
     };
 
+    @Override
+    public IAtom getStructure() {
+        return (IAtom)this.structure;
+    }
+
 }

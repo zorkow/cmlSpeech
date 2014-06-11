@@ -8,6 +8,8 @@ import org.openscience.cdk.AtomContainer;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IBond;
 
 /**
  *
@@ -50,6 +52,13 @@ public class RichAtomSet extends RichChemObject {
         this.cml = new CMLAtomSet();
         this.cml.setTitle(this.type.name);
         this.cml.setId(this.getId());
+
+        for (IAtom atom : this.getStructure().atoms()) {
+            this.getComponents().add(atom.getID());
+        }
+        for (IBond bond : this.getStructure().bonds()) {
+            this.getComponents().add(bond.getID());
+        }
     }
 
 
@@ -71,7 +80,9 @@ public class RichAtomSet extends RichChemObject {
 
 
     public boolean isSub(String atomSet) {
-        return this.sub.stream().anyMatch(as -> as == atomSet);
+        //System.out.println(this.getComponents() + " " + atomSet);
+        
+        return this.getComponents().contains(atomSet);
     };
 
     public boolean isSub(RichAtomSet atomSet) {
@@ -80,7 +91,7 @@ public class RichAtomSet extends RichChemObject {
 
 
     public boolean isSup(String atomSet) {
-        return this.sup.stream().anyMatch(as -> as == atomSet);
+        return this.getContexts().contains(atomSet);
     };
 
     public boolean isSup(RichAtomSet atomSet) {

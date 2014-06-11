@@ -122,8 +122,13 @@ public class CMLEnricher {
             buildXOM();
             removeExplicitHydrogens();
             this.annotations = new SreAnnotations(this.molecule);
+
+            StructuralAnalysis analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
+            System.out.println(analysis.toString());
+
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
+            System.out.println("here");
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
@@ -432,20 +437,21 @@ public class CMLEnricher {
 
     private void finalizeAtomSet(RichAtomSet atomSet) {
         IAtomContainer container = atomSet.getStructure();
+        CMLAtomSet cml = atomSet.getCML();
         Set<IBond> externalBonds = externalBonds(container);
         for (IBond bond : externalBonds) {
             String bondId = bond.getID();
-            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
+            this.annotations.appendAnnotation(cml, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
         }
         Set<IAtom> connectingAtoms = connectingAtoms(container, externalBonds);
         for (IAtom atom : connectingAtoms) {
             String atomId = atom.getID();
-            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
+            this.annotations.appendAnnotation(cml, SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
         }
         Set<IBond> connectingBonds = connectingBonds(container, externalBonds);
         for (IBond bond : connectingBonds) {
             String bondId = bond.getID();
-            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
+            this.annotations.appendAnnotation(cml, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
             addConnection(atomSet, bond);
         }
         computeSharedConnections(atomSet);
