@@ -120,7 +120,7 @@ public class CMLEnricher {
         try {
             readFile(fileName);
             buildXOM();
-            removeExplicitHydrogenes();
+            removeExplicitHydrogens();
             this.annotations = new SreAnnotations(this.molecule);
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
@@ -186,7 +186,7 @@ public class CMLEnricher {
     }
 
 
-    private void removeExplicitHydrogenes() {
+    private void removeExplicitHydrogens() {
         this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
     }
 

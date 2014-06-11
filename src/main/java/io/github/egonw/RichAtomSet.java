@@ -29,7 +29,7 @@ public class RichAtomSet extends CMLAtomSet {
     public Type type;
     public Set<String> sup = new HashSet<String>();
     public Set<String> sub = new HashSet<String>();
-
+ 
     public RichAtomSet (IAtomContainer container) {
         super();
         this.container = container;
@@ -45,7 +45,7 @@ public class RichAtomSet extends CMLAtomSet {
         this.sub.add(sub);
     }
 
-    public void addSub(List<String> subs) {
+    public void addSubs(List<String> subs) {
         this.sub.addAll(subs);
     }
 

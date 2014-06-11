@@ -10,7 +10,6 @@ import nu.xom.Nodes;
 import nu.xom.XPathContext;
 import java.util.TreeMap;
 import java.util.SortedMap;
-import java.util.Comparator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 
@@ -20,37 +19,8 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class SreAnnotations extends SreElement {
 
-    public static Comparator<String> CMLNameComparator = 
-        new Comparator<String>() {
-        
-        public int compare(String name1, String name2) {
-            String reg1 = "[0-9]*";
-            String alpha1 = name1.replaceAll(reg1, "");
-            String alpha2 = name2.replaceAll(reg1, "");
-            if (alpha1.equals(alpha2)) {
-                String reg2 = "[a-z]*";
-                Integer numer1 = Integer.parseInt(name1.replaceAll(reg2, ""));
-                Integer numer2 = Integer.parseInt(name2.replaceAll(reg2, ""));
-                if (numer1 == numer2) {
-                    return 0;
-                }
-                if (numer1 < numer2) {
-                    return -1;
-                }
-                return 1;
-                }
-            if (alpha1.equals("as") && alpha2.equals("b")) {
-                return 1;
-            }
-            if (alpha1.equals("b") && alpha2.equals("as")) {
-                return -1;
-            }
-            return alpha1.compareTo(alpha2);
-        }
-    };
-
-
-    private static SortedMap<String, Element> annotationNodes = new TreeMap(CMLNameComparator);
+    private static SortedMap<String, Element> annotationNodes = 
+        new TreeMap(new CMLNameComparator());
 
     SreAnnotations() {
         super(SreNamespace.Tag.ANNOTATIONS);
