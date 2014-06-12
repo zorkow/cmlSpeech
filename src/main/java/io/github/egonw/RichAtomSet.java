@@ -5,11 +5,11 @@ package io.github.egonw;
 import org.xmlcml.cml.element.CMLAtomSet;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.AtomContainer;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  *
@@ -33,8 +33,8 @@ public class RichAtomSet extends RichChemObject {
     public Type type;
     public CMLAtomSet cml;
 
-    private Set<String> sup = new HashSet<String>();
-    private Set<String> sub = new HashSet<String>();
+    private SortedSet<String> sup = new TreeSet<String>(new CMLNameComparator());
+    private SortedSet<String> sub = new TreeSet<String>(new CMLNameComparator());
  
     private RichAtomSet (IAtomContainer container) {
         super(container);
@@ -62,12 +62,12 @@ public class RichAtomSet extends RichChemObject {
     }
 
 
-    public Set<String> getSub() {
+    public SortedSet<String> getSub() {
         return this.sub;
     }
 
 
-    public Set<String> getSup() {
+    public SortedSet<String> getSup() {
         return this.sup;
     }
 
