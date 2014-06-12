@@ -33,8 +33,8 @@ public class RichAtomSet extends RichChemObject {
     public Type type;
     public CMLAtomSet cml;
 
-    public Set<String> sup = new HashSet<String>();
-    public Set<String> sub = new HashSet<String>();
+    private Set<String> sup = new HashSet<String>();
+    private Set<String> sub = new HashSet<String>();
  
     private RichAtomSet (IAtomContainer container) {
         super(container);
@@ -62,6 +62,17 @@ public class RichAtomSet extends RichChemObject {
     }
 
 
+    public Set<String> getSub() {
+        return this.sub;
+    }
+
+
+    public Set<String> getSup() {
+        return this.sup;
+    }
+
+
+    // Refactor some of these functions!
     public void addSub(String sub) {
         this.sub.add(sub);
     }
@@ -80,8 +91,6 @@ public class RichAtomSet extends RichChemObject {
 
 
     public boolean isSub(String atomSet) {
-        //System.out.println(this.getComponents() + " " + atomSet);
-        
         return this.getComponents().contains(atomSet);
     };
 
@@ -98,31 +107,6 @@ public class RichAtomSet extends RichChemObject {
         return this.isSup(atomSet.getId());
     };
 
-
-    public Set<String> siblings(List<RichAtomSet> atomSets) {
-        Set<String> result = new HashSet<String>();
-        if (this.type == RichAtomSet.Type.SMALLEST) {
-            for (String atomSet : this.sup) {
-                result.addAll((retrieveAtomSet(atomSets, atomSet)).sub);
-            }
-        }
-        result.remove(this.getId());
-        return result;
-    }
-
-    
-    /**
-     * Retrieves an enriched atom set by its name.
-     * @param atomSets List of atom sets to search.
-     * @param name Name of atom set to retrieve. 
-     * @return Atomset.
-     */
-    public static RichAtomSet retrieveAtomSet(List<RichAtomSet> atomSets, String name) {
-        return atomSets.stream()
-            .filter(as -> name == as.getId())
-            .findFirst()
-            .get();
-    }
 
     @Override
     public IAtomContainer getStructure() {

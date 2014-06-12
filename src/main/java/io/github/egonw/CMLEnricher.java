@@ -74,6 +74,8 @@ public class CMLEnricher {
     private final Cli cli;
     private final Logger logger;
 
+    private StructuralAnalysis analysis;
+
     private Document doc;
     private IAtomContainer molecule;
     private int atomSetCount;
@@ -123,12 +125,11 @@ public class CMLEnricher {
             removeExplicitHydrogens();
             this.annotations = new SreAnnotations(this.molecule);
 
-            StructuralAnalysis analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
+            this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             System.out.println(analysis.toString());
 
             enrichCML();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
-            System.out.println("here");
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
@@ -231,8 +232,8 @@ public class CMLEnricher {
         List<IAtomContainer> chains = getAliphaticChain();
         for (IAtomContainer chain : chains) {
             this.logger.logging(chain);
-            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC, getAtomSetId());
-            appendAtomSet("Aliphatic chain", set);
+            //            RichAtomSet set = new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC, getAtomSetId());
+            appendAtomSet("Aliphatic chain", getAtomSetId());
         }
     }
 
@@ -282,8 +283,8 @@ public class CMLEnricher {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.ISOLATED, getAtomSetId());
-            appendAtomSet("Isolated ring", set);
+            //RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.ISOLATED, getAtomSetId());
+            appendAtomSet("Isolated ring", getAtomSetId());
         }
     }
 
@@ -296,8 +297,8 @@ public class CMLEnricher {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
-            appendAtomSet("Fused Ring", set);
+            //RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
+            appendAtomSet("Fused Ring", getAtomSetId());
         }
     }
 
@@ -312,13 +313,14 @@ public class CMLEnricher {
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
-            String ringId = appendAtomSet("Fused ring", set);
+            // RichAtomSet set = new RichAtomSet(ring, RichAtomSet.Type.FUSED, getAtomSetId());
+            String ringId = appendAtomSet("Fused ring", getAtomSetId());
             List<IAtomContainer> subRings = subRingMethod.apply(ring);
             for (IAtomContainer subRing : subRings) {
-                RichAtomSet subSet = new RichAtomSet(subRing, RichAtomSet.Type.SMALLEST, getAtomSetId());
-                set.addSub(appendAtomSet("Subring", subSet, ringId));
-                subSet.addSup(ringId);
+                //RichAtomSet subSet = new RichAtomSet(subRing, RichAtomSet.Type.SMALLEST, getAtomSetId());
+                // set.addSub(appendAtomSet("Subring", getAtomSetId(), ringId));
+                appendAtomSet("Subring", getAtomSetId(), ringId);
+                //subSet.addSup(ringId);
             }
         }
     }
@@ -410,7 +412,8 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, RichAtomSet richSet) {
+    private String appendAtomSet(String title, String richSetId) {
+        RichAtomSet richSet = this.analysis.getRichAtomSet(richSetId);
         CMLAtomSet set = richSet.getCML();
         this.logger.logging(title + " has atoms:");
         // TODO (sorge) Refactor that eventually together with appendAtomSet.
@@ -514,12 +517,10 @@ public class CMLEnricher {
     }
 
     private void sharedBonds(RichAtomSet atomSet) {
-        Set<String> siblings = atomSet.siblings(atomSets);
-        Set<RichAtomSet> siblingSets = siblings.stream()
-            .map(as -> RichAtomSet.retrieveAtomSet(this.atomSets, as))
-            .collect(Collectors.toSet());
+        Set<RichAtomSet> siblings = this.analysis.siblings(atomSet);
+        System.out.println(siblings.size());
         for (IBond bond : atomSet.getStructure().bonds()) {
-            for (RichAtomSet sibling : siblingSets) {
+            for (RichAtomSet sibling : siblings) {
                 if (sibling.getStructure().contains(bond)) {
                     this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                                       new SreElement(SreNamespace.Tag.SHAREDBOND,
@@ -593,7 +594,7 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, RichAtomSet set, String superSystem) {
+    private String appendAtomSet(String title, String set, String superSystem) {
         String id = appendAtomSet(title, set);
         Element sup = SreUtil.getElementById(this.doc, superSystem);
         Element sub = SreUtil.getElementById(this.doc, id);

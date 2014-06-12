@@ -27,6 +27,8 @@ import org.openscience.cdk.interfaces.IRingSet;
 import java.util.ArrayList;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.ringsearch.SSSRFinder;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  *
@@ -52,6 +54,15 @@ public class StructuralAnalysis {
         ringSearch();
         aliphaticChains();
         // TODO(sorge): functionalGroups();
+    }
+
+    public RichStructure getRichStructure(String id) {
+        return this.richStructures.get(id);
+    }
+
+
+    public RichAtomSet getRichAtomSet(String id) {
+        return (RichAtomSet)this.getRichStructure(id);
     }
 
     private void initStructure() {
@@ -129,7 +140,9 @@ public class StructuralAnalysis {
                 String subRingId = getAtomSetId();
                 RichAtomSet subRing = new RichAtomSet(subSystem, RichAtomSet.Type.SMALLEST, subRingId);
                 this.richStructures.put(subRingId, subRing);
+                subRing.getSup().add(ringId);
                 subRing.getContexts().add(ringId);
+                ring.getSub().add(subRingId);
                 ring.getComponents().add(subRingId);
             }
         }
@@ -245,4 +258,26 @@ public class StructuralAnalysis {
         return(result);
     }   
     
+
+    /**
+     * Computes the siblings of this atom set if it is a subring.
+     * @param atomSet The given atom set.
+     * @return A list of siblings.
+     */
+    public Set<RichAtomSet> siblings(RichAtomSet atomSet) {
+        Set<String> result = new HashSet<String>();
+        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+            for (String superSystem : atomSet.getSup()) {
+                result.addAll(this.getRichAtomSet(superSystem).getSub());
+            }
+        }
+        result.remove(atomSet.getId());
+        return result.stream()
+            .map(this::getRichAtomSet)
+            .collect(Collectors.toSet());
+    }
+
+    
+    
+
 }
