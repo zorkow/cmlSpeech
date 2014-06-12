@@ -126,9 +126,9 @@ public class CMLEnricher {
             this.annotations = new SreAnnotations(this.molecule);
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
+            this.appendAtomSets();
             System.out.println(analysis.toString());
             
-            this.appendAtomSets();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
@@ -362,11 +362,11 @@ public class CMLEnricher {
     }
 
     private void sharedBonds(RichAtomSet atomSet) {
-        Set<RichAtomSet> siblings = this.analysis.siblings(atomSet);
+        Set<RichAtomSet> siblings = (Set<RichAtomSet>)(Set<?>)this.analysis.siblings(atomSet);
         System.out.println(siblings.size());
         for (IBond bond : atomSet.getStructure().bonds()) {
             for (RichAtomSet sibling : siblings) {
-                if (sibling.getStructure().contains(bond)) {
+                if ((sibling.getStructure()).contains(bond)) {
                     this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
                                                       new SreElement(SreNamespace.Tag.SHAREDBOND,
                                                                      new SreElement(bond),

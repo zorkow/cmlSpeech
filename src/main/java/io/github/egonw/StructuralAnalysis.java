@@ -30,6 +30,7 @@ import org.openscience.cdk.ringsearch.SSSRFinder;
 import java.util.Set;
 import java.util.HashSet;
 import com.google.common.collect.Iterables;
+import java.util.Map;
 
 /**
  *
@@ -43,7 +44,11 @@ public class StructuralAnalysis {
     // TODO(sorge) Refactor this into a separate flags module.
     private final Cli cli;
 
-    private static SortedMap<String, RichStructure> richStructures = 
+    private static SortedMap<String, RichStructure> richAtoms = 
+        new TreeMap(new CMLNameComparator());
+    private static SortedMap<String, RichStructure> richBonds = 
+        new TreeMap(new CMLNameComparator());
+    private static SortedMap<String, RichStructure> richAtomSets = 
         new TreeMap(new CMLNameComparator());
 
 
@@ -54,29 +59,71 @@ public class StructuralAnalysis {
         
 
         initStructure();
+        
         ringSearch();
         aliphaticChains();
         // TODO(sorge): functionalGroups();
+        
+        computeContexts();
+
     }
+
+    public RichStructure getRichAtom(String id) {
+        return this.richAtoms.get(id);
+    }
+
+    private RichStructure setRichAtom(IAtom atom) {
+        return this.setRichStructure(this.richAtoms, atom.getID(), new RichAtom(atom));
+    }
+    
+
+
+    public RichStructure getRichBond(String id) {
+        return this.richBonds.get(id);
+    }
+
+    private RichStructure setRichBond(IBond bond) {
+        return this.setRichStructure(this.richBonds, bond.getID(), new RichBond(bond));
+    }
+    
+
+
+    public RichStructure getRichAtomSet(String id) {
+        return this.richAtomSets.get(id);
+    }
+
+    private RichStructure setRichAtomSet(IAtomContainer atomSet, RichAtomSet.Type type) {
+        String id = getAtomSetId();
+        return this.setRichStructure(this.richAtomSets, id, new RichAtomSet(atomSet, type, id));
+    }
+    
+    private RichStructure setRichStructure(SortedMap map, String id, RichStructure structure) {
+        map.put(id, structure);
+        return structure;
+    }
+    
 
     public RichStructure getRichStructure(String id) {
-        return this.richStructures.get(id);
+        RichStructure structure = this.richAtoms.get(id);
+        if (structure != null) {
+            return structure;
+        } 
+        structure = this.richBonds.get(id);
+        if (structure != null) {
+            return structure;
+        } 
+        return this.richAtomSets.get(id);
     }
 
-
-    public RichAtomSet getRichAtomSet(String id) {
-        return (RichAtomSet)this.getRichStructure(id);
-    }
-
+    
     private void initStructure() {
-        for (IAtom atom : this.molecule.atoms()) {
-            this.richStructures.put(atom.getID(), new RichAtom(atom));
-        }
+        this.molecule.atoms().forEach(this::setRichAtom);
         for (IBond bond : this.molecule.bonds()) {
-            this.richStructures.put(bond.getID(), new RichBond(bond));
+            this.setRichBond(bond);
             for (IAtom atom : bond.atoms()) {
-                (this.richStructures.get(atom.getID()))
-                .getContexts().add(bond.getID());
+                RichStructure richAtom = this.richAtoms.get(atom.getID());
+                richAtom.getContexts().add(bond.getID());
+                richAtom.getExternalBonds().add(bond.getID());
             }
         }
     }
@@ -105,8 +152,7 @@ public class StructuralAnalysis {
     private void getIsolatedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            String id = getAtomSetId();
-            this.richStructures.put(id, new RichAtomSet(ring, RichAtomSet.Type.ISOLATED, id));
+            this.setRichAtomSet(ring, RichAtomSet.Type.ISOLATED);
         }
     }
 
@@ -119,8 +165,7 @@ public class StructuralAnalysis {
     private void getFusedRings(RingSearch ringSearch) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer ring : ringSystems) {
-            String id = getAtomSetId();
-            this.richStructures.put(id, new RichAtomSet(ring, RichAtomSet.Type.FUSED, id));
+            this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
         }
     }
 
@@ -135,14 +180,13 @@ public class StructuralAnalysis {
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer system : ringSystems) {
-            String ringId = getAtomSetId();
-            RichAtomSet ring = new RichAtomSet(system, RichAtomSet.Type.FUSED, ringId);
-            this.richStructures.put(ringId, ring);
+            RichAtomSet ring = (RichAtomSet)this.setRichAtomSet(system, RichAtomSet.Type.FUSED);
+            
             List<IAtomContainer> subSystems = subRingMethod.apply(system);
             for (IAtomContainer subSystem : subSystems) {
-                String subRingId = getAtomSetId();
-                RichAtomSet subRing = new RichAtomSet(subSystem, RichAtomSet.Type.SMALLEST, subRingId);
-                this.richStructures.put(subRingId, subRing);
+                RichAtomSet subRing = (RichAtomSet)this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
+                String ringId = ring.getId();
+                String subRingId = subRing.getId();
                 subRing.getSup().add(ringId);
                 subRing.getContexts().add(ringId);
                 ring.getSub().add(subRingId);
@@ -230,48 +274,57 @@ public class StructuralAnalysis {
     }
 
 
-    public String toString() {
-        return Joiner.on("\n").join(this.richStructures.values()
+    private String valuesToString(SortedMap<String, RichStructure> map) {
+        return Joiner.on("\n").join(map.values()
                                     .stream().map(RichStructure::toString)
                                     .collect(Collectors.toList()));
     }
 
-
-
-    private void aliphaticChains() {
-        List<IAtomContainer> chains = getAliphaticChain();
-        for (IAtomContainer chain : chains) {
-            this.logger.logging(chain);
-            String id = getAtomSetId();
-            this.richStructures.put(id, new RichAtomSet(chain, RichAtomSet.Type.ALIPHATIC, id));
-        }
+    public String toString() {
+        return valuesToString(this.richAtoms) + "\n" 
+            + valuesToString(this.richBonds) + "\n" 
+            + valuesToString(this.richAtomSets);
     }
 
 
     /**
      * Computes the longest aliphatic chain for the molecule.
-     * @return The value of the aliphatic chain.
      */
-    private List<IAtomContainer> getAliphaticChain() {
+    private void aliphaticChains() {
         IAtomContainer container = this.molecule;
-        if (container == null) { return null; }
+        if (container == null) { return; }
         AliphaticChain chain = new AliphaticChain();
         chain.calculate(container);
-        List<IAtomContainer> result = chain.extract();
-        return(result);
-    }   
-    
+        for (IAtomContainer set : chain.extract()) {
+            this.setRichAtomSet(set, RichAtomSet.Type.ALIPHATIC);
+        }
+    }
+
+
+    private void computeContexts() {
+        for (String key : this.richAtomSets.keySet()) {
+            Set<String> set = this.richAtomSets.get(key).getComponents();
+            for (String component : set) {
+                this.getRichStructure(component).getContexts().add(key);
+            };
+        }
+    }
+
+
+
+
+
 
     /**
      * Computes the siblings of this atom set if it is a subring.
      * @param atomSet The given atom set.
      * @return A list of siblings.
      */
-    public Set<RichAtomSet> siblings(RichAtomSet atomSet) {
+    public Set<RichStructure> siblings(RichAtomSet atomSet) {
         Set<String> result = new HashSet<String>();
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             for (String superSystem : atomSet.getSup()) {
-                result.addAll(this.getRichAtomSet(superSystem).getSub());
+                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSub());
             }
         }
         result.remove(atomSet.getId());
@@ -282,8 +335,7 @@ public class StructuralAnalysis {
 
     
     public List<RichAtomSet> getAtomSets() {
-        return (List<RichAtomSet>)(List<?>)this.richStructures.values().stream().
-            filter(as -> as instanceof RichAtomSet).collect(Collectors.toList());
+        return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
     }
 
 }
