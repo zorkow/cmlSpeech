@@ -127,8 +127,8 @@ public class CMLEnricher {
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             System.out.println(analysis.toString());
-
-            enrichCML();
+            
+            this.appendAtomSets();
             this.atomSets.stream().forEach(this::finalizeAtomSet);
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
@@ -412,10 +412,9 @@ public class CMLEnricher {
      * 
      * @return The atom set id.
      */
-    private String appendAtomSet(String title, String richSetId) {
-        RichAtomSet richSet = this.analysis.getRichAtomSet(richSetId);
+    private String appendAtomSet(RichAtomSet richSet) {
         CMLAtomSet set = richSet.getCML();
-        this.logger.logging(title + " has atoms:");
+        // this.logger.logging(title + " has atoms:");
         // TODO (sorge) Refactor that eventually together with appendAtomSet.
         for (IAtom atom : richSet.getStructure().atoms()) {
             String atomId = atom.getID();
@@ -436,6 +435,53 @@ public class CMLEnricher {
         nameMolecule(richSet.getId(), richSet.getStructure());
         return(richSet.getId());
     }
+
+
+    private String appendAtomSet(String title, String set) {
+        return "";
+    }
+
+    private String appendAtomSet(String title, String set, String nix) {
+        return "";
+    }
+
+    /** 
+     * Append an Atom Set to the CML documents.
+     * 
+     * @param title Title of the atom set to be added. 
+     * @param atoms Iterable atom list.
+     * @param superSystem Id of the super set.
+     * 
+     * @return The atom set id.
+     */
+    // private String appendAtomSet(String title, String set, String superSystem) {
+    //     String id = appendAtomSet(title, set);
+    //     Element sup = SreUtil.getElementById(this.doc, superSystem);
+    //     Element sub = SreUtil.getElementById(this.doc, id);
+    //     this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
+    //                                       new SreElement(SreNamespace.Tag.ATOMSET, id));
+    //     this.annotations.appendAnnotation(sub, id, SreNamespace.Tag.SUPERSYSTEM, 
+    //                                       new SreElement(SreNamespace.Tag.ATOMSET, superSystem));
+    //     return(id);
+    // };
+
+
+    private void appendAtomSets() {
+        List<RichAtomSet> richSets = this.analysis.getAtomSets();
+        richSets.forEach(this::appendAtomSet);
+        for (RichAtomSet richSet : richSets) {
+            String supId = richSet.getId();
+            Element sup = SreUtil.getElementById(this.doc, supId);
+            for (String subId : richSet.getSub()) {
+                Element sub = SreUtil.getElementById(this.doc, subId);
+                this.annotations.appendAnnotation(sup, supId, SreNamespace.Tag.SUBSYSTEM, 
+                                                  new SreElement(SreNamespace.Tag.ATOMSET, subId));
+                this.annotations.appendAnnotation(sub, subId, SreNamespace.Tag.SUPERSYSTEM, 
+                                                  new SreElement(SreNamespace.Tag.ATOMSET, supId));
+            }
+        }
+    }
+
 
 
     private void finalizeAtomSet(RichAtomSet atomSet) {
@@ -583,27 +629,6 @@ public class CMLEnricher {
         return this.atomSets.stream().
             allMatch(ring -> !(ring.getStructure().contains(bond)));
     }
-
-
-    /** 
-     * Append an Atom Set to the CML documents.
-     * 
-     * @param title Title of the atom set to be added. 
-     * @param atoms Iterable atom list.
-     * @param superSystem Id of the super set.
-     * 
-     * @return The atom set id.
-     */
-    private String appendAtomSet(String title, String set, String superSystem) {
-        String id = appendAtomSet(title, set);
-        Element sup = SreUtil.getElementById(this.doc, superSystem);
-        Element sub = SreUtil.getElementById(this.doc, id);
-        this.annotations.appendAnnotation(sup, superSystem, SreNamespace.Tag.SUBSYSTEM, 
-                                          new SreElement(SreNamespace.Tag.ATOMSET, id));
-        this.annotations.appendAnnotation(sub, id, SreNamespace.Tag.SUPERSYSTEM, 
-                                          new SreElement(SreNamespace.Tag.ATOMSET, superSystem));
-        return(id);
-    };
 
 
     /**

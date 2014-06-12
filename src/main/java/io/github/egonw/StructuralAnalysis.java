@@ -29,6 +29,7 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.ringsearch.SSSRFinder;
 import java.util.Set;
 import java.util.HashSet;
+import com.google.common.collect.Iterables;
 
 /**
  *
@@ -278,6 +279,9 @@ public class StructuralAnalysis {
     }
 
     
-    
+    public List<RichAtomSet> getAtomSets() {
+        return (List<RichAtomSet>)(List<?>)this.richStructures.values().stream().
+            filter(as -> as instanceof RichAtomSet).collect(Collectors.toList());
+    }
 
 }
