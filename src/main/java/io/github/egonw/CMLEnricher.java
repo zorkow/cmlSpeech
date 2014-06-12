@@ -247,21 +247,15 @@ public class CMLEnricher {
      * @return The atom set id.
      */
     private String appendAtomSet(RichAtomSet richSet) {
-        CMLAtomSet set = richSet.getCML();
-        // this.logger.logging(title + " has atoms:");
-        // TODO (sorge) Refactor that eventually together with appendAtomSet.
+        CMLAtomSet set = richSet.getCML(this.doc);
+
         for (IAtom atom : richSet.getStructure().atoms()) {
-            String atomId = atom.getID();
-            Element node = SreUtil.getElementById(this.doc, atomId);
-            this.annotations.appendAnnotation(node, atomId, SreNamespace.Tag.COMPONENT, new SreElement(set));
-            set.addAtom((CMLAtom)node);
-            this.logger.logging(" " + atomId);
+            this.annotations.appendAnnotation(atom, SreNamespace.Tag.COMPONENT, new SreElement(set));
+            this.logger.logging(" " + atom.getID());
         }
         this.logger.logging("\n");
         for (IBond bond : richSet.getStructure().bonds()) {
-            String bondId = bond.getID();
-            Element node = SreUtil.getElementById(this.doc, bondId);
-            this.annotations.appendAnnotation(node, bondId, SreNamespace.Tag.COMPONENT, new SreElement(set));
+            this.annotations.appendAnnotation(bond, SreNamespace.Tag.COMPONENT, new SreElement(set));
             this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
         }
         this.atomSets.add(richSet);

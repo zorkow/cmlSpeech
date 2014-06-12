@@ -10,6 +10,9 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import nu.xom.Document;
+import nu.xom.Element;
+import org.xmlcml.cml.element.CMLAtom;
 
 /**
  *
@@ -49,16 +52,14 @@ public class RichAtomSet extends RichChemObject {
         super(container);
         this.getStructure().setID(id);
         this.type = type;
-        this.cml = new CMLAtomSet();
-        this.cml.setTitle(this.type.name);
-        this.cml.setId(this.getId());
-
         for (IAtom atom : this.getStructure().atoms()) {
             this.getComponents().add(atom.getID());
         }
         for (IBond bond : this.getStructure().bonds()) {
             this.getComponents().add(bond.getID());
         }
+
+        this.makeCML();
     }
 
 
@@ -72,7 +73,7 @@ public class RichAtomSet extends RichChemObject {
     }
 
 
-    // Refactor some of these functions!
+    // TODO(sorge): Refactor some of these functions!
     public void addSub(String sub) {
         this.sub.add(sub);
     }
@@ -114,8 +115,26 @@ public class RichAtomSet extends RichChemObject {
     }
 
     
+    private void makeCML() {
+        this.cml = new CMLAtomSet();
+        this.cml.setTitle(this.type.name);
+        this.cml.setId(this.getId());
+    }
+
+    
+    // This should only ever be called once!
+    // Need a better solution!
+    public CMLAtomSet getCML(Document doc) {
+        for (IAtom atom : this.getStructure().atoms()) { 
+            String atomId = atom.getID();
+            CMLAtom node = (CMLAtom)SreUtil.getElementById(doc, atomId);
+            this.cml.addAtom(node);
+        }
+        return this.cml;
+    }
+
     public CMLAtomSet getCML() {
-        return cml;
+        return this.cml;
     }
 
 }

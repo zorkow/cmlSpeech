@@ -51,6 +51,8 @@ public class StructuralAnalysis {
         this.cli = cli;
         this.logger = logger;
         this.molecule = molecule;
+        
+
         initStructure();
         ringSearch();
         aliphaticChains();
