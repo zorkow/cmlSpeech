@@ -271,7 +271,7 @@ public class CMLEnricher {
         for (RichAtomSet richSet : richSets) {
             String supId = richSet.getId();
             Element sup = SreUtil.getElementById(this.doc, supId);
-            for (String subId : richSet.getSub()) {
+            for (String subId : richSet.getSubSystems()) {
                 Element sub = SreUtil.getElementById(this.doc, subId);
                 this.annotations.appendAnnotation(sup, supId, SreNamespace.Tag.SUBSYSTEM, 
                                                   new SreElement(SreNamespace.Tag.ATOMSET, subId));

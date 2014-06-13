@@ -31,6 +31,9 @@ import java.util.Set;
 import java.util.HashSet;
 import com.google.common.collect.Iterables;
 import java.util.Map;
+import com.google.common.collect.Sets;
+import java.util.stream.Stream;
+import java.util.TreeSet;
 
 /**
  *
@@ -51,6 +54,8 @@ public class StructuralAnalysis {
     private static SortedMap<String, RichStructure> richAtomSets = 
         new TreeMap(new CMLNameComparator());
 
+    private Set<String> singletonAtoms = new HashSet<String>();
+
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
         this.cli = cli;
@@ -58,14 +63,19 @@ public class StructuralAnalysis {
         this.molecule = molecule;
         
 
-        initStructure();
+        this.initStructure();
         
-        ringSearch();
-        aliphaticChains();
+        this.ringSearch();
+        this.aliphaticChains();
         // TODO(sorge): functionalGroups();
         
-        computeContexts();
+        this.computeContexts();
+        this.singletonAtoms();
 
+        this.atomSetsAttachments();
+        this.connectingBonds();
+        //this.sharedAtoms();
+        //this.sharedBonds();
     }
 
     public RichStructure getRichAtom(String id) {
@@ -187,9 +197,9 @@ public class StructuralAnalysis {
                 RichAtomSet subRing = (RichAtomSet)this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
                 String ringId = ring.getId();
                 String subRingId = subRing.getId();
-                subRing.getSup().add(ringId);
+                subRing.getSuperSystems().add(ringId);
                 subRing.getContexts().add(ringId);
-                ring.getSub().add(subRingId);
+                ring.getSubSystems().add(subRingId);
                 ring.getComponents().add(subRingId);
             }
         }
@@ -312,7 +322,18 @@ public class StructuralAnalysis {
 
 
 
+    /////////////
 
+    private void singletonAtoms() {
+        Set<String> atomSetComponents = new HashSet<String>();
+        this.richAtomSets.values().
+            forEach(as -> atomSetComponents.addAll(as.getComponents()));
+        for (String atom : this.richAtoms.keySet()) {
+            if (!atomSetComponents.contains(atom)) {
+                this.singletonAtoms.add(atom);
+            }
+        }
+    }
 
 
     /**
@@ -323,8 +344,8 @@ public class StructuralAnalysis {
     public Set<RichStructure> siblings(RichAtomSet atomSet) {
         Set<String> result = new HashSet<String>();
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
-            for (String superSystem : atomSet.getSup()) {
-                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSub());
+            for (String superSystem : atomSet.getSuperSystems()) {
+                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
             }
         }
         result.remove(atomSet.getId());
@@ -336,6 +357,122 @@ public class StructuralAnalysis {
     
     public List<RichAtomSet> getAtomSets() {
         return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
+    }
+
+
+
+
+
+
+
+    ///////////////////////////////////////////
+
+    private void atomSetsAttachments() {
+        this.richAtomSets.values().
+            forEach(as -> this.atomSetAttachments((RichAtomSet)as));
+    }
+
+
+    private void atomSetAttachments(RichAtomSet atomSet) {
+        IAtomContainer container = atomSet.getStructure();
+        Set<IBond> externalBonds = externalBonds(container);
+        for (IBond bond : externalBonds) {
+            atomSet.getExternalBonds().add(bond.getID());
+        }
+        Set<IAtom> connectingAtoms = connectingAtoms(container, externalBonds);
+        for (IAtom atom : connectingAtoms) {
+            atomSet.getConnectingAtoms().add(atom.getID());
+        }
+    }
+
+
+    /**
+     * Compute the bonds that connects this atom container to the rest of the
+     * molecule.
+     * @param container The substructure under consideration.
+     * @return List of bonds attached to but not contained in the container.
+     */
+    private Set<IBond> externalBonds(IAtomContainer container) {
+        Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
+        Set<IBond> allBonds = Sets.newHashSet();
+        for (IAtom atom : container.atoms()) {
+            allBonds.addAll(this.molecule.getConnectedBondsList(atom));
+        }
+        return Sets.difference(allBonds, internalBonds);
+    }
+
+
+    /**
+     * Compute the atoms that have bonds not internal to the molecule.
+     * @param container The substructure under consideration.
+     * @param bonds External bonds.
+     * @return List of atoms with external connections.
+     */
+    private Set<IAtom> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
+        Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
+        Set<IAtom> connectedAtoms = Sets.newHashSet();
+        for (IBond bond : bonds) {
+            connectedAtoms.addAll
+                (Lists.newArrayList(bond.atoms()).stream().
+                 filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
+        }
+        return connectedAtoms;
+    }
+
+
+    /**
+     * Compute the connecting bonds for tha atom container from the set of
+     * external bonds.
+     * @param container The substructure under consideration.
+     * @param externalBonds Bonds external to the substructure.
+     * @return List of connecting bonds, i.e., external but not part of another
+     *         substructure.
+     */
+    private void connectingBonds() {
+        for (String bond : this.richBonds.keySet()) {
+            RichStructure richBond = this.richBonds.get(bond);
+            if (richBond.getContexts().isEmpty()) {
+                System.out.println(bond);
+                // We assume each bond has two atoms only!
+                this.addConnections(bond, 
+                                    ((TreeSet<String>)richBond.getComponents()).first(), 
+                                    ((TreeSet<String>)richBond.getComponents()).last());
+            }
+        }
+    }
+
+
+    private void addConnections(String bond, String atomA, String atomB) {
+        System.out.println(atomA + " " + atomB);
+        Set<String> contextAtomA = Sets.intersection
+            (this.richAtoms.get(atomA).getContexts(), 
+             this.richAtomSets.keySet());
+        Set<String> contextAtomB = Sets.intersection
+            (this.richAtoms.get(atomB).getContexts(), 
+             this.richAtomSets.keySet());
+        if (contextAtomA.isEmpty()) {
+            contextAtomA = new HashSet<String>();
+            contextAtomA.add(atomA);
+        }
+        if (contextAtomB.isEmpty()) {
+            contextAtomB = new HashSet<String>();
+            contextAtomB.add(atomB);
+        }
+        contextAtomA.forEach(System.out::println);
+        System.out.println("Break");
+        contextAtomB.forEach(System.out::println);
+        for (String contextA : contextAtomA) {
+            RichStructure richStructureA = this.getRichStructure(contextA);
+            for (String contextB : contextAtomB) {
+                RichStructure richStructureB = this.getRichStructure(contextB);
+                System.out.println("Making connections: " + contextA + " " + contextB);
+                
+                richStructureA.getConnections().add
+                    (new Connection(Connection.Type.CONNECTINGBOND, bond, contextB));
+                richStructureB.getConnections().add
+                    (new Connection(Connection.Type.CONNECTINGBOND, bond, contextA));
+            }
+        }
     }
 
 }

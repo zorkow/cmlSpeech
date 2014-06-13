@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import nu.xom.Document;
 import nu.xom.Element;
 import org.xmlcml.cml.element.CMLAtom;
+import com.google.common.base.Joiner;
 
 /**
  *
@@ -38,6 +39,7 @@ public class RichAtomSet extends RichChemObject {
 
     private SortedSet<String> sup = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> sub = new TreeSet<String>(new CMLNameComparator());
+    private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
  
     private RichAtomSet (IAtomContainer container) {
         super(container);
@@ -63,13 +65,18 @@ public class RichAtomSet extends RichChemObject {
     }
 
 
-    public SortedSet<String> getSub() {
+    public SortedSet<String> getSubSystems() {
         return this.sub;
     }
 
 
-    public SortedSet<String> getSup() {
+    public SortedSet<String> getSuperSystems() {
         return this.sup;
+    }
+
+
+    public SortedSet<String> getConnectingAtoms() {
+        return this.connectingAtoms;
     }
 
 
@@ -122,6 +129,17 @@ public class RichAtomSet extends RichChemObject {
     }
 
     
+    @Override
+    public String toString() {
+        String structure = super.toString();
+        Joiner joiner = Joiner.on(" ");
+        return structure +
+            "\nSuper Systems:" + joiner.join(this.getSuperSystems()) +
+            "\nSub Systems:" + joiner.join(this.getSubSystems()) +
+            "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
+    }
+
+
     // This should only ever be called once!
     // Need a better solution!
     public CMLAtomSet getCML(Document doc) {
