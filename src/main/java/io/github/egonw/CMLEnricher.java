@@ -123,7 +123,6 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             removeExplicitHydrogens();
-            this.annotations = new SreAnnotations(this.molecule);
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.appendAtomSets();
@@ -131,8 +130,7 @@ public class CMLEnricher {
             
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
-            this.annotations.finalize();
-            this.doc.getRootElement().appendChild(this.annotations);
+            this.doc.getRootElement().appendChild(this.analysis.toSRE());
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);

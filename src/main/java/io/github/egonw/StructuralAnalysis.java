@@ -517,4 +517,12 @@ public class StructuralAnalysis {
             .map(this::getRichAtom).collect(Collectors.toList());
     }
 
+    
+    public SreAnnotations toSRE() {
+        SreAnnotations annotations = new SreAnnotations(this.molecule);
+        
+        
+        annotations.finalize();
+        return annotations;
+    }
 }
