@@ -83,8 +83,8 @@ public class CMLEnricher {
     private CactusExecutor executor = new CactusExecutor();
     private SreAnnotations annotations;
     private List<RichAtomSet> majorSystems;
-    private List<RichAtomSet> minorSystems;
-    private Set<IAtom> singletonAtoms = new HashSet<IAtom>();
+    // private List<RichAtomSet> minorSystems;
+    private List<RichAtom> singletonAtoms = new ArrayList<RichAtom>();
     private StructuralGraph structure = new StructuralGraph();
 
     /** 
@@ -129,7 +129,6 @@ public class CMLEnricher {
             this.appendAtomSets();
             System.out.println(analysis.toString());
             
-            this.atomSets.stream().forEach(this::finalizeAtomSet);
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
             this.annotations.finalize();
@@ -239,240 +238,19 @@ public class CMLEnricher {
 
 
     /** 
-     * Append an Atom Set to the CML documents.
-     * 
-     * @param title Title of the atom set to be added. 
-     * @param atoms Iterable atom list.
-     * 
-     * @return The atom set id.
+     * Append the Atom Sets from the structural analysis to the CML documents.
      */
-    private String appendAtomSet(RichAtomSet richSet) {
-        CMLAtomSet set = richSet.getCML(this.doc);
-
-        for (IAtom atom : richSet.getStructure().atoms()) {
-            this.annotations.appendAnnotation(atom, SreNamespace.Tag.COMPONENT, new SreElement(set));
-            this.logger.logging(" " + atom.getID());
-        }
-        this.logger.logging("\n");
-        for (IBond bond : richSet.getStructure().bonds()) {
-            this.annotations.appendAnnotation(bond, SreNamespace.Tag.COMPONENT, new SreElement(set));
-            this.annotations.appendAnnotation(set, SreNamespace.Tag.INTERNALBONDS, new SreElement(bond));
-        }
-        this.atomSets.add(richSet);
-        this.doc.getRootElement().appendChild(set);
-        nameMolecule(richSet.getId(), richSet.getStructure());
-        return(richSet.getId());
-    }
-
-
     private void appendAtomSets() {
         List<RichAtomSet> richSets = this.analysis.getAtomSets();
-        richSets.forEach(this::appendAtomSet);
         for (RichAtomSet richSet : richSets) {
-            String supId = richSet.getId();
-            Element sup = SreUtil.getElementById(this.doc, supId);
-            for (String subId : richSet.getSubSystems()) {
-                Element sub = SreUtil.getElementById(this.doc, subId);
-                this.annotations.appendAnnotation(sup, supId, SreNamespace.Tag.SUBSYSTEM, 
-                                                  new SreElement(SreNamespace.Tag.ATOMSET, subId));
-                this.annotations.appendAnnotation(sub, subId, SreNamespace.Tag.SUPERSYSTEM, 
-                                                  new SreElement(SreNamespace.Tag.ATOMSET, supId));
-            }
+            CMLAtomSet set = richSet.getCML(this.doc);
+            this.atomSets.add(richSet);
+            this.doc.getRootElement().appendChild(set);
+            nameMolecule(richSet.getId(), richSet.getStructure());
         }
     }
 
 
-
-    private void finalizeAtomSet(RichAtomSet atomSet) {
-        IAtomContainer container = atomSet.getStructure();
-        CMLAtomSet cml = atomSet.getCML();
-        Set<IBond> externalBonds = externalBonds(container);
-        for (IBond bond : externalBonds) {
-            String bondId = bond.getID();
-            this.annotations.appendAnnotation(cml, SreNamespace.Tag.EXTERNALBONDS, new SreElement(bond));
-        }
-        Set<IAtom> connectingAtoms = connectingAtoms(container, externalBonds);
-        for (IAtom atom : connectingAtoms) {
-            String atomId = atom.getID();
-            this.annotations.appendAnnotation(cml, SreNamespace.Tag.CONNECTINGATOMS, new SreElement(atom));
-        }
-        Set<IBond> connectingBonds = connectingBonds(container, externalBonds);
-        for (IBond bond : connectingBonds) {
-            String bondId = bond.getID();
-            this.annotations.appendAnnotation(cml, SreNamespace.Tag.CONNECTINGBONDS, new SreElement(bond));
-            addConnection(atomSet, bond);
-        }
-        computeSharedConnections(atomSet);
-    }
-
-
-    private void computeSharedConnections(RichAtomSet atomSet) {
-        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
-            sharedBonds(atomSet);
-        }
-        sharedAtoms(atomSet);
-    }
-
-    private void addConnection(RichAtomSet atomSet, IBond bond) {
-        // For now we assume that the bond has exactly two atoms.
-        IAtom atom = bond.getAtom(0);
-        if (atomSet.getStructure().contains(atom)) {
-            atom = bond.getAtom(1);
-        }
-        boolean simple = true;
-        for (RichAtomSet otherSet : this.atomSets) {
-            if (otherSet.getStructure().contains(atom)) {
-                simple = false;
-                this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
-                                                  new SreElement(SreNamespace.Tag.CONNECTION,
-                                                                 new SreElement(bond),
-                                                                 new SreElement(otherSet.getCML())));
-            }
-        }
-        if (simple) {
-            this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
-                                              new SreElement(SreNamespace.Tag.CONNECTION,
-                                                             new SreElement(bond),
-                                                             new SreElement(atom)));
-            addSingletonAtom(atom);
-            this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
-                                              new SreElement(SreNamespace.Tag.CONNECTION,
-                                                             new SreElement(bond),
-                                                             new SreElement(atomSet.getCML())));
-        }
-    }
-
-    private void addConnection(IAtom atom) {
-        for (IBond bond : this.molecule.getConnectedBondsList(atom)) {
-            IAtom atomA = bond.getAtom(0);
-            if (atomA == atom) {
-                atomA = bond.getAtom(1);
-            }
-            this.annotations.appendAnnotation(atom, SreNamespace.Tag.CONNECTIONS,
-                                              new SreElement(SreNamespace.Tag.CONNECTION,
-                                                             new SreElement(bond),
-                                                             new SreElement(atomA)));
-        }
-    }
-    
-
-    private void addSingletonAtom(IAtom atom) {
-        // Maybe put this into an enriched container.
-        this.singletonAtoms.add(atom);
-    }
-
-    private void sharedBonds(RichAtomSet atomSet) {
-        Set<RichAtomSet> siblings = (Set<RichAtomSet>)(Set<?>)this.analysis.siblings(atomSet);
-        System.out.println(siblings.size());
-        for (IBond bond : atomSet.getStructure().bonds()) {
-            for (RichAtomSet sibling : siblings) {
-                if ((sibling.getStructure()).contains(bond)) {
-                    this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
-                                                      new SreElement(SreNamespace.Tag.SHAREDBOND,
-                                                                     new SreElement(bond),
-                                                                     new SreElement(sibling.getCML())));
-                }
-            }
-        };
-    }
-    
-    private void sharedAtoms(RichAtomSet atomSet) {
-        for (IAtom atom : atomSet.getStructure().atoms()) {
-            for (RichAtomSet otherSet : this.atomSets) {
-                // Cases: No shared Atom if sub or super
-                if (atomSet.isSub(otherSet) ||
-                    atomSet.isSup(otherSet) || 
-                    otherSet.getId() == atomSet.getId()) {
-                    continue;
-                }
-                if (otherSet.getStructure().contains(atom)) {
-                    this.annotations.appendAnnotation(atomSet.getCML(), SreNamespace.Tag.CONNECTIONS, 
-                                                      new SreElement(SreNamespace.Tag.SHAREDATOM,
-                                                                     new SreElement(atom),
-                                                                     new SreElement(otherSet.getCML())));
-                }
-            }
-        };
-    }
-    
-
-    /**
-     * Compute the connecting bonds for tha atom container from the set of
-     * external bonds.
-     * @param container The substructure under consideration.
-     * @param externalBonds Bonds external to the substructure.
-     * @return List of connecting bonds, i.e., external but not part of another
-     *         substructure.
-     */
-    private Set<IBond> connectingBonds(IAtomContainer container, Set<IBond> externalBonds) {
-        Set<IBond> connectingBonds = Sets.newHashSet();
-        for (IBond bond : externalBonds) {
-            if (isConnecting(container, bond)) {
-                connectingBonds.add(bond);
-            }
-        }
-        return connectingBonds;
-    }
-
-
-    /**
-     * Checks if a bond is a connecting bond for this atom container. A
-     * connecting bond is an external bond that is not internal to any other
-     * structure. For example >-< is a connecting bond, while >< is not, and
-     * only contains a connecting atom.
-     * @param atoms The system.
-     * @param bond An external bond of that system.
-     * @return True if the bond is truely connecting.
-     */
-    private Boolean isConnecting(IAtomContainer atoms, IBond bond) {
-        return this.atomSets.stream().
-            allMatch(ring -> !(ring.getStructure().contains(bond)));
-    }
-
-
-    /**
-     * Compute the bonds that connects this atom container to the rest of the
-     * molecule.
-     * @param container The substructure under consideration.
-     * @return List of bonds attached to but not contained in the container.
-     */
-    private Set<IBond> externalBonds(IAtomContainer container) {
-        Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
-        Set<IBond> allBonds = Sets.newHashSet();
-        for (IAtom atom : container.atoms()) {
-            allBonds.addAll(this.molecule.getConnectedBondsList(atom));
-        }
-        return Sets.difference(allBonds, internalBonds);
-    }
-
-
-    /**
-     * Compute the atoms that have bonds not internal to the molecule.
-     * @param container The substructure under consideration.
-     * @param bonds External bonds.
-     * @return List of atoms with external connections.
-     */
-    private Set<IAtom> connectingAtoms(IAtomContainer container, Set<IBond> bonds) {
-        Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
-        Set<IAtom> connectedAtoms = Sets.newHashSet();
-        for (IBond bond : bonds) {
-            connectedAtoms.addAll
-                (Lists.newArrayList(bond.atoms()).stream().
-                 filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
-        }
-        return connectedAtoms;
-    }
-
-
-    /**
-     * Compute the atoms that have bonds not internal to the molecule.
-     * @param container The substructure under consideration.
-     * @return List of atoms with external connections.
-     */
-    private Set<IAtom> connectingAtoms(IAtomContainer container) {
-        Set<IBond> bonds = externalBonds(container);
-        return connectingAtoms(container, bonds);
-    }
 
 
     /**
@@ -498,55 +276,41 @@ public class CMLEnricher {
         // TODO (sorge) refactor to have major/minor systems and singletons held
         // globally.
         this.majorSystems = getMajorSystems();
-        completeSingletonAtoms(this.majorSystems);
+        this.singletonAtoms = this.analysis.getSingletonAtoms();
         List<String> msNames = this.majorSystems.stream()
             .map(RichAtomSet::getId)
             .collect(Collectors.toList());
         msNames.addAll(this.singletonAtoms.stream()
-                       .map(IAtom::getID)
+                       .map(RichAtom::getId)
                        .collect(Collectors.toList()));
         msNames.stream().forEach(ms -> this.structure.addVertex(ms));
+        List<RichStructure> combined = new ArrayList<RichStructure>(this.majorSystems);
+        combined.addAll(this.singletonAtoms);
 
-        for (String ms : msNames) {
-            SreElement connections = this.annotations.retrieveAnnotation(ms, SreNamespace.Tag.CONNECTIONS);
-            if (connections != null) {
-                addSingleEdges(ms, connections, msNames);
+        for (RichStructure ms : combined) {
+            Set<Connection> connections = ms.getConnections();
+            if (!connections.isEmpty()) {
+                addSingleEdges(ms.getId(), connections, msNames);
             }
         }
     };
 
 
-    private void addSingleEdges(String source, SreElement connections, List<String> systems) {
-        Elements children = connections.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            Elements grandkids = children.get(i).getChildElements();
-            String target = grandkids.get(1).getValue();
-            if (systems.contains(target)) {
-                this.structure.addEdge(source, target,
-                                       (SreElement)grandkids.get(0));
+    private void addSingleEdges(String source, Set<Connection> connections, List<String> systems) {
+        for (Connection connection : connections) {
+            if (systems.contains(connection.getConnected())) {
+                this.structure.addEdge(source, connection.getConnected(),
+                                       connection.getConnector());
             }
         }
     }
     
     
     private List<RichAtomSet> getMajorSystems() {
-        return this.atomSets.stream()
+        return this.analysis.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
             .collect(Collectors.toList());
     }
 
-
-    private void completeSingletonAtoms(List<RichAtomSet> majorSystems) {
-        Set<IAtom> majorAtoms = new HashSet<IAtom>();
-        majorSystems.stream().
-            forEach(ms -> majorAtoms.
-                    addAll(Lists.newArrayList(ms.getStructure().atoms())));
-        for (IAtom atom : this.molecule.atoms()) {
-            if (!majorAtoms.contains(atom) && !this.singletonAtoms.contains(atom)) {
-                addConnection(atom);
-                addSingletonAtom(atom);
-            }
-        }
-    }
 
 }

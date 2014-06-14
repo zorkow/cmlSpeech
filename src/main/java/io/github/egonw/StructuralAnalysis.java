@@ -449,7 +449,6 @@ public class StructuralAnalysis {
             RichAtomSet richAtomSet = (RichAtomSet)this.richAtomSets.get(atomSet);
             Set<String> internalComponents = Sets.difference
                 (richAtomSet.getComponents(), this.richAtomSets.keySet());
-            System.out.println(internalComponents);
             for (String component : internalComponents) {
                 RichStructure richComponent = this.getRichStructure(component);
                 Set<String> contexts = Sets.intersection
@@ -511,6 +510,11 @@ public class StructuralAnalysis {
     
     public List<RichAtomSet> getAtomSets() {
         return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
+    }
+
+    public List<RichAtom> getSingletonAtoms() {
+        return (List<RichAtom>)(List<?>)this.singletonAtoms.stream()
+            .map(this::getRichAtom).collect(Collectors.toList());
     }
 
 }

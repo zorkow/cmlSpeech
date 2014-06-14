@@ -33,13 +33,13 @@ public class StructuralGraph extends SimpleGraph {
         super(StructuralEdge.class);
     }
     
-    public StructuralEdge addEdge(String source, String target, SreElement label) {
+    public StructuralEdge addEdge(String source, String target, String label) {
         StructuralEdge edge = new StructuralEdge(label);
         this.addEdge(source, target, edge);
         return edge;
     }
 
-    public void visualize (List<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
+    public void visualize (List<RichAtomSet> majorSystems, List<RichAtom> singletonAtoms) {
         StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
         vis.init(this, majorSystems, singletonAtoms);
     }
