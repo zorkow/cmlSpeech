@@ -74,8 +74,7 @@ public class StructuralAnalysis {
 
         this.atomSetsAttachments();
         this.connectingBonds();
-        //this.sharedAtoms();
-        //this.sharedBonds();
+        this.sharedComponents();
     }
 
     public RichStructure getRichAtom(String id) {
@@ -336,30 +335,6 @@ public class StructuralAnalysis {
     }
 
 
-    /**
-     * Computes the siblings of this atom set if it is a subring.
-     * @param atomSet The given atom set.
-     * @return A list of siblings.
-     */
-    public Set<RichStructure> siblings(RichAtomSet atomSet) {
-        Set<String> result = new HashSet<String>();
-        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
-            for (String superSystem : atomSet.getSuperSystems()) {
-                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
-            }
-        }
-        result.remove(atomSet.getId());
-        return result.stream()
-            .map(this::getRichAtomSet)
-            .collect(Collectors.toSet());
-    }
-
-    
-    public List<RichAtomSet> getAtomSets() {
-        return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
-    }
-
-
 
 
 
@@ -432,7 +407,6 @@ public class StructuralAnalysis {
         for (String bond : this.richBonds.keySet()) {
             RichStructure richBond = this.richBonds.get(bond);
             if (richBond.getContexts().isEmpty()) {
-                System.out.println(bond);
                 // We assume each bond has two atoms only!
                 this.addConnections(bond, 
                                     ((TreeSet<String>)richBond.getComponents()).first(), 
@@ -443,7 +417,6 @@ public class StructuralAnalysis {
 
 
     private void addConnections(String bond, String atomA, String atomB) {
-        System.out.println(atomA + " " + atomB);
         Set<String> contextAtomA = Sets.intersection
             (this.richAtoms.get(atomA).getContexts(), 
              this.richAtomSets.keySet());
@@ -458,21 +431,86 @@ public class StructuralAnalysis {
             contextAtomB = new HashSet<String>();
             contextAtomB.add(atomB);
         }
-        contextAtomA.forEach(System.out::println);
-        System.out.println("Break");
-        contextAtomB.forEach(System.out::println);
         for (String contextA : contextAtomA) {
             RichStructure richStructureA = this.getRichStructure(contextA);
             for (String contextB : contextAtomB) {
                 RichStructure richStructureB = this.getRichStructure(contextB);
-                System.out.println("Making connections: " + contextA + " " + contextB);
-                
                 richStructureA.getConnections().add
                     (new Connection(Connection.Type.CONNECTINGBOND, bond, contextB));
                 richStructureB.getConnections().add
                     (new Connection(Connection.Type.CONNECTINGBOND, bond, contextA));
             }
         }
+    }
+
+
+    private void sharedComponents() {
+        for (String atomSet : this.richAtomSets.keySet()) {
+            RichAtomSet richAtomSet = (RichAtomSet)this.richAtomSets.get(atomSet);
+            Set<String> internalComponents = Sets.difference
+                (richAtomSet.getComponents(), this.richAtomSets.keySet());
+            System.out.println(internalComponents);
+            for (String component : internalComponents) {
+                RichStructure richComponent = this.getRichStructure(component);
+                Set<String> contexts = Sets.intersection
+                    (richComponent.getContexts(), this.richAtomSets.keySet());
+                for (String context : contexts) {
+                    if (richAtomSet.getSubSystems().contains(context) ||
+                        richAtomSet.getSuperSystems().contains(context) ||
+                        context.equals(atomSet)) {
+                        continue;
+                    }
+                    if(this.richBonds.containsKey(context)) {
+                        richAtomSet.getConnections().add
+                            (new Connection(Connection.Type.SHAREDBOND, component, context));
+                    } else {
+                        richAtomSet.getConnections().add
+                            (new Connection(Connection.Type.SHAREDATOM, component, context));
+                    }
+                }
+            }
+        }
+    }
+
+    
+    /**
+     * Computes the siblings of this atom set if it is a subring.
+     * @param atomSet The given atom set.
+     * @return A list of siblings.
+     */
+    public Set<String> siblingsNEW(RichAtomSet atomSet) {
+        Set<String> result = new HashSet<String>();
+        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+            for (String superSystem : atomSet.getSuperSystems()) {
+                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
+            }
+        }
+        result.remove(atomSet);
+        return result;
+    }
+
+    
+    /**
+     * Computes the siblings of this atom set if it is a subring.
+     * @param atomSet The given atom set.
+     * @return A list of siblings.
+     */
+    public Set<RichStructure> siblings(RichAtomSet atomSet) {
+        Set<String> result = new HashSet<String>();
+        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+            for (String superSystem : atomSet.getSuperSystems()) {
+                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
+            }
+        }
+        result.remove(atomSet.getId());
+        return result.stream()
+            .map(this::getRichAtomSet)
+            .collect(Collectors.toSet());
+    }
+
+    
+    public List<RichAtomSet> getAtomSets() {
+        return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
     }
 
 }
