@@ -7,6 +7,7 @@ import org.openscience.cdk.interfaces.IChemObject;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import org.xmlcml.cml.element.CMLAtomSet;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  *
@@ -38,9 +39,9 @@ public class SreElement extends Element {
         this.appendChild(obj.getID());
     }
 
-    SreElement(CMLAtomSet obj) {
+    SreElement(IAtomContainer obj) {
         this(SreNamespace.Tag.ATOMSET);
-        this.appendChild(obj.getId());
+        this.appendChild(obj.getID());
     }
 
     SreElement(SreNamespace.Tag tag, Element child1, Element child2) {

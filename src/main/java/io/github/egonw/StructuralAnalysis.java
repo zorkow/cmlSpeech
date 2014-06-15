@@ -11,29 +11,29 @@
 //
 package io.github.egonw;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import com.google.common.base.Joiner;
-import java.util.stream.Collectors;
-import org.openscience.cdk.ringsearch.RingSearch;
-import java.util.function.Function;
-import java.util.List;
-import com.google.common.collect.Lists;
-import org.openscience.cdk.ringsearch.AllRingsFinder;
-import org.openscience.cdk.interfaces.IRingSet;
-import java.util.ArrayList;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.ringsearch.SSSRFinder;
-import java.util.Set;
-import java.util.HashSet;
-import com.google.common.collect.Iterables;
-import java.util.Map;
-import com.google.common.collect.Sets;
-import java.util.stream.Stream;
 import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
+import org.openscience.cdk.interfaces.IRingSet;
+import org.openscience.cdk.ringsearch.AllRingsFinder;
+import org.openscience.cdk.ringsearch.RingSearch;
+import org.openscience.cdk.ringsearch.SSSRFinder;
 
 /**
  *
@@ -199,7 +199,7 @@ public class StructuralAnalysis {
                 subRing.getSuperSystems().add(ringId);
                 subRing.getContexts().add(ringId);
                 ring.getSubSystems().add(subRingId);
-                ring.getComponents().add(subRingId);
+                //ring.getComponents().add(subRingId);
             }
         }
     }
@@ -517,12 +517,94 @@ public class StructuralAnalysis {
             .map(this::getRichAtom).collect(Collectors.toList());
     }
 
+
+    SreAnnotations annotations = new SreAnnotations(); //this.molecule);
+
     
-    public SreAnnotations toSRE() {
-        SreAnnotations annotations = new SreAnnotations(this.molecule);
+    public SreAnnotations toSre() {
         
-        
+        for (String structure : this.richAtoms.keySet()) {
+            this.annotations.registerAnnotation(structure, SreNamespace.Tag.ATOM);
+            this.toSreStructure(this.richAtoms.get(structure));
+            // this.toSreConnections(this.richAtoms.get(structure));
+        }
+        for (String structure : this.richBonds.keySet()) {
+            annotations.registerAnnotation(structure, SreNamespace.Tag.BOND);
+            this.toSreStructure(this.richBonds.get(structure));
+        }
+        for (String structure : this.richAtomSets.keySet()) {
+            annotations.registerAnnotation(structure, SreNamespace.Tag.ATOMSET);
+            this.toSreStructure((RichAtomSet)this.richAtomSets.get(structure));
+        }
         annotations.finalize();
         return annotations;
     }
+
+
+    private void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
+        for (String element : set) {
+            this.annotations.appendAnnotation(annotate, tag, this.toSreElement(element));
+        }
+    }
+
+
+    private void toSreConnections(RichStructure structure) {
+        String id = structure.getId();
+        Set<Connection> connections = structure.getConnections();
+        for (Connection connection : connections) {
+            SreNamespace.Tag tag;
+            switch (connection.getType()) {
+            case SHAREDBOND:
+                tag = SreNamespace.Tag.SHAREDBOND;
+                break;
+            case SHAREDATOM:
+                tag = SreNamespace.Tag.SHAREDATOM;
+                break;
+            case CONNECTINGBOND:
+            default:
+                tag = SreNamespace.Tag.CONNECTION;
+                break;
+            }
+            this.annotations.appendAnnotation(id, SreNamespace.Tag.CONNECTIONS,
+                                              new SreElement(tag,
+                                                             this.toSreElement(connection.getConnector()), 
+                                                             this.toSreElement(connection.getConnected())));
+        }
+    }
+
+    private void toSreStructure(RichStructure structure) {
+        String id = structure.getId();
+        this.toSreSet(id, SreNamespace.Tag.CONTEXT, structure.getContexts());
+        this.toSreSet(id, SreNamespace.Tag.COMPONENT, structure.getComponents());
+        this.toSreSet(id, SreNamespace.Tag.EXTERNALBONDS, structure.getExternalBonds());
+        this.toSreConnections(structure);
+    }
+
+
+    private void toSreStructure(RichAtomSet structure) {
+        String id = structure.getId();
+        this.toSreStructure((RichStructure)structure);
+        this.toSreSet(id, SreNamespace.Tag.INTERNALBONDS, 
+                      structure.getComponents().stream().filter(this.richBonds::containsKey).collect(Collectors.toSet()));
+        this.toSreSet(id, SreNamespace.Tag.SUBSYSTEM, structure.getSubSystems());
+        this.toSreSet(id, SreNamespace.Tag.SUPERSYSTEM, structure.getSuperSystems());
+        this.toSreSet(id, SreNamespace.Tag.CONNECTINGATOMS, structure.getConnectingAtoms());
+        //SreNamespace.Tag.CONTEXT;
+
+    }
+
+    private SreElement toSreElement(String name) {
+        if (this.richAtoms.containsKey(name)) {
+            return new SreElement(SreNamespace.Tag.ATOM, name);
+        }
+        if (this.richBonds.containsKey(name)) {
+            return new SreElement(SreNamespace.Tag.BOND, name);
+        }
+        if (this.richAtomSets.containsKey(name)) {
+            return new SreElement(SreNamespace.Tag.ATOMSET, name);
+        }
+        return new SreElement(SreNamespace.Tag.UNKNOWN, name);
+    }
+
+
 }

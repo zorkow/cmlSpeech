@@ -57,6 +57,10 @@ public class Connection implements Comparator<Connection>, Comparable<Connection
         return this.connected;
     }
     
+    public Type getType() {
+        return this.type;
+    }
+    
     public boolean hasType(Type type) {
         return type.equals(this.type);
     }

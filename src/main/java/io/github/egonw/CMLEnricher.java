@@ -130,7 +130,7 @@ public class CMLEnricher {
             
             getAbstractionGraph();
             nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
-            this.doc.getRootElement().appendChild(this.analysis.toSRE());
+            this.doc.getRootElement().appendChild(this.analysis.toSre());
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);

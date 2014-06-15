@@ -40,7 +40,8 @@ public class SreNamespace {
         ANNOTATIONS ("annotations"),
         ANNOTATION ("annotation"),
 
-        COMPONENT ("componentOf"),
+        CONTEXT ("context"),
+        COMPONENT ("component"),
 
         SUBSYSTEM ("subSystem"),
         SUPERSYSTEM ("superSystem"),
@@ -50,9 +51,10 @@ public class SreNamespace {
         CONNECTINGBONDS ("connectingBonds"),
         CONNECTINGATOMS ("connectingAtoms"),
 
-        BOND ("bond"),
         ATOM ("atom"),
         ATOMSET ("atomSet"),
+        BOND ("bond"),
+        UNKNOWN ("unknown"),
 
         DESCRIPTIONS ("descriptions"),
         DESCRIPTION ("description"),

@@ -11,6 +11,7 @@ import nu.xom.XPathContext;
 import java.util.TreeMap;
 import java.util.SortedMap;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import java.util.Set;
 
 
 /**
@@ -36,6 +37,11 @@ public class SreAnnotations extends SreElement {
         }
     }
 
+    public void registerAnnotation(String id, SreNamespace.Tag tag) {
+        this.getNodeToAnnotate(id, tag);
+    };
+        
+
     public void appendAnnotation(IAtom annotate, SreNamespace.Tag tag, Element entry) {
         this.appendAnnotation(this.getNodeToAnnotate(annotate.getID(), SreNamespace.Tag.ATOM), tag, entry);
     }
@@ -48,6 +54,25 @@ public class SreAnnotations extends SreElement {
     public void appendAnnotation(CMLAtomSet annotate, SreNamespace.Tag tag, Element entry) {
         this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOMSET), 
                          tag, entry);
+    }
+
+    public void appendAnnotation(RichAtom annotate, SreNamespace.Tag tag, Element entry) {
+        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOM), tag, entry);
+    }
+
+    public void appendAnnotation(RichBond annotate, SreNamespace.Tag tag, Element entry) {
+        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.BOND), 
+                         tag, entry);
+    }
+
+    public void appendAnnotation(RichAtomSet annotate, SreNamespace.Tag tag, Element entry) {
+        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOMSET), 
+                         tag, entry);
+    }
+
+    public void appendAnnotation(String annotate, SreNamespace.Tag tag, Element entry) {
+        this.appendAnnotation(this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), 
+                              tag, entry);
     }
 
     public void appendAnnotation(Element annotate, SreNamespace.Tag tag, Element entry) {
