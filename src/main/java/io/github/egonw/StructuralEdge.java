@@ -10,9 +10,9 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class StructuralEdge<V> extends DefaultEdge {
     
-    private SreElement label;
+    private String label;
 
-    public StructuralEdge(SreElement label) {
+    public StructuralEdge(String label) {
         super();
         this.label = label;
     }
@@ -26,6 +26,6 @@ public class StructuralEdge<V> extends DefaultEdge {
 
     public String toString() {
         return "(" + this.getSource().toString() + " : " + 
-            this.label.toXML() + " : " + this.getTarget().toString() + ")";
+            this.label + " : " + this.getTarget().toString() + ")";
     }
 }

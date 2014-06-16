@@ -79,7 +79,7 @@ public class StructuralGraphVisualizer {
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg, List<RichAtomSet> majorSystems, Set<IAtom> singletonAtoms) {
+    public void init(SimpleGraph sg, List<RichAtomSet> majorSystems, List<RichAtom> singletonAtoms) {
         ListenableGraph g = new ListenableUndirectedGraph(sg);
 
         m_jgAdapter = new JGraphModelAdapter(g);
@@ -119,7 +119,7 @@ public class StructuralGraphVisualizer {
             double x = 0;
             double y = 0;
             int n = 0;
-            for (IAtom atom : system.container.atoms()) {
+            for (IAtom atom : system.getStructure().atoms()) {
                 Point2d x2d = atom.getPoint2d();
                 x += (x2d.x * scale);
                 y += (x2d.y * scale);
@@ -134,9 +134,10 @@ public class StructuralGraphVisualizer {
     }
     
 
-    private List<NamedPoint> computeAtoms(Set<IAtom> atoms) {
+    private List<NamedPoint> computeAtoms(List<RichAtom> atoms) {
         List<NamedPoint> points = new ArrayList();
-        for (IAtom atom : atoms) {
+        for (RichAtom richAtom : atoms) {
+            IAtom atom = richAtom.getStructure();
             Point2d x2d = atom.getPoint2d();
             NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
             this.minX = Math.min(this.minX, point.getX());
