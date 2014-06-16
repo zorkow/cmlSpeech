@@ -75,6 +75,7 @@ public class CMLEnricher {
     private final Logger logger;
 
     private StructuralAnalysis analysis;
+    private SreOutput sreOutput;
 
     private Document doc;
     private IAtomContainer molecule;
@@ -123,14 +124,15 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             removeExplicitHydrogens();
+            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
+            this.sreOutput = new SreOutput(this.analysis);
             this.appendAtomSets();
             System.out.println(analysis.toString());
             
             getAbstractionGraph();
-            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
-            this.doc.getRootElement().appendChild(this.analysis.toSre());
+            this.doc.getRootElement().appendChild(this.sreOutput.toSre());
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);
