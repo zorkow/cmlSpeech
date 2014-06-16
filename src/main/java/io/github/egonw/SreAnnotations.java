@@ -42,34 +42,6 @@ public class SreAnnotations extends SreElement {
     };
         
 
-    public void appendAnnotation(IAtom annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getID(), SreNamespace.Tag.ATOM), tag, entry);
-    }
-
-    public void appendAnnotation(IBond annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getID(), SreNamespace.Tag.BOND), 
-                         tag, entry);
-    }
-
-    public void appendAnnotation(CMLAtomSet annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOMSET), 
-                         tag, entry);
-    }
-
-    public void appendAnnotation(RichAtom annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOM), tag, entry);
-    }
-
-    public void appendAnnotation(RichBond annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.BOND), 
-                         tag, entry);
-    }
-
-    public void appendAnnotation(RichAtomSet annotate, SreNamespace.Tag tag, Element entry) {
-        this.appendAnnotation(this.getNodeToAnnotate(annotate.getId(), SreNamespace.Tag.ATOMSET), 
-                         tag, entry);
-    }
-
     public void appendAnnotation(String annotate, SreNamespace.Tag tag, Element entry) {
         this.appendAnnotation(this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), 
                               tag, entry);
