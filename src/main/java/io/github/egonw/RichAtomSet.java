@@ -41,8 +41,8 @@ public class RichAtomSet extends RichChemObject {
     public Type type;
     public CMLAtomSet cml;
 
-    private SortedSet<String> sup = new TreeSet<String>(new CMLNameComparator());
-    private SortedSet<String> sub = new TreeSet<String>(new CMLNameComparator());
+    private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
+    private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
     public BiMap<Integer, String> elementPositions = HashBiMap.create();
 
@@ -76,54 +76,18 @@ public class RichAtomSet extends RichChemObject {
 
 
     public SortedSet<String> getSubSystems() {
-        return this.sub;
+        return this.subSystems;
     }
 
 
     public SortedSet<String> getSuperSystems() {
-        return this.sup;
+        return this.superSystems;
     }
 
 
     public SortedSet<String> getConnectingAtoms() {
         return this.connectingAtoms;
     }
-
-
-    // TODO(sorge): Refactor some of these functions!
-    public void addSub(String sub) {
-        this.sub.add(sub);
-    }
-
-    public void addSubs(List<String> subs) {
-        this.sub.addAll(subs);
-    }
-
-    public void addSup(String sup) {
-        this.sup.add(sup);
-    }
-
-    public void addSups(List<String> sups) {
-        this.sup.addAll(sups);
-    }
-
-
-    public boolean isSub(String atomSet) {
-        return this.getComponents().contains(atomSet);
-    };
-
-    public boolean isSub(RichAtomSet atomSet) {
-        return this.isSub(atomSet.getId());
-    };
-
-
-    public boolean isSup(String atomSet) {
-        return this.getContexts().contains(atomSet);
-    };
-
-    public boolean isSup(RichAtomSet atomSet) {
-        return this.isSup(atomSet.getId());
-    };
 
 
     @Override
