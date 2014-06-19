@@ -79,13 +79,7 @@ public class CMLEnricher {
 
     private Document doc;
     private IAtomContainer molecule;
-    private int atomSetCount;
-    private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
-    private SreAnnotations annotations;
-    private List<RichAtomSet> majorSystems;
-    // private List<RichAtomSet> minorSystems;
-    private List<RichAtom> singletonAtoms = new ArrayList<RichAtom>();
     private StructuralGraph structure = new StructuralGraph();
 
     /** 
@@ -119,7 +113,6 @@ public class CMLEnricher {
      * @param fileName File to enrich.
      */
     private void enrichFile(String fileName) {
-        this.atomSetCount = 0;
         try {
             readFile(fileName);
             buildXOM();
@@ -129,12 +122,13 @@ public class CMLEnricher {
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
+
             this.appendAtomSets();
-            System.out.println(analysis.toString());
-            
             this.doc.getRootElement().appendChild(this.sreOutput.annotations());
+
             executor.execute();
             executor.addResults(this.doc, this.logger);
+
             writeFile(fileName);
             executor.shutdown();
         } catch (Exception e) { 
@@ -145,7 +139,8 @@ public class CMLEnricher {
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.majorSystems, this.singletonAtoms);
+            this.structure.visualize(this.analysis.getMajorSystems(), 
+                                     this.analysis.getSingletonAtoms());
         } 
     }
 
@@ -244,7 +239,7 @@ public class CMLEnricher {
         List<RichAtomSet> richSets = this.analysis.getAtomSets();
         for (RichAtomSet richSet : richSets) {
             CMLAtomSet set = richSet.getCML(this.doc);
-            this.atomSets.add(richSet);
+            //            this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             nameMolecule(richSet.getId(), richSet.getStructure());
         }
@@ -275,17 +270,17 @@ public class CMLEnricher {
         // TODO (sorge) Maybe refactor this out of path computation.
         // TODO (sorge) refactor to have major/minor systems and singletons held
         // globally.
-        this.majorSystems = getMajorSystems();
-        this.singletonAtoms = this.analysis.getSingletonAtoms();
-        List<String> msNames = this.majorSystems.stream()
+        List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
+        List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
+        List<String> msNames = majorSystems.stream()
             .map(RichAtomSet::getId)
             .collect(Collectors.toList());
-        msNames.addAll(this.singletonAtoms.stream()
+        msNames.addAll(singletonAtoms.stream()
                        .map(RichAtom::getId)
                        .collect(Collectors.toList()));
         msNames.stream().forEach(ms -> this.structure.addVertex(ms));
-        List<RichStructure> combined = new ArrayList<RichStructure>(this.majorSystems);
-        combined.addAll(this.singletonAtoms);
+        List<RichStructure> combined = new ArrayList<RichStructure>(majorSystems);
+        combined.addAll(singletonAtoms);
 
         for (RichStructure ms : combined) {
             Set<Connection> connections = ms.getConnections();
@@ -305,12 +300,4 @@ public class CMLEnricher {
         }
     }
     
-    
-    private List<RichAtomSet> getMajorSystems() {
-        return this.analysis.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
-            .collect(Collectors.toList());
-    }
-
-
 }

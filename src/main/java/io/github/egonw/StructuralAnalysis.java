@@ -54,6 +54,8 @@ public class StructuralAnalysis {
     private static SortedMap<String, RichStructure> richAtomSets = 
         new TreeMap(new CMLNameComparator());
 
+    private List<RichAtomSet> majorSystems;
+    private List<RichAtomSet> minorSystems;
     private Set<String> singletonAtoms = new HashSet<String>();
 
 
@@ -69,8 +71,10 @@ public class StructuralAnalysis {
         this.aliphaticChains();
         // TODO(sorge): functionalGroups();
         
-        this.computeContexts();
+        this.contexts();
         this.singletonAtoms();
+        this.majorSystems();
+        this.minorSystems();
 
         this.atomSetsAttachments();
         this.connectingBonds();
@@ -310,7 +314,7 @@ public class StructuralAnalysis {
     }
 
 
-    private void computeContexts() {
+    private void contexts() {
         for (String key : this.richAtomSets.keySet()) {
             Set<String> set = this.richAtomSets.get(key).getComponents();
             for (String component : set) {
@@ -319,28 +323,6 @@ public class StructuralAnalysis {
         }
     }
 
-
-
-    /////////////
-
-    private void singletonAtoms() {
-        Set<String> atomSetComponents = new HashSet<String>();
-        this.richAtomSets.values().
-            forEach(as -> atomSetComponents.addAll(as.getComponents()));
-        for (String atom : this.richAtoms.keySet()) {
-            if (!atomSetComponents.contains(atom)) {
-                this.singletonAtoms.add(atom);
-            }
-        }
-    }
-
-
-
-
-
-
-
-    ///////////////////////////////////////////
 
     private void atomSetsAttachments() {
         this.richAtomSets.values().
@@ -536,6 +518,43 @@ public class StructuralAnalysis {
 
     public boolean isAtomSet(String id) {
         return this.richAtomSets.containsKey(id);
+    }
+
+
+
+    private void singletonAtoms() {
+        Set<String> atomSetComponents = new HashSet<String>();
+        this.richAtomSets.values().
+            forEach(as -> atomSetComponents.addAll(as.getComponents()));
+        for (String atom : this.richAtoms.keySet()) {
+            if (!atomSetComponents.contains(atom)) {
+                this.singletonAtoms.add(atom);
+            }
+        }
+    }
+
+
+    private void majorSystems() {
+        this.majorSystems = this.getAtomSets().stream()
+            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
+            .collect(Collectors.toList());
+    }
+    
+
+    public List<RichAtomSet> getMajorSystems() {
+        return this.majorSystems;
+    }
+
+
+    private void minorSystems() {
+        this.minorSystems = this.getAtomSets().stream()
+            .filter(as -> as.type != RichAtomSet.Type.FUSED)
+            .collect(Collectors.toList());
+    }
+    
+
+    public List<RichAtomSet> getMinorSystems() {
+        return this.minorSystems;
     }
 
 
