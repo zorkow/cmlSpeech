@@ -81,18 +81,15 @@ public class CMLEnricher {
     private final Logger logger;
 
     private StructuralAnalysis analysis;
+    private SreOutput sreOutput;
 
     private Document doc;
     private IAtomContainer molecule;
-    private int atomSetCount;
-    private List<RichAtomSet> atomSets = new ArrayList<RichAtomSet>();
     private CactusExecutor executor = new CactusExecutor();
-    private SreAnnotations annotations;
-    private SreDescription description = new SreDescription();
-    private List<RichAtomSet> majorSystems;
-    // private List<RichAtomSet> minorSystems;
-    private List<RichAtom> singletonAtoms = new ArrayList<RichAtom>();
     private StructuralGraph structure = new StructuralGraph();
+
+    private SreDescription description = new SreDescription();
+
 
     /** 
      * Constructor
@@ -125,21 +122,23 @@ public class CMLEnricher {
      * @param fileName File to enrich.
      */
     private void enrichFile(String fileName) {
-        this.atomSetCount = 0;
         try {
             readFile(fileName);
             buildXOM();
             removeExplicitHydrogens();
+            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
-            this.appendAtomSets();
-            System.out.println(analysis.toString());
-            
+            this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
-            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
-            this.doc.getRootElement().appendChild(this.analysis.toSre());
+
+            this.appendAtomSets();
+            this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+
             executor.execute();
             executor.addResults(this.doc, this.logger);
+
+            writeFile(fileName);
             executor.shutdown();
             generateDescription();
             this.doc.getRootElement().appendChild(this.description);
@@ -152,7 +151,8 @@ public class CMLEnricher {
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.majorSystems, this.singletonAtoms);
+            this.structure.visualize(this.analysis.getMajorSystems(), 
+                                     this.analysis.getSingletonAtoms());
         } 
     }
 
@@ -253,7 +253,7 @@ public class CMLEnricher {
         List<RichAtomSet> richSets = this.analysis.getAtomSets();
         for (RichAtomSet richSet : richSets) {
             CMLAtomSet set = richSet.getCML(this.doc);
-            this.atomSets.add(richSet);
+            //            this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             nameMolecule(richSet.getId(), richSet.getStructure());
         }
@@ -282,17 +282,17 @@ public class CMLEnricher {
         // TODO (sorge) Maybe refactor this out of path computation.
         // TODO (sorge) refactor to have major/minor systems and singletons held
         // globally.
-        this.majorSystems = getMajorSystems();
-        this.singletonAtoms = this.analysis.getSingletonAtoms();
-        List<String> msNames = this.majorSystems.stream()
+        List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
+        List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
+        List<String> msNames = majorSystems.stream()
             .map(RichAtomSet::getId)
             .collect(Collectors.toList());
-        msNames.addAll(this.singletonAtoms.stream()
+        msNames.addAll(singletonAtoms.stream()
                        .map(RichAtom::getId)
                        .collect(Collectors.toList()));
         msNames.stream().forEach(ms -> this.structure.addVertex(ms));
-        List<RichStructure> combined = new ArrayList<RichStructure>(this.majorSystems);
-        combined.addAll(this.singletonAtoms);
+        List<RichStructure> combined = new ArrayList<RichStructure>(majorSystems);
+        combined.addAll(singletonAtoms);
 
         for (RichStructure ms : combined) {
             Set<Connection> connections = ms.getConnections();
@@ -312,13 +312,6 @@ public class CMLEnricher {
         }
     }
     
-    
-    private List<RichAtomSet> getMajorSystems() {
-        return this.analysis.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
-            .collect(Collectors.toList());
-    }
-
 
     // TODO (sorge): This needs serious refactoring! Generating descriptions could be 
     // done easier when keeping some of the information in more dedicated data structures!
@@ -334,7 +327,7 @@ public class CMLEnricher {
 
 
     private void descriptionMajorLevel() {
-        this.majorSystems.stream().forEach(this::descriptionMajorSystem);
+        this.analysis.getMajorSystems().stream().forEach(this::descriptionMajorSystem);
     }
 
     private void descriptionMajorSystem(RichAtomSet system) {
@@ -354,7 +347,7 @@ public class CMLEnricher {
              "//cml:atomSet[@id='" + id + "']");
         System.out.println(1);
         systemAnnotation = (Element)SreUtil.xpathQueryElement
-            (this.annotations, 
+            (this.sreOutput.getAnnotations(), 
              ".//sre:annotation[sre:atomSet='" + id + "']");
         System.out.println(2);
         atomNames = this.splitAttribute(systemElement.getValue());
@@ -451,7 +444,7 @@ public class CMLEnricher {
     private List<String> descriptionAtomSetElements(String id) {
         String atoms = SreUtil.xpathValue(this.doc.getRootElement(),
                                           "//cml:atomSet[@id='" + id + "']");
-        List<String> bonds = SreUtil.xpathValueList(this.annotations,
+        List<String> bonds = SreUtil.xpathValueList(this.sreOutput.getAnnotations(),
                                                     "//sre:annotation/sre:atomSet[text()='" + id + 
                                                     "']/following-sibling::sre:internalBonds/sre:bond"
                                                     );
