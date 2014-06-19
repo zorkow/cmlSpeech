@@ -105,12 +105,12 @@ public class StructuralAnalysis {
         String id = getAtomSetId();
         return this.setRichStructure(this.richAtomSets, id, new RichAtomSet(atomSet, type, id));
     }
+
     
     private RichStructure setRichStructure(SortedMap map, String id, RichStructure structure) {
         map.put(id, structure);
         return structure;
     }
-    
 
     public RichStructure getRichStructure(String id) {
         RichStructure structure = this.richAtoms.get(id);
@@ -508,6 +508,14 @@ public class StructuralAnalysis {
     }
 
     
+    public List<RichAtom> getAtoms() {
+        return (List<RichAtom>)(List<?>)new ArrayList(this.richAtoms.values());
+    }
+
+    public List<RichBond> getBonds() {
+        return (List<RichBond>)(List<?>)new ArrayList(this.richBonds.values());
+    }
+
     public List<RichAtomSet> getAtomSets() {
         return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
     }
@@ -528,93 +536,6 @@ public class StructuralAnalysis {
 
     public boolean isAtomSet(String id) {
         return this.richAtomSets.containsKey(id);
-    }
-
-
-    SreAnnotations annotations = new SreAnnotations();
-
-    
-    public SreAnnotations toSre() {
-        
-        for (String structure : this.richAtoms.keySet()) {
-            this.annotations.registerAnnotation(structure, SreNamespace.Tag.ATOM);
-            this.toSreStructure(this.richAtoms.get(structure));
-        }
-        for (String structure : this.richBonds.keySet()) {
-            annotations.registerAnnotation(structure, SreNamespace.Tag.BOND);
-            this.toSreStructure(this.richBonds.get(structure));
-        }
-        for (String structure : this.richAtomSets.keySet()) {
-            annotations.registerAnnotation(structure, SreNamespace.Tag.ATOMSET);
-            this.toSreStructure((RichAtomSet)this.richAtomSets.get(structure));
-        }
-        annotations.finalize();
-        return annotations;
-    }
-
-
-    private void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
-        for (String element : set) {
-            this.annotations.appendAnnotation(annotate, tag, this.toSreElement(element));
-        }
-    }
-
-
-    private void toSreConnections(RichStructure structure) {
-        String id = structure.getId();
-        Set<Connection> connections = structure.getConnections();
-        for (Connection connection : connections) {
-            SreNamespace.Tag tag;
-            switch (connection.getType()) {
-            case SHAREDBOND:
-                tag = SreNamespace.Tag.SHAREDBOND;
-                break;
-            case SHAREDATOM:
-                tag = SreNamespace.Tag.SHAREDATOM;
-                break;
-            case CONNECTINGBOND:
-            default:
-                tag = SreNamespace.Tag.CONNECTION;
-                break;
-            }
-            this.annotations.appendAnnotation(id, SreNamespace.Tag.CONNECTIONS,
-                                              new SreElement(tag,
-                                                             this.toSreElement(connection.getConnector()), 
-                                                             this.toSreElement(connection.getConnected())));
-        }
-    }
-
-    private void toSreStructure(RichStructure structure) {
-        String id = structure.getId();
-        this.toSreSet(id, SreNamespace.Tag.CONTEXT, structure.getContexts());
-        this.toSreSet(id, SreNamespace.Tag.COMPONENT, structure.getComponents());
-        this.toSreSet(id, SreNamespace.Tag.EXTERNALBONDS, structure.getExternalBonds());
-        this.toSreConnections(structure);
-    }
-
-
-    private void toSreStructure(RichAtomSet structure) {
-        String id = structure.getId();
-        this.toSreStructure((RichStructure)structure);
-        this.toSreSet(id, SreNamespace.Tag.INTERNALBONDS, 
-                      structure.getComponents().stream().filter(this::isBond).collect(Collectors.toSet()));
-        this.toSreSet(id, SreNamespace.Tag.SUBSYSTEM, structure.getSubSystems());
-        this.toSreSet(id, SreNamespace.Tag.SUPERSYSTEM, structure.getSuperSystems());
-        this.toSreSet(id, SreNamespace.Tag.CONNECTINGATOMS, structure.getConnectingAtoms());
-    }
-
-
-    private SreElement toSreElement(String name) {
-        if (this.isAtom(name)) {
-            return new SreElement(SreNamespace.Tag.ATOM, name);
-        }
-        if (this.isBond(name)) {
-            return new SreElement(SreNamespace.Tag.BOND, name);
-        }
-        if (this.isAtomSet(name)) {
-            return new SreElement(SreNamespace.Tag.ATOMSET, name);
-        }
-        return new SreElement(SreNamespace.Tag.UNKNOWN, name);
     }
 
 
