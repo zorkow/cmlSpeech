@@ -128,11 +128,11 @@ public class CMLEnricher {
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
+            getAbstractionGraph();
             this.appendAtomSets();
             System.out.println(analysis.toString());
             
-            getAbstractionGraph();
-            this.doc.getRootElement().appendChild(this.sreOutput.toSre());
+            this.doc.getRootElement().appendChild(this.sreOutput.annotations());
             executor.execute();
             executor.addResults(this.doc, this.logger);
             writeFile(fileName);

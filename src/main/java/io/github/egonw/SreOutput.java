@@ -28,7 +28,7 @@ public class SreOutput {
         this.analysis = analysis;
     }
 
-    public SreAnnotations toSre() {
+    public SreAnnotations annotations() {
         
         for (RichAtom structure : this.analysis.getAtoms()) {
             this.annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.ATOM);
