@@ -88,8 +88,6 @@ public class CMLEnricher {
     private CactusExecutor executor = new CactusExecutor();
     private StructuralGraph structure = new StructuralGraph();
 
-    private SreDescription description = new SreDescription();
-
 
     /** 
      * Constructor
@@ -133,15 +131,16 @@ public class CMLEnricher {
             getAbstractionGraph();
 
             this.appendAtomSets();
-            this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+            //this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
 
             executor.execute();
             executor.addResults(this.doc, this.logger);
 
+
             writeFile(fileName);
             executor.shutdown();
-            generateDescription();
-            this.doc.getRootElement().appendChild(this.description);
+            this.sreOutput.computeDescriptions(this.doc);
+            this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
@@ -313,164 +312,5 @@ public class CMLEnricher {
     }
     
 
-    // TODO (sorge): This needs serious refactoring! Generating descriptions could be 
-    // done easier when keeping some of the information in more dedicated data structures!
-    
-    private void generateDescription() {
-        // Currently using fixed levels!
-        descriptionTopLevel();
-        //descriptionMajorLevel();
-        //        this.description.addDescription(2, "Aliphatic Chain", descriptionAtomSetElements("as1"));
-        descriptionMajorLevel();
-        this.description.finalize();
-    }
-
-
-    private void descriptionMajorLevel() {
-        this.analysis.getMajorSystems().stream().forEach(this::descriptionMajorSystem);
-    }
-
-    private void descriptionMajorSystem(RichAtomSet system) {
-        // This is what we need.
-        Element systemElement;
-        Element systemAnnotation;
-        List<Element> atoms = new ArrayList<Element>();
-        List<String> atomNames = new ArrayList<String>();
-        List<Element> bonds = new ArrayList<Element>();
-        List<String> bondNames = new ArrayList<String>();
-        List<Element> connections = new ArrayList<Element>(); 
-        
-        // Filling things in.
-        String id = system.getId();
-        systemElement = (Element)SreUtil.xpathQueryElement
-            (this.doc.getRootElement(), 
-             "//cml:atomSet[@id='" + id + "']");
-        System.out.println(1);
-        systemAnnotation = (Element)SreUtil.xpathQueryElement
-            (this.sreOutput.getAnnotations(), 
-             ".//sre:annotation[sre:atomSet='" + id + "']");
-        System.out.println(2);
-        atomNames = this.splitAttribute(systemElement.getValue());
-        System.out.println(3);
-        bondNames = SreUtil.xpathValueList(systemAnnotation,
-                                           ".//sre:internalBonds/sre:bond");
-        System.out.println(4);
-        for (String atomName : atomNames) {
-            atoms.add((Element)SreUtil.xpathQueryElement
-                      (this.doc.getRootElement(), 
-                       "//cml:atom[@id='" + atomName + "']"));
-        }
-        System.out.println(5);
-        for (String bondName : bondNames) {
-            bonds.add((Element)SreUtil.xpathQueryElement
-                      (this.doc.getRootElement(), 
-                       "//cml:bond[@id='" + bondName + "']"));
-        }
-        System.out.println(6);
-        Nodes aux = SreUtil.xpathQuery(systemAnnotation, ".//sre:connection");
-        for (int i = 0; i < aux.size(); i++) {
-            connections.add((Element)aux.get(i));
-        } 
-        // System.out.println(systemElement.toXML());
-        System.out.println(systemAnnotation.toXML());
-        // atomNames.stream().forEach(System.out::println);
-        bondNames.stream().forEach(System.out::println);
-        // bonds.stream().forEach(x -> System.out.println(x.toXML()));
-        // atoms.stream().forEach(x -> System.out.println(x.toXML()));
-        connections.stream().forEach(x -> System.out.println(x.toXML()));
-
-        switch (system.type) {
-        case ALIPHATIC:
-            descriptionAliphaticChain
-                (system, systemElement, systemAnnotation, atoms, atomNames, bonds, bondNames, connections);
-            // descriptionAliphaticChain(system, (Element)systemElement.get(0));
-            break;
-        }
-    }
-
-    private void descriptionAliphaticChain(RichAtomSet system,
-                                           Element systemElement,
-                                           Element systemAnnotation,
-                                           List<Element> atoms,
-                                           List<String> atomNames,
-                                           List<Element> bonds,
-                                           List<String> bondNames,
-                                           List<Element> connections) {
-        String length = SreUtil.xpathValue(systemElement, "@size");
-        String content = describeName(systemElement);
-        String specialBonds = getMultiBonds(system, bonds);
-        List<String> nextSystems = new ArrayList<String>();
-        String substitutions = getSubstitutions(system, bonds, connections, nextSystems);
-        this.description.addDescription(2, "Aliphatic Chain of size " + length, 
-                                        atomNames, bondNames);
-    };
-
-    
-    private String getSubstitutions(RichAtomSet system, List<Element> bonds, 
-                                    List<Element> connections, List<String> nextSystems) {
-        return "";
-    }
-
-
-    private String getMultiBonds(RichAtomSet system, List<Element> bonds) {
-        system.printConnections();
-        Map<Integer, String> bounded = new TreeMap<Integer, String>();
-        for (Element bond : bonds) {
-            String order = bond.getAttribute("order").getValue();
-            System.out.println(order);
-            
-            if (order.equals("S")) {
-                continue;
-            }
-            List<String> atoms = splitAttribute(bond.getAttribute("atomRefs2").getValue());
-            System.out.println(atoms.get(0));
-            System.out.println(atoms.get(1));
-            Integer atomA = system.getAtomPosition(atoms.get(0));
-            Integer atomB = system.getAtomPosition(atoms.get(1));
-            System.out.println("here" + atomA + atomB);
-            if (atomA > atomB) {
-                Integer aux = atomA;
-                atomA = atomB;
-                atomB = aux;
-            }
-            bounded.put(atomA, ((order.equals("D")) ? "Double" : "Triple") + 
-                        " bond between position " + atomA + " and " + atomB + ".");
-        }
-        Joiner joiner = Joiner.on(" ");
-        return joiner.join(bounded.values());
-    }
-
-
-    private List<String> descriptionAtomSetElements(String id) {
-        String atoms = SreUtil.xpathValue(this.doc.getRootElement(),
-                                          "//cml:atomSet[@id='" + id + "']");
-        List<String> bonds = SreUtil.xpathValueList(this.sreOutput.getAnnotations(),
-                                                    "//sre:annotation/sre:atomSet[text()='" + id + 
-                                                    "']/following-sibling::sre:internalBonds/sre:bond"
-                                                    );
-        bonds.add(0, atoms);
-        bonds.stream().forEach(System.out::println);
-        return bonds;
-    };
-
-    private void descriptionTopLevel() {
-        String content = describeName(this.doc.getRootElement());
-        List<String> elements = SreUtil.xpathValueList(this.doc.getRootElement(), 
-                                                         "//cml:atom/@id | //cml:bond/@id");
-        this.description.addDescription(3, content, elements);
-    }
-
-    private String describeName(Element element) {
-        return SreUtil.xpathValue(element, "//@sre:name | //@sre:iupac | //@sre:formula");
-    }
-
-
-    private List<String> splitAttribute(String attribute) {
-        try {
-            return Arrays.asList(attribute.split("\\s+"));
-        } catch (PatternSyntaxException ex) {
-            return new ArrayList<String>();
-        }
-    }
 }
 

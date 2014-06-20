@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  *
@@ -47,8 +49,8 @@ public class RichAtomSet extends RichChemObject {
     public BiMap<Integer, String> elementPositions = HashBiMap.create();
 
     // To remove!
-    public SortedSet<IAtom> atomConnections = new TreeSet<IAtom>();
-    public SortedSet<IAtom> setConnections = new TreeSet<IAtom>();
+    public Set<IAtom> atomConnections = new HashSet<IAtom>();
+    public Set<IAtom> setConnections = new HashSet<IAtom>();
 
 
     private RichAtomSet (IAtomContainer container) {
@@ -58,6 +60,7 @@ public class RichAtomSet extends RichChemObject {
     private RichAtomSet (IAtomContainer container, Type type) {
         super(container);
         this.type = type;
+        this.computePositions();
     }
 
     public RichAtomSet (IAtomContainer container, Type type, String id) {
@@ -71,6 +74,7 @@ public class RichAtomSet extends RichChemObject {
             this.getComponents().add(bond.getID());
         }
 
+        this.computePositions();
         this.makeCML();
     }
 
@@ -183,7 +187,7 @@ public class RichAtomSet extends RichChemObject {
                 walkRing(connected, ++count, visited);
                 return;
             }
-        } 
+        }
     }
 
 

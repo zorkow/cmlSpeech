@@ -95,6 +95,10 @@ public class StructuralAnalysis {
         return this.richBonds.get(id);
     }
 
+    public RichStructure getRichBond(IBond bond) {
+        return this.getRichBond(bond.getID());
+    }
+
     private RichStructure setRichBond(IBond bond) {
         return this.setRichStructure(this.richBonds, bond.getID(), new RichBond(bond));
     }

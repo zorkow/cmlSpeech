@@ -32,6 +32,21 @@ public class SreDescription extends SreElement {
         super(SreNamespace.Tag.DESCRIPTIONS);
     }
 
+
+    public Element makeContent(String content) {
+        return new SreElement(SreNamespace.Tag.CONTENT, content);
+    }
+    
+
+    public void addDescription(Integer level, String content, Element element) {
+        Element subdesc = new SreElement(SreNamespace.Tag.SUBDESC);
+        subdesc.appendChild(makeContent(content));
+        subdesc.appendChild(element);
+        Attribute levelAtt = new SreAttribute(SreNamespace.Attribute.LEVEL.attribute, level.toString());
+        subdesc.addAttribute(levelAtt);
+        addDescription(level, subdesc);
+    }
+
     public void addDescription(Integer level, String content, List<String> elements) {
         Element subdesc = new SreElement(SreNamespace.Tag.SUBDESC);
         Text text = new Text(content);

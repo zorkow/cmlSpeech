@@ -65,6 +65,8 @@ public class SreNamespace {
         DESCRIPTIONS ("descriptions"),
         DESC ("desc"),
         SUBDESC ("subdesc"),
+        CONTENT ("content"),
+
         ;
 
         public final String tag;
