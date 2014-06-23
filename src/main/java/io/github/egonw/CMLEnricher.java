@@ -129,11 +129,9 @@ public class CMLEnricher {
             if (!this.cli.cl.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
-                writeFile(fileName);
                 executor.shutdown();
-            } else {
-                writeFile(fileName);
             }
+            writeFile(fileName);
         } catch (Exception e) { 
             // TODO: Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName +
