@@ -133,12 +133,11 @@ public class CMLEnricher {
             this.appendAtomSets();
             //this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
 
-            executor.execute();
-            executor.addResults(this.doc, this.logger);
-
-
-            writeFile(fileName);
-            executor.shutdown();
+            if (!this.cli.cl.hasOption("nonih")) {
+                executor.execute();
+                executor.addResults(this.doc, this.logger);
+                executor.shutdown();
+            }
             this.sreOutput.computeDescriptions(this.doc);
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);

@@ -39,7 +39,8 @@ public class Cli {
         options.addOption("s", "subrings", false, "Compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
-
+        options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
+        
         CommandLineParser parser = new BasicParser();
         try {
             this.cl = parser.parse(options, args);
