@@ -145,38 +145,38 @@ public class SreOutput {
 
     public void computeDescriptions(Document doc) {
         // Currently using fixed levels!
-        descriptionTopLevel(doc.getRootElement());
-        descriptionMajorLevel();
-        //        this.description.addDescription(2, "Aliphatic Chain", descriptionAtomSetElements("as1"));
-        // descriptionMajorLevel();
+        describeTopLevel(doc.getRootElement());
+        describeMajorLevel();
+        //        this.description.addDescription(2, "Aliphatic Chain", describeAtomSetElements("as1"));
+        // describeMajorLevel();
         this.description.finalize();
     }
 
 
-    private void descriptionMajorLevel() {
-        this.analysis.getMinorSystems().stream().forEach(this::descriptionAtomSet);
+    private void describeMajorLevel() {
+        this.analysis.getMinorSystems().stream().forEach(this::describeAtomSet);
     }
 
-    private void descriptionAtomSet(RichAtomSet system) {
+    private void describeAtomSet(RichAtomSet system) {
         switch (system.type) {
         case ALIPHATIC:
-            descriptionAliphaticChain(system);
-                // descriptionAliphaticChain(system, (Element)systemElement.get(0));
+            describeAliphaticChain(system);
+                // describeAliphaticChain(system, (Element)systemElement.get(0));
             break;
         }
     }
 
 
-    private void descriptionAliphaticChain(RichAtomSet system) {
+    private void describeAliphaticChain(RichAtomSet system) {
         String chain = "Aliphatic chain of length " + system.getStructure().getAtomCount();
-        chain += " " + this.descriptionMultiBonds(system);
-        chain += " " + this.descriptionSubstitutions(system);
+        chain += " " + this.describeMultiBonds(system);
+        chain += " " + this.describeSubstitutions(system);
         this.description.addDescription(2, chain,
-                                        this.descriptionComponents(system));
+                                        this.describeComponents(system));
     }
  
 
-   private String descriptionSubstitutions(RichAtomSet system) {
+   private String describeSubstitutions(RichAtomSet system) {
         SortedSet<Integer> subst = new TreeSet<Integer>();
         for (String atom : system.getConnectingAtoms()) {
             subst.add(system.getAtomPosition(atom));
@@ -194,16 +194,11 @@ public class SreOutput {
 
 
 
-    private String descriptionMultiBonds(RichAtomSet system) {
+    private String describeMultiBonds(RichAtomSet system) {
         Map<Integer, String> bounded = new TreeMap<Integer, String>();
         for (IBond bond : system.getStructure().bonds()) {
-            String order = "";
-            switch(bond.getOrder()) {
-            case SINGLE:
-                continue;
-            default:
-                order = bond.getOrder().toString().toLowerCase();
-            }
+            String order = this.describeBondOrder(bond);
+            // TODO (sorge) Make this one safer!
             Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
             Integer atomA = system.getAtomPosition(atoms.next());
             Integer atomB = system.getAtomPosition(atoms.next());
@@ -220,7 +215,16 @@ public class SreOutput {
     }
 
 
-    // private List<String> descriptionAtomSetElements(String id) {
+    private String describeBondOrder(IBond bond) {
+        switch(bond.getOrder()) {
+        case SINGLE:
+            return "";
+        default:
+            return bond.getOrder().toString().toLowerCase();
+        }
+    }
+
+    // private List<String> describeAtomSetElements(String id) {
     //     String atoms = SreUtil.xpathValue(this.getAnnotations(),
     //                                       "//cml:atomSet[@id='" + id + "']");
     //     List<String> bonds = SreUtil.xpathValueList(this.getAnnotations(),
@@ -232,12 +236,12 @@ public class SreOutput {
     //     return bonds;
     // };
 
-   private SreElement descriptionComponents(RichStructure system) {
-       return this.descriptionComponents
+   private SreElement describeComponents(RichStructure system) {
+       return this.describeComponents
            (Lists.newArrayList(system.getComponents()));
     }
 
-    private SreElement descriptionComponents(List<String> components) {
+    private SreElement describeComponents(List<String> components) {
         SreElement element = new SreElement(SreNamespace.Tag.COMPONENT);
         for (String component : components) {
             element.appendChild(this.toSreElement(component));
@@ -245,11 +249,11 @@ public class SreOutput {
         return element;
     }
 
-    private void descriptionTopLevel(Element doc) {
+    private void describeTopLevel(Element doc) {
         String content = describeName(doc);
         List<String> elements = SreUtil.xpathValueList(doc, 
                                                        "//cml:atom/@id | //cml:bond/@id");
-        this.description.addDescription(1, content, this.descriptionComponents(elements));
+        this.description.addDescription(1, content, this.describeComponents(elements));
     }
 
     private String describeName(Element element) {
