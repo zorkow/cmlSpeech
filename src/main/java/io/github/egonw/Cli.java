@@ -36,10 +36,11 @@ public class Cli {
 	options.addOption("l", "log", true, "Log File");
 	options.addOption("x", "error", true, "Debug File");
 	// Processing Options
+        options.addOption("a", "ann", false, "Include annotations in CML output");
+        options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
         options.addOption("s", "subrings", false, "Compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
-        options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
         
         CommandLineParser parser = new BasicParser();
         try {

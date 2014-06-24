@@ -131,8 +131,9 @@ public class CMLEnricher {
             getAbstractionGraph();
 
             this.appendAtomSets();
-            this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
-
+            if (this.cli.cl.hasOption("ann")) {
+                this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+            }
             if (!this.cli.cl.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
@@ -142,7 +143,7 @@ public class CMLEnricher {
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);
         } catch (Exception e) { 
-            // TODO: Meaningful exception handling by exceptions/functions.
+            // TODO (sorge) Meaningful exception handling by exceptions/functions.
             this.logger.error("Something went wrong when parsing File " + fileName +
                               ":" + e.getMessage() + "\n");
             e.printStackTrace();
