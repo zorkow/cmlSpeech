@@ -392,39 +392,58 @@ public class StructuralAnalysis {
     private void connectingBonds() {
         for (String bond : this.richBonds.keySet()) {
             RichStructure richBond = this.richBonds.get(bond);
+            String first = ((TreeSet<String>)richBond.getComponents()).first();
+            String last = ((TreeSet<String>)richBond.getComponents()).last();
             if (richBond.getContexts().isEmpty()) {
                 // We assume each bond has two atoms only!
-                this.addConnections(bond, 
-                                    ((TreeSet<String>)richBond.getComponents()).first(), 
-                                    ((TreeSet<String>)richBond.getComponents()).last());
+                this.addSetConnections(bond, first, last);
             }
+            this.addConnectingBond(this.getRichStructure(first), bond, last);
+            this.addConnectingBond(this.getRichStructure(last), bond, first);
         }
     }
 
+    
+    private void addConnectingBond(RichStructure structure, String bond, String connected) {
+        structure.getConnections().add
+            (new Connection(Connection.Type.CONNECTINGBOND, bond, connected));
+    }
 
-    private void addConnections(String bond, String atomA, String atomB) {
-        Set<String> contextAtomA = Sets.intersection
-            (this.richAtoms.get(atomA).getContexts(), 
+    /**
+     * Creates the context cloud for an atom, that is the list of all atom sets
+     * in its context.
+     * @param atom The input atom.
+     * @return The resulting context cloud.
+     */
+    private Set<String> contextCloud(String atom) {
+        Set<String> contextAtom = Sets.intersection
+            (this.richAtoms.get(atom).getContexts(), 
              this.richAtomSets.keySet());
-        Set<String> contextAtomB = Sets.intersection
-            (this.richAtoms.get(atomB).getContexts(), 
-             this.richAtomSets.keySet());
-        if (contextAtomA.isEmpty()) {
-            contextAtomA = new HashSet<String>();
-            contextAtomA.add(atomA);
+        if (contextAtom.isEmpty()) {
+            contextAtom = new HashSet<String>();
+            contextAtom.add(atom);
         }
-        if (contextAtomB.isEmpty()) {
-            contextAtomB = new HashSet<String>();
-            contextAtomB.add(atomB);
-        }
+        return contextAtom;
+    }
+    
+
+    /**
+     * Adds connections atom set structures.
+     * @param bond The bond.
+     * @param atomA The first atom in the bond.
+     * @param atomB The second atom in the bond.
+     */
+    private void addSetConnections(String bond, String atomA, String atomB) {
+        Set<String> contextAtomA = this.contextCloud(atomA);
+        Set<String> contextAtomB = this.contextCloud(atomB);
         for (String contextA : contextAtomA) {
+            System.out.println(contextA);
             RichStructure richStructureA = this.getRichStructure(contextA);
             for (String contextB : contextAtomB) {
+                System.out.println(contextB);
                 RichStructure richStructureB = this.getRichStructure(contextB);
-                richStructureA.getConnections().add
-                    (new Connection(Connection.Type.CONNECTINGBOND, bond, contextB));
-                richStructureB.getConnections().add
-                    (new Connection(Connection.Type.CONNECTINGBOND, bond, contextA));
+                this.addConnectingBond(richStructureA, bond, contextB);
+                this.addConnectingBond(richStructureB, bond, contextA);
             }
         }
     }
@@ -538,6 +557,8 @@ public class StructuralAnalysis {
     }
 
 
+    /** Compute the major systems, i.e., all systems that are not part of a
+     * larger supersystem. */
     private void majorSystems() {
         this.majorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
@@ -545,11 +566,17 @@ public class StructuralAnalysis {
     }
     
 
+    /**
+     * Returns the major systems.
+     * @return List of major systems.
+     */
     public List<RichAtomSet> getMajorSystems() {
         return this.majorSystems;
     }
 
 
+    /** Compute the minor systems, i.e., all systems that have no non-atomic
+     * sub-system. */
     private void minorSystems() {
         this.minorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.FUSED)
@@ -557,6 +584,10 @@ public class StructuralAnalysis {
     }
     
 
+    /**
+     * Returns the minor systems.
+     * @return List of minor systems.
+     */
     public List<RichAtomSet> getMinorSystems() {
         return this.minorSystems;
     }
