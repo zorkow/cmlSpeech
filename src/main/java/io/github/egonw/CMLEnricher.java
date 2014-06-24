@@ -131,7 +131,7 @@ public class CMLEnricher {
             getAbstractionGraph();
 
             this.appendAtomSets();
-            //this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+            this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
 
             if (!this.cli.cl.hasOption("nonih")) {
                 executor.execute();

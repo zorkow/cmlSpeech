@@ -171,6 +171,7 @@ public class SreOutput {
         chain += " " + this.describeSubstitutions(system);
         this.description.addDescription(2, chain,
                                         this.describeComponents(system));
+        this.describeAliphaticChainStepwise(system);
     }
  
 
@@ -195,12 +196,12 @@ public class SreOutput {
     private String describeMultiBonds(RichAtomSet system) {
         Map<Integer, String> bounded = new TreeMap<Integer, String>();
         for (IBond bond : system.getStructure().bonds()) {
-            String order = this.describeBondOrder(bond);
+            String order = this.describeBond(bond, true);
+            if (order.equals("")) { continue; }
             // TODO (sorge) Make this one safer!
             Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
             Integer atomA = system.getAtomPosition(atoms.next());
             Integer atomB = system.getAtomPosition(atoms.next());
-            System.out.println("here" + atomA + atomB);
             if (atomA > atomB) {
                 Integer aux = atomA;
                 atomA = atomB;
@@ -213,24 +214,88 @@ public class SreOutput {
     }
 
 
-    private String describeConnection() {
-
-    }
-    
-    private String describeBondOrder(IBond bond) {
-        switch(bond.getOrder()) {
-        case SINGLE:
-            return "";
-        default:
-            return bond.getOrder().toString().toLowerCase();
+    private void describeAliphaticChainStepwise(RichAtomSet system) {
+        for (int i = 1; i <= system.elementPositions.size(); i++) {            
+            this.description.addDescription
+                (3,
+                 this.describeAtomConnections(system, system.getPositionAtom(i)),
+                 this.describeComponents(system));
         }
     }
 
+
+    private String describeAtomConnections(RichAtomSet system, String atom) {
+        return this.describeAtomConnections(system, (RichAtom)this.analysis.getRichAtom(atom));
+    }
+        
+
+    private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
+        List<String> result = new ArrayList<String>();
+        for (Connection connection : atom.getConnections()) {
+            System.out.println("this is a connection:" + connection.toString());
+            result.add(describeConnectingBond(system, connection));
+        }
+        Joiner joiner = Joiner.on(" ");
+        return describeAtomPosition(system, atom) + " "
+            + this.describeHydrogenBonds(atom.getStructure()) + " "
+            + joiner.join(result);
+    }
+
+    private String describeConnectingBond(RichAtomSet system, Connection connection) {
+        // TODO (sorge) Make this one safer!
+        if (connection.getType() != Connection.Type.CONNECTINGBOND) {
+            throw(new SreException("Wrong connection type in structure."));
+        }
+        String bond = this.describeBond(((RichBond)this.analysis.
+                                         getRichBond(connection.getConnector())).getStructure(), false);
+        String atom = this.describeAtomPosition(system, connection.getConnected());
+        return bond + " bonded to " + atom;
+    }
+
+
+    private String describeBond(IBond bond, Boolean ignoreSingle) {
+        IBond.Order order = bond.getOrder();
+        if (ignoreSingle && order == IBond.Order.SINGLE) {
+            return "";
+        } else {
+            return describeBondOrder(order);
+        }
+    }
+
+
+    private String describeBondOrder(IBond.Order bond) {
+        return bond.toString().toLowerCase();
+    }
+
+
+    // TODO (sorge) Combine the following two methods.
+    private String describeAtomPosition(RichAtomSet system, RichAtom atom) {
+        Integer position = system.getAtomPosition(atom.getId());
+        return describeAtom(atom) + " " + position.toString();
+    }
+
+
+    private String describeAtomPosition(RichAtomSet system, String atom) {
+        Integer position = system.getAtomPosition(atom);
+        return describeAtom((RichAtom)this.analysis.getRichAtom(atom)) 
+            + " " + position.toString();
+    }
+
+
+    private String describeAtom(RichAtom atom) {
+        return describeAtom(atom.getStructure());
+    }
 
     private String describeAtom(IAtom atom) {
         return this.atomTable.lookup(atom);
     }
 
+
+    private String describeHydrogenBonds(IAtom atom) {
+        String hydrogens = describeHydrogens(atom);
+        return hydrogens.equals("") ? "" :  
+            "bonded to " + hydrogens;
+    }
 
     private String describeHydrogens(IAtom atom) {
         Integer count = atom.getImplicitHydrogenCount();
