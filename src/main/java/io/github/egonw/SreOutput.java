@@ -147,8 +147,6 @@ public class SreOutput {
         // Currently using fixed levels!
         describeTopLevel(doc.getRootElement());
         describeMajorLevel();
-        //        this.description.addDescription(2, "Aliphatic Chain", describeAtomSetElements("as1"));
-        // describeMajorLevel();
         this.description.finalize();
     }
 
@@ -215,6 +213,10 @@ public class SreOutput {
     }
 
 
+    private String describeConnection() {
+
+    }
+    
     private String describeBondOrder(IBond bond) {
         switch(bond.getOrder()) {
         case SINGLE:
@@ -223,6 +225,25 @@ public class SreOutput {
             return bond.getOrder().toString().toLowerCase();
         }
     }
+
+
+    private String describeAtom(IAtom atom) {
+        return this.atomTable.lookup(atom);
+    }
+
+
+    private String describeHydrogens(IAtom atom) {
+        Integer count = atom.getImplicitHydrogenCount();
+        switch (count) {
+        case 0:
+            return "";
+        case 1:
+            return count.toString() + " hydrogen";
+        default:
+            return count.toString() + " hydrogens";
+        }
+    }
+
 
     // private List<String> describeAtomSetElements(String id) {
     //     String atoms = SreUtil.xpathValue(this.getAnnotations(),
