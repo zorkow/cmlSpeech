@@ -543,7 +543,7 @@ public class StructuralAnalysis {
         Set<String> result = new HashSet<String>();
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             for (String superSystem : atomSet.getSuperSystems()) {
-                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
+                result.addAll(this.getRichAtomSet(superSystem).getSubSystems());
             }
         }
         result.remove(atomSet.getId());
@@ -646,8 +646,8 @@ public class StructuralAnalysis {
                 return -1;
             }
             // Now both should be rich atom sets!
-            RichAtomSet structureA = (RichAtomSet)StructuralAnalysis.this.getRichAtomSet(vertexA);
-            RichAtomSet structureB = (RichAtomSet)StructuralAnalysis.this.getRichAtomSet(vertexB);
+            RichAtomSet structureA = StructuralAnalysis.this.getRichAtomSet(vertexA);
+            RichAtomSet structureB = StructuralAnalysis.this.getRichAtomSet(vertexB);
             RichAtomSet.Type typeA = structureA.getType();
             RichAtomSet.Type typeB = structureB.getType();
             if (typeA == RichAtomSet.Type.ALIPHATIC && 
@@ -662,13 +662,8 @@ public class StructuralAnalysis {
              typeA == RichAtomSet.Type.SMALLEST)) {
             return -1;
         }
-        // Add functional group cases!
+        // (TODO) sorge: Add functional group cases!
         
-        System.out.println(structureA.getId() + ": " + structureA.getStructure().getAtomCount() );
-        System.out.println(structureB.getId() + ": " + structureB.getStructure().getAtomCount() );
-        System.out.println(
-                           Integer.compare(structureA.getStructure().getAtomCount(), 
-                                           structureB.getStructure().getAtomCount()));
         return -1 * Integer.compare(structureA.getStructure().getAtomCount(), 
                                     structureB.getStructure().getAtomCount());
         }
