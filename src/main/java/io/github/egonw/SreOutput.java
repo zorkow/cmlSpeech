@@ -225,7 +225,7 @@ public class SreOutput {
 
 
     private String describeAtomConnections(RichAtomSet system, String atom) {
-        return this.describeAtomConnections(system, (RichAtom)this.analysis.getRichAtom(atom));
+        return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
     }
         
 
@@ -246,8 +246,8 @@ public class SreOutput {
         if (connection.getType() != Connection.Type.CONNECTINGBOND) {
             throw(new SreException("Wrong connection type in structure."));
         }
-        String bond = this.describeBond(((RichBond)this.analysis.
-                                         getRichBond(connection.getConnector())).getStructure(), false);
+        String bond = this.describeBond(this.analysis.
+                                        getRichBond(connection.getConnector()).getStructure(), false);
         String atom = this.describeAtomPosition(system, connection.getConnected());
         return bond + " bonded to " + atom;
     }
@@ -279,7 +279,7 @@ public class SreOutput {
     private String describeAtomPosition(RichAtomSet system, String atom) {
         Integer position = system.getAtomPosition(atom);
         return position == null ? "" :
-            describeAtom((RichAtom)this.analysis.getRichAtom(atom)) 
+            describeAtom(this.analysis.getRichAtom(atom)) 
             + " " + position.toString();
     }
 
