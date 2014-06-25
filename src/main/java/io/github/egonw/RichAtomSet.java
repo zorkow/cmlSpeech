@@ -65,6 +65,11 @@ public class RichAtomSet extends RichChemObject {
     }
 
 
+    public Type getType() {
+        return this.type;
+    }
+    
+
     public SortedSet<String> getSubSystems() {
         return this.subSystems;
     }
