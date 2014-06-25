@@ -34,6 +34,11 @@ import org.openscience.cdk.interfaces.IRingSet;
 import org.openscience.cdk.ringsearch.AllRingsFinder;
 import org.openscience.cdk.ringsearch.RingSearch;
 import org.openscience.cdk.ringsearch.SSSRFinder;
+import java.util.Stack;
+import java.util.Comparator;
+import java.util.Collections;
+import org.jgrapht.alg.NeighborIndex;
+import java.util.SortedSet;
 
 /**
  *
@@ -57,6 +62,8 @@ public class StructuralAnalysis {
     private List<RichAtomSet> majorSystems;
     private List<RichAtomSet> minorSystems;
     private Set<String> singletonAtoms = new HashSet<String>();
+
+    private List<String> majorPath = new ArrayList<String>();
 
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
@@ -592,5 +599,79 @@ public class StructuralAnalysis {
         return this.minorSystems;
     }
 
+
+    /**
+     * Computes the major path through the molecule.
+     * @param graph The abstraction graph for the molecule.
+     */
+    public void majorPath (StructuralGraph graph) {
+        NeighborIndex index = new NeighborIndex(graph);
+        Comparator<String> comparator = new RichStructureCompare();
+        Stack<String> rest = new Stack<String>();
+        List<String> vertices = new ArrayList<String>(graph.vertexSet());
+        Collections.sort(vertices, comparator);
+        List<String> visited = new ArrayList<String>();
+        rest.push(vertices.get(0));
+        while (!rest.empty()) {
+            String current = rest.pop();
+            if (visited.contains(current)) {
+                continue;
+            }
+            this.majorPath.add(current);
+            vertices = new ArrayList<String>(index.neighborsOf(current));
+            Collections.sort(vertices, comparator);
+            for (int i = vertices.size() - 1; i >= 0; i--) {
+                rest.push(vertices.get(i));
+            }
+            visited.add(current);
+        }
+    }
+
+    // Comparison in terms of "interestingness". The most interesting is sorted to the front.
+    // TODO (sorge): Maybe reverse this?
+    public class RichStructureCompare implements Comparator<String> {
+
+        // TODO (sorge): Rationalise this code!
+        //private Boolean moreInteresting(String vertexA, String vertexB) {
+        public int compare(String vertexA, String vertexB) {
+            if (vertexB.equals("")) {
+                return -1;
+            }
+            if (StructuralAnalysis.this.isAtom(vertexA)) {
+                return 1;
+            }
+            // TODO (sorge): Take Atom weight into account!
+            if (StructuralAnalysis.this.isAtom(vertexB)) {
+                return -1;
+            }
+            // Now both should be rich atom sets!
+            RichAtomSet structureA = (RichAtomSet)StructuralAnalysis.this.getRichAtomSet(vertexA);
+            RichAtomSet structureB = (RichAtomSet)StructuralAnalysis.this.getRichAtomSet(vertexB);
+            RichAtomSet.Type typeA = structureA.getType();
+            RichAtomSet.Type typeB = structureB.getType();
+            if (typeA == RichAtomSet.Type.ALIPHATIC && 
+                (typeB == RichAtomSet.Type.FUSED || 
+                 typeB == RichAtomSet.Type.ISOLATED ||
+                 typeB == RichAtomSet.Type.SMALLEST)) {
+                return 1;
+            }
+        if (typeB == RichAtomSet.Type.ALIPHATIC && 
+            (typeA == RichAtomSet.Type.FUSED || 
+             typeA == RichAtomSet.Type.ISOLATED ||
+             typeA == RichAtomSet.Type.SMALLEST)) {
+            return -1;
+        }
+        // Add functional group cases!
+        
+        System.out.println(structureA.getId() + ": " + structureA.getStructure().getAtomCount() );
+        System.out.println(structureB.getId() + ": " + structureB.getStructure().getAtomCount() );
+        System.out.println(
+                           Integer.compare(structureA.getStructure().getAtomCount(), 
+                                           structureB.getStructure().getAtomCount()));
+        return -1 * Integer.compare(structureA.getStructure().getAtomCount(), 
+                                    structureB.getStructure().getAtomCount());
+        }
+        
+    }
 
 }

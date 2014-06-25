@@ -129,6 +129,7 @@ public class CMLEnricher {
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
+            this.analysis.majorPath(this.structure);
 
             this.appendAtomSets();
             if (this.cli.cl.hasOption("ann")) {
