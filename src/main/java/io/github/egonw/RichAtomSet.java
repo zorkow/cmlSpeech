@@ -20,12 +20,15 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import javax.naming.OperationNotSupportedException;
 
 /**
  *
  */
 
-public class RichAtomSet extends RichChemObject {
+public class RichAtomSet extends RichChemObject implements Iterable<String> {
     
     public enum Type {
         ALIPHATIC ("Aliphatic chain"),
@@ -46,7 +49,10 @@ public class RichAtomSet extends RichChemObject {
     private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
-    public BiMap<Integer, String> elementPositions = HashBiMap.create();
+
+    /** Local positions in the system. */
+    public BiMap<Integer, String> atomPositions = HashBiMap.create();
+    private Integer offset = 0;
 
     // To remove!
     public Set<IAtom> atomConnections = new HashSet<IAtom>();
@@ -60,7 +66,6 @@ public class RichAtomSet extends RichChemObject {
     private RichAtomSet (IAtomContainer container, Type type) {
         super(container);
         this.type = type;
-        this.computePositions();
     }
 
     public RichAtomSet (IAtomContainer container, Type type, String id) {
@@ -74,7 +79,6 @@ public class RichAtomSet extends RichChemObject {
             this.getComponents().add(bond.getID());
         }
 
-        this.computePositions();
         this.makeCML();
     }
 
@@ -130,10 +134,10 @@ public class RichAtomSet extends RichChemObject {
      * @param annotations Annotations for the atom set.
      *          
      */
-    public void computePositions() {
+    public void computePositions(Integer offset) {
+        this.offset = offset;
         switch (this.type) {
         case FUSED:
-            computeSubstructurePositions();
             break;
         case ALIPHATIC:
             computeAtomPositionsAliphatic();
@@ -143,7 +147,6 @@ public class RichAtomSet extends RichChemObject {
         default:
             computeAtomPositionsIsolated();
         }
-        printConnections();
     }
 
 
@@ -163,11 +166,6 @@ public class RichAtomSet extends RichChemObject {
         this.walkRing(startAtom, 1, new ArrayList<IAtom>());
     }
 
-    private void computeSubstructurePositions() {
-        // Not yet implemented...
-    }
-
-
     private void computeAtomPositionsIsolated() {
         IAtom startAtom;
         if (this.atomConnections.size() == 0 && setConnections.size() == 0) {
@@ -185,7 +183,7 @@ public class RichAtomSet extends RichChemObject {
         if (visited.contains(atom)) {
             return;
         }
-        this.elementPositions.put(count, atom.getID());
+        this.atomPositions.put(count, atom.getID());
         visited.add(atom);
         for (IAtom connected : this.getStructure().getConnectedAtomsList(atom)) {
             if (!visited.contains(connected)) {
@@ -197,18 +195,46 @@ public class RichAtomSet extends RichChemObject {
 
 
     public String getPositionAtom(Integer position) {
-        return this.elementPositions.get(position);
+        return this.atomPositions.get(position);
     }
 
 
     public Integer getAtomPosition(String atom) {
-        return this.elementPositions.inverse().get(atom);
+        return this.atomPositions.inverse().get(atom);
     }
 
 
-    public void printConnections () {
-        for (Integer key : this.elementPositions.keySet()) {
-            System.out.printf("%d: %s\n", key, this.elementPositions.get(key));
+    public class AtomIterator implements Iterator<String> {
+        
+        private int current;
+        
+        AtomIterator() {
+            this.current = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.current < RichAtomSet.this.atomPositions.size();
+        }
+
+        @Override
+        public String next() {
+            if (! hasNext())   throw new NoSuchElementException();
+            return RichAtomSet.this.atomPositions.get(++this.current);
+        }
+
+    }
+
+    public Iterator<String> iterator() {
+        return new AtomIterator();
+    }
+
+
+    public void printPositions () {
+        System.out.println("Local\tGlobal");
+        for (Integer key : this.atomPositions.keySet()) {
+            System.out.printf("%d\t%d:\t%s\n", key, key + this.offset, 
+                              this.atomPositions.get(key));
         }
     }
 

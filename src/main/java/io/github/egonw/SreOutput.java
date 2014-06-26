@@ -215,7 +215,7 @@ public class SreOutput {
 
 
     private void describeAliphaticChainStepwise(RichAtomSet system) {
-        for (int i = 1; i <= system.elementPositions.size(); i++) {            
+        for (int i = 1; i <= system.atomPositions.size(); i++) {            
             this.description.addDescription
                 (3,
                  this.describeAtomConnections(system, system.getPositionAtom(i)),
@@ -236,7 +236,7 @@ public class SreOutput {
             result.add(describeConnectingBond(system, connection));
         }
         Joiner joiner = Joiner.on(" ");
-        return describeAtomPosition(system, atom) + " "
+        return describeAtomPosition(atom) + " "
             + this.describeHydrogenBonds(atom.getStructure()) + " "
             + joiner.join(result);
     }
@@ -248,7 +248,7 @@ public class SreOutput {
         }
         String bond = this.describeBond(this.analysis.
                                         getRichBond(connection.getConnector()).getStructure(), false);
-        String atom = this.describeAtomPosition(system, connection.getConnected());
+        String atom = this.describeAtomPosition(connection.getConnected());
         return bond + " bonded to " + atom;
     }
 
@@ -269,17 +269,15 @@ public class SreOutput {
 
 
     // TODO (sorge) Combine the following two methods.
-    private String describeAtomPosition(RichAtomSet system, RichAtom atom) {
-        Integer position = system.getAtomPosition(atom.getId());
-        return position == null ? "" :
-            describeAtom(atom) + " " + position.toString();
+    private String describeAtomPosition(RichAtom atom) {
+        Integer position = this.analysis.getAtomPosition(atom.getId());
+        return describeAtom(atom) + " " + position.toString();
     }
 
 
-    private String describeAtomPosition(RichAtomSet system, String atom) {
-        Integer position = system.getAtomPosition(atom);
-        return position == null ? "" :
-            describeAtom(this.analysis.getRichAtom(atom)) 
+    private String describeAtomPosition(String atom) {
+        Integer position = this.analysis.getAtomPosition(atom);
+        return describeAtom(this.analysis.getRichAtom(atom)) 
             + " " + position.toString();
     }
 

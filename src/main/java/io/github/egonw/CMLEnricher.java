@@ -88,7 +88,6 @@ public class CMLEnricher {
     private CactusExecutor executor = new CactusExecutor();
     private StructuralGraph structure = new StructuralGraph();
 
-
     /** 
      * Constructor
      * 
@@ -130,6 +129,8 @@ public class CMLEnricher {
             this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
             this.analysis.majorPath(this.structure);
+            this.analysis.computePositions();
+            this.analysis.printPositions();
 
             this.appendAtomSets();
             if (this.cli.cl.hasOption("ann")) {

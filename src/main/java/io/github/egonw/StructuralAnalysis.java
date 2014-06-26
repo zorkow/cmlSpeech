@@ -39,6 +39,9 @@ import java.util.Comparator;
 import java.util.Collections;
 import org.jgrapht.alg.NeighborIndex;
 import java.util.SortedSet;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import java.util.Iterator;
 
 /**
  *
@@ -64,6 +67,7 @@ public class StructuralAnalysis {
     private Set<String> singletonAtoms = new HashSet<String>();
 
     private List<String> majorPath = new ArrayList<String>();
+    private BiMap<Integer, String> atomPositions = HashBiMap.create();
 
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
@@ -668,6 +672,50 @@ public class StructuralAnalysis {
                                     structureB.getStructure().getAtomCount());
         }
         
+    }
+
+    public void computePositions() {
+        Integer position = 0;
+        for (String structure : this.majorPath) {
+            System.out.println(position);
+            if (this.isAtom(structure)) {
+                this.atomPositions.put(++position, structure);
+            } else {
+                RichAtomSet atomSet = this.getRichAtomSet(structure);
+                if (atomSet.getType() == RichAtomSet.Type.FUSED) {
+                    for (String sub : atomSet.getSubSystems()) {
+                        RichAtomSet subSystem = this.getRichAtomSet(sub);
+                        subSystem.computePositions(position);
+                    }
+                }
+                atomSet.computePositions(position);
+                Iterator<String> iterator = atomSet.iterator();
+                while (iterator.hasNext()) {
+                    this.atomPositions.put(++position, iterator.next());
+                }
+            }
+        }
+    }
+
+
+    public void printPositions () {
+        for (Integer key : this.atomPositions.keySet()) {
+            System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
+        }
+        this.majorPath.stream().forEach(a -> 
+                                        {if (this.isAtomSet(a)) {
+                                                System.out.println(a);
+                                                this.getRichAtomSet(a).printPositions();
+                                            }});
+    }
+
+    public String getPositionAtom(Integer position) {
+        return this.atomPositions.get(position);
+    }
+
+
+    public Integer getAtomPosition(String atom) {
+        return this.atomPositions.inverse().get(atom);
     }
 
 }
