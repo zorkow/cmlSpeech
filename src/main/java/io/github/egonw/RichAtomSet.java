@@ -50,9 +50,10 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
 
+    // TODO (sorge): Reimplement atom positions as an extension to BiMap.
     /** Local positions in the system. */
     public BiMap<Integer, String> atomPositions = HashBiMap.create();
-    private Integer offset = 0;
+    public Integer offset = 0;
 
     // To remove!
     public Set<IAtom> atomConnections = new HashSet<IAtom>();
@@ -131,23 +132,49 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
      * -- Always start with an element that has an external bond.
      * -- If multiple external elements we prefer one with an atom attached
      *    (or later with a functional group, as this can be voiced as substitution).
-     * @param annotations Annotations for the atom set.
+     * @param offset The position offset.
+     * @param globalPositions Map of already assigned global positions.
      *          
      */
     public void computePositions(Integer offset) {
         this.offset = offset;
         switch (this.type) {
         case FUSED:
-            break;
+            throw new SreException("Illegal position computation for ring systems!");
         case ALIPHATIC:
             computeAtomPositionsAliphatic();
             break;
         case SMALLEST:
+            // computeAtomPositionsSubstructure(globalPositions);
         case ISOLATED:
         default:
             computeAtomPositionsIsolated();
         }
     }
+
+    
+    public void appendPositions(RichAtomSet atomSet) {
+        if (this.atomPositions.isEmpty()) {
+            this.offset = atomSet.offset;
+            this.atomPositions.putAll(atomSet.atomPositions);
+            return;
+        }
+        Iterator<String> iterator = atomSet.iterator();
+        Integer position = atomSet.offset;
+        for (Integer key : atomSet.atomPositions.keySet()) {
+            String value = this.atomPositions.get(key);
+            System.out.printf("%d : %s\n", key, value);
+            
+            if (!this.atomPositions.containsValue(value)) { 
+                this.atomPositions.put(++position, value);
+            }
+        }
+    }
+
+
+    // private void computeAtomPositionsSubstructure(BiMap<Integer, String> globalPositions) {
+    //     return;
+    // }
 
 
     private void computeAtomPositionsAliphatic() {
@@ -231,6 +258,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 
     public void printPositions () {
+        // This is incorrect for substructures!
         System.out.println("Local\tGlobal");
         for (Integer key : this.atomPositions.keySet()) {
             System.out.printf("%d\t%d:\t%s\n", key, key + this.offset, 

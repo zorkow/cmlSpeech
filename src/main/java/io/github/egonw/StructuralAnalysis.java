@@ -481,10 +481,8 @@ public class StructuralAnalysis {
         Set<String> contextAtomA = this.contextCloud(atomA);
         Set<String> contextAtomB = this.contextCloud(atomB);
         for (String contextA : contextAtomA) {
-            System.out.println(contextA);
             RichStructure richStructureA = this.getRichStructure(contextA);
             for (String contextB : contextAtomB) {
-                System.out.println(contextB);
                 RichStructure richStructureB = this.getRichStructure(contextB);
                 this.addConnectingBond(richStructureA, bond, contextB);
                 this.addConnectingBond(richStructureB, bond, contextA);
@@ -685,18 +683,28 @@ public class StructuralAnalysis {
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
                     for (String sub : atomSet.getSubSystems()) {
                         RichAtomSet subSystem = this.getRichAtomSet(sub);
-                        subSystem.computePositions(position);
+                        position = this.appendPositions(subSystem, position);
+                        atomSet.appendPositions(subSystem);
                     }
-                }
-                atomSet.computePositions(position);
-                Iterator<String> iterator = atomSet.iterator();
-                while (iterator.hasNext()) {
-                    this.atomPositions.put(++position, iterator.next());
+                } else {
+                    position = appendPositions(atomSet, position);
                 }
             }
         }
     }
 
+    public Integer appendPositions(RichAtomSet atomSet, Integer position) {
+        System.out.println("here");
+        atomSet.computePositions(position);
+        Iterator<String> iterator = atomSet.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            if (!this.atomPositions.containsValue(value)) { 
+                this.atomPositions.put(++position, value);
+            }
+        }
+        return position;
+    }
 
     public void printPositions () {
         for (Integer key : this.atomPositions.keySet()) {
