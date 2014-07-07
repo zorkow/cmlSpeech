@@ -161,15 +161,49 @@ public class SreOutput {
             describeAliphaticChain(system);
                 // describeAliphaticChain(system, (Element)systemElement.get(0));
             break;
+        case ISOLATED:
+            describeIsolatedRing(system);
+            break;
         }
     }
 
 
+    private void describeIsolatedRing(RichAtomSet system) {
+        String descr = "Ring with " + system.getStructure().getAtomCount() + " elements.";
+        descr += " " + this.describeReplacements(system);
+        descr += " " + this.describeMultiBonds(system);
+        descr += " " + this.describeSubstitutions(system);
+        this.description.addDescription(2, descr,
+                                        this.describeComponents(system));
+        this.describeRingStepwise(system);
+    }
+    
+
+    private String describeReplacements(RichAtomSet system) {
+        String descr = "";
+        Iterator<String> iterator = system.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            RichAtom atom = this.analysis.getRichAtom(value);
+            if (!atom.isCarbon()) {
+                descr += " with " + this.describeAtom(atom) 
+                    + " at position "
+                    + system.getAtomPosition(value).toString();
+            }
+        }
+        return descr;
+    }
+
+    private void describeRingStepwise(RichAtomSet system) {
+        this.describeAliphaticChainStepwise(system);
+    }
+
+    
     private void describeAliphaticChain(RichAtomSet system) {
-        String chain = "Aliphatic chain of length " + system.getStructure().getAtomCount();
-        chain += " " + this.describeMultiBonds(system);
-        chain += " " + this.describeSubstitutions(system);
-        this.description.addDescription(2, chain,
+        String descr = "Aliphatic chain of length " + system.getStructure().getAtomCount();
+        descr += " " + this.describeMultiBonds(system);
+        descr += " " + this.describeSubstitutions(system);
+        this.description.addDescription(2, descr,
                                         this.describeComponents(system));
         this.describeAliphaticChainStepwise(system);
     }
@@ -219,10 +253,23 @@ public class SreOutput {
             this.description.addDescription
                 (3,
                  this.describeAtomConnections(system, system.getPositionAtom(i)),
-                 this.describeComponents(system));
+                 // This is temporary!
+                 this.describeAtomComponents(system.getPositionAtom(i)));
         }
     }
 
+
+    // This is temporary!
+    private SreElement describeAtomComponents(String atom) {
+        List<String> components = new ArrayList<String>();
+        components.add(atom);
+        RichAtom richAtom = this.analysis.getRichAtom(atom);
+        for (Connection connection : richAtom.getConnections()) {
+            components.add(connection.getConnector());
+            components.add(connection.getConnected());
+        }
+        return this.describeComponents(components);
+    }
 
     private String describeAtomConnections(RichAtomSet system, String atom) {
         return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
