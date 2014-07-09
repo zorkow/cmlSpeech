@@ -22,8 +22,6 @@ public class StructuralFormula {
 	 */
 	public static void compute(IAtomContainer molecule) {
 
-		System.out.println("");
-
 		Iterable<IAtom> it = molecule.atoms();
 
 		String structuralFormula = "";
@@ -36,11 +34,16 @@ public class StructuralFormula {
 
 			if (h > 0) {
 				structuralFormula += "H";
-				structuralFormula += h;
+				
+				String subScript = getSubScript(h);
+				
+				structuralFormula += subScript;
 
 			}
 
 		}
+		
+		System.out.println("");
 		
 		System.out.println("The structural formula is:");
 		
@@ -49,5 +52,40 @@ public class StructuralFormula {
 		System.out.println("");
 
 	}
+	
+	public static String getSubScript(int number){
+		
+		switch (number){
+		case 1: return "\u2081";
+		case 2: return "\u2082";
+		case 3: return "\u2083";
+		case 4: return "\u2084";
+		case 5: return "\u2085";
+		case 6: return "\u2086";
+		case 7: return "\u2087";
+		case 8: return "\u2088";
+		case 9: return "\u2089";
+		}
+		
+		return null;
+		
+		
+	}
+	
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
