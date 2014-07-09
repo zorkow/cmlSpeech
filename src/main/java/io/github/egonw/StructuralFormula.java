@@ -16,7 +16,7 @@ public class StructuralFormula {
 	/**
 	 * The string to be returned with the structural formula
 	 */
-	private static String structuralFormula;
+	private static String structuralFormula = "";
 
 	/**
 	 * Computes and prints the structural formula of the given molecule to a
@@ -40,17 +40,14 @@ public class StructuralFormula {
 			int h = a.getImplicitHydrogenCount();
 
 			// If h > 0 then adds H to the formula and works out the subscript
-			// of
-			// the number of hydrogens
+			// of the number of hydrogens
 			if (h > 0) {
 				structuralFormula += "H";
 
 				String subScript = getSubScript(h);
 
 				structuralFormula += subScript;
-
 			}
-
 		}
 
 		// Prints the structural formula
@@ -74,6 +71,8 @@ public class StructuralFormula {
 	public static String getSubScript(int number) {
 
 		switch (number) {
+		case 0:
+			return "\u2080";
 		case 1:
 			return "\u2081";
 		case 2:
@@ -94,7 +93,7 @@ public class StructuralFormula {
 			return "\u2089";
 		}
 
-		return null;
+		return "test";
 
 	}
 
