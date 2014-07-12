@@ -94,73 +94,8 @@ public class StructuralFormula {
 		for (IAtom connected : molecule.getConnectedAtomsList(atom)) {
 			if (!visited.contains(connected)) {
 				walkRing(connected, ++count, visited);
-				return;
 			}
 		}
-	}
-
-	public static int walk(IAtom startAtom, Integer count, List<IAtom> visited) {
-
-		if (visited.contains(startAtom)) {
-			return count;
-		}
-
-		atomPositions.put(count, startAtom);
-
-		visited.add(startAtom);
-
-		List<IAtom> connected = molecule.getConnectedAtomsList(startAtom);
-
-		for (int i = 0; i < connected.size(); i++) {
-			IAtom atom = getSmallestChain(connected.get(i), connected);
-			connected.remove(atom);
-
-			count = walk(atom, count++, visited);
-		}
-
-		return count++;
-	}
-
-	private static IAtom getSmallestChain(IAtom atom, List<IAtom> connected) {
-
-		int smallestChain = 99;
-		IAtom smallest = null;
-
-		for (IAtom iAtom : connected) {
-
-			ArrayList<IAtom> list = new ArrayList<IAtom>();
-			list.add(atom);
-			int chainSize = getChainSize(iAtom, 0, list);
-
-			if (chainSize < smallestChain) {
-				smallestChain = chainSize;
-				smallest = iAtom;
-			}
-		}
-
-		return smallest;
-	}
-
-	public static int getChainSize(IAtom startAtom, int count, ArrayList<IAtom> visited) {
-
-		if (visited.contains(startAtom)) {
-			return count;
-		}
-
-		visited.add(startAtom);
-
-		List<IAtom> connected = molecule.getConnectedAtomsList(startAtom);
-
-		for (int i = 0; i < connected.size(); i++) {
-
-			IAtom atom = getSmallestChain(connected.get(i), connected);
-			connected.remove(atom);
-
-			count = getChainSize(atom, count++, visited);
-		}
-
-		return count++;
-
 	}
 
 	public static void computeStructuralFormula() {
@@ -201,9 +136,7 @@ public class StructuralFormula {
 		case 9:
 			return "\u2089";
 		}
-
 		return "test";
-
 	}
 
 }
