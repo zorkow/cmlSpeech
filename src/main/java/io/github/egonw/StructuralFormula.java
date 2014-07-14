@@ -1,5 +1,7 @@
 package io.github.egonw;
 
+import io.github.egonw.RichAtomSet.Type;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Set;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -24,6 +27,7 @@ public class StructuralFormula {
 	public static BiMap<Integer, IAtom> atomPositions = HashBiMap.create();
 	public static ArrayList<IAtom> frontier = new ArrayList<IAtom>();
 	public static IAtomContainer molecule;
+	public static RichAtomSet rac;
 
 	public static void compute(IAtomContainer moleculeImported) {
 
@@ -34,13 +38,27 @@ public class StructuralFormula {
 		for (IAtom atom : molecule.atoms()) {
 			frontier.add(atom);
 		}
-
+		
 		findAtomPositions();
 
 		computeStructuralFormula();
 
 		System.out.println(structuralFormula);
+		
+		computeRAC(moleculeImported);
 
+	}
+	
+	public static void computeRAC(IAtomContainer moleculeImported){
+		
+		rac = new RichAtomSet(moleculeImported, Type.ALIPHATIC, "1");
+		
+		rac.computePositions(0);
+		
+		rac.printPositions();
+		
+		System.out.println(rac.toString());
+		
 	}
 
 	public static void findAtomPositions() {
