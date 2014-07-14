@@ -28,4 +28,8 @@ public class RichAtom extends RichChemObject {
         return (IAtom)this.structure;
     }
 
+    public Boolean isCarbon() {
+        return this.getStructure().getSymbol().equals("C");
+    }
+    
 }

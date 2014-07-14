@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk-bundle</artifactId>
-      <version>1.5.6-SNAPSHOT</version>
+      <version>1.5.6</version>
     </dependency>
     <dependency>
     	<groupId>commons-io</groupId>
@@ -78,7 +78,7 @@
     </repository>
     <repository>
       <id>ebi-repo-snapshots</id>
-      <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots/</url>
+      <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
       <releases>
         <enabled>false</enabled>
       </releases>

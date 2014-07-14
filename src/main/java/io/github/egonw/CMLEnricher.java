@@ -68,6 +68,12 @@ import java.util.stream.Collectors;
 import java.util.HashSet;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
 import org.jgrapht.alg.interfaces.MinimumSpanningTree;
+import nu.xom.XPathContext;
+import java.util.Arrays;
+import java.util.regex.PatternSyntaxException;
+import java.util.Map;
+import java.util.TreeMap;
+import com.google.common.base.Joiner;
 
 
 public class CMLEnricher {
@@ -123,17 +129,20 @@ public class CMLEnricher {
             this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
             this.analysis.majorPath(this.structure);
+            this.analysis.computePositions();
+            this.analysis.printPositions();
 
             this.appendAtomSets();
             if (this.cli.cl.hasOption("ann")) {
-                this.doc.getRootElement().appendChild(this.sreOutput.annotations());
+                this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
             }
-
             if (!this.cli.cl.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
                 executor.shutdown();
             }
+            this.sreOutput.computeDescriptions(this.doc);
+            this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);
         } catch (Exception e) { 
             // TODO (sorge) Meaningful exception handling by exceptions/functions.
@@ -185,6 +194,8 @@ public class CMLEnricher {
         String cmlcode = outStr.toString();
 
         Builder builder = new CMLBuilder(); 
+        // this.doc.getRootElement().addNamespaceDeclaration
+        //     ("cml", "http://www.xml-cml.org/schema");
         this.doc = builder.build(cmlcode, "");
         this.logger.logging(this.doc.toXML());
     }
@@ -250,8 +261,6 @@ public class CMLEnricher {
     }
 
 
-
-
     /**
      * Computes some names for a molecule by registering calls to Cactus.
      * @param id The id of the atom set.
@@ -304,4 +313,6 @@ public class CMLEnricher {
         }
     }
     
+
 }
+

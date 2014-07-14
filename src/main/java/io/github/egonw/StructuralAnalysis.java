@@ -39,6 +39,9 @@ import java.util.Comparator;
 import java.util.Collections;
 import org.jgrapht.alg.NeighborIndex;
 import java.util.SortedSet;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import java.util.Iterator;
 
 /**
  *
@@ -64,6 +67,7 @@ public class StructuralAnalysis {
     private Set<String> singletonAtoms = new HashSet<String>();
 
     private List<String> majorPath = new ArrayList<String>();
+    private BiMap<Integer, String> atomPositions = HashBiMap.create();
 
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
@@ -114,6 +118,10 @@ public class StructuralAnalysis {
 
     public RichBond getRichBond(String id) {
         return (RichBond)this.richBonds.get(id);
+    }
+
+    public RichStructure getRichBond(IBond bond) {
+        return this.getRichBond(bond.getID());
     }
 
     private RichStructure setRichBond(IBond bond) {
@@ -473,10 +481,8 @@ public class StructuralAnalysis {
         Set<String> contextAtomA = this.contextCloud(atomA);
         Set<String> contextAtomB = this.contextCloud(atomB);
         for (String contextA : contextAtomA) {
-            System.out.println(contextA);
             RichStructure richStructureA = this.getRichStructure(contextA);
             for (String contextB : contextAtomB) {
-                System.out.println(contextB);
                 RichStructure richStructureB = this.getRichStructure(contextB);
                 this.addConnectingBond(richStructureA, bond, contextB);
                 this.addConnectingBond(richStructureB, bond, contextA);
@@ -664,6 +670,60 @@ public class StructuralAnalysis {
                                     structureB.getStructure().getAtomCount());
         }
         
+    }
+
+    public void computePositions() {
+        Integer position = 0;
+        for (String structure : this.majorPath) {
+            System.out.println(position);
+            if (this.isAtom(structure)) {
+                this.atomPositions.put(++position, structure);
+            } else {
+                RichAtomSet atomSet = this.getRichAtomSet(structure);
+                if (atomSet.getType() == RichAtomSet.Type.FUSED) {
+                    for (String sub : atomSet.getSubSystems()) {
+                        RichAtomSet subSystem = this.getRichAtomSet(sub);
+                        position = this.appendPositions(subSystem, position);
+                        atomSet.appendPositions(subSystem);
+                    }
+                } else {
+                    position = appendPositions(atomSet, position);
+                }
+            }
+        }
+    }
+
+    public Integer appendPositions(RichAtomSet atomSet, Integer position) {
+        System.out.println("here");
+        atomSet.computePositions(position);
+        Iterator<String> iterator = atomSet.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            if (!this.atomPositions.containsValue(value)) { 
+                this.atomPositions.put(++position, value);
+            }
+        }
+        return position;
+    }
+
+    public void printPositions () {
+        for (Integer key : this.atomPositions.keySet()) {
+            System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
+        }
+        this.majorPath.stream().forEach(a -> 
+                                        {if (this.isAtomSet(a)) {
+                                                System.out.println(a);
+                                                this.getRichAtomSet(a).printPositions();
+                                            }});
+    }
+
+    public String getPositionAtom(Integer position) {
+        return this.atomPositions.get(position);
+    }
+
+
+    public Integer getAtomPosition(String atom) {
+        return this.atomPositions.inverse().get(atom);
     }
 
 }

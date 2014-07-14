@@ -18,7 +18,11 @@ public class SreAttribute extends Attribute {
     }
 
     public void addValue(String value) {
-        setValue(getValue() + " " + value);
+        if (getValue() == "") {
+            setValue(value);
+        } else {
+            setValue(getValue() + " " + value);
+        }
     }
 
     public void addValue(Element node) {
