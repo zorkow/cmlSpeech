@@ -1,0 +1,65 @@
+* Assembling a Path
+** Idea 1:
+*** Get all major structures
+**** Fused rings
+**** Isolated rings
+**** Aliphatic Chains
+**** Functional Groups
+**** Remaining single atoms
+**** Ignore hydrogen atoms!
+*** Find number of neighbours.
+*** Start with a group with smallest numbers of neighbours.
+
+
+** Notes on Graph:
+*** Maybe move to multiGraph when using minor systems (multiple edges)
+*** Compute major/minor systems earlier.
+
+
+** Counting Atoms:
+
+*** Every carbon atom in a ring gets a counter. We need the positions and inverse lookup.
+*** Once an atom has been used it is stored with its real counter in another list.
+*** If it is not yet in that list then we get it from the original list.
+*** Positions are actually computed with respect to an offset.
+*** The offset is increased every time a non-carbon atom is used.
+*** For carbon atoms offset is increased once a structure has been fully described.
+
+Questions: Am I talking positions (i.e., element at position 5 in the ring or am I counting atoms only.)
+c c c o c    O is 1 but at position 4.
+
+** Compiling Path on Major system:
+
+*** Start with largest Ring, If no Ring use longest chain.
+
+*** Expand greedily into the direction of the most interesting substitution.
+
+*** Then do a global position computation.
+
+
+* Rich Structures
+** Interface functionality
+   Some of these will be empty, in particular for Atoms/Bonds
+   1. Components 
+      + atom: empty
+      + bond: the atoms it connects
+      + atomset: 
+        - compute subsystems from that
+        - compute interior bonds from that
+   2. Contexts (or ComponentOf) 
+      The superstructures in which this structure occurs as component.
+      + atomset: compute supersystems from that
+   3. External: external bonds
+      + bond: empty
+      + atom: all bonds
+   4. Connections: Triples of 
+      - type: shared atom, shared bond, or connecting bond
+      - element: shared atom or bond or the external bond that connects
+      - connected structure: an atom or a atom set
+
+      Note that there can be multiple versions for the same element, representing the layers.
+      
+      + bond: empty
+      + atom: can only have connecting bond
+      + atomset: can have all three
+
