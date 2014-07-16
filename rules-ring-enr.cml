@@ -1,0 +1,141 @@
+<molecule id="m1" title="Molfile rules-ring.tif" sre:iupac="1-Methyl-2-nitrobenzene" formula="C7H7NO2" sre:name="o-Nitrotoluol" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema">
+    <atomArray>
+        <atom id="a1" elementType="C" x2="-0.3729" y2="0.7054" formalCharge="0" hydrogenCount="3"/>
+        <atom id="a2" elementType="C" x2="-0.3929" y2="-0.0646" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a3" elementType="C" x2="0.3771" y2="-1.4446" formalCharge="0" hydrogenCount="1"/>
+        <atom id="a4" elementType="C" x2="-1.1429" y2="-0.5346" formalCharge="0" hydrogenCount="1"/>
+        <atom id="a5" elementType="C" x2="0.4071" y2="-0.5346" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a6" elementType="C" x2="-1.1529" y2="-1.4446" formalCharge="0" hydrogenCount="1"/>
+        <atom id="a7" elementType="C" x2="-0.4029" y2="-1.8746" formalCharge="0" hydrogenCount="1"/>
+        <atom id="a8" elementType="N" x2="0.9271" y2="-0.2446" formalCharge="1" hydrogenCount="0"/>
+        <atom id="a9" elementType="O" x2="1.5729" y2="0.6154" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a10" elementType="O" x2="1.4929" y2="-0.8854" formalCharge="-1" hydrogenCount="0"/>
+    </atomArray>
+    <bondArray>
+        <bond id="b1" atomRefs2="a2 a1" order="S"/>
+        <bond id="b2" atomRefs2="a4 a2" order="S"/>
+        <bond id="b3" atomRefs2="a5 a3" order="S"/>
+        <bond id="b4" atomRefs2="a5 a2" order="D"/>
+        <bond id="b5" atomRefs2="a6 a4" order="D"/>
+        <bond id="b6" atomRefs2="a7 a6" order="S"/>
+        <bond id="b7" atomRefs2="a7 a3" order="D"/>
+        <bond id="b8" atomRefs2="a8 a5" order="S"/>
+        <bond id="b9" atomRefs2="a9 a8" order="D"/>
+        <bond id="b10" atomRefs2="a10 a8" order="S"/>
+    </bondArray>
+    <atomSet title="Isolated ring" id="as1" size="6" sre:name="BENZENE" sre:iupac="BENZENE" sre:formula="C6H6">a7 a5 a3 a6 a2 a4</atomSet>
+    <sre:descriptions>
+        <sre:desc sre:level="1">
+            <sre:subdesc sre:level="1">
+                <sre:content>o-Nitrotoluol</sre:content>
+                <sre:component>
+                    <sre:atom>a1</sre:atom>
+                    <sre:atom>a2</sre:atom>
+                    <sre:atom>a3</sre:atom>
+                    <sre:atom>a4</sre:atom>
+                    <sre:atom>a5</sre:atom>
+                    <sre:atom>a6</sre:atom>
+                    <sre:atom>a7</sre:atom>
+                    <sre:atom>a8</sre:atom>
+                    <sre:atom>a9</sre:atom>
+                    <sre:atom>a10</sre:atom>
+                    <sre:bond>b1</sre:bond>
+                    <sre:bond>b2</sre:bond>
+                    <sre:bond>b3</sre:bond>
+                    <sre:bond>b4</sre:bond>
+                    <sre:bond>b5</sre:bond>
+                    <sre:bond>b6</sre:bond>
+                    <sre:bond>b7</sre:bond>
+                    <sre:bond>b8</sre:bond>
+                    <sre:bond>b9</sre:bond>
+                    <sre:bond>b10</sre:bond>
+                </sre:component>
+            </sre:subdesc>
+        </sre:desc>
+        <sre:desc sre:level="2">
+            <sre:subdesc sre:level="2">
+                <sre:content>Ring with 6 elements. double bond between position 1 and 6. double bond between position 2 and 3. double bond between position 4 and 5. Substitutions at position 4 and 5</sre:content>
+                <sre:component>
+                    <sre:atom>a2</sre:atom>
+                    <sre:atom>a3</sre:atom>
+                    <sre:atom>a4</sre:atom>
+                    <sre:atom>a5</sre:atom>
+                    <sre:atom>a6</sre:atom>
+                    <sre:atom>a7</sre:atom>
+                    <sre:bond>b2</sre:bond>
+                    <sre:bond>b3</sre:bond>
+                    <sre:bond>b4</sre:bond>
+                    <sre:bond>b5</sre:bond>
+                    <sre:bond>b6</sre:bond>
+                    <sre:bond>b7</sre:bond>
+                </sre:component>
+            </sre:subdesc>
+        </sre:desc>
+        <sre:desc sre:level="3">
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 1 bonded to 1 hydrogen single bonded to Carbon 2 double bonded to Carbon 6</sre:content>
+                <sre:component>
+                    <sre:atom>a7</sre:atom>
+                    <sre:bond>b6</sre:bond>
+                    <sre:atom>a6</sre:atom>
+                    <sre:bond>b7</sre:bond>
+                    <sre:atom>a3</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 2 bonded to 1 hydrogen double bonded to Carbon 3 single bonded to Carbon 1</sre:content>
+                <sre:component>
+                    <sre:atom>a6</sre:atom>
+                    <sre:bond>b5</sre:bond>
+                    <sre:atom>a4</sre:atom>
+                    <sre:bond>b6</sre:bond>
+                    <sre:atom>a7</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 3 bonded to 1 hydrogen single bonded to Carbon 4 double bonded to Carbon 2</sre:content>
+                <sre:component>
+                    <sre:atom>a4</sre:atom>
+                    <sre:bond>b2</sre:bond>
+                    <sre:atom>a2</sre:atom>
+                    <sre:bond>b5</sre:bond>
+                    <sre:atom>a6</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 4 single bonded to Carbon 7 single bonded to Carbon 3 double bonded to Carbon 5</sre:content>
+                <sre:component>
+                    <sre:atom>a2</sre:atom>
+                    <sre:bond>b1</sre:bond>
+                    <sre:atom>a1</sre:atom>
+                    <sre:bond>b2</sre:bond>
+                    <sre:atom>a4</sre:atom>
+                    <sre:bond>b4</sre:bond>
+                    <sre:atom>a5</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 5 single bonded to Carbon 6 double bonded to Carbon 4 single bonded to Nitrogen 8</sre:content>
+                <sre:component>
+                    <sre:atom>a5</sre:atom>
+                    <sre:bond>b3</sre:bond>
+                    <sre:atom>a3</sre:atom>
+                    <sre:bond>b4</sre:bond>
+                    <sre:atom>a2</sre:atom>
+                    <sre:bond>b8</sre:bond>
+                    <sre:atom>a8</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+            <sre:subdesc sre:level="3">
+                <sre:content>Carbon 6 bonded to 1 hydrogen single bonded to Carbon 5 double bonded to Carbon 1</sre:content>
+                <sre:component>
+                    <sre:atom>a3</sre:atom>
+                    <sre:bond>b3</sre:bond>
+                    <sre:atom>a5</sre:atom>
+                    <sre:bond>b7</sre:bond>
+                    <sre:atom>a7</sre:atom>
+                </sre:component>
+            </sre:subdesc>
+        </sre:desc>
+    </sre:descriptions>
+</molecule>

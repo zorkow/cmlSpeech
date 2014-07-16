@@ -1,0 +1,41 @@
+<molecule id="m1" title="Molfile book1-001-00.tif" sre:name="methane" formula="CH4" sre:iupac="methane" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema">
+    <atomArray>
+        <atom id="a1" elementType="H" x2="-1.7704" y2="-0.7662" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a2" elementType="H" x2="-0.0904" y2="-2.3362" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a3" elementType="H" x2="1.5796" y2="-0.7362" formalCharge="0" hydrogenCount="0"/>
+        <atom id="a4" elementType="C" x2="-0.1104" y2="-0.7462" formalCharge="0" hydrogenCount="4"/>
+        <atom id="a5" elementType="H" x2="-0.1304" y2="0.8338" formalCharge="0" hydrogenCount="0"/>
+    </atomArray>
+    <bondArray>
+        <bond id="b1" atomRefs2="a4 a3" order="S">
+            <bondStereo dictRef="cml:W">W</bondStereo>
+        </bond>
+        <bond id="b2" atomRefs2="a4 a1" order="S">
+            <bondStereo dictRef="cml:W">W</bondStereo>
+        </bond>
+        <bond id="b3" atomRefs2="a4 a2" order="S">
+            <bondStereo dictRef="cml:W">W</bondStereo>
+        </bond>
+        <bond id="b4" atomRefs2="a4 a5" order="S">
+            <bondStereo dictRef="cml:W">W</bondStereo>
+        </bond>
+    </bondArray>
+    <sre:descriptions>
+        <sre:desc sre:level="1">
+            <sre:subdesc sre:level="1">
+                <sre:content>methane</sre:content>
+                <sre:component>
+                    <sre:unknown>a1</sre:unknown>
+                    <sre:unknown>a2</sre:unknown>
+                    <sre:unknown>a3</sre:unknown>
+                    <sre:atom>a4</sre:atom>
+                    <sre:unknown>a5</sre:unknown>
+                    <sre:unknown>b1</sre:unknown>
+                    <sre:unknown>b2</sre:unknown>
+                    <sre:unknown>b3</sre:unknown>
+                    <sre:unknown>b4</sre:unknown>
+                </sre:component>
+            </sre:subdesc>
+        </sre:desc>
+    </sre:descriptions>
+</molecule>
