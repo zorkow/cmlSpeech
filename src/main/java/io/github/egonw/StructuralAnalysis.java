@@ -278,6 +278,7 @@ public class StructuralAnalysis {
         this.setContexts(this.richAtoms.keySet(), id);
         this.setContexts(this.richBonds.keySet(), id);
         this.setContexts(this.richAtomSets.keySet(), id);
+        set.getContexts().remove(id);
         for (RichAtomSet system : this.majorSystems) {
             system.getSuperSystems().add(id);
             set.getSubSystems().add(system.getId());

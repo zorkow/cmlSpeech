@@ -123,7 +123,6 @@ public class CMLEnricher {
             readFile(fileName);
             buildXOM();
             removeExplicitHydrogens();
-            nameMolecule(this.doc.getRootElement().getAttribute("id").getValue(), this.molecule);
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
