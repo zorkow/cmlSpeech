@@ -34,7 +34,10 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         ALIPHATIC ("Aliphatic chain"),
         FUSED ("Fused ring"),
         ISOLATED ("Isolated ring"),
-        SMALLEST ("Subring");
+        SMALLEST ("Subring"),
+        MOLECULE ("Molecule"),
+        FUNCGROUP ("Functional Group"),
+        ;
 
         protected final String name;
 
@@ -46,8 +49,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public Type type;
     public CMLAtomSet cml;
 
-    private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
-    private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
 
     // TODO (sorge): Reimplement atom positions as an extension to BiMap.
@@ -88,16 +89,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         return this.type;
     }
     
-
-    public SortedSet<String> getSubSystems() {
-        return this.subSystems;
-    }
-
-
-    public SortedSet<String> getSuperSystems() {
-        return this.superSystems;
-    }
-
 
     public SortedSet<String> getConnectingAtoms() {
         return this.connectingAtoms;

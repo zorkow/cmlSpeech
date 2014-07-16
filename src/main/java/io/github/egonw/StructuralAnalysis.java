@@ -90,6 +90,9 @@ public class StructuralAnalysis {
         this.atomSetsAttachments();
         this.connectingBonds();
         this.sharedComponents();
+
+        this.makeTopSet();
+        this.makeBottomSet();
     }
 
 
@@ -241,21 +244,61 @@ public class StructuralAnalysis {
                                List<IAtomContainer>> subRingMethod) {
         List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
         for (IAtomContainer system : ringSystems) {
-            RichAtomSet ring = (RichAtomSet)this.setRichAtomSet(system, RichAtomSet.Type.FUSED);
+            RichStructure ring = this.setRichAtomSet(system, RichAtomSet.Type.FUSED);
             
             List<IAtomContainer> subSystems = subRingMethod.apply(system);
             for (IAtomContainer subSystem : subSystems) {
-                RichAtomSet subRing = (RichAtomSet)this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
+                RichStructure subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
                 String ringId = ring.getId();
                 String subRingId = subRing.getId();
                 subRing.getSuperSystems().add(ringId);
                 subRing.getContexts().add(ringId);
                 ring.getSubSystems().add(subRingId);
-                //ring.getComponents().add(subRingId);
             }
         }
     }
 
+
+    
+    /**
+     * Adds a context element for a set of structures.
+     * @param structures Set of structure names.
+     * @param id Context element to be added.
+     */
+    private void setContexts(Set<String> structures, String id) {
+        for (String structure : structures) {
+            this.getRichStructure(structure).getContexts().add(id);
+        }
+    }
+    
+
+    private void makeTopSet() {
+        RichStructure set = this.setRichAtomSet(this.molecule, RichAtomSet.Type.MOLECULE);
+        String id = set.getId();
+        this.setContexts(this.richAtoms.keySet(), id);
+        this.setContexts(this.richBonds.keySet(), id);
+        this.setContexts(this.richAtomSets.keySet(), id);
+        for (RichAtomSet system : this.majorSystems) {
+            system.getSuperSystems().add(id);
+            set.getSubSystems().add(system.getId());
+        }
+        for (RichAtom atom : this.getSingletonAtoms()) {
+            atom.getSuperSystems().add(id);
+            set.getSubSystems().add(atom.getId());
+        }
+    }
+
+
+    private void makeBottomSet() {
+        for (RichAtomSet system : this.minorSystems) {
+            for (String component : system.getComponents()) {
+                if (this.isAtom(component)) {
+                    this.getRichAtom(component).getSuperSystems().add(system.getId());
+                    system.getSubSystems().add(component);
+                }
+            }
+        }
+    }
 
     /** 
      * Predicate that tests if a particular ring has no other ring as proper subset.
@@ -362,12 +405,10 @@ public class StructuralAnalysis {
     }
 
 
+    /** Computes the contexts of single atoms. */
     private void contexts() {
         for (String key : this.richAtomSets.keySet()) {
-            Set<String> set = this.getRichAtomSet(key).getComponents();
-            for (String component : set) {
-                this.getRichStructure(component).getContexts().add(key);
-            };
+            this.setContexts(this.getRichAtomSet(key).getComponents(), key);
         }
     }
 
@@ -378,6 +419,10 @@ public class StructuralAnalysis {
     }
 
 
+    /**
+     * Computes the external bonds and connecting atoms for an atom set.
+     * @param atomSet A rich atom set.
+     */
     private void atomSetAttachments(RichAtomSet atomSet) {
         IAtomContainer container = atomSet.getStructure();
         Set<IBond> externalBonds = externalBonds(container);
@@ -426,7 +471,7 @@ public class StructuralAnalysis {
 
 
     /**
-     * Compute the connecting bonds for tha atom container from the set of
+     * Compute the connecting bonds for the atom container from the set of
      * external bonds.
      * @param container The substructure under consideration.
      * @param externalBonds Bonds external to the substructure.
@@ -472,7 +517,7 @@ public class StructuralAnalysis {
     
 
     /**
-     * Adds connections atom set structures.
+     * Adds connections to atom set structures.
      * @param bond The bond.
      * @param atomA The first atom in the bond.
      * @param atomB The second atom in the bond.
@@ -491,6 +536,7 @@ public class StructuralAnalysis {
     }
 
 
+    /** Computes bridge atoms and bonds for structures that share components. */
     private void sharedComponents() {
         for (String atomSet : this.richAtomSets.keySet()) {
             RichAtomSet richAtomSet = this.getRichAtomSet(atomSet);
@@ -672,6 +718,8 @@ public class StructuralAnalysis {
         
     }
 
+
+    // TODO (sorge): Refactor this into common positions mapping.
     public void computePositions() {
         Integer position = 0;
         for (String structure : this.majorPath) {
@@ -694,7 +742,6 @@ public class StructuralAnalysis {
     }
 
     public Integer appendPositions(RichAtomSet atomSet, Integer position) {
-        System.out.println("here");
         atomSet.computePositions(position);
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
