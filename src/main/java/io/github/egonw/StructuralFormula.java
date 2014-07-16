@@ -1,16 +1,9 @@
 package io.github.egonw;
 
-import io.github.egonw.RichAtomSet.Type;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IAtomContainer;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -24,142 +17,24 @@ import com.google.common.collect.HashBiMap;
 public class StructuralFormula {
 
 	private static String structuralFormula = "";
-
-	public static BiMap<Integer, IAtom> atomPositions = HashBiMap.create();
-	public static BiMap<Integer, String> atomPositionsNew = HashBiMap.create();
-	public static ArrayList<IAtom> frontier = new ArrayList<IAtom>();
-	public static IAtomContainer molecule;
+	public static BiMap<Integer, String> atomPositions = HashBiMap.create();
 	public static RichAtomSet rac;
-
 	public static StructuralAnalysis sa;
 
-	public static void compute(IAtomContainer moleculeImported) {
-
+	public static void computeAnalysis(StructuralAnalysis saImported) {
 		System.out.println("");
-
-		molecule = moleculeImported;
-
-		for (IAtom atom : molecule.atoms()) {
-			frontier.add(atom);
-		}
-
-		findAtomPositions();
-
-		computeStructuralFormula();
-
-		System.out.println(structuralFormula);
-
-	}
-
-	public static void computeRAC(RichAtomSet rac) {
-		structuralFormula ="";
-
-		String currentAtom = null;
-		IAtom currentIAtom = null;
-		RichAtom currentRichAtom = null;
-
-		Set connectingAtoms = rac.getConnectingAtoms();
-
-		System.out.println("");
-		System.out.println(rac.getConnections());
-		System.out.println("");
-		System.out.println(rac.getConnectingAtoms());
-		System.out.println("");
-		System.out.println(rac.getExternalBonds());
-		System.out.println("");
-		System.out.println(rac.atomPositions);
-
-		atomPositionsNew = rac.atomPositions;
-		System.out.println(rac.atomPositions == atomPositionsNew);
-		System.out.println(atomPositionsNew.toString());
-		System.out.println(atomPositionsNew.get(1));
-
-		for (int i = 1; i < atomPositionsNew.size()+1; i++) {
-			currentAtom = atomPositionsNew.get(i);
-			currentIAtom = sa.getRichAtom(currentAtom).getStructure();
-			currentRichAtom = sa.getRichAtom(currentAtom);
-
-			if (!connectingAtoms.contains(currentAtom)) {
-				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
-
-				int hydrogens = sa.getRichAtom(currentAtom).getStructure().getImplicitHydrogenCount();
-
-				if (hydrogens > 0) {
-					structuralFormula += "H";
-					structuralFormula += getSubScript(hydrogens);
-				}
-			} else {
-				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
-				int hydrogens = sa.getRichAtom(currentAtom).getStructure().getImplicitHydrogenCount();
-
-				if (hydrogens > 0) {
-					structuralFormula += "H";
-					structuralFormula += getSubScript(hydrogens);
-				}
-				structuralFormula += "(";
-				
-				System.out.println("(");
-				
-				Set<Connection> connections = currentRichAtom.getConnections();
-				System.out.println("Connections are: " + connections);
-			
-//				if(is an atom set){
-//					computeRAC(atomset)
-//				}
-				
-				System.out.println(currentRichAtom);
-				System.out.println(currentRichAtom.getConnections());
-				System.out.println(currentRichAtom.getExternalBonds());
-				
-				
-				
-				//for each individual atom
-				
-				for (Connection connection : connections) {
-				
-					if(!connectingAtoms.contains(connection.getConnected()) && !atomPositionsNew.containsValue(connection.getConnected())){
-						structuralFormula += sa.getRichAtom(connection.getConnected()).getStructure().getSymbol();
-						System.out.println("adding " + sa.getRichAtom(connection.getConnected()).getStructure().getSymbol() + " " + currentAtom);
-						System.out.println(connectingAtoms);
-						
-						hydrogens = sa.getRichAtom(connection.getConnected()).getStructure().getImplicitHydrogenCount();
-
-						if (hydrogens > 0) {
-							structuralFormula += "H";
-							structuralFormula += getSubScript(hydrogens);
-						}
-					}
-					
-//					if(atomPositions.containsValue(connection.getConnected())){
-//						structuralFormula += sa.getRichAtom(connection.getConnected()).getStructure().getSymbol();
-//					}
-				}
-				
-				
-				
-				System.out.println(")");
-				
-				structuralFormula += ")";
-				
-			}
-		}
-		System.out.println("");
-		System.out.println(structuralFormula);
-	}
-
-	public static void computeAnalysis(StructuralAnalysis sa2) {
-		sa = sa2;
-		System.out.println("");
-		System.out.println(sa.getAtomSets());
-
-		System.out.println("");
-
-		System.out.println(sa.isAtomSet("as1"));
+		sa = saImported;
 
 		List<RichAtomSet> atomSets = sa.getAtomSets();
-		
-		if(atomSets.size() == 0){
-			return;
+
+		if (atomSets.size() == 0) {
+			String currentAtom = atomPositions.get(0);
+			atomPositions = rac.atomPositions;
+			structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
+
+			addHydrogens(currentAtom);
+
+			System.out.println(structuralFormula);
 		}
 
 		RichAtomSet richAtomSet = sa.getAtomSets().get(0);
@@ -168,73 +43,58 @@ public class StructuralFormula {
 
 	}
 
-	public static void findAtomPositions() {
+	public static void computeRAC(RichAtomSet rac) {
+		structuralFormula = "";
 
-		// IAtom startAtom = findStartAtomHeaviest();
-		IAtom startAtom = findStartAtomShortest();
+		String currentAtom = null;
+		IAtom currentIAtom = null;
+		RichAtom currentRichAtom = null;
 
-		walkRing(startAtom, 0, new ArrayList<IAtom>());
+		Set connectingAtoms = rac.getConnectingAtoms();
 
-	}
+		atomPositions = rac.atomPositions;
 
-	public static IAtom findStartAtomHeaviest() {
+		for (int i = 1; i < atomPositions.size() + 1; i++) {
+			currentAtom = atomPositions.get(i);
+			currentIAtom = sa.getRichAtom(currentAtom).getStructure();
+			currentRichAtom = sa.getRichAtom(currentAtom);
 
-		// Choose the heaviest atom
-		IAtom heaviest = frontier.get(0);
+			if (!connectingAtoms.contains(currentAtom)) {
+				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
 
-		for (IAtom atom : molecule.atoms()) {
-			if (atom.getExactMass() > heaviest.getExactMass()) {
-				heaviest = atom;
+				addHydrogens(currentAtom);
+
+			} else {
+				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
+
+				addHydrogens(currentAtom);
+
+				structuralFormula += "(";
+
+				Set<Connection> connections = currentRichAtom.getConnections();
+
+				for (Connection connection : connections) {
+					currentAtom = connection.getConnected();
+
+					if (!connectingAtoms.contains(currentAtom) && !atomPositions.containsValue(currentAtom)) {
+						structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
+
+						addHydrogens(currentAtom);
+					}
+				}
+				structuralFormula += ")";
 			}
 		}
 
-		return heaviest;
+		System.out.println(structuralFormula);
 	}
 
-	public static IAtom findStartAtomShortest() {
+	public static void addHydrogens(String id) {
+		int hydrogens = sa.getRichAtom(id).getStructure().getImplicitHydrogenCount();
 
-		IAtom shortest = null;
-
-		for (IAtom atom : molecule.atoms()) {
-			if (frontier.size() == 1) {
-				shortest = atom;
-			}
-			if (molecule.getConnectedAtomsList(atom).size() == 1) {
-				shortest = atom;
-			}
-		}
-
-		return shortest;
-	}
-
-	private static void walkRing(IAtom atom, Integer count, List<IAtom> visited) {
-
-		if (visited.contains(atom)) {
-			return;
-		}
-
-		atomPositions.put(count, atom);
-		visited.add(atom);
-
-		for (IAtom connected : molecule.getConnectedAtomsList(atom)) {
-			if (!visited.contains(connected)) {
-				walkRing(connected, ++count, visited);
-				return;
-			}
-		}
-	}
-
-	public static void computeStructuralFormula() {
-
-		for (int i = 0; i < atomPositions.size(); i++) {
-
-			structuralFormula += atomPositions.get(i).getSymbol();
-
-			int hydrogens = atomPositions.get(i).getImplicitHydrogenCount();
-
-			if (hydrogens > 0) {
-				structuralFormula += "H" + getSubScript(hydrogens);
-			}
+		if (hydrogens > 0) {
+			structuralFormula += "H";
+			structuralFormula += getSubScript(hydrogens);
 		}
 	}
 
@@ -262,7 +122,7 @@ public class StructuralFormula {
 		case 9:
 			return "\u2089";
 		}
-		return "test";
+		return "Error: Wrong number in getSubScript";
 	}
 
 }

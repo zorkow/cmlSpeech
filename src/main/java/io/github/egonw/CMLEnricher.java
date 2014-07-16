@@ -143,7 +143,6 @@ public class CMLEnricher {
             }
             this.sreOutput.computeDescriptions(this.doc);
             
-            StructuralFormula.compute(this.molecule); //----------------------------------------------------------------
             StructuralFormula.computeAnalysis(this.analysis);
             
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
