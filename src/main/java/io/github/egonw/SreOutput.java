@@ -41,7 +41,8 @@ public class SreOutput {
     
     SreOutput(StructuralAnalysis analysis) {
         this.analysis = analysis;
-        this.annotations();
+        // VS: This has to go back!
+        // this.annotations();
     }
 
     public SreAnnotations getAnnotations() {
@@ -132,146 +133,78 @@ public class SreOutput {
     }
 
 
-    private SreDescription description = new SreDescription();
+    private SreAnnotations description = new SreAnnotations();
     private AtomTable atomTable = AtomTable.getInstance();
 
     // TODO (sorge): This needs serious refactoring! Generating descriptions could be 
     // done easier when keeping some of the information in more dedicated data structures!
     
-    public SreDescription getDescriptions() {
-        return this.description;
+    public SreAnnotations getDescriptions() {
+        return this.annotations;
     }
 
 
     public void computeDescriptions(Document doc) {
+        this.annotations = new SreAnnotations();
+        System.out.println("Annotations " + this.annotations.toXML());
         // Currently using fixed levels!
-        describeTopLevel(doc.getRootElement());
-        describeMajorLevel();
-        this.description.finalize();
+        // describeTopLevel(doc.getRootElement());
+        // describeMajorLevel();
+        // this.description.finalize();
+        this.analysis.getAtoms().stream().forEach(this::speechAtom);
+        //this.analysis.getBonds().stream().forEach(this::describeBond);
+        this.analysis.getAtomSets().stream().forEach(this::speechAtomSet);
+        this.annotations.finalize();
+        System.out.println("here");
     }
 
 
-    private void describeMajorLevel() {
-        this.analysis.getMinorSystems().stream().forEach(this::describeAtomSet);
+    private void speechAtomSet(RichAtomSet atomSet) {
+        //RichAtomSet system = this.analysis.getRichAtomSet((atomSet.getSuperSystems().iterator()).next());
+        SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, 
+                                               describeAtomSet(atomSet));
+        String id = atomSet.getId();
+        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, speech);
+        this.toSreSet(id, SreNamespace.Tag.PARENTS, atomSet.getSuperSystems());
+        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getSubSystems());
+        //this.describeAtomConnections(system, atomSet, id);
     }
 
-    private void describeAtomSet(RichAtomSet system) {
-        switch (system.type) {
-        case MOLECULE:
-            break;
-        case ALIPHATIC:
-            describeAliphaticChain(system);
-                // describeAliphaticChain(system, (Element)systemElement.get(0));
-            break;
-        case ISOLATED:
-            describeIsolatedRing(system);
-            break;
+
+    private void speechAtom(RichAtom atom) {
+        RichAtomSet system = this.analysis.getRichAtomSet((atom.getSuperSystems().iterator()).next());
+        SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH,
+                                               describeAtomPosition(atom) + " "
+                                               + this.describeHydrogenBonds(atom.getStructure()));
+        String id = atom.getId();
+        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, speech);
+        this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
+        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atom.getSubSystems());
+        this.describeAtomConnections(system, atom, id);
+    }
+
+
+    private void describeAtomConnections(RichAtomSet system, RichAtom atom, String id) {
+        List<String> result = new ArrayList<String>();
+        for (Connection connection : atom.getConnections()) {
+            String connected = connection.getConnected();
+            SreElement element = null;
+            if (this.analysis.isAtom(connected)) {
+                element = new SreElement(this.analysis.getRichAtom(connected).getStructure());
+                } else {
+                element = new SreElement(this.analysis.getRichAtomSet(connected).getStructure());
+                }
+            SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
+            SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
+            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.EXT, "false");
+            element.addAttribute(speech);
+            element.addAttribute(bond);
+            element.addAttribute(ext);
+            this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
         }
+                                          
     }
-
-
-    private void describeIsolatedRing(RichAtomSet system) {
-        String descr = "Ring with " + system.getStructure().getAtomCount() + " elements.";
-        descr += " " + this.describeReplacements(system);
-        descr += " " + this.describeMultiBonds(system);
-        descr += " " + this.describeSubstitutions(system);
-        this.description.addDescription(2, descr,
-                                        this.describeComponents(system));
-        this.describeRingStepwise(system);
-    }
-    
-
-    private String describeReplacements(RichAtomSet system) {
-        String descr = "";
-        Iterator<String> iterator = system.iterator();
-        while (iterator.hasNext()) {
-            String value = iterator.next();
-            RichAtom atom = this.analysis.getRichAtom(value);
-            if (!atom.isCarbon()) {
-                descr += " with " + this.describeAtom(atom) 
-                    + " at position "
-                    + system.getAtomPosition(value).toString();
-            }
-        }
-        return descr;
-    }
-
-    private void describeRingStepwise(RichAtomSet system) {
-        this.describeAliphaticChainStepwise(system);
-    }
-
-    
-    private void describeAliphaticChain(RichAtomSet system) {
-        String descr = "Aliphatic chain of length " + system.getStructure().getAtomCount();
-        descr += " " + this.describeMultiBonds(system);
-        descr += " " + this.describeSubstitutions(system);
-        this.description.addDescription(2, descr,
-                                        this.describeComponents(system));
-        this.describeAliphaticChainStepwise(system);
-    }
- 
-
-   private String describeSubstitutions(RichAtomSet system) {
-        SortedSet<Integer> subst = new TreeSet<Integer>();
-        for (String atom : system.getConnectingAtoms()) {
-            subst.add(system.getAtomPosition(atom));
-        }
-        switch (subst.size()) {
-        case 0:
-            return "";
-        case 1: 
-            return "Substitution at position " + subst.iterator().next();
-        default:
-            Joiner joiner = Joiner.on(" and ");
-            return "Substitutions at position " + joiner.join(subst);
-        }
-    }
-
-
-
-    private String describeMultiBonds(RichAtomSet system) {
-        Map<Integer, String> bounded = new TreeMap<Integer, String>();
-        for (IBond bond : system.getStructure().bonds()) {
-            String order = this.describeBond(bond, true);
-            if (order.equals("")) { continue; }
-            // TODO (sorge) Make this one safer!
-            Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
-            Integer atomA = system.getAtomPosition(atoms.next());
-            Integer atomB = system.getAtomPosition(atoms.next());
-            if (atomA > atomB) {
-                Integer aux = atomA;
-                atomA = atomB;
-                atomB = aux;
-            }
-            bounded.put(atomA, order + " bond between position " + atomA + " and " + atomB + ".");
-        }
-        Joiner joiner = Joiner.on(" ");
-        return joiner.join(bounded.values());
-    }
-
-
-    private void describeAliphaticChainStepwise(RichAtomSet system) {
-        for (int i = 1; i <= system.atomPositions.size(); i++) {            
-            this.description.addDescription
-                (3,
-                 this.describeAtomConnections(system, system.getPositionAtom(i)),
-                 // This is temporary!
-                 this.describeAtomComponents(system.getPositionAtom(i)));
-        }
-    }
-
-
-    // This is temporary!
-    private SreElement describeAtomComponents(String atom) {
-        List<String> components = new ArrayList<String>();
-        components.add(atom);
-        RichAtom richAtom = this.analysis.getRichAtom(atom);
-        for (Connection connection : richAtom.getConnections()) {
-            components.add(connection.getConnector());
-            components.add(connection.getConnected());
-        }
-        return this.describeComponents(components);
-    }
+        
 
     private String describeAtomConnections(RichAtomSet system, String atom) {
         return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
@@ -320,12 +253,14 @@ public class SreOutput {
     // TODO (sorge) Combine the following two methods.
     private String describeAtomPosition(RichAtom atom) {
         Integer position = this.analysis.getAtomPosition(atom.getId());
+        if (position == null) { return describeAtom(atom) + " unknown position."; }
         return describeAtom(atom) + " " + position.toString();
     }
 
 
     private String describeAtomPosition(String atom) {
         Integer position = this.analysis.getAtomPosition(atom);
+        if (position == null) { return "Not an atom."; }
         return describeAtom(this.analysis.getRichAtom(atom)) 
             + " " + position.toString();
     }
@@ -384,27 +319,141 @@ public class SreOutput {
         return element;
     }
 
-    private void describeTopLevel(Element doc) {
-        String content = describeName(doc);
-        List<String> elements = SreUtil.xpathValueList(doc, 
-                                                       "//cml:atom/@id | //cml:bond/@id");
-        this.description.addDescription(1, content, this.describeComponents(elements));
+    // private void describeTopLevel(Element doc) {
+    //     String content = describeName(doc);
+    //     List<String> elements = SreUtil.xpathValueList(doc, 
+    //                                                    "//cml:atom/@id | //cml:bond/@id");
+    //     this.description.addDescription(1, content, this.describeComponents(elements));
+    // }
+
+    // private String describeName(Element element) {
+    //     return SreUtil.xpathValue(element, "//@sre:name | //@sre:iupac | //@sre:formula");
+    // }
+
+
+
+
+    private String describeAtomSet(RichAtomSet system) {
+        switch (system.type) {
+        case MOLECULE:
+            break;
+        case ALIPHATIC:
+            return describeAliphaticChain(system);
+                // describeAliphaticChain(system, (Element)systemElement.get(0));
+        case ISOLATED:
+            return describeIsolatedRing(system);
+        }
+        return "";
     }
 
-    private String describeName(Element element) {
-        return SreUtil.xpathValue(element, "//@sre:name | //@sre:iupac | //@sre:formula");
+
+    private String describeIsolatedRing(RichAtomSet system) {
+        String descr = "Ring with " + system.getStructure().getAtomCount() + " elements.";
+        descr += " " + this.describeReplacements(system);
+        descr += " " + this.describeMultiBonds(system);
+        descr += " " + this.describeSubstitutions(system);
+        // this.description.addDescription(2, descr,
+        //                                 this.describeComponents(system));
+        this.describeRingStepwise(system);
+        return descr;
+    }
+    
+
+    private String describeReplacements(RichAtomSet system) {
+        String descr = "";
+        Iterator<String> iterator = system.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            RichAtom atom = this.analysis.getRichAtom(value);
+            if (!atom.isCarbon()) {
+                descr += " with " + this.describeAtom(atom) 
+                    + " at position "
+                    + system.getAtomPosition(value).toString();
+            }
+        }
+        return descr;
+    }
+
+    private void describeRingStepwise(RichAtomSet system) {
+        this.describeAliphaticChainStepwise(system);
     }
 
     
-    
+    private String describeAliphaticChain(RichAtomSet system) {
+        String descr = "Aliphatic chain of length " + system.getStructure().getAtomCount();
+        descr += " " + this.describeMultiBonds(system);
+        descr += " " + this.describeSubstitutions(system);
+        // this.description.addDescription(2, descr,
+        //                                 this.describeComponents(system));
+        //this.describeAliphaticChainStepwise(system);
+        return descr;
+    }
+ 
 
-    private List<String> splitAttribute(String attribute) {
-        try {
-            return Arrays.asList(attribute.split("\\s+"));
-        } catch (PatternSyntaxException ex) {
-            return new ArrayList<String>();
+   private String describeSubstitutions(RichAtomSet system) {
+        SortedSet<Integer> subst = new TreeSet<Integer>();
+        for (String atom : system.getConnectingAtoms()) {
+            subst.add(system.getAtomPosition(atom));
+        }
+        switch (subst.size()) {
+        case 0:
+            return "";
+        case 1: 
+            return "Substitution at position " + subst.iterator().next();
+        default:
+            Joiner joiner = Joiner.on(" and ");
+            return "Substitutions at position " + joiner.join(subst);
         }
     }
 
 
+
+    private String describeMultiBonds(RichAtomSet system) {
+        Map<Integer, String> bounded = new TreeMap<Integer, String>();
+        for (IBond bond : system.getStructure().bonds()) {
+            String order = this.describeBond(bond, true);
+            if (order.equals("")) { continue; }
+            // TODO (sorge) Make this one safer!
+            Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
+            Integer atomA = system.getAtomPosition(atoms.next());
+            Integer atomB = system.getAtomPosition(atoms.next());
+            if (atomA > atomB) {
+                Integer aux = atomA;
+                atomA = atomB;
+                atomB = aux;
+            }
+            bounded.put(atomA, order + " bond between position " + atomA + " and " + atomB + ".");
+        }
+        Joiner joiner = Joiner.on(" ");
+        return joiner.join(bounded.values());
+    }
+
+
+    private void describeAliphaticChainStepwise(RichAtomSet system) {
+        for (int i = 1; i <= system.atomPositions.size(); i++) {            
+            // this.description.addDescription
+            //     (3,
+            //      this.describeAtomConnections(system, system.getPositionAtom(i)),
+            //      // This is temporary!
+            //      this.describeAtomComponents(system.getPositionAtom(i)));
+        }
+    }
+
+
+    // This is temporary!
+    private SreElement describeAtomComponents(String atom) {
+        List<String> components = new ArrayList<String>();
+        components.add(atom);
+        RichAtom richAtom = this.analysis.getRichAtom(atom);
+        for (Connection connection : richAtom.getConnections()) {
+            components.add(connection.getConnector());
+            components.add(connection.getConnected());
+        }
+        return this.describeComponents(components);
+    }
+
+
+
+
 }
+

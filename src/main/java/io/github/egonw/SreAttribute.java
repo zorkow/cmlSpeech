@@ -17,6 +17,11 @@ public class SreAttribute extends Attribute {
               SreNamespace.getInstance().uri, value);
     }
 
+    SreAttribute(SreNamespace.Attribute attr, String value) {
+        super(SreNamespace.getInstance().prefix + ":" + attr.attribute,
+              SreNamespace.getInstance().uri, value);
+    }
+
     public void addValue(String value) {
         if (getValue() == "") {
             setValue(value);

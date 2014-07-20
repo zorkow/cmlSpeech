@@ -67,6 +67,13 @@ public class SreNamespace {
         SUBDESC ("subdesc"),
         CONTENT ("content"),
 
+        PARENTS ("parents"),
+        PARENT ("parent"),
+        CHILDREN ("children"),
+        CHILD ("child"),
+        NEIGHBOURS ("neighbours"),
+        NEIGHBOUR ("neighbour"),
+        
         ;
 
         public final String tag;
@@ -80,6 +87,12 @@ public class SreNamespace {
     public enum Attribute {
         LEVEL ("level"),
         ELEMENTS ("elements"),
+        
+
+        SPEECH ("speech"),
+        POSITION ("position"),
+        BOND ("bond"),
+        EXT ("ext"),
         ;
 
         public final String attribute;

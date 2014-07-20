@@ -41,6 +41,12 @@ public class SreAnnotations extends SreElement {
     };
         
 
+    public void registerAnnotation(String id, SreNamespace.Tag tag, SreAttribute attr) {
+        Element element = this.getNodeToAnnotate(id, tag);
+        element.addAttribute(attr);
+    };
+        
+
     public void appendAnnotation(String annotate, SreNamespace.Tag tag, Element entry) {
         this.appendAnnotation(this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), 
                               tag, entry);
@@ -102,6 +108,7 @@ public class SreAnnotations extends SreElement {
 
     public void finalize() {
         for (String key : this.annotationNodes.keySet()) {
+            System.out.println(this.annotationNodes.get(key).getParent());
             this.appendChild(this.annotationNodes.get(key));
         }
     }

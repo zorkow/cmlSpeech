@@ -69,6 +69,8 @@ public class StructuralAnalysis {
     private List<String> majorPath = new ArrayList<String>();
     private BiMap<Integer, String> atomPositions = HashBiMap.create();
 
+    public RichAtomSet top;
+
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
         this.cli = cli;
@@ -273,19 +275,19 @@ public class StructuralAnalysis {
     
 
     private void makeTopSet() {
-        RichStructure set = this.setRichAtomSet(this.molecule, RichAtomSet.Type.MOLECULE);
-        String id = set.getId();
+        this.top = (RichAtomSet)this.setRichAtomSet(this.molecule, RichAtomSet.Type.MOLECULE);
+        String id = this.top.getId();
         this.setContexts(this.richAtoms.keySet(), id);
         this.setContexts(this.richBonds.keySet(), id);
         this.setContexts(this.richAtomSets.keySet(), id);
-        set.getContexts().remove(id);
+        this.top.getContexts().remove(id);
         for (RichAtomSet system : this.majorSystems) {
             system.getSuperSystems().add(id);
-            set.getSubSystems().add(system.getId());
+            this.top.getSubSystems().add(system.getId());
         }
         for (RichAtom atom : this.getSingletonAtoms()) {
             atom.getSuperSystems().add(id);
-            set.getSubSystems().add(atom.getId());
+            this.top.getSubSystems().add(atom.getId());
         }
     }
 
