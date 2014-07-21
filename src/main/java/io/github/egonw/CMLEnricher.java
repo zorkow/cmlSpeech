@@ -82,6 +82,7 @@ public class CMLEnricher {
 
     private StructuralAnalysis analysis;
     private SreOutput sreOutput;
+    private SreSpeech sreSpeech;
 
     private Document doc;
     private IAtomContainer molecule;
@@ -125,7 +126,6 @@ public class CMLEnricher {
             removeExplicitHydrogens();
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
-            this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
             this.analysis.majorPath(this.structure);
             this.analysis.computePositions();
@@ -133,6 +133,7 @@ public class CMLEnricher {
 
             this.appendAtomSets();
             if (this.cli.cl.hasOption("ann")) {
+                this.sreOutput = new SreOutput(this.analysis);
                 this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
             }
             if (!this.cli.cl.hasOption("nonih")) {
@@ -140,8 +141,10 @@ public class CMLEnricher {
                 executor.addResults(this.doc, this.logger);
                 executor.shutdown();
             }
-            this.sreOutput.computeDescriptions(this.doc);
-            this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
+            if (this.cli.cl.hasOption("descr")) {
+                this.sreSpeech = new SreSpeech(this.analysis);
+                this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
+            }
             writeFile(fileName);
         } catch (Exception e) { 
             // TODO (sorge) Meaningful exception handling by exceptions/functions.
