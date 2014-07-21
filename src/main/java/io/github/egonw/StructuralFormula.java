@@ -31,27 +31,20 @@ public class StructuralFormula {
 	 */
 	public static void computeAnalysis(StructuralAnalysis saImported) {
 		System.out.println("");
-
 		sa = saImported;
-
 		List<RichAtomSet> atomSets = sa.getAtomSets();
-
 		// If there is only one atom
 		if (atomSets.size() == 0) {
 			String currentAtom = atomPositions.get(0);
 			atomPositions = rac.atomPositions;
-			structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
-
+			printAtom(currentAtom);
 			addHydrogens(currentAtom);
-
 			System.out.println(structuralFormula);
 		}
-
 		// Computes the structural formula for each RichAtomSet
 		for (RichAtomSet richAtomSet : atomSets) {
 			computeRAC(richAtomSet);
 		}
-
 	}
 
 	/**
@@ -61,15 +54,12 @@ public class StructuralFormula {
 	 *            The RichAtomSet to be computed
 	 */
 	public static void computeRAC(RichAtomSet rac) {
-
 		String currentAtom = null;
 		IAtom currentIAtom = null;
 		RichAtom currentRichAtom = null;
-
 		// Set of atoms in the rac which connect to subStructures or
 		// superStructures
 		Set connectingAtoms = rac.getConnectingAtoms();
-
 		// The atom positions of the current RichAtomSet
 		atomPositions = rac.atomPositions;
 
@@ -79,64 +69,86 @@ public class StructuralFormula {
 			currentAtom = atomPositions.get(i);
 			currentIAtom = sa.getRichAtom(currentAtom).getStructure();
 			currentRichAtom = sa.getRichAtom(currentAtom);
-
 			// Check if the current atom is connected to a subStructure
 			// If not then simply "print" the atom
 			if (!connectingAtoms.contains(currentAtom)) {
-				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
-
+				printAtom(currentAtom);
 				addHydrogens(currentAtom);
-
-			} else { // If the atom does have a connecting atom then we print
-						// the atom
-						// and we also print its connecting atoms
-				structuralFormula += sa.getRichAtom(currentAtom).getStructure().getSymbol();
-
+			} else {
+				// If the atom does have a connecting atom then we print
+				// the atom and we also print its connecting atoms
+				printAtom(currentAtom);
 				addHydrogens(currentAtom);
-
-				// This is where the subStructure is printed
-				structuralFormula += "(";
-
-				// We get every connecting atom to the current atom
-				Set<Connection> connections = currentRichAtom.getConnections();
-
-				for (Connection connection : connections) {
-					// Assign the connected atom in question
-					String currentSubAtom = connection.getConnected();
-
-					// We check if this currentSubAtom is a member of the
-					// current RichAtomSet
-					if (!connectingAtoms.contains(currentSubAtom) && !atomPositions.containsValue(currentSubAtom)) {
-
-						structuralFormula += sa.getRichAtom(currentSubAtom).getStructure().getSymbol();
-						addHydrogens(currentSubAtom);
-
-						// This is for dealing with neighbours of the
-						// subStructure
-						ArrayList<String> connectedToSubAtom = new ArrayList<String>();
-//						connectedToSubAtom.add(currentAtom);
-//
-//						if (hasNeighbours(currentSubAtom, connectedToSubAtom)) {
-//							printNeighbours(currentSubAtom, connectedToSubAtom);
-//						}
-
-					}
-				}
-				structuralFormula += ")";
+				addSubSctructure(currentAtom, currentRichAtom, connectingAtoms);
 			}
 		}
-
 		System.out.println(structuralFormula);
 	}
 
-	private static boolean hasNeighbours(String currentSubAtom, ArrayList<String> arrayList) {
-
-		return false;
+	/**
+	 * Adds a substructure to the structuralFormula to be printed
+	 * 
+	 * @param currentAtom
+	 * @param currentRichAtom
+	 * @param connectingAtoms
+	 */
+	private static void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
+		// This is where the subStructure is printed
+		structuralFormula += "(";
+		// We get every connecting atom to the current atom
+		Set<Connection> connections = currentRichAtom.getConnections();
+		for (Connection connection : connections) {
+			// Assign the connected atom in question
+			String currentSubAtom = connection.getConnected();
+			// We check if this currentSubAtom is a member of the current
+			// RichAtomSet
+			if (!connectingAtoms.contains(currentSubAtom) && !atomPositions.containsValue(currentSubAtom)) {
+				printAtom(currentSubAtom);
+				addHydrogens(currentSubAtom);
+				// This is for dealing with neighbours of the subStructure
+				ArrayList<String> connectedToSubAtom = new ArrayList<String>();
+				connectedToSubAtom.add(currentAtom);
+				// printNeighbours(currentSubAtom, connectedToSubAtom);
+			}
+		}
+		structuralFormula += ")";
 	}
 
+	/**
+	 * Method for dealing with isolated atoms attached to substructures
+	 * 
+	 * @param currentSubAtom
+	 * @param connectedToSubAtom
+	 */
 	private static void printNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom) {
-		// TODO Auto-generated method stub
+		Set<Connection> connections = sa.getRichAtom(currentSubAtom).getConnections();
+		if (connections.size() > 1) {
+			printNeighbours(currentSubAtom, connectedToSubAtom, connections);
+		}
 
+	}
+
+	/**
+	 * Once neighbouring atoms have been found this method prints them and their
+	 * neighbours also
+	 * 
+	 * @param currentSubAtom
+	 * @param connectedToSubAtom
+	 * @param connections
+	 */
+	private static void printNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom,
+			Set<Connection> connections) {
+		for (Connection connection : connections) {
+			if (!connectedToSubAtom.contains(connection)) {
+				connectedToSubAtom.add(connection.getConnected());
+				printAtom(connection.getConnected());
+			}
+			printNeighbours(currentSubAtom, connectedToSubAtom);
+		}
+	}
+
+	private static void printAtom(String atomID) {
+		structuralFormula += sa.getRichAtom(atomID).getStructure().getSymbol();
 	}
 
 	/**
