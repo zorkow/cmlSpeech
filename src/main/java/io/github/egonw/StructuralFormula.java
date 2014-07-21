@@ -38,7 +38,6 @@ public class StructuralFormula {
 			String currentAtom = atomPositions.get(0);
 			atomPositions = rac.atomPositions;
 			printAtom(currentAtom);
-			addHydrogens(currentAtom);
 			System.out.println(structuralFormula);
 		}
 		// Computes the structural formula for each RichAtomSet
@@ -73,12 +72,10 @@ public class StructuralFormula {
 			// If not then simply "print" the atom
 			if (!connectingAtoms.contains(currentAtom)) {
 				printAtom(currentAtom);
-				addHydrogens(currentAtom);
 			} else {
 				// If the atom does have a connecting atom then we print
 				// the atom and we also print its connecting atoms
 				printAtom(currentAtom);
-				addHydrogens(currentAtom);
 				addSubSctructure(currentAtom, currentRichAtom, connectingAtoms);
 			}
 		}
@@ -104,7 +101,6 @@ public class StructuralFormula {
 			// RichAtomSet
 			if (!connectingAtoms.contains(currentSubAtom) && !atomPositions.containsValue(currentSubAtom)) {
 				printAtom(currentSubAtom);
-				addHydrogens(currentSubAtom);
 				// This is for dealing with neighbours of the subStructure
 				ArrayList<String> connectedToSubAtom = new ArrayList<String>();
 				connectedToSubAtom.add(currentAtom);
@@ -147,21 +143,14 @@ public class StructuralFormula {
 		}
 	}
 
+	/**
+	 * Adds the atom and its Hydrogens to the structuralFormula
+	 * 
+	 * @param atomID
+	 */
 	private static void printAtom(String atomID) {
 		structuralFormula += sa.getRichAtom(atomID).getStructure().getSymbol();
-	}
-
-	/**
-	 * Will find whether the atom in question has any linked Hydrogens. If yes
-	 * then it will add "H" and a subscript of the number of H to the
-	 * structuralFormula
-	 * 
-	 * @param id
-	 *            ID of the atom in question
-	 */
-	public static void addHydrogens(String id) {
-		int hydrogens = sa.getRichAtom(id).getStructure().getImplicitHydrogenCount();
-
+		int hydrogens = sa.getRichAtom(atomID).getStructure().getImplicitHydrogenCount();
 		if (hydrogens > 0) {
 			structuralFormula += "H";
 			structuralFormula += getSubScript(hydrogens);
