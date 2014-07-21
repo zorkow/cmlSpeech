@@ -57,8 +57,7 @@ public class StructuralFormula {
 		String currentAtom = null;
 		IAtom currentIAtom = null;
 		RichAtom currentRichAtom = null;
-		// Set of atoms in the rac which connect to subStructures or
-		// superStructures
+		// Set of atoms in the rac which connect to subStructures or superStructures
 		Set connectingAtoms = rac.getConnectingAtoms();
 		// The atom positions of the current RichAtomSet
 		atomPositions = rac.atomPositions;
