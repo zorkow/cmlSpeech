@@ -23,14 +23,17 @@ public class StructuralFormula {
 	public static RichAtomSet rac;
 	public static StructuralAnalysis sa;
 	public static ArrayList<String> racAtoms = new ArrayList<String>();
+	private static Cli cli;
 
 	/**
 	 * Computes a structural formula using a Structural Analysis
 	 * 
 	 * @param saImported
 	 *            The StructuralAnalysis to be used
+	 * @param cli 
 	 */
-	public static void computeAnalysis(StructuralAnalysis saImported) {
+	public static void computeAnalysis(StructuralAnalysis saImported, Cli cliImp) {
+		cli = cliImp;
 		System.out.println("");
 		sa = saImported;
 		List<RichAtomSet> atomSets = sa.getAtomSets();
@@ -162,7 +165,12 @@ public class StructuralFormula {
 		int hydrogens = sa.getRichAtom(atomID).getStructure().getImplicitHydrogenCount();
 		if (hydrogens > 0) {
 			structuralFormula += "H";
-			structuralFormula += getSubScript(hydrogens);
+			if(cli.cl.hasOption("sub")){
+				structuralFormula += getSubScript(hydrogens);
+			} else {
+				structuralFormula += hydrogens;
+			}
+			
 		}
 	}
 
