@@ -22,6 +22,7 @@ public class StructuralFormula {
 	public static BiMap<Integer, String> atomPositions = HashBiMap.create();
 	public static RichAtomSet rac;
 	public static StructuralAnalysis sa;
+	public static ArrayList<String> racAtoms = new ArrayList<String>();
 
 	/**
 	 * Computes a structural formula using a Structural Analysis
@@ -39,6 +40,12 @@ public class StructuralFormula {
 			atomPositions = rac.atomPositions;
 			printAtom(currentAtom);
 			System.out.println(structuralFormula);
+		}
+		// Stores all atoms contained in a richAtomSet
+		for (RichAtomSet richAtomSet : atomSets) {
+			for (int i = 0; i < richAtomSet.getStructure().getAtomCount(); i++) {
+				racAtoms.add(richAtomSet.getStructure().getAtom(i).getID());
+			}
 		}
 		// Computes the structural formula for each RichAtomSet
 		for (RichAtomSet richAtomSet : atomSets) {
@@ -104,7 +111,7 @@ public class StructuralFormula {
 				// This is for dealing with neighbours of the subStructure
 				ArrayList<String> connectedToSubAtom = new ArrayList<String>();
 				connectedToSubAtom.add(currentAtom);
-				// printNeighbours(currentSubAtom, connectedToSubAtom);
+				//addNeighbours(currentSubAtom, connectedToSubAtom);
 			}
 		}
 		structuralFormula += ")";
@@ -116,8 +123,9 @@ public class StructuralFormula {
 	 * @param currentSubAtom
 	 * @param connectedToSubAtom
 	 */
-	private static void printNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom) {
+	private static void addNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom) {
 		Set<Connection> connections = sa.getRichAtom(currentSubAtom).getConnections();
+		System.out.println(connections);
 		if (connections.size() > 1) {
 			printNeighbours(currentSubAtom, connectedToSubAtom, connections);
 		}
@@ -135,11 +143,12 @@ public class StructuralFormula {
 	private static void printNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom,
 			Set<Connection> connections) {
 		for (Connection connection : connections) {
-			if (!connectedToSubAtom.contains(connection)) {
+			if (!connectedToSubAtom.contains(connection) && !racAtoms.contains(connection.getConnected())) {
 				connectedToSubAtom.add(connection.getConnected());
+				System.out.println(connection.getConnected());
 				printAtom(connection.getConnected());
+				addNeighbours(connection.getConnected(), connectedToSubAtom);
 			}
-			printNeighbours(currentSubAtom, connectedToSubAtom);
 		}
 	}
 
@@ -165,7 +174,6 @@ public class StructuralFormula {
 	 * @return Returns the subscript of the inserted number
 	 */
 	public static String getSubScript(int number) {
-
 		switch (number) {
 		case 0:
 			return "\u2080";
@@ -190,5 +198,4 @@ public class StructuralFormula {
 		}
 		return "Error: Wrong number in getSubScript";
 	}
-
 }
