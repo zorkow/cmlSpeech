@@ -91,8 +91,9 @@ public class SreNamespace {
 
         SPEECH ("speech"),
         POSITION ("position"),
+        ORDER ("order"),
         BOND ("bond"),
-        EXT ("ext"),
+        TYPE ("type"),
         ;
 
         public final String attribute;

@@ -38,6 +38,7 @@ public class SreOutput extends SreXML {
 
     SreOutput(StructuralAnalysis analysis) {
         super(analysis);
+        this.compute();
     }
 
     @Override

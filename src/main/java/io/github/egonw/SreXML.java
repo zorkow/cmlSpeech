@@ -25,7 +25,6 @@ public abstract class SreXML {
     SreXML(StructuralAnalysis analysis) {
         this.analysis = analysis;
         this.annotations = new SreAnnotations(); 
-        this.compute();
     }
 
     public SreAnnotations getAnnotations() {

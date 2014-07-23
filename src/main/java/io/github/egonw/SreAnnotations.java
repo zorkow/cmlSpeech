@@ -24,7 +24,6 @@ public class SreAnnotations extends SreElement {
     SreAnnotations() {
         super(SreNamespace.Tag.ANNOTATIONS);
         this.annotationNodes = new TreeMap(new CMLNameComparator());
-        System.out.println("hello: " + this);
     }
 
     SreAnnotations(IAtomContainer molecule) {
@@ -85,8 +84,21 @@ public class SreAnnotations extends SreElement {
     }
 
 
+    public void addAttribute(String id, SreAttribute attr) {
+        Element element = this.getNodeToAnnotate(id);
+        if (element == null) {
+            throw new SreException("Annotation element " + id + 
+                                   " does not exist. Attribute cannot be added!");
+        }
+        element.addAttribute(attr);
+    }
+
+    private Element getNodeToAnnotate(String id) {
+        return this.annotationNodes.get(id);
+    }
+
     private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
-        Element element = this.annotationNodes.get(id);
+        Element element = this.getNodeToAnnotate(id);
         if (element != null) {
             return element;
         }
