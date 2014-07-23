@@ -8,6 +8,8 @@ import com.google.common.collect.HashBiMap;
 public class ComponentsPositions {
 
 	public BiMap<Integer, String> atomPositions = HashBiMap.create();
+	public int count = 0;
+	public Set<RichAtomSet> atomSets = new Set<RichAtomSet>();
 
 	public void put(Integer position, String atomID) {
 		atomPositions.put(position, atomID);
@@ -44,5 +46,12 @@ public class ComponentsPositions {
 	public void putAll(BiMap map){
 		atomPositions.putAll(map);
 	}
+	
+	public void addNext(String atomID){
+		count = count++;
+		atomPositions.put(count, atomID);
+	}
+	
+	
 
 }
