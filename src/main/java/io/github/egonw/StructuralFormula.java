@@ -24,6 +24,7 @@ public class StructuralFormula {
 	public static StructuralAnalysis sa;
 	public static ArrayList<String> racAtoms = new ArrayList<String>();
 	private static Cli cli;
+	public static ArrayList<String> printedAtoms = new ArrayList<String>();
 
 	/**
 	 * Computes a structural formula using a Structural Analysis
@@ -161,6 +162,11 @@ public class StructuralFormula {
 	 * @param atomID
 	 */
 	private static void printAtom(String atomID) {
+		if(printedAtoms.contains(atomID)){
+			return;
+		} else {
+			printedAtoms.add(atomID);
+		}
 		structuralFormula += sa.getRichAtom(atomID).getStructure().getSymbol();
 		int hydrogens = sa.getRichAtom(atomID).getStructure().getImplicitHydrogenCount();
 		if (hydrogens > 0) {
@@ -170,7 +176,6 @@ public class StructuralFormula {
 			} else {
 				structuralFormula += hydrogens;
 			}
-			
 		}
 	}
 
