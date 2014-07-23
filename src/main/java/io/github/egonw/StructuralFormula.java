@@ -40,10 +40,8 @@ public class StructuralFormula {
 		List<RichAtomSet> atomSets = sa.getAtomSets();
 		// If there is only one atom
 		if (atomSets.size() == 0) {
-			String currentAtom = atomPositions.get(0);
-			atomPositions = rac.atomPositions;
+			String currentAtom = sa.getAtoms().get(0).getId();
 			printAtom(currentAtom);
-			System.out.println(structuralFormula);
 		}
 		// Stores all atoms contained in a richAtomSet
 		for (RichAtomSet richAtomSet : atomSets) {
