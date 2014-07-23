@@ -55,6 +55,8 @@ public class StructuralFormula {
 		for (RichAtomSet richAtomSet : atomSets) {
 			computeRAC(richAtomSet);
 		}
+		
+		System.out.println(structuralFormula);
 	}
 
 	/**
@@ -90,7 +92,6 @@ public class StructuralFormula {
 				addSubSctructure(currentAtom, currentRichAtom, connectingAtoms);
 			}
 		}
-		System.out.println(structuralFormula);
 	}
 
 	/**
@@ -133,7 +134,6 @@ public class StructuralFormula {
 		if (connections.size() > 1) {
 			printNeighbours(currentSubAtom, connectedToSubAtom, connections);
 		}
-
 	}
 
 	/**
