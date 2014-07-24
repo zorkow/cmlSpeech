@@ -141,7 +141,6 @@ public class CMLEnricher {
                 executor.shutdown();
             }
             this.sreOutput.computeDescriptions(this.doc);
-            FunctionalGroups.compute(this.analysis);
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);
         } catch (Exception e) { 
