@@ -18,11 +18,11 @@ import com.google.common.collect.HashBiMap;
 
 public class StructuralFormula {
 
-	private static String structuralFormula = "";
+	public static String structuralFormula = "";
 	public static BiMap<Integer, String> atomPositions = HashBiMap.create();
-	public static RichAtomSet rac;
-	public static StructuralAnalysis sa;
-	public static ArrayList<String> racAtoms = new ArrayList<String>();
+	private static RichAtomSet rac;
+	private static StructuralAnalysis sa;
+	private static ArrayList<String> racAtoms = new ArrayList<String>();
 	private static Cli cli;
 	public static ArrayList<String> printedAtoms = new ArrayList<String>();
 
@@ -53,7 +53,6 @@ public class StructuralFormula {
 		for (RichAtomSet richAtomSet : atomSets) {
 			computeRAC(richAtomSet);
 		}
-		
 		System.out.println(structuralFormula);
 	}
 
