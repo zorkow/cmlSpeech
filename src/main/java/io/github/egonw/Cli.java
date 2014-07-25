@@ -41,6 +41,8 @@ public class Cli {
         options.addOption("s", "subrings", false, "Compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
+        options.addOption("sf", "structuralformula", false, "Print the structural formula");
+        options.addOption("sub", "subscript", false, "Use subscripts with structural formula");
         
         CommandLineParser parser = new BasicParser();
         try {

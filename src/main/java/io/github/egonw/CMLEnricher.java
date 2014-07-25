@@ -143,7 +143,9 @@ public class CMLEnricher {
             }
             this.sreOutput.computeDescriptions(this.doc);
             
-            StructuralFormula.computeAnalysis(this.analysis);
+            if (this.cli.cl.hasOption("sf")){
+            	StructuralFormula.computeAnalysis(this.analysis, this.cli);
+            }
             
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
             writeFile(fileName);
