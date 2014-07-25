@@ -7,6 +7,7 @@ import com.google.common.collect.HashBiMap;
 
 public class ComponentsPositions {
 
+	// The main path through the
 	public BiMap<Integer, String> atomPositions = HashBiMap.create();
 	public int count = 0;
 	public BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
@@ -14,6 +15,13 @@ public class ComponentsPositions {
 	public BiMap<Integer, RichAtomSet> getAtomSets(){
 		return atomSets;
 	}
+	
+	// Add atom set
+	// Iterate over atom set in order (local positions)
+	
+	// Need to make heuristics to find heaviest atom
+	
+	// Find the heaviest atoms / rich atom sets
 
 	public void put(Integer position, String atomID) {
 		atomPositions.put(position, atomID);
