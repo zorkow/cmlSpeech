@@ -9,7 +9,11 @@ public class ComponentsPositions {
 
 	public BiMap<Integer, String> atomPositions = HashBiMap.create();
 	public int count = 0;
-	public Set<RichAtomSet> atomSets = new Set<RichAtomSet>();
+	public BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
+	
+	public BiMap<Integer, RichAtomSet> getAtomSets(){
+		return atomSets;
+	}
 
 	public void put(Integer position, String atomID) {
 		atomPositions.put(position, atomID);
@@ -48,8 +52,8 @@ public class ComponentsPositions {
 	}
 	
 	public void addNext(String atomID){
-		count = count++;
 		atomPositions.put(count, atomID);
+		count = count++;
 	}
 	
 	

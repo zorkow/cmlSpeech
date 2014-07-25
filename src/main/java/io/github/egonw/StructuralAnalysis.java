@@ -67,7 +67,8 @@ public class StructuralAnalysis {
     private Set<String> singletonAtoms = new HashSet<String>();
 
     private List<String> majorPath = new ArrayList<String>();
-    private BiMap<Integer, String> atomPositions = HashBiMap.create();
+    //private BiMap<Integer, String> atomPositions = HashBiMap.create();
+    private ComponentsPositions atomPositions = new ComponentsPositions();
 
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
@@ -707,7 +708,7 @@ public class StructuralAnalysis {
     }
 
     public void printPositions () {
-        for (Integer key : this.atomPositions.keySet()) {
+        for (Integer key : this.atomPositions.atomPositions.keySet()) {
             System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
         }
         this.majorPath.stream().forEach(a -> 

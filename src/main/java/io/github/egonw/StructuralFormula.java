@@ -19,7 +19,8 @@ import com.google.common.collect.HashBiMap;
 public class StructuralFormula {
 
 	private static String structuralFormula = "";
-	public static BiMap<Integer, String> atomPositions = HashBiMap.create();
+	//public static BiMap<Integer, String> atomPositions = HashBiMap.create();
+	public static ComponentsPositions atomPositions = new ComponentsPositions();
 	public static RichAtomSet rac;
 	public static StructuralAnalysis sa;
 

@@ -48,7 +48,8 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 	// TODO (sorge): Reimplement atom positions as an extension to BiMap.
 	/** Local positions in the system. */
-	public BiMap<Integer, String> atomPositions = HashBiMap.create();
+	//public BiMap<Integer, String> atomPositions = HashBiMap.create();
+	public ComponentsPositions atomPositions = new ComponentsPositions();
 	
 	public Integer offset = 0;
 
@@ -145,12 +146,12 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 	public void appendPositions(RichAtomSet atomSet) {
 		if (this.atomPositions.isEmpty()) {
 			this.offset = atomSet.offset;
-			this.atomPositions.putAll(atomSet.atomPositions);
+			this.atomPositions.putAll(atomSet.atomPositions.atomPositions);
 			return;
 		}
 		Iterator<String> iterator = atomSet.iterator();
 		Integer position = atomSet.offset;
-		for (Integer key : atomSet.atomPositions.keySet()) {
+		for (Integer key : atomSet.atomPositions.atomPositions.keySet()) {
 			String value = this.atomPositions.get(key);
 			System.out.printf("%d : %s\n", key, value);
 
@@ -244,7 +245,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 	public void printPositions() {
 		// This is incorrect for substructures!
 		System.out.println("Local\tGlobal");
-		for (Integer key : this.atomPositions.keySet()) {
+		for (Integer key : this.atomPositions.atomPositions.keySet()) {
 			System.out.printf("%d\t%d:\t%s\n", key, key + this.offset, this.atomPositions.get(key));
 		}
 	}
