@@ -87,6 +87,7 @@ public class CMLEnricher {
     private IAtomContainer molecule;
     private CactusExecutor executor = new CactusExecutor();
     private StructuralGraph structure = new StructuralGraph();
+    private StructuralFormula formula = new StructuralFormula();
 
     /** 
      * Constructor
@@ -144,7 +145,7 @@ public class CMLEnricher {
             this.sreOutput.computeDescriptions(this.doc);
             
             if (this.cli.cl.hasOption("sf")){
-            	StructuralFormula.computeAnalysis(this.analysis, this.cli);
+            	this.formula.getStructuralFormula(this.analysis, this.cli);
             }
             
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
