@@ -693,6 +693,13 @@ public class StructuralAnalysis {
             }
         }
     }
+    public int getAtomWeight(){
+    	
+    	
+    	
+		return 0;
+    	
+    }
 
     public Integer appendPositions(RichAtomSet atomSet, Integer position) {
         System.out.println("here");
