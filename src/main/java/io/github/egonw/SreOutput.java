@@ -249,7 +249,7 @@ public class SreOutput {
 
 
     private void describeAliphaticChainStepwise(RichAtomSet system) {
-        for (int i = 1; i <= system.atomPositions.size(); i++) {            
+        for (int i = 1; i <= system.componentPositions.size(); i++) {            
             this.description.addDescription
                 (3,
                  this.describeAtomConnections(system, system.getPositionAtom(i)),

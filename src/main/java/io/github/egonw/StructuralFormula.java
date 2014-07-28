@@ -19,7 +19,7 @@ import com.google.common.collect.HashBiMap;
 public class StructuralFormula {
 
 	//public static BiMap<Integer, String> atomPositions = HashBiMap.create();
-	public static ComponentsPositions atomPositions = new ComponentsPositions();
+	public static ComponentsPositions componentPositions = new ComponentsPositions();
 	public static String structuralFormula = "";
 	private static RichAtomSet rac;
 	private static StructuralAnalysis sa;
@@ -70,12 +70,12 @@ public class StructuralFormula {
 		// Set of atoms in the rac which connect to subStructures or superStructures
 		Set connectingAtoms = rac.getConnectingAtoms();
 		// The atom positions of the current RichAtomSet
-		atomPositions = rac.atomPositions;
+		componentPositions = rac.componentPositions;
 
 		// For each atom in the atomPositions
-		for (int i = 1; i < atomPositions.size() + 1; i++) {
+		for (int i = 1; i < componentPositions.size() + 1; i++) {
 			// Get data of the current atom
-			currentAtom = atomPositions.get(i);
+			currentAtom = componentPositions.get(i);
 			currentIAtom = sa.getRichAtom(currentAtom).getStructure();
 			currentRichAtom = sa.getRichAtom(currentAtom);
 			// Check if the current atom is connected to a subStructure
@@ -108,7 +108,7 @@ public class StructuralFormula {
 			String currentSubAtom = connection.getConnected();
 			// We check if this currentSubAtom is a member of the current
 			// RichAtomSet
-			if (!connectingAtoms.contains(currentSubAtom) && !atomPositions.containsValue(currentSubAtom)) {
+			if (!connectingAtoms.contains(currentSubAtom) && !componentPositions.containsValue(currentSubAtom)) {
 				printAtom(currentSubAtom);
 				// This is for dealing with neighbours of the subStructure
 				ArrayList<String> connectedToSubAtom = new ArrayList<String>();

@@ -68,7 +68,7 @@ public class StructuralAnalysis {
 
     private List<String> majorPath = new ArrayList<String>();
     //private BiMap<Integer, String> atomPositions = HashBiMap.create();
-    private ComponentsPositions atomPositions = new ComponentsPositions();
+    private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
     public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
@@ -678,7 +678,7 @@ public class StructuralAnalysis {
         for (String structure : this.majorPath) {
             System.out.println(position);
             if (this.isAtom(structure)) {
-                this.atomPositions.put(++position, structure);
+                this.componentPositions.put(++position, structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
@@ -707,16 +707,16 @@ public class StructuralAnalysis {
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            if (!this.atomPositions.containsValue(value)) { 
-                this.atomPositions.put(++position, value);
+            if (!this.componentPositions.containsValue(value)) { 
+                this.componentPositions.put(++position, value);
             }
         }
         return position;
     }
 
     public void printPositions () {
-        for (Integer key : this.atomPositions.atomPositions.keySet()) {
-            System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
+        for (Integer key : this.componentPositions.atomPositions.keySet()) {
+            System.out.printf("%d: %s\n", key, this.componentPositions.get(key));
         }
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
@@ -726,12 +726,12 @@ public class StructuralAnalysis {
     }
 
     public String getPositionAtom(Integer position) {
-        return this.atomPositions.get(position);
+        return this.componentPositions.get(position);
     }
 
 
     public Integer getAtomPosition(String atom) {
-        return this.atomPositions.inverse().get(atom);
+        return this.componentPositions.inverse().get(atom);
     }
 
 }
