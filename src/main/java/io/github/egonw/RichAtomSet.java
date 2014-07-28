@@ -1,4 +1,3 @@
-
 //
 package io.github.egonw;
 
@@ -29,7 +28,7 @@ import javax.naming.OperationNotSupportedException;
  */
 
 public class RichAtomSet extends RichChemObject implements Iterable<String> {
-    
+	
     public enum Type {
         ALIPHATIC ("Aliphatic chain"),
         FUSED ("Fused ring"),
@@ -283,5 +282,5 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public CMLAtomSet getCML() {
         return this.cml;
     }
-
+    
 }
