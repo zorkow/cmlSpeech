@@ -110,8 +110,6 @@ public class SreSpeech extends SreXML {
     private String describeMolecule(RichStructure structure) {
         String id = structure.getId();
         Node element = SreUtil.xpathQueryElement(this.doc.getRootElement(), "//cml:atomSet[@id='" + id + "']");
-        System.out.println(element);
-        
         return SreUtil.xpathValue((Element)element, "@sre:name | @sre:iupac | @sre:formula");
     }
 
@@ -129,7 +127,6 @@ public class SreSpeech extends SreXML {
         descr += " " + this.describeReplacements(system);
         descr += " " + this.describeMultiBonds(system);
         descr += " " + this.describeSubstitutions(system);
-        this.describeRingStepwise(system);
         return descr;
     }
     
@@ -148,9 +145,9 @@ public class SreSpeech extends SreXML {
             SreElement element = null;
             if (this.analysis.isAtom(connected)) {
                 element = new SreElement(this.analysis.getRichAtom(connected).getStructure());
-                } else {
+            } else {
                 element = new SreElement(this.analysis.getRichAtomSet(connected).getStructure());
-                }
+            }
             SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
             SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
             SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
@@ -171,7 +168,6 @@ public class SreSpeech extends SreXML {
     private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
         List<String> result = new ArrayList<String>();
         for (Connection connection : atom.getConnections()) {
-            System.out.println("this is a connection:" + connection.toString());
             result.add(describeConnectingBond(system, connection));
         }
         Joiner joiner = Joiner.on(" ");

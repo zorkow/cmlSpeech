@@ -726,12 +726,12 @@ public class StructuralAnalysis {
     public void computePositions() {
         Integer position = 0;
         for (String structure : this.majorPath) {
-            System.out.println(position);
             if (this.isAtom(structure)) {
                 this.atomPositions.put(++position, structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
+                    atomSet.computePositions(0);
                     for (String sub : atomSet.getSubSystems()) {
                         RichAtomSet subSystem = this.getRichAtomSet(sub);
                         position = this.appendPositions(subSystem, position);
@@ -762,7 +762,6 @@ public class StructuralAnalysis {
         }
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
-                                                System.out.println(a);
                                                 this.getRichAtomSet(a).printPositions();
                                             }});
     }

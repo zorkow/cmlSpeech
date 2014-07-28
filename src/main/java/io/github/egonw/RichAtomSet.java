@@ -23,6 +23,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.naming.OperationNotSupportedException;
+import org.openscience.cdk.smiles.SmilesGenerator;
+import org.openscience.cdk.exception.CDKException;
+import uk.ac.cam.ch.wwmm.opsin.OpsinHelper;
+import java.util.Arrays;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import org.openscience.cdk.tools.CDKHydrogenAdder;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
  *
@@ -131,7 +138,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         this.offset = offset;
         switch (this.type) {
         case FUSED:
-            throw new SreException("Illegal position computation for ring systems!");
+            computeAtomPositionsFused();
+            //throw new SreException("Illegal position computation for ring systems!");
+            break;
         case ALIPHATIC:
             computeAtomPositionsAliphatic();
             break;
@@ -143,6 +152,33 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         }
     }
 
+
+    public void computeAtomPositionsFused() {
+        try {
+            Integer i = 0;
+            IAtomContainer container = this.getStructure();
+            try {
+                IAtomContainer newcontainer = container.clone();
+                AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
+                CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(newcontainer);
+                container = newcontainer;
+            } catch (CloneNotSupportedException e){
+            } catch (Throwable e) {
+            }
+            for (IAtom atom : container.atoms()) {
+                System.out.println("Atom " + atom.getID() + " " + atom.getSymbol() + " at position " + i++);
+            }
+            int[] orders = new int[container.getAtomCount()];
+            SmilesGenerator generator = SmilesGenerator.generic();
+            String smiles = generator.create(container, orders);
+            System.out.println(Arrays.toString(orders));
+            
+            smiles = "O1ccc2c1c1ccNC1c1c2Occ1";
+            System.out.println(smiles);
+            OpsinHelper.smiles2something(smiles);
+        } catch (CDKException e) {}
+    }
+            
     
     public void appendPositions(RichAtomSet atomSet) {
         if (this.atomPositions.isEmpty()) {

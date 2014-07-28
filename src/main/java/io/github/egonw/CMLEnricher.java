@@ -142,7 +142,6 @@ public class CMLEnricher {
                 executor.shutdown();
             }
             if (this.cli.cl.hasOption("descr")) {
-                System.out.println(this.doc);
                 this.sreSpeech = new SreSpeech(this.analysis, this.doc);
                 this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
             }
