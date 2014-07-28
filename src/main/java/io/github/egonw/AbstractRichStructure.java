@@ -54,7 +54,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
 
     @Override
     public Set<String> getExternalBonds() {
-        return externalBonds;
+        return this.externalBonds;
     };
 
 
@@ -62,8 +62,24 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
 
     @Override
     public Set<Connection> getConnections() {
-        return connections;
+        return this.connections;
     };
+
+
+    private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
+
+    @Override
+    public Set<String> getSuperSystems() {
+        return this.superSystems;
+    };
+
+
+    private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
+
+    @Override
+    public SortedSet<String> getSubSystems() {
+        return this.subSystems;
+    }
 
 
     @Override

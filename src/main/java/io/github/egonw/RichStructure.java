@@ -45,6 +45,18 @@ public interface RichStructure<S> {
 
 
     /**
+     * @return The list of direct Super-Systems.
+     */
+    Set<String> getSuperSystems();
+
+
+    /**
+     * @return The list of direct Sub-Systems. These can also be atoms.
+     */
+    Set<String> getSubSystems();
+
+
+    /**
      * Returns the ID of the structure.
      * @return ID string.
      */
