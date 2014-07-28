@@ -1,4 +1,3 @@
-
 //
 package io.github.egonw;
 
@@ -36,7 +35,7 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
  */
 
 public class RichAtomSet extends RichChemObject implements Iterable<String> {
-    
+	
     public enum Type {
         ALIPHATIC ("Aliphatic chain"),
         FUSED ("Fused ring"),
@@ -319,5 +318,5 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public CMLAtomSet getCML() {
         return this.cml;
     }
-
+    
 }
