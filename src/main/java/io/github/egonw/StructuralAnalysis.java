@@ -67,7 +67,6 @@ public class StructuralAnalysis {
     private Set<String> singletonAtoms = new HashSet<String>();
 
     private List<String> majorPath = new ArrayList<String>();
-    //private BiMap<Integer, String> atomPositions = HashBiMap.create();
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
@@ -763,8 +762,8 @@ public class StructuralAnalysis {
     }
 
     public void printPositions () {
-        for (Integer key : this.componentPositions.keySet()) {
-            System.out.printf("%d: %s\n", key, this.componentPositions.get(key));
+        for (Integer position : this.componentPositions.getAtomPositions()) {
+            System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
         }
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
