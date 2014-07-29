@@ -157,6 +157,8 @@ public class SreOutput {
 
     private void describeAtomSet(RichAtomSet system) {
         switch (system.type) {
+        case MOLECULE:
+            break;
         case ALIPHATIC:
             describeAliphaticChain(system);
                 // describeAliphaticChain(system, (Element)systemElement.get(0));

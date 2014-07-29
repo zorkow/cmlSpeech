@@ -10,49 +10,47 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * Class which takes a RichAtomSet or an IAtomContainer and returns a string
- * with the structural formula.
+ * Class which takes a RichAtomSet or an IAtomContainer and returns a string with the structural formula.
  * 
  * @author Joshie
  */
 
 public class StructuralFormula {
-
-	//public static BiMap<Integer, String> atomPositions = HashBiMap.create();
-	public static ComponentsPositions componentPositions = new ComponentsPositions();
-	public static String structuralFormula = "";
-	private static RichAtomSet rac;
-	private static StructuralAnalysis sa;
-	private static ArrayList<String> racAtoms = new ArrayList<String>();
-	private static Cli cli;
-	public static ArrayList<String> printedAtoms = new ArrayList<String>();
+	
+	private String structuralFormula = "";
+	//private BiMap<Integer, String> atomPositions = HashBiMap.create();
+	private ComponentsPositions componentPositions = new ComponentsPositions();
+	private StructuralAnalysis structuralAnalysis;
+	private ArrayList<String> richAtomSetAtoms = new ArrayList<String>();
+	private boolean useSubScripts;
+	private ArrayList<String> appendedAtoms = new ArrayList<String>();
 
 	/**
 	 * Computes a structural formula using a Structural Analysis
 	 * 
 	 * @param saImported
 	 *            The StructuralAnalysis to be used
-	 * @param cli 
+	 * @param cli
 	 */
-	public static void computeAnalysis(StructuralAnalysis saImported, Cli cliImp) {
-		cli = cliImp;
-		System.out.println("");
-		sa = saImported;
-		List<RichAtomSet> atomSets = sa.getAtomSets();
+	public void computeAnalysis() {
+		List<RichAtomSet> atomSets = this.structuralAnalysis.getAtomSets();
+		System.out.println(atomSets);
 		// If there is only one atom
 		if (atomSets.size() == 0) {
-			String currentAtom = sa.getAtoms().get(0).getId();
-			printAtom(currentAtom);
+			for (RichAtom atom : this.structuralAnalysis.getAtoms()) {
+				appendAtom(atom.getId());
+			}
 		}
 		// Stores all atoms contained in a richAtomSet
 		for (RichAtomSet richAtomSet : atomSets) {
-			for (int i = 0; i < richAtomSet.getStructure().getAtomCount(); i++) {
-				racAtoms.add(richAtomSet.getStructure().getAtom(i).getID());
+			for (IAtom atom : richAtomSet.getStructure().atoms()) {
+				this.richAtomSetAtoms.add(atom.getID());
 			}
 		}
+		System.out.println(richAtomSetAtoms);
 		// Computes the structural formula for each RichAtomSet
 		for (RichAtomSet richAtomSet : atomSets) {
-			computeRAC(richAtomSet);
+			computeRAS(richAtomSet);
 		}
 		System.out.println(structuralFormula);
 	}
@@ -60,32 +58,30 @@ public class StructuralFormula {
 	/**
 	 * Computes the structural formula for a RichAtomSet
 	 * 
-	 * @param rac
+	 * @param richAtomSet
 	 *            The RichAtomSet to be computed
 	 */
-	public static void computeRAC(RichAtomSet rac) {
-		String currentAtom = null;
-		IAtom currentIAtom = null;
-		RichAtom currentRichAtom = null;
-		// Set of atoms in the rac which connect to subStructures or superStructures
-		Set connectingAtoms = rac.getConnectingAtoms();
+	public void computeRAS(RichAtomSet richAtomSet) {
+		// Set of atoms in the richAtomSet which connect to a
+		// subStructures or superStructures
+		Set connectingAtoms = richAtomSet.getConnectingAtoms();
+
 		// The atom positions of the current RichAtomSet
-		componentPositions = rac.componentPositions;
+		this.componentPositions.atomPositions = richAtomSet.componentPositions.atomPositions;
 
 		// For each atom in the atomPositions
-		for (int i = 1; i < componentPositions.size() + 1; i++) {
+		for (int i = 1; i < this.componentPositions.size() + 1; i++) {
 			// Get data of the current atom
-			currentAtom = componentPositions.get(i);
-			currentIAtom = sa.getRichAtom(currentAtom).getStructure();
-			currentRichAtom = sa.getRichAtom(currentAtom);
+			String currentAtom = this.componentPositions.get(i);
+			RichAtom currentRichAtom = this.structuralAnalysis.getRichAtom(currentAtom);
 			// Check if the current atom is connected to a subStructure
 			// If not then simply "print" the atom
 			if (!connectingAtoms.contains(currentAtom)) {
-				printAtom(currentAtom);
+				appendAtom(currentAtom);
 			} else {
 				// If the atom does have a connecting atom then we print
 				// the atom and we also print its connecting atoms
-				printAtom(currentAtom);
+				appendAtom(currentAtom);
 				addSubSctructure(currentAtom, currentRichAtom, connectingAtoms);
 			}
 		}
@@ -98,57 +94,42 @@ public class StructuralFormula {
 	 * @param currentRichAtom
 	 * @param connectingAtoms
 	 */
-	private static void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
+	private void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
 		// This is where the subStructure is printed
-		structuralFormula += "(";
+		this.structuralFormula += "(";
 		// We get every connecting atom to the current atom
 		Set<Connection> connections = currentRichAtom.getConnections();
 		for (Connection connection : connections) {
 			// Assign the connected atom in question
 			String currentSubAtom = connection.getConnected();
-			// We check if this currentSubAtom is a member of the current
-			// RichAtomSet
-			if (!connectingAtoms.contains(currentSubAtom) && !componentPositions.containsValue(currentSubAtom)) {
-				printAtom(currentSubAtom);
-				// This is for dealing with neighbours of the subStructure
-				ArrayList<String> connectedToSubAtom = new ArrayList<String>();
-				connectedToSubAtom.add(currentAtom);
-				//addNeighbours(currentSubAtom, connectedToSubAtom);
+			// We check if this currentSubAtom is a member of the current RichAtomSet
+			if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.containsValue(currentSubAtom)) {
+				appendAtom(currentSubAtom);
+				addNeighbours(currentSubAtom, connectingAtoms);
 			}
 		}
-		structuralFormula += ")";
+		this.structuralFormula += ")";
 	}
 
 	/**
-	 * Method for dealing with isolated atoms attached to substructures
+	 * Method to print atoms which are in a subStructure and not part of a atom set or connected to an atom set
 	 * 
-	 * @param currentSubAtom
-	 * @param connectedToSubAtom
+	 * @param atomID
+	 *            The atom in the subStructure
+	 * @param connectingAtoms
+	 *            Set of connectingAtoms in the richAtomSet
 	 */
-	private static void addNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom) {
-		Set<Connection> connections = sa.getRichAtom(currentSubAtom).getConnections();
-		System.out.println(connections);
-		if (connections.size() > 1) {
-			printNeighbours(currentSubAtom, connectedToSubAtom, connections);
-		}
-	}
+	private void addNeighbours(String atomID, Set connectingAtoms) {
 
-	/**
-	 * Once neighbouring atoms have been found this method prints them and their
-	 * neighbours also
-	 * 
-	 * @param currentSubAtom
-	 * @param connectedToSubAtom
-	 * @param connections
-	 */
-	private static void printNeighbours(String currentSubAtom, ArrayList<String> connectedToSubAtom,
-			Set<Connection> connections) {
-		for (Connection connection : connections) {
-			if (!connectedToSubAtom.contains(connection) && !racAtoms.contains(connection.getConnected())) {
-				connectedToSubAtom.add(connection.getConnected());
-				System.out.println(connection.getConnected());
-				printAtom(connection.getConnected());
-				addNeighbours(connection.getConnected(), connectedToSubAtom);
+		RichAtom currentRichSubAtom = this.structuralAnalysis.getRichAtom(atomID);
+
+		for (Connection connection : currentRichSubAtom.getConnections()) {
+			// This is a atom or atom set connected to the atom in question
+			String neighbour = connection.getConnected();
+
+			// If this connection is not a connectingAtom or an atomSet then will append
+			if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)) {
+				appendAtom(neighbour);
 			}
 		}
 	}
@@ -158,22 +139,38 @@ public class StructuralFormula {
 	 * 
 	 * @param atomID
 	 */
-	private static void printAtom(String atomID) {
-		if(printedAtoms.contains(atomID)){
+	private void appendAtom(String atomID) {
+		if (this.appendedAtoms.contains(atomID)) {
 			return;
 		} else {
-			printedAtoms.add(atomID);
+			this.appendedAtoms.add(atomID);
 		}
-		structuralFormula += sa.getRichAtom(atomID).getStructure().getSymbol();
-		int hydrogens = sa.getRichAtom(atomID).getStructure().getImplicitHydrogenCount();
+		IAtom atom = structuralAnalysis.getRichAtom(atomID).getStructure();
+		this.structuralFormula += atom.getSymbol();
+		int hydrogens = atom.getImplicitHydrogenCount();
 		if (hydrogens > 0) {
-			structuralFormula += "H";
-			if(cli.cl.hasOption("sub")){
-				structuralFormula += getSubScript(hydrogens);
+			this.structuralFormula += "H";
+			// Checking whether to use sub scripts or not
+			if (this.useSubScripts) {
+				this.structuralFormula += getSubScript(hydrogens);
 			} else {
-				structuralFormula += hydrogens;
+				this.structuralFormula += hydrogens;
 			}
 		}
+	}
+
+	/**
+	 * Returns the computed string of Structural Formula
+	 * 
+	 * @param structuralAnalysis
+	 * @param b
+	 * @return
+	 */
+	public String getStructuralFormula(StructuralAnalysis structuralAnalysis, boolean subScripts) {
+		this.useSubScripts = subScripts;
+		this.structuralAnalysis = structuralAnalysis;
+		this.computeAnalysis();
+		return this.structuralFormula;
 	}
 
 	/**
@@ -183,29 +180,10 @@ public class StructuralFormula {
 	 *            The number to be translated
 	 * @return Returns the subscript of the inserted number
 	 */
-	public static String getSubScript(int number) {
-		switch (number) {
-		case 0:
-			return "\u2080";
-		case 1:
-			return "\u2081";
-		case 2:
-			return "\u2082";
-		case 3:
-			return "\u2083";
-		case 4:
-			return "\u2084";
-		case 5:
-			return "\u2085";
-		case 6:
-			return "\u2086";
-		case 7:
-			return "\u2087";
-		case 8:
-			return "\u2088";
-		case 9:
-			return "\u2089";
+	private String getSubScript(int number) {
+		if (number > 9) {
+			throw new IllegalArgumentException("Sub Scripts cannot be larger than 9");
 		}
-		return "Error: Wrong number in getSubScript";
+		return Character.toString((char) (0x2080 + number));
 	}
 }
