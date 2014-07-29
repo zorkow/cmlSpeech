@@ -763,7 +763,7 @@ public class StructuralAnalysis {
     }
 
     public void printPositions () {
-        for (Integer key : this.componentPositions.atomPositions.keySet()) {
+        for (Integer key : this.componentPositions.keySet()) {
             System.out.printf("%d: %s\n", key, this.componentPositions.get(key));
         }
         this.majorPath.stream().forEach(a -> 
@@ -774,12 +774,12 @@ public class StructuralAnalysis {
     }
 
     public String getPositionAtom(Integer position) {
-        return this.componentPositions.get(position);
+        return this.componentPositions.getPositionAtom(position);
     }
 
 
     public Integer getAtomPosition(String atom) {
-        return this.componentPositions.inverse().get(atom);
+        return this.componentPositions.getAtomPosition(atom);
     }
 
 }

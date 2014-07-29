@@ -1,5 +1,7 @@
 package io.github.egonw;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
@@ -7,61 +9,102 @@ import com.google.common.collect.HashBiMap;
 
 public class ComponentsPositions {
 
-    // The main path through the
     public BiMap<Integer, String> atomPositions = HashBiMap.create();
-    public int count = 0;
     public BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
+    public int count = 0;
 
     public BiMap<Integer, RichAtomSet> getAtomSets() {
-        return atomSets;
+        return this.atomSets;
     }
 
-    // Add atom set
-    // Iterate over atom set in order (local positions)
-
-    // Need to make heuristics to find heaviest atom
-
-    // Find the heaviest atoms / rich atom sets
-
     public void put(Integer position, String atomID) {
-        atomPositions.put(position, atomID);
+        this.atomPositions.put(position, atomID);
     }
 
     public boolean containsValue(String value) {
-        return atomPositions.containsValue(value);
+        return this.atomPositions.containsValue(value);
+    }
+
+    public Set<Integer> keySet() {
+        return this.atomPositions.keySet();
     }
     
-    public Set keySet() {
-        return atomPositions.keySet();
+    public Set<Integer> getAtomPositions(){
+        return this.atomPositions.keySet();
     }
 
     public String get(Integer key) {
-        return atomPositions.get(key);
+        return this.atomPositions.get(key);
+    }
+    
+    public String getAtom(Integer key){
+        return this.atomPositions.get(key);
     }
 
     public BiMap<String, Integer> inverse() {
-        return atomPositions.inverse();
+        return this.atomPositions.inverse();
     }
 
     public void inverseAtomPositions() {
-        atomPositions.inverse();
+        this.atomPositions.inverse();
     }
 
     public int size() {
-        return atomPositions.size();
+        return this.atomPositions.size();
     }
 
     public boolean isEmpty() {
-        return atomPositions.isEmpty();
+        return this.atomPositions.isEmpty();
     }
 
-    public void putAll(BiMap map) {
-        atomPositions.putAll(map);
+    public void putAll(ComponentsPositions componentPositions) {
+        this.atomPositions.putAll(componentPositions.atomPositions);
     }
 
     public void addNext(String atomID) {
-        atomPositions.put(count, atomID);
+        this.atomPositions.put(count, atomID);
         count = count++;
+    }
+
+    public void printPositions(Integer offset) {
+        // This is incorrect for substructures!
+        System.out.println("Local\tGlobal");
+        for (Integer key : this.atomPositions.keySet()) {
+            System.out.printf("%d\t%d:\t%s\n", key, key + offset, this.atomPositions.get(key));
+        }
+    }
+
+    public class AtomIterator implements Iterator<String> {
+
+        private int current;
+
+        AtomIterator() {
+            this.current = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.current < atomPositions.size();
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            return atomPositions.get(++this.current);
+        }
+    }
+
+    public Iterator<String> iterator() {
+        return new AtomIterator();
+    }
+
+    public String getPositionAtom(Integer position) {
+        return this.get(position);
+    }
+
+    public Integer getAtomPosition(String atom) {
+        return this.atomPositions.inverse().get(atom);
     }
 
 }

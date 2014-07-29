@@ -144,17 +144,17 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public void appendPositions(RichAtomSet atomSet) {
         if (this.componentPositions.isEmpty()) {
             this.offset = atomSet.offset;
-            this.componentPositions.putAll(atomSet.componentPositions.atomPositions);
+            this.componentPositions.putAll(atomSet.componentPositions);
             return;
         }
         Iterator<String> iterator = atomSet.iterator();
         Integer position = atomSet.offset;
-        for (Integer key : atomSet.componentPositions.atomPositions.keySet()) {
-            String value = this.componentPositions.get(key);
-            System.out.printf("%d : %s\n", key, value);
+        for (Integer atomPosition : atomSet.componentPositions.getAtomPositions()) {
+            String atomID = this.componentPositions.getAtom(atomPosition);
+            System.out.printf("%d : %s\n", atomPosition, atomID);
             
-            if (!this.componentPositions.containsValue(value)) { 
-                this.componentPositions.put(++position, value);
+            if (!this.componentPositions.containsValue(atomID)) { 
+                this.componentPositions.put(++position, atomID);
             }
         }
     }
@@ -210,48 +210,23 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 
     public String getPositionAtom(Integer position) {
-        return this.componentPositions.get(position);
+        return this.componentPositions.getPositionAtom(position);
     }
 
 
     public Integer getAtomPosition(String atom) {
-        return this.componentPositions.inverse().get(atom);
+        return this.componentPositions.getAtomPosition(atom);
     }
-
-
-    public class AtomIterator implements Iterator<String> {
-        
-        private int current;
-        
-        AtomIterator() {
-            this.current = 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.current < RichAtomSet.this.componentPositions.size();
-        }
-
-        @Override
-        public String next() {
-            if (! hasNext())   throw new NoSuchElementException();
-            return RichAtomSet.this.componentPositions.get(++this.current);
-        }
-
-    }
+    
 
     public Iterator<String> iterator() {
-        return new AtomIterator();
+        return componentPositions.iterator();
     }
 
 
     public void printPositions () {
         // This is incorrect for substructures!
-        System.out.println("Local\tGlobal");
-        for (Integer key : this.componentPositions.atomPositions.keySet()) {
-            System.out.printf("%d\t%d:\t%s\n", key, key + this.offset, 
-                              this.componentPositions.get(key));
-        }
+        componentPositions.printPositions(this.offset);
     }
 
     

@@ -34,7 +34,6 @@ public class StructuralFormula {
      */
     public void computeAnalysis() {
         List<RichAtomSet> atomSets = this.structuralAnalysis.getAtomSets();
-        System.out.println(atomSets);
         // If there is only one atom
         if (atomSets.size() == 0) {
             for (RichAtom atom : this.structuralAnalysis.getAtoms()) {
@@ -47,12 +46,10 @@ public class StructuralFormula {
                 this.richAtomSetAtoms.add(atom.getID());
             }
         }
-        System.out.println(richAtomSetAtoms);
         // Computes the structural formula for each RichAtomSet
         for (RichAtomSet richAtomSet : atomSets) {
             computeRAS(richAtomSet);
         }
-        System.out.println(structuralFormula);
     }
 
     /**
@@ -67,7 +64,7 @@ public class StructuralFormula {
         Set connectingAtoms = richAtomSet.getConnectingAtoms();
 
         // The atom positions of the current RichAtomSet
-        this.componentPositions.atomPositions = richAtomSet.componentPositions.atomPositions;
+        this.componentPositions = richAtomSet.componentPositions;
 
         // For each atom in the atomPositions
         for (int i = 1; i < this.componentPositions.size() + 1; i++) {
