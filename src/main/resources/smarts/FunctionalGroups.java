@@ -2,6 +2,9 @@
 //
 package home.sorge.git.egonw.cmlSpeech;
 
+import org.openscience.cdk.smiles.smarts.SmartsPattern;
+import org.openscience.cdk.interfaces.IChemObjectBuilder;
+import org.openscience.cdk.DefaultChemObjectBuilder;
 /**
  *
  */
@@ -13,6 +16,14 @@ public class FunctionalGroups {
       };
 
     method compute() {
+        try {
+            IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
+            SmartsPattern pattern = SmartsPattern.create("CC(C)C", builder);
+        }
+        catch (IOException e) {
+            System.out.println("Error " + e.getMessage());
+            e.printStackTrace();
+        }
       for (String group : functionalGroups) {
              SmartsPattern pattern = SmartsPattern.create(group, bldr);
              System.out.println("Group " + group);
