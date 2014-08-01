@@ -226,7 +226,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     public void printPositions () {
         // This is incorrect for substructures!
-        componentPositions.printPositions(this.offset);
+        componentPositions.toString(this.offset);
     }
 
     
