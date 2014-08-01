@@ -9,16 +9,16 @@ import com.google.common.collect.HashBiMap;
 
 public class ComponentsPositions {
 
-    public BiMap<Integer, String> atomPositions = HashBiMap.create();
-    public BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
-    public int atomCount = 0;
-    public int setCount = 0;
+    private BiMap<Integer, String> atomPositions = HashBiMap.create();
+    private BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
+    private int atomCount = 0;
+    private int setCount = 0;
 
     public BiMap<Integer, RichAtomSet> getAtomSets() {
         return this.atomSets;
     }
-    
-    public void addAtomSet(RichAtomSet richAtomSet){
+
+    public void addAtomSet(RichAtomSet richAtomSet) {
         atomSets.put(setCount, richAtomSet);
         setCount++;
     }
@@ -31,28 +31,16 @@ public class ComponentsPositions {
         return this.atomPositions.containsValue(value);
     }
 
-    public Set<Integer> keySet() {
-        return this.atomPositions.keySet();
-    }
-    
-    public Set<Integer> getAtomPositions(){
+    public Set<Integer> getAtomPositions() {
         return this.atomPositions.keySet();
     }
 
     public String get(Integer key) {
         return this.atomPositions.get(key);
     }
-    
-    public String getAtom(Integer key){
+
+    public String getAtom(Integer key) {
         return this.atomPositions.get(key);
-    }
-
-    public BiMap<String, Integer> inverse() {
-        return this.atomPositions.inverse();
-    }
-
-    public void inverseAtomPositions() {
-        this.atomPositions.inverse();
     }
 
     public int size() {
@@ -72,7 +60,7 @@ public class ComponentsPositions {
         atomCount = atomCount++;
     }
 
-    public void printPositions(Integer offset) {
+    public void toString(Integer offset) {
         // This is incorrect for substructures!
         System.out.println("Local\tGlobal");
         for (Integer key : this.atomPositions.keySet()) {
@@ -80,7 +68,7 @@ public class ComponentsPositions {
         }
     }
 
-    public class AtomIterator implements Iterator<String> {
+    private class AtomIterator implements Iterator<String> {
 
         private int current;
 
