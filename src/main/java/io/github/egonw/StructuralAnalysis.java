@@ -67,7 +67,7 @@ public class StructuralAnalysis {
     private Set<String> singletonAtoms = new HashSet<String>();
 
     private List<String> majorPath = new ArrayList<String>();
-    private BiMap<Integer, String> atomPositions = HashBiMap.create();
+    private ComponentsPositions componentPositions = new ComponentsPositions();
 
     public RichAtomSet top;
 
@@ -728,7 +728,7 @@ public class StructuralAnalysis {
         for (String structure : this.majorPath) {
             System.out.println(position);
             if (this.isAtom(structure)) {
-                this.atomPositions.put(++position, structure);
+                this.componentPositions.put(++position, structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
@@ -744,21 +744,23 @@ public class StructuralAnalysis {
         }
     }
 
+
     public Integer appendPositions(RichAtomSet atomSet, Integer position) {
         atomSet.computePositions(position);
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            if (!this.atomPositions.containsValue(value)) { 
-                this.atomPositions.put(++position, value);
+            if (!this.componentPositions.containsValue(value)) { 
+                this.componentPositions.put(++position, value);
             }
         }
         return position;
     }
 
-    public void printPositions () {
-        for (Integer key : this.atomPositions.keySet()) {
-            System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
+
+    public void printPositions () { 
+       for (Integer position : this.componentPositions.getAtomPositions()) {
+            System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
         }
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
@@ -767,13 +769,14 @@ public class StructuralAnalysis {
                                             }});
     }
 
-    public String getPositionAtom(Integer position) {
-        return this.atomPositions.get(position);
+
+    public String getAtom(Integer position) {
+        return this.componentPositions.getAtom(position);
     }
 
 
-    public Integer getAtomPosition(String atom) {
-        return this.atomPositions.inverse().get(atom);
+    public Integer getPosition(String atom) {
+        return this.componentPositions.getPosition(atom);
     }
 
 }

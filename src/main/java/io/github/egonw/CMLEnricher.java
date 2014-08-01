@@ -147,7 +147,8 @@ public class CMLEnricher {
                 this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
             }
             if (this.cli.cl.hasOption("sf")){
-            	this.formula.getStructuralFormula(this.analysis, this.cli);
+            	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
+            	System.out.println(structuralFormula);
             }
             writeFile(fileName);
         } catch (Exception e) { 
