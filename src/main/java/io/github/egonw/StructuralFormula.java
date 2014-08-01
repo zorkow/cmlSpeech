@@ -34,7 +34,7 @@ public class StructuralFormula {
 	public void computeAnalysis() {
 		List<RichAtomSet> atomSets = this.structuralAnalysis.getAtomSets();
 		// If there is only one atom
-		if (atomSets.size() == 0) {
+		if (atomSets.size() == 1) {
 			for (RichAtom atom : this.structuralAnalysis.getAtoms()) {
 				appendAtom(atom.getId());
 			}
