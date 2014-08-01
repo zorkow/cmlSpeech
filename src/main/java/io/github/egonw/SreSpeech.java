@@ -53,7 +53,7 @@ public class SreSpeech extends SreXML {
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
         this.toSreSet(id, SreNamespace.Tag.CHILDREN, atom.getSubSystems());
-        this.describeAtomConnections(system, atom, id);
+        this.describeAtomConnections2(system, atom, id);
     }
 
 
@@ -160,6 +160,38 @@ public class SreSpeech extends SreXML {
             this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
         }
                                           
+    }
+        
+
+    private void describeAtomConnections2(RichAtomSet system, RichAtom atom, String id) {
+        List<String> result = new ArrayList<String>();
+        Integer count = 0;
+        for (Connection connection : atom.getConnections()) {
+            count++;
+            String connected = connection.getConnected();
+            SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+            if (this.analysis.isAtom(connected)) {
+                element.appendChild(new SreElement(this.analysis.getRichAtom(connected).getStructure()));
+                } else {
+                element.appendChild(new SreElement(this.analysis.getRichAtomSet(connected).getStructure()));
+                }
+            SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
+            SreElement via = new SreElement(SreNamespace.Tag.VIA);
+            SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
+            
+            SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
+            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
+
+            element.addAttribute(speech);
+            positions.addAttribute(bond);
+            positions.addAttribute(ext);
+            positions.addAttribute(this.speechBond(this.analysis.getRichBond(connection.getConnector())));
+            SreElement position = new SreElement(SreNamespace.Tag.POSITION, count.toString());
+            positions.appendChild(position);
+            via.appendChild(positions);
+            element.appendChild(via);
+            this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
+        }
     }
         
 
