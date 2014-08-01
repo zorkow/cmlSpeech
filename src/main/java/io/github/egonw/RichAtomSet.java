@@ -209,13 +209,13 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
 
-    public String getPositionAtom(Integer position) {
-        return this.componentPositions.getPositionAtom(position);
+    public String getAtom(Integer position) {
+        return this.componentPositions.getAtom(position);
     }
 
 
-    public Integer getAtomPosition(String atom) {
-        return this.componentPositions.getAtomPosition(atom);
+    public Integer getPosition(String atom) {
+        return this.componentPositions.getPosition(atom);
     }
     
 
@@ -225,8 +225,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 
     public void printPositions () {
-        // This is incorrect for substructures!
-        componentPositions.toString(this.offset);
+        System.out.println(componentPositions.toString());
     }
 
     

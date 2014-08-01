@@ -10,18 +10,8 @@ import com.google.common.collect.HashBiMap;
 public class ComponentsPositions {
 
     private BiMap<Integer, String> atomPositions = HashBiMap.create();
-    private BiMap<Integer, RichAtomSet> atomSets = HashBiMap.create();
     private int atomCount = 0;
-    private int setCount = 0;
 
-    public BiMap<Integer, RichAtomSet> getAtomSets() {
-        return this.atomSets;
-    }
-
-    public void addAtomSet(RichAtomSet richAtomSet) {
-        atomSets.put(setCount, richAtomSet);
-        setCount++;
-    }
 
     public void put(Integer position, String atomID) {
         this.atomPositions.put(position, atomID);
@@ -43,6 +33,10 @@ public class ComponentsPositions {
         return this.atomPositions.get(key);
     }
 
+    public Integer getPosition(String atom) {
+        return this.atomPositions.inverse().get(atom);
+    }
+
     public int size() {
         return this.atomPositions.size();
     }
@@ -60,12 +54,12 @@ public class ComponentsPositions {
         atomCount = atomCount++;
     }
 
-    public void toString(Integer offset) {
-        // This is incorrect for substructures!
-        System.out.println("Local\tGlobal");
+    public String toString() {
+        String result = "";
         for (Integer key : this.atomPositions.keySet()) {
-            System.out.printf("%d\t%d:\t%s\n", key, key + offset, this.atomPositions.get(key));
+            result += String.format("%d:\t%s\n", key, this.atomPositions.get(key));
         }
+        return result;
     }
 
     private class AtomIterator implements Iterator<String> {
@@ -91,14 +85,6 @@ public class ComponentsPositions {
 
     public Iterator<String> iterator() {
         return new AtomIterator();
-    }
-
-    public String getPositionAtom(Integer position) {
-        return this.get(position);
-    }
-
-    public Integer getAtomPosition(String atom) {
-        return this.atomPositions.inverse().get(atom);
     }
 
 }

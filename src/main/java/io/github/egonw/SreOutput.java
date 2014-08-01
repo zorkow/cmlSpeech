@@ -190,7 +190,7 @@ public class SreOutput {
             if (!atom.isCarbon()) {
                 descr += " with " + this.describeAtom(atom) 
                     + " at position "
-                    + system.getAtomPosition(value).toString();
+                    + system.getPosition(value).toString();
             }
         }
         return descr;
@@ -214,7 +214,7 @@ public class SreOutput {
    private String describeSubstitutions(RichAtomSet system) {
         SortedSet<Integer> subst = new TreeSet<Integer>();
         for (String atom : system.getConnectingAtoms()) {
-            subst.add(system.getAtomPosition(atom));
+            subst.add(system.getPosition(atom));
         }
         switch (subst.size()) {
         case 0:
@@ -236,8 +236,8 @@ public class SreOutput {
             if (order.equals("")) { continue; }
             // TODO (sorge) Make this one safer!
             Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
-            Integer atomA = system.getAtomPosition(atoms.next());
-            Integer atomB = system.getAtomPosition(atoms.next());
+            Integer atomA = system.getPosition(atoms.next());
+            Integer atomB = system.getPosition(atoms.next());
             if (atomA > atomB) {
                 Integer aux = atomA;
                 atomA = atomB;
@@ -254,9 +254,9 @@ public class SreOutput {
         for (int i = 1; i <= system.componentPositions.size(); i++) {            
             this.description.addDescription
                 (3,
-                 this.describeAtomConnections(system, system.getPositionAtom(i)),
+                 this.describeAtomConnections(system, system.getAtom(i)),
                  // This is temporary!
-                 this.describeAtomComponents(system.getPositionAtom(i)));
+                 this.describeAtomComponents(system.getAtom(i)));
         }
     }
 
@@ -319,13 +319,13 @@ public class SreOutput {
 
     // TODO (sorge) Combine the following two methods.
     private String describeAtomPosition(RichAtom atom) {
-        Integer position = this.analysis.getAtomPosition(atom.getId());
+        Integer position = this.analysis.getPosition(atom.getId());
         return describeAtom(atom) + " " + position.toString();
     }
 
 
     private String describeAtomPosition(String atom) {
-        Integer position = this.analysis.getAtomPosition(atom);
+        Integer position = this.analysis.getPosition(atom);
         return describeAtom(this.analysis.getRichAtom(atom)) 
             + " " + position.toString();
     }

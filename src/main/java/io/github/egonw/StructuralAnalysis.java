@@ -741,13 +741,7 @@ public class StructuralAnalysis {
             }
         }
     }
-    public int getAtomWeight(){
-    	
-    	
-    	
-		return 0;
-    	
-    }
+
 
     public Integer appendPositions(RichAtomSet atomSet, Integer position) {
         atomSet.computePositions(position);
@@ -761,8 +755,9 @@ public class StructuralAnalysis {
         return position;
     }
 
-    public void printPositions () {
-        for (Integer position : this.componentPositions.getAtomPositions()) {
+
+    public void printPositions () { 
+       for (Integer position : this.componentPositions.getAtomPositions()) {
             System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
         }
         this.majorPath.stream().forEach(a -> 
@@ -772,13 +767,14 @@ public class StructuralAnalysis {
                                             }});
     }
 
-    public String getPositionAtom(Integer position) {
-        return this.componentPositions.getPositionAtom(position);
+
+    public String getAtom(Integer position) {
+        return this.componentPositions.getAtom(position);
     }
 
 
-    public Integer getAtomPosition(String atom) {
-        return this.componentPositions.getAtomPosition(atom);
+    public Integer getPosition(String atom) {
+        return this.componentPositions.getPosition(atom);
     }
 
 }
