@@ -144,8 +144,8 @@ public class CMLEnricher {
             this.sreOutput.computeDescriptions(this.doc);
             
             if (this.cli.cl.hasOption("sf")){
-            	String sttructuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
-            	System.out.println(sttructuralFormula);
+            	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
+            	System.out.println(structuralFormula);
             }
             
             this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
