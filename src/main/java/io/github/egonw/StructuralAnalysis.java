@@ -62,7 +62,11 @@ public class StructuralAnalysis {
     private List<RichAtomSet> minorSystems;
     private Set<String> singletonAtoms = new HashSet<String>();
 
+    private StructuralGraph majorGraph;
+    private StructuralGraph minorGraph;
+
     private List<String> majorPath = new ArrayList<String>();
+    private List<String> minorPath = new ArrayList<String>();
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
@@ -79,13 +83,14 @@ public class StructuralAnalysis {
         // TODO(sorge): functionalGroups();
         
         this.contexts();
-        this.singletonAtoms();
-        this.majorSystems();
-        this.minorSystems();
 
         this.atomSetsAttachments();
         this.connectingBonds();
         this.sharedComponents();
+
+        this.singletonAtoms();
+        this.majorSystems();
+        this.minorSystems();
 
         this.makeTopSet();
         this.makeBottomSet();
@@ -511,6 +516,9 @@ public class StructuralAnalysis {
         this.majorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
             .collect(Collectors.toList());
+        this.majorGraph = new StructuralGraph(this.getMajorSystems(),
+                                              this.getSingletonAtoms());
+        this.majorPath = this.path(this.majorGraph);
     }
     
 
@@ -529,7 +537,9 @@ public class StructuralAnalysis {
         this.minorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.FUSED)
             .collect(Collectors.toList());
-        this.minorSystems.stream().forEach(System.out::println);
+        this.minorGraph = new StructuralGraph(this.getMinorSystems(),
+                                              this.getSingletonAtoms());
+        this.minorPath = this.path(this.minorGraph);
     }
     
 
@@ -543,10 +553,11 @@ public class StructuralAnalysis {
 
 
     /**
-     * Computes the major path through the molecule.
-     * @param graph The abstraction graph for the molecule.
+     * Computes a path through the molecule.
+     * @param graph An abstraction graph for the molecule.
      */
-    public void majorPath (StructuralGraph graph) {
+    public List<String> path(StructuralGraph graph) {
+        List<String> path = new ArrayList<String>();
         NeighborIndex index = new NeighborIndex(graph);
         Comparator<String> comparator = new RichStructureCompare();
         Stack<String> rest = new Stack<String>();
@@ -559,7 +570,7 @@ public class StructuralAnalysis {
             if (visited.contains(current)) {
                 continue;
             }
-            this.majorPath.add(current);
+            path.add(current);
             vertices = new ArrayList<String>(index.neighborsOf(current));
             Collections.sort(vertices, comparator);
             for (int i = vertices.size() - 1; i >= 0; i--) {
@@ -567,7 +578,15 @@ public class StructuralAnalysis {
             }
             visited.add(current);
         }
+        return path;
     }
+
+
+    public void visualize() {
+        this.majorGraph.visualize();
+        this.minorGraph.visualize();
+    }
+
 
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     // TODO (sorge): Maybe reverse this?
@@ -616,7 +635,6 @@ public class StructuralAnalysis {
     public void computePositions() {
         Integer position = 0;
         for (String structure : this.majorPath) {
-            System.out.println(position);
             if (this.isAtom(structure)) {
                 this.componentPositions.put(++position, structure);
             } else {

@@ -28,31 +28,35 @@ import java.util.ArrayList;
 
 public class StructuralGraph extends SimpleGraph {
     
+    private List<RichStructure> structures;
+
     StructuralGraph() {
         super(StructuralEdge.class);
+        this.structures = new ArrayList<RichStructure>();
     }
 
 
     StructuralGraph(List<RichAtomSet> atomSets, List<RichAtom> singletonAtoms) {
         super(StructuralEdge.class);
-        List<RichStructure> combined = new ArrayList<RichStructure>(atomSets);
-        combined.addAll(singletonAtoms);
-        this.init(combined);
+        this.structures = new ArrayList<RichStructure>(atomSets);
+        this.structures.addAll(singletonAtoms); 
+       this.init();
     }
 
 
     StructuralGraph(List<RichStructure> structures) {
         super(StructuralEdge.class);
-        this.init(structures);
+        this.structures = structures;
+        this.init();
     }
 
     
-    private void init(List<RichStructure> structures) {
-        List<String> names = structures.stream()
+    private void init() {
+        List<String> names = this.structures.stream()
             .map(RichStructure::getId).collect(Collectors.toList());
         names.stream().forEach(this::addVertex);
 
-        for (RichStructure structure : structures) {
+        for (RichStructure structure : this.structures) {
             Set<Connection> connections = structure.getConnections();
             if (!connections.isEmpty()) {
                 this.addSingleEdges(structure.getId(), connections, names);
@@ -77,9 +81,9 @@ public class StructuralGraph extends SimpleGraph {
         return edge;
     }
 
-    public void visualize (List<RichAtomSet> majorSystems, List<RichAtom> singletonAtoms) {
+    public void visualize () {
         StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
-        vis.init(this, majorSystems, singletonAtoms);
+        vis.init(this, this.structures);
     }
 
 

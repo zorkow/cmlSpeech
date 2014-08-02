@@ -79,7 +79,7 @@ public class StructuralGraphVisualizer {
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg, List<RichAtomSet> sets, List<RichAtom> atoms) {
+    public void init(SimpleGraph sg, List<RichStructure> structures) {
         ListenableGraph g = new ListenableUndirectedGraph(sg);
 
         m_jgAdapter = new JGraphModelAdapter(g);
@@ -96,8 +96,13 @@ public class StructuralGraphVisualizer {
 
 
         List<NamedPoint> points = new ArrayList();
-        points.addAll(computeCentroids(sets));
-        points.addAll(computeAtoms(atoms));
+        for (RichStructure structure : structures) {
+            if (structure instanceof RichAtomSet) {
+                points.add(computeCentroid((RichAtomSet)structure));
+            } else {
+                points.add(computeAtom((RichAtom)structure));
+            }
+        }
         positionPoints(points);
 
         jgraph.getGraphLayoutCache().reload();
@@ -113,38 +118,30 @@ public class StructuralGraphVisualizer {
     }
 
 
-    private List<NamedPoint> computeCentroids(List<RichAtomSet> sets) {
-        List<NamedPoint> points = new ArrayList();
-        for (RichAtomSet set : sets) {
-            double x = 0;
-            double y = 0;
-            int n = 0;
-            for (IAtom atom : set.getStructure().atoms()) {
-                Point2d x2d = atom.getPoint2d();
-                x += (x2d.x * scale);
-                y += (x2d.y * scale);
-                n++;
-            }
-            NamedPoint point = new NamedPoint(set.getId(), (int)x/n, (int)y/n);
-            this.minX = Math.min(this.minX, point.getX());
-            this.minY = Math.min(this.minY, point.getY());
-            points.add(point);
+    private NamedPoint computeCentroid(RichAtomSet set) {
+        double x = 0;
+        double y = 0;
+        int n = 0;
+        for (IAtom atom : set.getStructure().atoms()) {
+            Point2d x2d = atom.getPoint2d();
+            x += (x2d.x * scale);
+            y += (x2d.y * scale);
+            n++;
         }
-        return points;
+        NamedPoint point = new NamedPoint(set.getId(), (int)x/n, (int)y/n);
+        this.minX = Math.min(this.minX, point.getX());
+        this.minY = Math.min(this.minY, point.getY());
+        return point;
     }
     
 
-    private List<NamedPoint> computeAtoms(List<RichAtom> atoms) {
-        List<NamedPoint> points = new ArrayList();
-        for (RichAtom richAtom : atoms) {
-            IAtom atom = richAtom.getStructure();
-            Point2d x2d = atom.getPoint2d();
-            NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
-            this.minX = Math.min(this.minX, point.getX());
-            this.minY = Math.min(this.minY, point.getY());
-            points.add(point);
-        }
-        return points;
+    private NamedPoint computeAtom(RichAtom richAtom) {
+        IAtom atom = richAtom.getStructure();
+        Point2d x2d = atom.getPoint2d();
+        NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
+        this.minX = Math.min(this.minX, point.getX());
+        this.minY = Math.min(this.minY, point.getY());
+        return point;
     }
     
 

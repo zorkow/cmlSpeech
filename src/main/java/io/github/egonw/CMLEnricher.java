@@ -62,18 +62,6 @@ import nu.xom.Node;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
-import org.openscience.cdk.interfaces.IBond;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.HashSet;
-import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.alg.interfaces.MinimumSpanningTree;
-import nu.xom.XPathContext;
-import java.util.Arrays;
-import java.util.regex.PatternSyntaxException;
-import java.util.Map;
-import java.util.TreeMap;
-import com.google.common.base.Joiner;
 
 
 public class CMLEnricher {
@@ -86,7 +74,6 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private CactusExecutor executor = new CactusExecutor();
-    private StructuralGraph structure;
     private StructuralFormula formula = new StructuralFormula();
 
     /** 
@@ -127,9 +114,6 @@ public class CMLEnricher {
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
-            this.structure = new StructuralGraph(this.analysis.getMajorSystems(),
-                                                 this.analysis.getSingletonAtoms());
-            this.analysis.majorPath(this.structure);
             this.analysis.computePositions();
             this.analysis.printPositions();
 
@@ -159,8 +143,7 @@ public class CMLEnricher {
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.analysis.getMajorSystems(),
-                                     this.analysis.getSingletonAtoms());
+            this.analysis.visualize();
         }
     }
 
@@ -283,41 +266,6 @@ public class CMLEnricher {
             this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, newcontainer));
         }
     }
-
-    
-    /** Computes the major path in the molecule. */
-    private void getAbstractionGraph() {
-        // TODO (sorge) Maybe refactor this out of path computation.
-        // TODO (sorge) refactor to have major/minor systems and singletons held
-        // globally.
-        List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
-        List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
-        List<RichStructure> combined = new ArrayList<RichStructure>(majorSystems);
-        combined.addAll(singletonAtoms);
-
-        List<String> msNames = combined.stream()
-            .map(RichStructure::getId)
-            .collect(Collectors.toList());
-        msNames.stream().forEach(ms -> this.structure.addVertex(ms));
-
-        for (RichStructure ms : combined) {
-            Set<Connection> connections = ms.getConnections();
-            if (!connections.isEmpty()) {
-                addSingleEdges(ms.getId(), connections, msNames);
-            }
-        }
-    };
-
-
-    private void addSingleEdges(String source, Set<Connection> connections, List<String> systems) {
-        for (Connection connection : connections) {
-            if (systems.contains(connection.getConnected())) {
-                this.structure.addEdge(source, connection.getConnected(),
-                                       connection.getConnector());
-            }
-        }
-    }
-    
 
 }
 
