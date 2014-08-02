@@ -38,7 +38,7 @@ public class Cli {
 	// Processing Options
         options.addOption("a", "ann", false, "Include annotations in CML output");
         options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
-        options.addOption("s", "subrings", false, "Compute subrings");
+        options.addOption("s", "subrings", false, "Do not compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
         options.addOption("sf", "structuralformula", false, "Print the structural formula");
