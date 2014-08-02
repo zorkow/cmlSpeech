@@ -639,7 +639,7 @@ public class StructuralAnalysis {
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            if (!this.componentPositions.containsValue(value)) { 
+            if (!this.componentPositions.contains(value)) { 
                 this.componentPositions.put(++position, value);
             }
         }
@@ -648,9 +648,7 @@ public class StructuralAnalysis {
 
 
     public void printPositions () { 
-       for (Integer position : this.componentPositions.getAtomPositions()) {
-            System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
-        }
+        System.out.println(this.componentPositions.toString());
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
                                                 System.out.println(a);

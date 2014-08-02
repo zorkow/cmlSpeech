@@ -133,7 +133,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             computeAtomPositionsAliphatic();
             break;
         case SMALLEST:
-            // computeAtomPositionsSubstructure(globalPositions);
         case ISOLATED:
         default:
             computeAtomPositionsIsolated();
@@ -149,20 +148,13 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         }
         Iterator<String> iterator = atomSet.iterator();
         Integer position = atomSet.offset;
-        for (Integer atomPosition : atomSet.componentPositions.getAtomPositions()) {
-            String atomID = this.componentPositions.getAtom(atomPosition);
-            System.out.printf("%d : %s\n", atomPosition, atomID);
-            
-            if (!this.componentPositions.containsValue(atomID)) { 
-                this.componentPositions.put(++position, atomID);
+        for (String atom : atomSet.componentPositions) {
+            System.out.printf("%d : %s\n", this.componentPositions.getPosition(atom), atom);
+            if (!this.componentPositions.contains(atom)) { 
+                this.componentPositions.put(++position, atom);
             }
         }
     }
-
-
-    // private void computeAtomPositionsSubstructure(BiMap<Integer, String> globalPositions) {
-    //     return;
-    // }
 
 
     private void computeAtomPositionsAliphatic() {
