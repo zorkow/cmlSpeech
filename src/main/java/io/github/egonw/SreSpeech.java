@@ -53,7 +53,7 @@ public class SreSpeech extends SreXML {
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
         this.toSreSet(id, SreNamespace.Tag.CHILDREN, atom.getSubSystems());
-        this.describeAtomConnections(system, atom, id);
+        this.describeAtomConnections2(system, atom, id);
     }
 
 
@@ -160,6 +160,38 @@ public class SreSpeech extends SreXML {
     }
         
 
+    private void describeAtomConnections2(RichAtomSet system, RichAtom atom, String id) {
+        List<String> result = new ArrayList<String>();
+        Integer count = 0;
+        for (Connection connection : atom.getConnections()) {
+            count++;
+            String connected = connection.getConnected();
+            SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+            if (this.analysis.isAtom(connected)) {
+                element.appendChild(new SreElement(this.analysis.getRichAtom(connected).getStructure()));
+                } else {
+                element.appendChild(new SreElement(this.analysis.getRichAtomSet(connected).getStructure()));
+                }
+            SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
+            SreElement via = new SreElement(SreNamespace.Tag.VIA);
+            SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
+            
+            SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
+            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
+
+            element.addAttribute(speech);
+            positions.addAttribute(bond);
+            positions.addAttribute(ext);
+            positions.addAttribute(this.speechBond(this.analysis.getRichBond(connection.getConnector())));
+            SreElement position = new SreElement(SreNamespace.Tag.POSITION, count.toString());
+            positions.appendChild(position);
+            via.appendChild(positions);
+            element.appendChild(via);
+            this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
+        }
+    }
+        
+
     private String describeAtomConnections(RichAtomSet system, String atom) {
         return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
     }
@@ -210,14 +242,14 @@ public class SreSpeech extends SreXML {
 
     // TODO (sorge) Combine the following two methods.
     private String describeAtomPosition(RichAtom atom) {
-        Integer position = this.analysis.getAtomPosition(atom.getId());
+        Integer position = this.analysis.getPosition(atom.getId());
         if (position == null) { return describeAtom(atom) + " unknown position."; }
         return describeAtom(atom) + " " + position.toString();
     }
 
 
     private String describeAtomPosition(String atom) {
-        Integer position = this.analysis.getAtomPosition(atom);
+        Integer position = this.analysis.getPosition(atom);
         if (position == null) { return "Not an atom."; }
         return describeAtom(this.analysis.getRichAtom(atom)) 
             + " " + position.toString();
@@ -294,7 +326,7 @@ public class SreSpeech extends SreXML {
             if (!atom.isCarbon()) {
                 descr += " with " + this.describeAtom(atom) 
                     + " at position "
-                    + system.getAtomPosition(value).toString();
+                    + system.getPosition(value).toString();
             }
         }
         return descr;
@@ -308,7 +340,7 @@ public class SreSpeech extends SreXML {
    private String describeSubstitutions(RichAtomSet system) {
         SortedSet<Integer> subst = new TreeSet<Integer>();
         for (String atom : system.getConnectingAtoms()) {
-            subst.add(system.getAtomPosition(atom));
+            subst.add(system.getPosition(atom));
         }
         switch (subst.size()) {
         case 0:
@@ -330,8 +362,8 @@ public class SreSpeech extends SreXML {
             if (order.equals("")) { continue; }
             // TODO (sorge) Make this one safer!
             Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
-            Integer atomA = system.getAtomPosition(atoms.next());
-            Integer atomB = system.getAtomPosition(atoms.next());
+            Integer atomA = system.getPosition(atoms.next());
+            Integer atomB = system.getPosition(atoms.next());
             if (atomA > atomB) {
                 Integer aux = atomA;
                 atomA = atomB;
@@ -345,13 +377,13 @@ public class SreSpeech extends SreXML {
 
 
     private void describeAliphaticChainStepwise(RichAtomSet system) {
-        for (int i = 1; i <= system.atomPositions.size(); i++) {            
+        //for (int i = 1; i <= system.atomPositions.size(); i++) {            
             // this.description.addDescription
             //     (3,
             //      this.describeAtomConnections(system, system.getPositionAtom(i)),
             //      // This is temporary!
             //      this.describeAtomComponents(system.getPositionAtom(i)));
-        }
+        //}
     }
 
 

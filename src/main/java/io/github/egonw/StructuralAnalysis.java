@@ -30,10 +30,6 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IRingSet;
-import org.openscience.cdk.ringsearch.AllRingsFinder;
-import org.openscience.cdk.ringsearch.RingSearch;
-import org.openscience.cdk.ringsearch.SSSRFinder;
 import java.util.Stack;
 import java.util.Comparator;
 import java.util.Collections;
@@ -66,8 +62,12 @@ public class StructuralAnalysis {
     private List<RichAtomSet> minorSystems;
     private Set<String> singletonAtoms = new HashSet<String>();
 
+    private StructuralGraph majorGraph;
+    private StructuralGraph minorGraph;
+
     private List<String> majorPath = new ArrayList<String>();
-    private BiMap<Integer, String> atomPositions = HashBiMap.create();
+    private List<String> minorPath = new ArrayList<String>();
+    private ComponentsPositions componentPositions = new ComponentsPositions();
 
     public RichAtomSet top;
 
@@ -80,18 +80,19 @@ public class StructuralAnalysis {
 
         this.initStructure();
         
-        this.ringSearch();
+        this.rings();
         this.aliphaticChains();
         // TODO(sorge): functionalGroups();
         
         this.contexts();
-        this.singletonAtoms();
-        this.majorSystems();
-        this.minorSystems();
 
         this.atomSetsAttachments();
         this.connectingBonds();
         this.sharedComponents();
+
+        this.singletonAtoms();
+        this.majorSystems();
+        this.minorSystems();
 
         this.makeTopSet();
         this.makeBottomSet();
@@ -195,73 +196,6 @@ public class StructuralAnalysis {
     }
 
 
-    // TODO (sorge): Outsource that into a separate module similar to aliphatic
-    //               chain.
-    private void ringSearch() {
-        RingSearch ringSearch = new RingSearch(this.molecule);
-        
-        if (this.cli.cl.hasOption("s")) {
-            getFusedRings(ringSearch);
-        } else {
-            getFusedRings(ringSearch, this.cli.cl.hasOption("sssr") ?
-                          this::sssrSubRings : this::smallestSubRings);
-        }
-        getIsolatedRings(ringSearch);
-    }
-
-
-    /** 
-     * Computes Isolated rings.
-     * 
-     * @param ringSearch The current ringsearch.
-     */
-    private void getIsolatedRings(RingSearch ringSearch) {
-        List<IAtomContainer> ringSystems = ringSearch.isolatedRingFragments();
-        for (IAtomContainer ring : ringSystems) {
-            this.setRichAtomSet(ring, RichAtomSet.Type.ISOLATED);
-        }
-    }
-
-
-    /**
-     * Computes fused rings without subsystems.
-     * 
-     * @param ringSearch The current ringsearch.
-     */    
-    private void getFusedRings(RingSearch ringSearch) {
-        List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-        for (IAtomContainer ring : ringSystems) {
-            this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
-        }
-    }
-
-
-    /** 
-     * Computes fused rings and their subsystems.
-     * 
-     * @param ringSearch 
-     * @param subRingMethod Method to compute subrings.
-     */    
-    private void getFusedRings(RingSearch ringSearch, Function<IAtomContainer,
-                               List<IAtomContainer>> subRingMethod) {
-        List<IAtomContainer> ringSystems = ringSearch.fusedRingFragments();
-        for (IAtomContainer system : ringSystems) {
-            RichStructure ring = this.setRichAtomSet(system, RichAtomSet.Type.FUSED);
-            
-            List<IAtomContainer> subSystems = subRingMethod.apply(system);
-            for (IAtomContainer subSystem : subSystems) {
-                RichStructure subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
-                String ringId = ring.getId();
-                String subRingId = subRing.getId();
-                subRing.getSuperSystems().add(ringId);
-                subRing.getContexts().add(ringId);
-                ring.getSubSystems().add(subRingId);
-            }
-        }
-    }
-
-
-    
     /**
      * Adds a context element for a set of structures.
      * @param structures Set of structure names.
@@ -303,73 +237,6 @@ public class StructuralAnalysis {
         }
     }
 
-    /** 
-     * Predicate that tests if a particular ring has no other ring as proper subset.
-     * 
-     * @param ring The ring to be tested.
-     * @param restRings The other rings (possibly including the first ring).
-     * 
-     * @return True if ring has smallest coverage.
-     */
-    // This is quadratic and should be done better!
-    // All the iterator to list operations should be done exactly once!
-    private static boolean isSmallest(IAtomContainer ring, 
-                                      List<IAtomContainer> restRings) {
-        List<IAtom> ringAtoms = Lists.newArrayList(ring.atoms());
-        for (IAtomContainer restRing : restRings) {
-            if (ring == restRing) {
-                continue;
-            }
-            List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
-            if (ringAtoms.containsAll(restRingAtoms)) {
-                return false;
-            };
-        }
-        return true;
-    };
-
-
-    /** 
-     * Method to compute smallest rings via subset coverage.
-     * 
-     * @param ring Fused ring to be broken up.
-     * 
-     * @return Subrings as atom containers.
-     */    
-    private List<IAtomContainer> smallestSubRings(IAtomContainer ring) {
-        AllRingsFinder arf = new AllRingsFinder();
-        List<IAtomContainer> subRings = new ArrayList<IAtomContainer>();
-        IRingSet rs;
-        try {
-            rs = arf.findAllRings(ring);
-        } catch (CDKException e) {
-            this.logger.error("Error " + e.getMessage());
-            return subRings;
-        }
-        List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
-        for (IAtomContainer subRing : allRings) {
-            if (isSmallest(subRing, allRings)) {
-                subRings.add(subRing);
-            }
-        }
-        return subRings;
-    };
-
-
-    /** 
-     * Method to compute smallest rings via SSSR finder.
-     * 
-     * @param ring Fused ring to be broken up.
-     * 
-     * @return Subrings as atom containers.
-     */
-    private List<IAtomContainer> sssrSubRings(IAtomContainer ring) {
-        this.logger.logging("SSSR sub ring computation.\n");
-        SSSRFinder sssr = new SSSRFinder(ring);
-        IRingSet essentialRings = sssr.findSSSR();
-        return Lists.newArrayList(essentialRings.atomContainers());
-    }
-
 
     /**
      * Returns atom set id and increments id counter.
@@ -392,6 +259,35 @@ public class StructuralAnalysis {
             + valuesToString(this.richBonds) + "\n" 
             + valuesToString(this.richAtomSets);
     }
+
+
+
+    /**
+     * Computes information on ring systems in the molecule.
+     */
+    private void rings() {
+        RingSystem ringSystem = new RingSystem(this.molecule);
+        Boolean sub = !this.cli.cl.hasOption("s");
+        Boolean sssr = this.cli.cl.hasOption("sssr");
+
+        for (IAtomContainer ring : ringSystem.fusedRings()) {
+            RichStructure fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
+            if (sub) {
+                for (IAtomContainer subSystem : ringSystem.subRings(ring, sssr)) {
+                RichStructure subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
+                String ringId = fusedRing.getId();
+                String subRingId = subRing.getId();
+                subRing.getSuperSystems().add(ringId);
+                subRing.getContexts().add(ringId);
+                fusedRing.getSubSystems().add(subRingId);
+                }
+            }
+        }
+        for (IAtomContainer ring : ringSystem.isolatedRings()) {
+            this.setRichAtomSet(ring, RichAtomSet.Type.ISOLATED);
+        }
+    }
+
 
 
     /**
@@ -622,6 +518,9 @@ public class StructuralAnalysis {
         this.majorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
             .collect(Collectors.toList());
+        this.majorGraph = new StructuralGraph(this.getMajorSystems(),
+                                              this.getSingletonAtoms());
+        this.majorPath = this.path(this.majorGraph);
     }
     
 
@@ -640,6 +539,9 @@ public class StructuralAnalysis {
         this.minorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.FUSED)
             .collect(Collectors.toList());
+        this.minorGraph = new StructuralGraph(this.getMinorSystems(),
+                                              this.getSingletonAtoms());
+        this.minorPath = this.path(this.minorGraph);
     }
     
 
@@ -653,10 +555,11 @@ public class StructuralAnalysis {
 
 
     /**
-     * Computes the major path through the molecule.
-     * @param graph The abstraction graph for the molecule.
+     * Computes a path through the molecule.
+     * @param graph An abstraction graph for the molecule.
      */
-    public void majorPath (StructuralGraph graph) {
+    public List<String> path(StructuralGraph graph) {
+        List<String> path = new ArrayList<String>();
         NeighborIndex index = new NeighborIndex(graph);
         Comparator<String> comparator = new RichStructureCompare();
         Stack<String> rest = new Stack<String>();
@@ -669,7 +572,7 @@ public class StructuralAnalysis {
             if (visited.contains(current)) {
                 continue;
             }
-            this.majorPath.add(current);
+            path.add(current);
             vertices = new ArrayList<String>(index.neighborsOf(current));
             Collections.sort(vertices, comparator);
             for (int i = vertices.size() - 1; i >= 0; i--) {
@@ -677,7 +580,15 @@ public class StructuralAnalysis {
             }
             visited.add(current);
         }
+        return path;
     }
+
+
+    public void visualize() {
+        this.majorGraph.visualize("Major System Abstraction");
+        this.minorGraph.visualize("Minor System Abstraction");
+    }
+
 
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     // TODO (sorge): Maybe reverse this?
@@ -727,7 +638,7 @@ public class StructuralAnalysis {
         Integer position = 0;
         for (String structure : this.majorPath) {
             if (this.isAtom(structure)) {
-                this.atomPositions.put(++position, structure);
+                this.componentPositions.put(++position, structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
@@ -744,21 +655,23 @@ public class StructuralAnalysis {
         }
     }
 
+
     public Integer appendPositions(RichAtomSet atomSet, Integer position) {
         atomSet.computePositions(position);
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            if (!this.atomPositions.containsValue(value)) { 
-                this.atomPositions.put(++position, value);
+            if (!this.componentPositions.containsValue(value)) { 
+                this.componentPositions.put(++position, value);
             }
         }
         return position;
     }
 
-    public void printPositions () {
-        for (Integer key : this.atomPositions.keySet()) {
-            System.out.printf("%d: %s\n", key, this.atomPositions.get(key));
+
+    public void printPositions () { 
+       for (Integer position : this.componentPositions.getAtomPositions()) {
+            System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
         }
         this.majorPath.stream().forEach(a -> 
                                         {if (this.isAtomSet(a)) {
@@ -766,13 +679,14 @@ public class StructuralAnalysis {
                                             }});
     }
 
-    public String getPositionAtom(Integer position) {
-        return this.atomPositions.get(position);
+
+    public String getAtom(Integer position) {
+        return this.componentPositions.getAtom(position);
     }
 
 
-    public Integer getAtomPosition(String atom) {
-        return this.atomPositions.inverse().get(atom);
+    public Integer getPosition(String atom) {
+        return this.componentPositions.getPosition(atom);
     }
 
 }

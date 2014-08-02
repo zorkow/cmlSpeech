@@ -103,6 +103,5 @@ public class SreOutput extends SreXML {
         this.toSreSet(id, SreNamespace.Tag.CONNECTINGATOMS, structure.getConnectingAtoms());
     }
 
-
 }
 

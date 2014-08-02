@@ -73,6 +73,9 @@ public class SreNamespace {
         CHILD ("child"),
         NEIGHBOURS ("neighbours"),
         NEIGHBOUR ("neighbour"),
+        POSITIONS ("positions"),
+        POSITION ("position"),
+        VIA ("via"),
         
         ;
 
@@ -90,7 +93,6 @@ public class SreNamespace {
         
 
         SPEECH ("speech"),
-        POSITION ("position"),
         ORDER ("order"),
         BOND ("bond"),
         TYPE ("type"),
