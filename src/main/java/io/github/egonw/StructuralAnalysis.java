@@ -529,6 +529,7 @@ public class StructuralAnalysis {
         this.minorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.FUSED)
             .collect(Collectors.toList());
+        this.minorSystems.stream().forEach(System.out::println);
     }
     
 

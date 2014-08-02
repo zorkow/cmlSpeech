@@ -79,7 +79,7 @@ public class StructuralGraphVisualizer {
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg, List<RichAtomSet> majorSystems, List<RichAtom> singletonAtoms) {
+    public void init(SimpleGraph sg, List<RichAtomSet> sets, List<RichAtom> atoms) {
         ListenableGraph g = new ListenableUndirectedGraph(sg);
 
         m_jgAdapter = new JGraphModelAdapter(g);
@@ -96,8 +96,8 @@ public class StructuralGraphVisualizer {
 
 
         List<NamedPoint> points = new ArrayList();
-        points.addAll(computeCentroids(majorSystems));
-        points.addAll(computeAtoms(singletonAtoms));
+        points.addAll(computeCentroids(sets));
+        points.addAll(computeAtoms(atoms));
         positionPoints(points);
 
         jgraph.getGraphLayoutCache().reload();
@@ -113,19 +113,19 @@ public class StructuralGraphVisualizer {
     }
 
 
-    private List<NamedPoint> computeCentroids(List<RichAtomSet> systems) {
+    private List<NamedPoint> computeCentroids(List<RichAtomSet> sets) {
         List<NamedPoint> points = new ArrayList();
-        for (RichAtomSet system : systems) {
+        for (RichAtomSet set : sets) {
             double x = 0;
             double y = 0;
             int n = 0;
-            for (IAtom atom : system.getStructure().atoms()) {
+            for (IAtom atom : set.getStructure().atoms()) {
                 Point2d x2d = atom.getPoint2d();
                 x += (x2d.x * scale);
                 y += (x2d.y * scale);
                 n++;
             }
-            NamedPoint point = new NamedPoint(system.getId(), (int)x/n, (int)y/n);
+            NamedPoint point = new NamedPoint(set.getId(), (int)x/n, (int)y/n);
             this.minX = Math.min(this.minX, point.getX());
             this.minY = Math.min(this.minY, point.getY());
             points.add(point);

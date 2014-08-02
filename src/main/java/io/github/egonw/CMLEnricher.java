@@ -86,7 +86,7 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private CactusExecutor executor = new CactusExecutor();
-    private StructuralGraph structure = new StructuralGraph();
+    private StructuralGraph structure;
     private StructuralFormula formula = new StructuralFormula();
 
     /** 
@@ -127,7 +127,8 @@ public class CMLEnricher {
 
             this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
-            getAbstractionGraph();
+            this.structure = new StructuralGraph(this.analysis.getMajorSystems(),
+                                                 this.analysis.getSingletonAtoms());
             this.analysis.majorPath(this.structure);
             this.analysis.computePositions();
             this.analysis.printPositions();
@@ -158,9 +159,9 @@ public class CMLEnricher {
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.analysis.getMajorSystems(), 
+            this.structure.visualize(this.analysis.getMajorSystems(),
                                      this.analysis.getSingletonAtoms());
-        } 
+        }
     }
 
 
@@ -291,15 +292,13 @@ public class CMLEnricher {
         // globally.
         List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
         List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
-        List<String> msNames = majorSystems.stream()
-            .map(RichAtomSet::getId)
-            .collect(Collectors.toList());
-        msNames.addAll(singletonAtoms.stream()
-                       .map(RichAtom::getId)
-                       .collect(Collectors.toList()));
-        msNames.stream().forEach(ms -> this.structure.addVertex(ms));
         List<RichStructure> combined = new ArrayList<RichStructure>(majorSystems);
         combined.addAll(singletonAtoms);
+
+        List<String> msNames = combined.stream()
+            .map(RichStructure::getId)
+            .collect(Collectors.toList());
+        msNames.stream().forEach(ms -> this.structure.addVertex(ms));
 
         for (RichStructure ms : combined) {
             Set<Connection> connections = ms.getConnections();
