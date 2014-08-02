@@ -79,20 +79,19 @@ public class StructuralGraphVisualizer {
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg, List<RichStructure> structures) {
+    public void init(SimpleGraph sg, List<RichStructure> structures, String name) {
         ListenableGraph g = new ListenableUndirectedGraph(sg);
-
         m_jgAdapter = new JGraphModelAdapter(g);
 
         JGraph jgraph = new JGraph(m_jgAdapter);
         jgraph.setBackground(DEFAULT_BG_COLOR);
 
         JScrollPane scroller = new JScrollPane(jgraph);
-        JFrame frame = new JFrame("Molecule Abstraction");
+        JFrame frame = new JFrame(name);
         frame.setSize(DEFAULT_SIZE);
         frame.add(scroller);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
         List<NamedPoint> points = new ArrayList();

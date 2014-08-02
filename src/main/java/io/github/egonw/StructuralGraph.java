@@ -81,9 +81,9 @@ public class StructuralGraph extends SimpleGraph {
         return edge;
     }
 
-    public void visualize () {
+    public void visualize (String name) {
         StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
-        vis.init(this, this.structures);
+        vis.init(this, this.structures, name);
     }
 
 

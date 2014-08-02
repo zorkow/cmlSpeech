@@ -583,8 +583,8 @@ public class StructuralAnalysis {
 
 
     public void visualize() {
-        this.majorGraph.visualize();
-        this.minorGraph.visualize();
+        this.majorGraph.visualize("Major System Abstraction");
+        this.minorGraph.visualize("Minor System Abstraction");
     }
 
 
