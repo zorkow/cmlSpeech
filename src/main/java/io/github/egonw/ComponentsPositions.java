@@ -14,10 +14,6 @@ public class ComponentsPositions implements Iterable<String> {
     private int atomCount = 0;
 
 
-    public void put(Integer position, String atomID) {
-        this.atomPositions.put(position, atomID);
-    }
-
     public boolean contains(String value) {
         return this.atomPositions.containsValue(value);
     }

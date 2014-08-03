@@ -146,12 +146,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             this.componentPositions.putAll(atomSet.componentPositions);
             return;
         }
-        Iterator<String> iterator = atomSet.iterator();
-        Integer position = atomSet.offset;
         for (String atom : atomSet.componentPositions) {
-            //System.out.printf("%d : %s\n", this.componentPositions.getPosition(atom), atom);
             if (!this.componentPositions.contains(atom)) { 
-                this.componentPositions.put(++position, atom);
+                this.componentPositions.addNext(atom);
             }
         }
     }
@@ -170,7 +167,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         if (startAtom == null) {
             throw new SreException("Aliphatic chain without start atom!");
         }
-        this.walkRing(startAtom, 1, new ArrayList<IAtom>());
+        this.walkRing(startAtom, new ArrayList<IAtom>());
     }
 
     private void computeAtomPositionsIsolated() {
@@ -183,18 +180,18 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         } else {
             startAtom = this.atomConnections.iterator().next();
         }
-        this.walkRing(startAtom, 1, new ArrayList<IAtom>());
+        this.walkRing(startAtom, new ArrayList<IAtom>());
     }
 
-    private void walkRing(IAtom atom, Integer count, List<IAtom> visited) {
+    private void walkRing(IAtom atom, List<IAtom> visited) {
         if (visited.contains(atom)) {
             return;
         }
-        this.componentPositions.put(count, atom.getID());
+        this.componentPositions.addNext(atom.getID());
         visited.add(atom);
         for (IAtom connected : this.getStructure().getConnectedAtomsList(atom)) {
             if (!visited.contains(connected)) {
-                walkRing(connected, ++count, visited);
+                walkRing(connected, visited);
                 return;
             }
         }

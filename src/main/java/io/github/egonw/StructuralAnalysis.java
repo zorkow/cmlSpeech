@@ -633,36 +633,34 @@ public class StructuralAnalysis {
 
     // TODO (sorge): Refactor this into common positions mapping.
     public void computePositions() {
-        Integer position = 0;
         for (String structure : this.majorPath) {
             if (this.isAtom(structure)) {
-                this.componentPositions.put(++position, structure);
+                this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
                     for (String sub : atomSet.getSubSystems()) {
                         RichAtomSet subSystem = this.getRichAtomSet(sub);
-                        position = this.appendPositions(subSystem, position);
+                        this.appendPositions(subSystem);
                         atomSet.appendPositions(subSystem);
                     }
                 } else {
-                    position = appendPositions(atomSet, position);
+                    this.appendPositions(atomSet);
                 }
             }
         }
     }
 
 
-    public Integer appendPositions(RichAtomSet atomSet, Integer position) {
-        atomSet.computePositions(position);
+    public void appendPositions(RichAtomSet atomSet) {
+        atomSet.computePositions(this.componentPositions.size());
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
             if (!this.componentPositions.contains(value)) { 
-                this.componentPositions.put(++position, value);
+                this.componentPositions.addNext(value);
             }
         }
-        return position;
     }
 
 
