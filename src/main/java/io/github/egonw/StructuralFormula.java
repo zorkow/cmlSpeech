@@ -99,7 +99,7 @@ public class StructuralFormula {
             // Assign the connected atom in question
             String currentSubAtom = connection.getConnected();
             // We check if this currentSubAtom is a member of the current RichAtomSet
-            if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.containsValue(currentSubAtom)) {
+            if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
                 appendAtom(currentSubAtom);
                 addNeighbours(currentSubAtom, connectingAtoms);
             }
