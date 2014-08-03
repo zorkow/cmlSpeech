@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.util.function.Consumer;
 
 public class ComponentsPositions implements Iterable<String> {
 
@@ -50,8 +51,8 @@ public class ComponentsPositions implements Iterable<String> {
     }
 
     public void addNext(String atomID) {
-        this.atomPositions.put(atomCount, atomID);
-        atomCount = atomCount++;
+        this.atomCount++;
+        this.atomPositions.put(this.atomCount, atomID);
     }
 
     public String toString() {
@@ -87,5 +88,10 @@ public class ComponentsPositions implements Iterable<String> {
     public Iterator<String> iterator() {
         return new AtomIterator();
     }
+
+    public void forEach(Consumer<? super String> action) {
+        this.atomPositions.values().forEach(action);
+    };
+        
 
 }

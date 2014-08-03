@@ -65,8 +65,8 @@ public class StructuralAnalysis {
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
 
-    private List<String> majorPath = new ArrayList<String>();
-    private List<String> minorPath = new ArrayList<String>();
+    private ComponentsPositions majorPath;
+    private ComponentsPositions minorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
@@ -556,8 +556,8 @@ public class StructuralAnalysis {
      * Computes a path through the molecule.
      * @param graph An abstraction graph for the molecule.
      */
-    public List<String> path(StructuralGraph graph) {
-        List<String> path = new ArrayList<String>();
+    public ComponentsPositions path(StructuralGraph graph) {
+        ComponentsPositions path = new ComponentsPositions();
         NeighborIndex index = new NeighborIndex(graph);
         Comparator<String> comparator = new RichStructureCompare();
         Stack<String> rest = new Stack<String>();
@@ -570,7 +570,7 @@ public class StructuralAnalysis {
             if (visited.contains(current)) {
                 continue;
             }
-            path.add(current);
+            path.addNext(current);
             vertices = new ArrayList<String>(index.neighborsOf(current));
             Collections.sort(vertices, comparator);
             for (int i = vertices.size() - 1; i >= 0; i--) {
@@ -668,11 +668,11 @@ public class StructuralAnalysis {
 
     public void printPositions () { 
         System.out.println(this.componentPositions.toString());
-        this.majorPath.stream().forEach(a -> 
-                                        {if (this.isAtomSet(a)) {
-                                                System.out.println(a);
-                                                this.getRichAtomSet(a).printPositions();
-                                            }});
+        this.majorPath.forEach(a -> 
+                               {if (this.isAtomSet(a)) {
+                                       System.out.println(a);
+                                       this.getRichAtomSet(a).printPositions();
+                                   }});
     }
 
 

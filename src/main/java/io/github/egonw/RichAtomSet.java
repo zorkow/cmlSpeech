@@ -149,7 +149,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         Iterator<String> iterator = atomSet.iterator();
         Integer position = atomSet.offset;
         for (String atom : atomSet.componentPositions) {
-            System.out.printf("%d : %s\n", this.componentPositions.getPosition(atom), atom);
+            //System.out.printf("%d : %s\n", this.componentPositions.getPosition(atom), atom);
             if (!this.componentPositions.contains(atom)) { 
                 this.componentPositions.put(++position, atom);
             }
