@@ -6,23 +6,20 @@ import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.util.function.Consumer;
 
-public class ComponentsPositions {
+public class ComponentsPositions implements Iterable<String> {
 
     private BiMap<Integer, String> atomPositions = HashBiMap.create();
     private int atomCount = 0;
 
 
-    public void put(Integer position, String atomID) {
-        this.atomPositions.put(position, atomID);
-    }
-
-    public boolean containsValue(String value) {
+    public boolean contains(String value) {
         return this.atomPositions.containsValue(value);
     }
 
-    public Set<Integer> getAtomPositions() {
-        return this.atomPositions.keySet();
+    public boolean contains(Integer value) {
+        return this.atomPositions.containsKey(value);
     }
 
     public String get(Integer key) {
@@ -50,8 +47,8 @@ public class ComponentsPositions {
     }
 
     public void addNext(String atomID) {
-        this.atomPositions.put(atomCount, atomID);
-        atomCount = atomCount++;
+        this.atomCount++;
+        this.atomPositions.put(this.atomCount, atomID);
     }
 
     public String toString() {
@@ -81,10 +78,16 @@ public class ComponentsPositions {
                 throw new NoSuchElementException();
             return atomPositions.get(++this.current);
         }
+
     }
 
     public Iterator<String> iterator() {
         return new AtomIterator();
     }
+
+    public void forEach(Consumer<? super String> action) {
+        this.atomPositions.values().forEach(action);
+    };
+        
 
 }

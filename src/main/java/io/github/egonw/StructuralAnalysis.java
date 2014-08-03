@@ -65,8 +65,8 @@ public class StructuralAnalysis {
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
 
-    private List<String> majorPath = new ArrayList<String>();
-    private List<String> minorPath = new ArrayList<String>();
+    private ComponentsPositions majorPath;
+    private ComponentsPositions minorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
     public RichAtomSet top;
@@ -558,8 +558,8 @@ public class StructuralAnalysis {
      * Computes a path through the molecule.
      * @param graph An abstraction graph for the molecule.
      */
-    public List<String> path(StructuralGraph graph) {
-        List<String> path = new ArrayList<String>();
+    public ComponentsPositions path(StructuralGraph graph) {
+        ComponentsPositions path = new ComponentsPositions();
         NeighborIndex index = new NeighborIndex(graph);
         Comparator<String> comparator = new RichStructureCompare();
         Stack<String> rest = new Stack<String>();
@@ -572,7 +572,7 @@ public class StructuralAnalysis {
             if (visited.contains(current)) {
                 continue;
             }
-            path.add(current);
+            path.addNext(current);
             vertices = new ArrayList<String>(index.neighborsOf(current));
             Collections.sort(vertices, comparator);
             for (int i = vertices.size() - 1; i >= 0; i--) {
@@ -635,48 +635,45 @@ public class StructuralAnalysis {
 
     // TODO (sorge): Refactor this into common positions mapping.
     public void computePositions() {
-        Integer position = 0;
         for (String structure : this.majorPath) {
             if (this.isAtom(structure)) {
-                this.componentPositions.put(++position, structure);
+                this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
                 if (atomSet.getType() == RichAtomSet.Type.FUSED) {
                     atomSet.computePositions(0);
                     for (String sub : atomSet.getSubSystems()) {
                         RichAtomSet subSystem = this.getRichAtomSet(sub);
-                        position = this.appendPositions(subSystem, position);
+                        this.appendPositions(subSystem);
                         atomSet.appendPositions(subSystem);
                     }
                 } else {
-                    position = appendPositions(atomSet, position);
+                    this.appendPositions(atomSet);
                 }
             }
         }
     }
 
 
-    public Integer appendPositions(RichAtomSet atomSet, Integer position) {
-        atomSet.computePositions(position);
+    public void appendPositions(RichAtomSet atomSet) {
+        atomSet.computePositions(this.componentPositions.size());
         Iterator<String> iterator = atomSet.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            if (!this.componentPositions.containsValue(value)) { 
-                this.componentPositions.put(++position, value);
+            if (!this.componentPositions.contains(value)) { 
+                this.componentPositions.addNext(value);
             }
         }
-        return position;
     }
 
 
     public void printPositions () { 
-       for (Integer position : this.componentPositions.getAtomPositions()) {
-            System.out.printf("%d: %s\n", position, this.componentPositions.get(position));
-        }
-        this.majorPath.stream().forEach(a -> 
-                                        {if (this.isAtomSet(a)) {
-                                                this.getRichAtomSet(a).printPositions();
-                                            }});
+        System.out.println(this.componentPositions.toString());
+        this.majorPath.forEach(a -> 
+                               {if (this.isAtomSet(a)) {
+                                       System.out.println(a);
+                                       this.getRichAtomSet(a).printPositions();
+                                   }});
     }
 
 
