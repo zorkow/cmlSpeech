@@ -23,6 +23,7 @@ public class StructuralFormula {
     private ArrayList<String> richAtomSetAtoms = new ArrayList<String>();
     private boolean useSubScripts;
     private ArrayList<String> appendedAtoms = new ArrayList<String>();
+    private ArrayList<String> allConnectingAtoms = new ArrayList<String>();
 
     /**
      * Computes a structural formula using a Structural Analysis
@@ -61,6 +62,14 @@ public class StructuralFormula {
         // Set of atoms in the richAtomSet which connect to a
         // subStructures or superStructures
         Set connectingAtoms = richAtomSet.getConnectingAtoms();
+        
+        // Adds all connectingAtoms from all RichAtomSets to a list
+        // for checking when adding neighbours
+        for (RichAtomSet set : structuralAnalysis.getAtomSets()) {
+            for (String connectingAtom : set.getConnectingAtoms()) {
+                allConnectingAtoms.add(connectingAtom);
+            }
+        }
 
         // The atom positions of the current RichAtomSet
         this.componentPositions = richAtomSet.componentPositions;
@@ -118,13 +127,17 @@ public class StructuralFormula {
     private void addNeighbours(String atomID, Set connectingAtoms) {
 
         RichAtom currentRichSubAtom = this.structuralAnalysis.getRichAtom(atomID);
+        structuralAnalysis.getAtoms();
 
         for (Connection connection : currentRichSubAtom.getConnections()) {
             // This is a atom or atom set connected to the atom in question
             String neighbour = connection.getConnected();
 
             // If this connection is not a connectingAtom or an atomSet then will append
-            if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)) {
+            if (!connectingAtoms.contains(neighbour) 
+                    && !(structuralAnalysis.getRichAtom(neighbour) == null) 
+                    && !allConnectingAtoms.contains(neighbour)) {
+                System.out.println("Appending neighbour: " + neighbour + " " + structuralAnalysis.getRichAtom(neighbour).getStructure().getSymbol());
                 appendAtom(neighbour);
             }
         }
