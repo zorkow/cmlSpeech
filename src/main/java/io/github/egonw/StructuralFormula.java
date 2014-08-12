@@ -109,7 +109,7 @@ public class StructuralFormula {
 
             // Check for duplicate branches being printed
             if (!appendedAtoms.contains(currentSubAtom)) {
-             // We check if this currentSubAtom is a member of the current RichAtomSet
+                // We check if this currentSubAtom is a member of the current RichAtomSet
                 if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
 
                     this.structuralFormula += "(";
@@ -144,8 +144,6 @@ public class StructuralFormula {
             // If this connection is not a connectingAtom or an atomSet then will append
             if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)
                     && !allConnectingAtoms.contains(neighbour)) {
-                System.out.println("Appending neighbour: " + neighbour + " "
-                        + structuralAnalysis.getRichAtom(neighbour).getStructure().getSymbol());
                 appendAtom(neighbour);
             }
         }
