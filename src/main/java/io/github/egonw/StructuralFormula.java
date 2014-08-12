@@ -62,7 +62,7 @@ public class StructuralFormula {
         // Set of atoms in the richAtomSet which connect to a
         // subStructures or superStructures
         Set connectingAtoms = richAtomSet.getConnectingAtoms();
-        
+
         // Adds all connectingAtoms from all RichAtomSets to a list
         // for checking when adding neighbours
         for (RichAtomSet set : structuralAnalysis.getAtomSets()) {
@@ -101,19 +101,27 @@ public class StructuralFormula {
      */
     private void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
         // This is where the subStructure is printed
-        this.structuralFormula += "(";
         // We get every connecting atom to the current atom
         Set<Connection> connections = currentRichAtom.getConnections();
         for (Connection connection : connections) {
             // Assign the connected atom in question
             String currentSubAtom = connection.getConnected();
-            // We check if this currentSubAtom is a member of the current RichAtomSet
-            if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
-                appendAtom(currentSubAtom);
-                addNeighbours(currentSubAtom, connectingAtoms);
+
+            // Check for duplicate branches being printed
+            if (!appendedAtoms.contains(currentSubAtom)) {
+             // We check if this currentSubAtom is a member of the current RichAtomSet
+                if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
+
+                    this.structuralFormula += "(";
+                    appendAtom(currentSubAtom);
+                    addNeighbours(currentSubAtom, connectingAtoms);
+
+                }
             }
         }
+
         this.structuralFormula += ")";
+
     }
 
     /**
@@ -134,10 +142,10 @@ public class StructuralFormula {
             String neighbour = connection.getConnected();
 
             // If this connection is not a connectingAtom or an atomSet then will append
-            if (!connectingAtoms.contains(neighbour) 
-                    && !(structuralAnalysis.getRichAtom(neighbour) == null) 
+            if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)
                     && !allConnectingAtoms.contains(neighbour)) {
-                System.out.println("Appending neighbour: " + neighbour + " " + structuralAnalysis.getRichAtom(neighbour).getStructure().getSymbol());
+                System.out.println("Appending neighbour: " + neighbour + " "
+                        + structuralAnalysis.getRichAtom(neighbour).getStructure().getSymbol());
                 appendAtom(neighbour);
             }
         }
