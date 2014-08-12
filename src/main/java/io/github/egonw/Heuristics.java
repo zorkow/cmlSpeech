@@ -1,8 +1,6 @@
 package io.github.egonw;
 
-import org.openscience.cdk.config.IsotopeFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IElement;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 public class Heuristics extends DefaultComparator<RichChemObject> {
@@ -18,13 +16,13 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
     }
     
     public int compare(RichAtomSet set1, RichAtomSet set2) {
-        if (h1) {
+        if (this.h1) {
             return compare1(set1, set2);
         }
-        if (h2) {
+        if (this.h2) {
             return compare2(set1, set2);
         }
-        if (h3) {
+        if (this.h3) {
             return compare3(set1, set2);
         }
         return compare1(set1, set2);
@@ -37,7 +35,7 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
      * @param set2
      * @return
      */
-    public int compare1(RichAtomSet set1, RichAtomSet set2) {
+    private int compare1(RichAtomSet set1, RichAtomSet set2) {
         RichAtomSet.Type typeA = set1.getType();
         RichAtomSet.Type typeB = set2.getType();
         if (typeA == RichAtomSet.Type.ALIPHATIC
@@ -64,7 +62,7 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
      * @param set2
      * @return
      */
-    public int compare2(RichAtomSet set1, RichAtomSet set2) {
+    private int compare2(RichAtomSet set1, RichAtomSet set2) {
 
         IAtomContainer container1 = set1.getStructure();
         IAtomContainer container2 = set2.getStructure();
@@ -78,6 +76,7 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
         if (weightB > weightA) {
             return -1;
         }
+        
         return 0;
     }
 
@@ -88,7 +87,7 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
      * @param set2
      * @return
      */
-    public int compare3(RichAtomSet set1, RichAtomSet set2) {
+    private int compare3(RichAtomSet set1, RichAtomSet set2) {
 
         RichAtomSet.Type typeA = set1.getType();
         RichAtomSet.Type typeB = set2.getType();
@@ -100,7 +99,9 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
         double weightB = AtomContainerManipulator.getNaturalExactMass(container2);
 
         if (typeA == RichAtomSet.Type.ALIPHATIC
-                && (typeB == RichAtomSet.Type.FUSED || typeB == RichAtomSet.Type.ISOLATED || typeB == RichAtomSet.Type.SMALLEST)) {
+                && (typeB == RichAtomSet.Type.FUSED ||
+                typeB == RichAtomSet.Type.ISOLATED ||
+                typeB == RichAtomSet.Type.SMALLEST)) {
             return -1;
         }
 
