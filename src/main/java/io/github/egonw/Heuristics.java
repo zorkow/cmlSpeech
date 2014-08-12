@@ -90,13 +90,8 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
      */
     public int compare3(RichAtomSet set1, RichAtomSet set2) {
 
-        System.out.println("Comparing: " + set1.getId() + " and " + set2.getId());
-
         RichAtomSet.Type typeA = set1.getType();
         RichAtomSet.Type typeB = set2.getType();
-
-        System.out.println("typeA = " + typeA);
-        System.out.println("typeB = " + typeB);
 
         IAtomContainer container1 = set1.getStructure();
         IAtomContainer container2 = set2.getStructure();
