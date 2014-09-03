@@ -19,7 +19,10 @@ import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 import org.openscience.cdk.smiles.smarts.SmartsPattern;
 
 public class FunctionalGroups {
-
+	/**
+	 * Goes through the file of smarts patterns and checks each pattern against the structural analysis
+	 * @param _analysis
+	 */
 	public static void compute(StructuralAnalysis _analysis) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(
@@ -40,7 +43,12 @@ public class FunctionalGroups {
 		}
 
 	}
-
+	/**
+	 * Cloans the container before matching the pattern against it as the smarts matching is destructive 
+	 * @param _pattern the pattern being matched against the mollecule
+	 * @param _name The name of the functional group
+	 * @param _analysis The mollecule being matched
+	 */
 	private static void checkMollecule(String _pattern, String _name,
 			StructuralAnalysis _analysis) {
 		try {
@@ -50,14 +58,20 @@ public class FunctionalGroups {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Checks a pattern against a mollecule and puts them in atom sets
+	 * @param _pattern the pattern to check against the mollecule
+	 * @param _name The name of the functional group
+	 * @param _mol The mollecule being checked against
+	 */
 	private static void checkMollecule(String _pattern, String _name,
 			IAtomContainer _mol) {
 		// deals with illegal smarts strings
 		try {
-		SMARTSQueryTool query = new SMARTSQueryTool(_pattern,
-				DefaultChemObjectBuilder.getInstance());
-		boolean matchesFound = false;
+			SMARTSQueryTool query = new SMARTSQueryTool(_pattern,
+					DefaultChemObjectBuilder.getInstance());
+			boolean matchesFound = false;
 			try {
 				matchesFound = query.matches(_mol);
 			} catch (CDKException e) {
@@ -70,23 +84,35 @@ public class FunctionalGroups {
 				List<List<Integer>> mappings = query.getMatchingAtoms();
 				System.out.println(_name);
 				System.out.println(_pattern);
-				List<RichAtomSet> groupList = getMappedAtoms(mappings,_mol);
+				List<RichAtomSet> groupList = getMappedAtoms(mappings, _mol);
 			}
 		} catch (IllegalArgumentException e) {
+			//Shows which (if any) functional groups have illegal smarts patterns in the file
 			System.out.println("Error: " + _name);
 		}
 
 	}
 
+	/**
+	 * Method that takes a list of matched atom positions and returns a list of
+	 * the relevant atom sets
+	 * 
+	 * @param _mappings A list of the list of matched atom positions for each seperate match
+	 * @param _mol The atom the pattern was matched against
+	 * @return a list of atom sets for each atom matched
+	 */
 	private static List<RichAtomSet> getMappedAtoms(
 			List<List<Integer>> _mappings, IAtomContainer _mol) {
 		List<RichAtomSet> groups = new ArrayList<RichAtomSet>();
+		// Goes through each match for the pattern
 		for (List<Integer> mappingList : _mappings) {
 			IAtomContainer funcGroup = new AtomContainer();
+			// Adds the matched mollecule to the atomcontainer
 			for (Integer i : mappingList) {
 				funcGroup.addAtom(_mol.getAtom(i));
 			}
-			RichAtomSet richFuncGroup = new RichAtomSet(funcGroup,Type.FUNCGROUP, "");//TODO FIND OUT HOW TO ADD AN ID
+			RichAtomSet richFuncGroup = new RichAtomSet(funcGroup,
+					Type.FUNCGROUP, "");// TODO FIND OUT HOW TO ADD AN ID
 			groups.add(richFuncGroup);
 			System.out.println(richFuncGroup);
 		}
