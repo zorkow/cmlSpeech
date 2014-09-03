@@ -75,7 +75,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import com.google.common.base.Joiner;
 
-
 public class CMLEnricher {
     private final Cli cli;
     private final Logger logger;
@@ -88,21 +87,22 @@ public class CMLEnricher {
     private CactusExecutor executor = new CactusExecutor();
     private StructuralGraph structure = new StructuralGraph();
 
-    /** 
+    /**
      * Constructor
      * 
-     * @param initCli The interpreted command line.
-     * @param initLogger The logger structure.
+     * @param initCli
+     *            The interpreted command line.
+     * @param initLogger
+     *            The logger structure.
      * 
      * @return The newly created object.
-     */    
+     */
     public CMLEnricher(Cli initCli, Logger initLogger) {
         cli = initCli;
         logger = initLogger;
     }
 
-
-    /** 
+    /**
      * Enriches all CML files given as input arguments.
      * 
      */
@@ -112,11 +112,11 @@ public class CMLEnricher {
         }
     }
 
-
-    /** 
+    /**
      * Convenience method to enrich a CML file. Does all the error catching.
      * 
-     * @param fileName File to enrich.
+     * @param fileName
+     *            File to enrich.
      */
     private void enrichFile(String fileName) {
         try {
@@ -124,7 +124,8 @@ public class CMLEnricher {
             buildXOM();
             removeExplicitHydrogens();
 
-            this.analysis = new StructuralAnalysis(this.molecule, this.cli, this.logger);
+            this.analysis = new StructuralAnalysis(this.molecule, this.cli,
+                    this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             getAbstractionGraph();
             this.analysis.majorPath(this.structure);
@@ -133,7 +134,8 @@ public class CMLEnricher {
 
             this.appendAtomSets();
             if (this.cli.cl.hasOption("ann")) {
-                this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+                this.doc.getRootElement().appendChild(
+                        this.sreOutput.getAnnotations());
             }
             if (!this.cli.cl.hasOption("nonih")) {
                 executor.execute();
@@ -142,49 +144,55 @@ public class CMLEnricher {
             }
             this.sreOutput.computeDescriptions(this.doc);
             FunctionalGroups.compute(this.analysis);
-            this.doc.getRootElement().appendChild(this.sreOutput.getDescriptions());
+            this.doc.getRootElement().appendChild(
+                    this.sreOutput.getDescriptions());
             writeFile(fileName);
-        } catch (Exception e) { 
-            // TODO (sorge) Meaningful exception handling by exceptions/functions.
-            this.logger.error("Something went wrong when parsing File " + fileName +
-                              ":" + e.getMessage() + "\n");
+        } catch (Exception e) {
+            // TODO (sorge) Meaningful exception handling by
+            // exceptions/functions.
+            this.logger.error("Something went wrong when parsing File "
+                    + fileName + ":" + e.getMessage() + "\n");
             e.printStackTrace();
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.analysis.getMajorSystems(), 
-                                     this.analysis.getSingletonAtoms());
-        } 
+            this.structure.visualize(this.analysis.getMajorSystems(),
+                    this.analysis.getSingletonAtoms());
+        }
     }
 
-
-    /** 
+    /**
      * Loads current file into the molecule IAtomContainer.
      * 
-     * @param fileName File to load.
+     * @param fileName
+     *            File to load.
      * 
-     * @throws IOException Problems with loading file.
-     * @throws CDKException Problems with CML file format.
+     * @throws IOException
+     *             Problems with loading file.
+     * @throws CDKException
+     *             Problems with CML file format.
      */
     private void readFile(String fileName) throws IOException, CDKException {
-        InputStream file = new BufferedInputStream
-            (new FileInputStream(fileName));
+        InputStream file = new BufferedInputStream(
+                new FileInputStream(fileName));
         ISimpleChemObjectReader reader = new ReaderFactory().createReader(file);
         IChemFile cFile = null;
-        cFile = reader.read(SilentChemObjectBuilder.getInstance().
-                            newInstance(IChemFile.class));
+        cFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(
+                IChemFile.class));
         reader.close();
         this.molecule = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
         this.logger.logging(this.molecule);
     }
 
-
-    /** 
+    /**
      * Build the CML XOM element.
      * 
-     * @throws IOException Problems with StringWriter
-     * @throws CDKException Problems with CMLWriter
-     * @throws ParsingException Problems with building CML XOM.
+     * @throws IOException
+     *             Problems with StringWriter
+     * @throws CDKException
+     *             Problems with CMLWriter
+     * @throws ParsingException
+     *             Problems with building CML XOM.
      */
     private void buildXOM() throws IOException, CDKException, ParsingException {
         StringWriter outStr = new StringWriter();
@@ -193,91 +201,100 @@ public class CMLEnricher {
         cmlwriter.close();
         String cmlcode = outStr.toString();
 
-        Builder builder = new CMLBuilder(); 
+        Builder builder = new CMLBuilder();
         // this.doc.getRootElement().addNamespaceDeclaration
-        //     ("cml", "http://www.xml-cml.org/schema");
+        // ("cml", "http://www.xml-cml.org/schema");
         this.doc = builder.build(cmlcode, "");
         this.logger.logging(this.doc.toXML());
     }
-
 
     private void removeExplicitHydrogens() {
         this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
     }
 
-    /** 
+    /**
      * Writes current document to a CML file.
      * 
      * @param fileName
      *
-     * @throws IOException Problems with opening output file.
-     * @throws CDKException Problems with writing the CML XOM.
+     * @throws IOException
+     *             Problems with opening output file.
+     * @throws CDKException
+     *             Problems with writing the CML XOM.
      */
     private void writeFile(String fileName) throws IOException, CDKException {
         FilenameUtils fileUtil = new FilenameUtils();
         String basename = fileUtil.getBaseName(fileName);
-        OutputStream outFile = new BufferedOutputStream
-            (new FileOutputStream(basename + "-enr.cml"));
+        OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
+                basename + "-enr.cml"));
         PrintWriter output = new PrintWriter(outFile);
-        this.doc.getRootElement().addNamespaceDeclaration
-            (SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
+        this.doc.getRootElement().addNamespaceDeclaration(
+                SreNamespace.getInstance().prefix,
+                SreNamespace.getInstance().uri);
         output.write(XOMUtil.toPrettyXML(this.doc));
         output.flush();
         output.close();
     }
 
-
     /**
      * Creates a deep clone of an atom container catching possible errors.
-     * @param container The container to be cloned.
+     * 
+     * @param container
+     *            The container to be cloned.
      * @return The cloned container. Possibly null if cloning failed!
      */
     private IAtomContainer checkedClone(IAtomContainer container) {
         IAtomContainer newcontainer = null;
         try {
             newcontainer = container.clone();
-            AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
-            CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance()).addImplicitHydrogens(newcontainer);
-        } catch (CloneNotSupportedException e){
-            this.logger.error("Something went wrong cloning atom container: " + e.getMessage());
+            AtomContainerManipulator
+                    .percieveAtomTypesAndConfigureAtoms(newcontainer);
+            CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance())
+                    .addImplicitHydrogens(newcontainer);
+        } catch (CloneNotSupportedException e) {
+            this.logger.error("Something went wrong cloning atom container: "
+                    + e.getMessage());
         } catch (Throwable e) {
             this.logger.error("Error " + e.getMessage());
         }
         return newcontainer;
     }
 
-
-    /** 
+    /**
      * Append the Atom Sets from the structural analysis to the CML documents.
      */
     private void appendAtomSets() {
         List<RichAtomSet> richSets = this.analysis.getAtomSets();
         for (RichAtomSet richSet : richSets) {
             CMLAtomSet set = richSet.getCML(this.doc);
-            //            this.atomSets.add(richSet);
+            // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             nameMolecule(richSet.getId(), richSet.getStructure());
         }
     }
 
-
     /**
      * Computes some names for a molecule by registering calls to Cactus.
-     * @param id The id of the atom set.
-     * @param container The molecule to be named.
+     * 
+     * @param id
+     *            The id of the atom set.
+     * @param container
+     *            The molecule to be named.
      */
     private void nameMolecule(String id, IAtomContainer container) {
         // TODO (sorge) catch the right exception.
         this.logger.logging("Registering calls for " + id);
         IAtomContainer newcontainer = checkedClone(container);
         if (newcontainer != null) {
-            this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC, newcontainer));
-            this.executor.register(new CactusCallable(id, Cactus.Type.NAME, newcontainer));
-            this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA, newcontainer));
+            this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
+                    newcontainer));
+            this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
+                    newcontainer));
+            this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA,
+                    newcontainer));
         }
     }
 
-    
     /** Computes the major path in the molecule. */
     private void getAbstractionGraph() {
         // TODO (sorge) Maybe refactor this out of path computation.
@@ -285,14 +302,13 @@ public class CMLEnricher {
         // globally.
         List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
         List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
-        List<String> msNames = majorSystems.stream()
-            .map(RichAtomSet::getId)
-            .collect(Collectors.toList());
-        msNames.addAll(singletonAtoms.stream()
-                       .map(RichAtom::getId)
-                       .collect(Collectors.toList()));
+        List<String> msNames = majorSystems.stream().map(RichAtomSet::getId)
+                .collect(Collectors.toList());
+        msNames.addAll(singletonAtoms.stream().map(RichAtom::getId)
+                .collect(Collectors.toList()));
         msNames.stream().forEach(ms -> this.structure.addVertex(ms));
-        List<RichStructure> combined = new ArrayList<RichStructure>(majorSystems);
+        List<RichStructure> combined = new ArrayList<RichStructure>(
+                majorSystems);
         combined.addAll(singletonAtoms);
 
         for (RichStructure ms : combined) {
@@ -303,16 +319,14 @@ public class CMLEnricher {
         }
     };
 
-
-    private void addSingleEdges(String source, Set<Connection> connections, List<String> systems) {
+    private void addSingleEdges(String source, Set<Connection> connections,
+            List<String> systems) {
         for (Connection connection : connections) {
             if (systems.contains(connection.getConnected())) {
                 this.structure.addEdge(source, connection.getConnected(),
-                                       connection.getConnector());
+                        connection.getConnector());
             }
         }
     }
-    
 
 }
-
