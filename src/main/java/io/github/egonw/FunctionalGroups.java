@@ -20,7 +20,9 @@ import org.openscience.cdk.smiles.smarts.SmartsPattern;
 
 public class FunctionalGroups {
 	/**
-	 * Goes through the file of smarts patterns and checks each pattern against the structural analysis
+	 * Goes through the file of smarts patterns and checks each pattern against
+	 * the structural analysis
+	 * 
 	 * @param _analysis
 	 */
 	public static void compute(StructuralAnalysis _analysis) {
@@ -30,6 +32,9 @@ public class FunctionalGroups {
 			String line;
 			while ((line = br.readLine()) != null) {
 				int colonIndex = line.indexOf(":");
+				// Checks that the line has a colon in it and if it is one of
+				// the patterns to be skipped (notated by a '#' before the name
+				// in the file
 				if (colonIndex != -1 && line.charAt(0) != '#') {
 					String name = line.substring(0, colonIndex);
 					String pattern = line.substring(colonIndex + 2);
@@ -43,11 +48,17 @@ public class FunctionalGroups {
 		}
 
 	}
+
 	/**
-	 * Cloans the container before matching the pattern against it as the smarts matching is destructive 
-	 * @param _pattern the pattern being matched against the mollecule
-	 * @param _name The name of the functional group
-	 * @param _analysis The mollecule being matched
+	 * Cloans the container before matching the pattern against it as the smarts
+	 * matching is destructive
+	 * 
+	 * @param _pattern
+	 *            the pattern being matched against the mollecule
+	 * @param _name
+	 *            The name of the functional group
+	 * @param _analysis
+	 *            The mollecule being matched
 	 */
 	private static void checkMollecule(String _pattern, String _name,
 			StructuralAnalysis _analysis) {
@@ -58,12 +69,16 @@ public class FunctionalGroups {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Checks a pattern against a mollecule and puts them in atom sets
-	 * @param _pattern the pattern to check against the mollecule
-	 * @param _name The name of the functional group
-	 * @param _mol The mollecule being checked against
+	 * 
+	 * @param _pattern
+	 *            the pattern to check against the mollecule
+	 * @param _name
+	 *            The name of the functional group
+	 * @param _mol
+	 *            The mollecule being checked against
 	 */
 	private static void checkMollecule(String _pattern, String _name,
 			IAtomContainer _mol) {
@@ -87,7 +102,8 @@ public class FunctionalGroups {
 				List<RichAtomSet> groupList = getMappedAtoms(mappings, _mol);
 			}
 		} catch (IllegalArgumentException e) {
-			//Shows which (if any) functional groups have illegal smarts patterns in the file
+			// Shows which (if any) functional groups have illegal smarts
+			// patterns in the file
 			System.out.println("Error: " + _name);
 		}
 
@@ -97,8 +113,14 @@ public class FunctionalGroups {
 	 * Method that takes a list of matched atom positions and returns a list of
 	 * the relevant atom sets
 	 * 
-	 * @param _mappings A list of the list of matched atom positions for each seperate match
-	 * @param _mol The atom the pattern was matched against
+	 * This is the part that deals with any functionality and it has been
+	 * abstracted out to make editing it easier
+	 * 
+	 * @param _mappings
+	 *            A list of the list of matched atom positions for each seperate
+	 *            match
+	 * @param _mol
+	 *            The atom the pattern was matched against
 	 * @return a list of atom sets for each atom matched
 	 */
 	private static List<RichAtomSet> getMappedAtoms(
