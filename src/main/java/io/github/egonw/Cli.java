@@ -43,6 +43,9 @@ public class Cli {
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
         options.addOption("sf", "structuralformula", false, "Print the structural formula");
         options.addOption("sub", "subscript", false, "Use subscripts with structural formula");
+        options.addOption("h1", "heuristic1", false, "Compute positions using type");
+        options.addOption("h2", "heuristic2", false, "Compute positions using weight");
+        options.addOption("h3", "heuristic3", false, "Compute positions using type and weight");
         
         CommandLineParser parser = new BasicParser();
         try {
