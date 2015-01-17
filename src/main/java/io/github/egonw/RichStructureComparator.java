@@ -15,7 +15,10 @@ package io.github.egonw;
 import java.util.Comparator;
 
 /**
- *
+ * All implementing classes have to ensure that ordering is with respect to
+ * "interestingness" of structures. The more interesting structure is therefore
+ * less than the less interesting one. Or, for example, the larger structure is
+ * less than the smaller structure!
  */
 
 public interface RichStructureComparator<RichChemObject> extends Comparator<RichChemObject> {

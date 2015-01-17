@@ -591,16 +591,15 @@ public class StructuralAnalysis {
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     public class AnalysisCompare implements Comparator<String> {
         
-        Boolean h1 = StructuralAnalysis.this.cli.cl.hasOption("h1");
-        Boolean h2 = StructuralAnalysis.this.cli.cl.hasOption("h2");
-        Boolean h3 = StructuralAnalysis.this.cli.cl.hasOption("h3");
+        String heur = StructuralAnalysis.this.cli.cl.hasOption("c") ?
+            StructuralAnalysis.this.cli.cl.getOptionValue("c") : "";
 
         public int compare(String vertexA, String vertexB) {
-            //Comparator comparator = new SimpleComparator();
-            Comparator comparator = new Heuristics(h1, h2, h3);
+            Comparator comparator = new Heuristics(heur);
             
-            return comparator.compare(StructuralAnalysis.this.getRichStructure(vertexA),
-                                      StructuralAnalysis.this.getRichStructure(vertexB));
+            Integer aux = comparator.compare(StructuralAnalysis.this.getRichStructure(vertexA),
+                                             StructuralAnalysis.this.getRichStructure(vertexB));
+            return aux;
         }
     }
 

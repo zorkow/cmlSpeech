@@ -9,9 +9,10 @@
  */
 
 //
+
 package io.github.egonw;
 
-/**
+/**   
  * The base compare method redistributes wrt to object sub classes.
  * It should not be overwritten!
  */
