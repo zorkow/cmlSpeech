@@ -127,7 +127,7 @@ public class StructuralGraphVisualizer {
             y += (x2d.y * scale);
             n++;
         }
-        NamedPoint point = new NamedPoint(set.getId(), (int)x/n, (int)y/n);
+        NamedPoint point = new NamedPoint(set.getId(), (int)x / n, -1 * (int)y / n);
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
         return point;
@@ -137,7 +137,7 @@ public class StructuralGraphVisualizer {
     private NamedPoint computeAtom(RichAtom richAtom) {
         IAtom atom = richAtom.getStructure();
         Point2d x2d = atom.getPoint2d();
-        NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(x2d.y * scale));
+        NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(-1 * x2d.y * scale));
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
         return point;
