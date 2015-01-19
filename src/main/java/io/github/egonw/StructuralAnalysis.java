@@ -80,7 +80,7 @@ public class StructuralAnalysis {
         
         this.rings();
         this.aliphaticChains();
-        // TODO(sorge): functionalGroups();
+        this.functionalGroups();
         
         this.contexts();
 
@@ -290,20 +290,26 @@ public class StructuralAnalysis {
     }
 
 
-
     /**
      * Computes the longest aliphatic chain for the molecule.
      */
     private void aliphaticChains() {
-        IAtomContainer container = this.molecule;
-        if (container == null) { return; }
+        if (this.molecule == null) { return; }
         AliphaticChain chain = new AliphaticChain(3);
-        chain.calculate(container);
+        chain.calculate(this.molecule);
         for (IAtomContainer set : chain.extract()) {
             this.setRichAtomSet(set, RichAtomSet.Type.ALIPHATIC);
         }
     }
 
+
+    /**
+     * Computes the longest aliphatic chain for the molecule.
+     */
+    private void functionalGroups() {
+        FunctionalGroups.compute(this.molecule);
+    }
+    
 
     /** Computes the contexts of single atoms. */
     private void contexts() {

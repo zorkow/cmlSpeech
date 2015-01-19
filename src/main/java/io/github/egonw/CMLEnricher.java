@@ -129,7 +129,6 @@ public class CMLEnricher {
                 executor.shutdown();
             }
             this.sreOutput.computeDescriptions(this.doc);
-            FunctionalGroups.compute(this.analysis);
             
             if (this.cli.cl.hasOption("sf")){
             	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
