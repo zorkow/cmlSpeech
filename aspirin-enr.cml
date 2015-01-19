@@ -29,8 +29,8 @@
         <bond id="b12" atomRefs2="a9 a11" order="D"/>
         <bond id="b13" atomRefs2="a9 a12" order="S"/>
     </bondArray>
-    <atomSet title="Isolated ring" id="as1" size="6" sre:name="BENZENE" sre:iupac="BENZENE" sre:formula="C6H6">a8 a2 a4 a3 a7 a5</atomSet>
-    <atomSet title="Molecule" id="as2" size="13" sre:name="Acenterine" sre:formula="C9H8O4" sre:iupac="2-acetyloxybenzoic acid">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
+    <atomSet title="Isolated ring" id="as1" size="6" sre:formula="C6H6" sre:iupac="BENZENE" sre:name="BENZENE">a8 a2 a4 a3 a7 a5</atomSet>
+    <atomSet title="Molecule" id="as2" size="13" sre:formula="C9H8O4" sre:name="Acenterine" sre:iupac="2-acetyloxybenzoic acid">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
     <sre:descriptions>
         <sre:desc sre:level="1">
             <sre:subdesc sre:level="1">

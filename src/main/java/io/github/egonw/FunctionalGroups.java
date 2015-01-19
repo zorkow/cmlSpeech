@@ -1,7 +1,5 @@
 package io.github.egonw;
 
-import io.github.egonw.RichAtomSet.Type;
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +23,7 @@ public class FunctionalGroups {
     private static volatile FunctionalGroups instance = null;
     private final static String smartsFile = "src/main/resources/smarts/smarts-pattern.txt";
     private static Map<String, String> smartsPatterns = new HashMap<String, String>();
-    
+    private static Map<String, IAtomContainer> groups;
     
     protected FunctionalGroups() {
         FunctionalGroups.loadSmartsFile();
@@ -69,6 +67,7 @@ public class FunctionalGroups {
      * @param molecule
      */
     public static void compute(IAtomContainer molecule) {
+        groups = new HashMap<String, IAtomContainer>();
         for (Map.Entry<String, String> smarts : smartsPatterns.entrySet()) {
             try {
                 checkMolecule(smarts.getValue(), smarts.getKey(), molecule.clone());
@@ -82,40 +81,37 @@ public class FunctionalGroups {
     /**
      * Checks a pattern against a molecule and puts them in atom sets
      * 
-     * @param _pattern
+     * @param pattern
      *            the pattern to check against the molecule
-     * @param _name
+     * @param name
      *            The name of the functional group
-     * @param _mol
+     * @param mol
      *            The molecule being checked against
      */
-    private static void checkMolecule(String _pattern, String _name,
-                                      IAtomContainer _mol) {
+    private static void checkMolecule(String pattern, String name,
+                                      IAtomContainer mol) {
         // deals with illegal smarts strings
         try {
-            SMARTSQueryTool query = new SMARTSQueryTool(_pattern,
+            SMARTSQueryTool query = new SMARTSQueryTool(pattern,
                                                         DefaultChemObjectBuilder.getInstance());
             boolean matchesFound = false;
-            try {
-                matchesFound = query.matches(_mol);
-            } catch (CDKException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            matchesFound = query.matches(mol);
             // If there are matches, uses the getMatchingAtoms method to process
             // the matches
             if (matchesFound) {
                 List<List<Integer>> mappings = query.getMatchingAtoms();
-                System.out.println(_name);
-                System.out.println(_pattern);
-                List<RichAtomSet> groupList = getMappedAtoms(mappings, _mol);
+                System.out.println(name);
+                System.out.println(pattern);
+                getMappedAtoms(mappings, name, mol);
             }
         } catch (IllegalArgumentException e) {
             // Shows which (if any) functional groups have illegal smarts
             // patterns in the file
-            System.out.println("Error: " + _name);
+            System.out.println("Error: " + name);
+        } catch (CDKException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
     }
 
     /**
@@ -125,27 +121,30 @@ public class FunctionalGroups {
      * This is the part that deals with any functionality and it has been
      * abstracted out to make editing it easier
      * 
-     * @param _mappings
-     *            A list of the list of matched atom positions for each seperate
+     * @param mappings
+     *            A list of the list of matched atom positions for each separate
      *            match
-     * @param _mol
+     * @param name
+     *            The name of the functional group
+     * @param mol
      *            The atom the pattern was matched against
-     * @return a list of atom sets for each atom matched
+     * @return a list of atom containers for each atom matched
      */
-    private static List<RichAtomSet> getMappedAtoms(
-                                                    List<List<Integer>> _mappings, IAtomContainer _mol) {
-        List<RichAtomSet> groups = new ArrayList<RichAtomSet>();
+    private static void getMappedAtoms(List<List<Integer>> mappings,
+                                       String name, IAtomContainer mol) {
         // Goes through each match for the pattern
-        for (List<Integer> mappingList : _mappings) {
+        for (List<Integer> mappingList : mappings) {
             IAtomContainer funcGroup = new AtomContainer();
             // Adds the matched molecule to the atomcontainer
             for (Integer i : mappingList) {
-                funcGroup.addAtom(_mol.getAtom(i));
+                funcGroup.addAtom(mol.getAtom(i));
             }
-            RichAtomSet richFuncGroup = new RichAtomSet(funcGroup,
-                                                        Type.FUNCGROUP, "");// TODO FIND OUT HOW TO ADD AN ID
-            groups.add(richFuncGroup);
+            groups.put(name, funcGroup);
         }
+    }
+
+
+    public static Map<String, IAtomContainer> getGroups() {
         return groups;
     }
 }

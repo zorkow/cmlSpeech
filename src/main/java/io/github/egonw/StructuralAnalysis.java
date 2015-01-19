@@ -256,8 +256,8 @@ public class StructuralAnalysis {
     }
 
     public String toString() {
-        return valuesToString(this.richAtoms) + "\n" 
-            + valuesToString(this.richBonds) + "\n" 
+        return valuesToString(this.richAtoms) + "\n"
+            + valuesToString(this.richBonds) + "\n"
             + valuesToString(this.richAtomSets);
     }
 
