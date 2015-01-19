@@ -286,39 +286,4 @@ public class CMLEnricher {
         }
     }
 
-<<<<<<< HEAD
-    /** Computes the major path in the molecule. */
-    private void getAbstractionGraph() {
-        // TODO (sorge) Maybe refactor this out of path computation.
-        // TODO (sorge) refactor to have major/minor systems and singletons held
-        // globally.
-        List<RichAtomSet> majorSystems = this.analysis.getMajorSystems();
-        List<RichAtom> singletonAtoms = this.analysis.getSingletonAtoms();
-        List<String> msNames = majorSystems.stream().map(RichAtomSet::getId)
-                .collect(Collectors.toList());
-        msNames.addAll(singletonAtoms.stream().map(RichAtom::getId)
-                .collect(Collectors.toList()));
-        msNames.stream().forEach(ms -> this.structure.addVertex(ms));
-        List<RichStructure> combined = new ArrayList<RichStructure>(
-                majorSystems);
-        combined.addAll(singletonAtoms);
-
-        for (RichStructure ms : combined) {
-            Set<Connection> connections = ms.getConnections();
-            if (!connections.isEmpty()) {
-                addSingleEdges(ms.getId(), connections, msNames);
-            }
-        }
-    };
-
-    private void addSingleEdges(String source, Set<Connection> connections,
-            List<String> systems) {
-        for (Connection connection : connections) {
-            if (systems.contains(connection.getConnected())) {
-                this.structure.addEdge(source, connection.getConnected(),
-                        connection.getConnector());
-            }
-        }
-    }
-
 }
