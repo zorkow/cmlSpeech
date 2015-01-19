@@ -21,6 +21,8 @@ import org.jgrapht.graph.DefaultEdge;
 import org.openscience.cdk.interfaces.IAtom;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -52,11 +54,16 @@ public class StructuralGraph extends SimpleGraph {
 
     
     private void init() {
+        System.out.println("This inits!");
+        System.out.println(this.structures.size());
+        System.out.println(this.structures);
         List<String> names = this.structures.stream()
             .map(RichStructure::getId).collect(Collectors.toList());
+        System.out.println(names);
         names.stream().forEach(this::addVertex);
 
         for (RichStructure structure : this.structures) {
+            System.out.println(structure.getId());
             Set<Connection> connections = structure.getConnections();
             if (!connections.isEmpty()) {
                 this.addSingleEdges(structure.getId(), connections, names);

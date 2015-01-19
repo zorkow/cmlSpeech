@@ -16,6 +16,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import java.util.SortedSet;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.Iterator;
+import org.jgrapht.Graphs;
 
 /**
  *
@@ -64,6 +66,7 @@ public class StructuralAnalysis {
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
+    private StructuralGraph recursiveGraph;
 
     private ComponentsPositions majorPath;
     private ComponentsPositions minorPath;
@@ -552,6 +555,40 @@ public class StructuralAnalysis {
     }
 
 
+    /** Compute the major systems, i.e., all systems that are not part of a
+     * larger supersystem. */
+    private void recursiveSystems() {
+        List<RichAtomSet> subRings = this.getAtomSets().stream()
+            .filter(as -> as.type == RichAtomSet.Type.FUSED)
+            .collect(Collectors.toList());
+        for (RichAtomSet ring: subRings) {
+            StructuralGraph ringGraph =
+                new StructuralGraph(ring.getSubSystems().stream().
+                                    map(this::getRichStructure).
+                                    collect(Collectors.toList()));
+            ringGraph.visualize(ring.getId());
+        }
+        
+        Map<String, StructuralGraph> minorGraphs = new HashMap<String, StructuralGraph>();
+        for (RichAtomSet system: this.getMinorSystems()) {
+            List<RichStructure> atoms = new ArrayList<RichStructure>();
+            for (String id: system.getComponents()) {
+                RichAtom atom = this.getRichAtom(id);
+                if (atom != null) {
+                    atoms.add((RichStructure)atom);
+                }
+            }
+            StructuralGraph minorGraph = new StructuralGraph(atoms);
+            minorGraphs.put(system.getId(), minorGraph);
+            minorGraph.visualize(system.getId());
+        }
+        
+       // //  this.structures = new ArrayList<RichStructure>(atomSets);
+       // //  this.structures.addAll(singletonAtoms);
+       // // this.init();
+    }
+
+
     /**
      * Computes a path through the molecule.
      * @param graph An abstraction graph for the molecule.
@@ -585,6 +622,7 @@ public class StructuralAnalysis {
     public void visualize() {
         this.majorGraph.visualize("Major System Abstraction");
         this.minorGraph.visualize("Minor System Abstraction");
+        this.recursiveSystems();
     }
 
 
