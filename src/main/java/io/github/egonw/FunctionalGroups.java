@@ -17,18 +17,24 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 import org.openscience.cdk.smiles.smarts.SmartsPattern;
+import java.util.Map;
+import java.util.HashMap;
 
 public class FunctionalGroups {
-    /**
-     * Goes through the file of smarts patterns and checks each pattern against
-     * the atom container.
-     * 
-     * @param molecule
-     */
-    public static void compute(IAtomContainer molecule) {
+
+    private static volatile FunctionalGroups instance = null;
+    private final static String smartsFile = "src/main/resources/smarts/smarts-pattern.txt";
+    private static Map<String, String> smartsPatterns = new HashMap<String, String>();
+    
+    
+    protected FunctionalGroups() {
+        FunctionalGroups.loadSmartsFile();
+    }
+
+
+    private static void loadSmartsFile() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(
-                                                                           "src/main/resources/smarts/smarts-pattern.txt")));
+            BufferedReader br = new BufferedReader(new FileReader(new File(smartsFile)));
             String line;
             while ((line = br.readLine()) != null) {
                 int colonIndex = line.indexOf(":");
@@ -36,19 +42,40 @@ public class FunctionalGroups {
                 // the patterns to be skipped (notated by a '#' before the name
                 // in the file
                 if (colonIndex != -1 && line.charAt(0) != '#') {
-                    String name = line.substring(0, colonIndex);
-                    String pattern = line.substring(colonIndex + 2);
-                    checkMolecule(pattern, name, molecule.clone());
+                    smartsPatterns.put(line.substring(0, colonIndex),
+                                       line.substring(colonIndex + 2));
                 }
             }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    
+    public static FunctionalGroups getInstance() {
+        if (instance == null) {
+            instance = new FunctionalGroups();
+        }
+        return instance;
+    }
+    
+
+    /**
+     * Goes through the file of smarts patterns and checks each pattern against
+     * the atom container.
+     * 
+     * @param molecule
+     */
+    public static void compute(IAtomContainer molecule) {
+        for (Map.Entry<String, String> smarts : smartsPatterns.entrySet()) {
+            try {
+                checkMolecule(smarts.getValue(), smarts.getKey(), molecule.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

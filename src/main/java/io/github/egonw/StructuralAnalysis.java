@@ -307,7 +307,8 @@ public class StructuralAnalysis {
      * Computes the longest aliphatic chain for the molecule.
      */
     private void functionalGroups() {
-        FunctionalGroups.compute(this.molecule);
+        FunctionalGroups fg = FunctionalGroups.getInstance();
+        fg.compute(this.molecule);
     }
     
 
