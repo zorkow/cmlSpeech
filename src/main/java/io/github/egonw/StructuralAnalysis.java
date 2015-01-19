@@ -297,7 +297,7 @@ public class StructuralAnalysis {
     private void aliphaticChains() {
         IAtomContainer container = this.molecule;
         if (container == null) { return; }
-        AliphaticChain chain = new AliphaticChain();
+        AliphaticChain chain = new AliphaticChain(3);
         chain.calculate(container);
         for (IAtomContainer set : chain.extract()) {
             this.setRichAtomSet(set, RichAtomSet.Type.ALIPHATIC);
