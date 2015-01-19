@@ -308,7 +308,7 @@ public class StructuralAnalysis {
      */
     private void functionalGroups() {
         FunctionalGroups fg = FunctionalGroups.getInstance();
-        fg.compute(this.molecule);
+        FunctionalGroups.compute(this.molecule);        
     }
     
 
