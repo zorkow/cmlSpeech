@@ -38,7 +38,7 @@ public class FunctionalGroups {
 				if (colonIndex != -1 && line.charAt(0) != '#') {
 					String name = line.substring(0, colonIndex);
 					String pattern = line.substring(colonIndex + 2);
-					checkMollecule(pattern, name, _analysis);
+					checkMolecule(pattern, name, _analysis);
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -54,33 +54,33 @@ public class FunctionalGroups {
 	 * matching is destructive
 	 * 
 	 * @param _pattern
-	 *            the pattern being matched against the mollecule
+	 *            the pattern being matched against the molecule
 	 * @param _name
 	 *            The name of the functional group
 	 * @param _analysis
-	 *            The mollecule being matched
+	 *            The molecule being matched
 	 */
-	private static void checkMollecule(String _pattern, String _name,
+	private static void checkMolecule(String _pattern, String _name,
 			StructuralAnalysis _analysis) {
 		try {
 			IAtomContainer tempContainer = _analysis.getMolecule().clone();
-			checkMollecule(_pattern, _name, tempContainer);
+			checkMolecule(_pattern, _name, tempContainer);
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Checks a pattern against a mollecule and puts them in atom sets
+	 * Checks a pattern against a molecule and puts them in atom sets
 	 * 
 	 * @param _pattern
-	 *            the pattern to check against the mollecule
+	 *            the pattern to check against the molecule
 	 * @param _name
 	 *            The name of the functional group
 	 * @param _mol
-	 *            The mollecule being checked against
+	 *            The molecule being checked against
 	 */
-	private static void checkMollecule(String _pattern, String _name,
+	private static void checkMolecule(String _pattern, String _name,
 			IAtomContainer _mol) {
 		// deals with illegal smarts strings
 		try {
@@ -129,7 +129,7 @@ public class FunctionalGroups {
 		// Goes through each match for the pattern
 		for (List<Integer> mappingList : _mappings) {
 			IAtomContainer funcGroup = new AtomContainer();
-			// Adds the matched mollecule to the atomcontainer
+			// Adds the matched molecule to the atomcontainer
 			for (Integer i : mappingList) {
 				funcGroup.addAtom(_mol.getAtom(i));
 			}
