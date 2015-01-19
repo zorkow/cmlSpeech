@@ -98,7 +98,10 @@ public class StructuralAnalysis {
         this.makeTopSet();
         this.makeBottomSet();
     }
-
+    
+    public IAtomContainer getMolecule(){
+    	return molecule;
+    }
 
     public boolean isAtom(String id) {
         return this.richAtoms.containsKey(id);
