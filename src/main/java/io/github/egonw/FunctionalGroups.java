@@ -136,7 +136,6 @@ public class FunctionalGroups {
 			RichAtomSet richFuncGroup = new RichAtomSet(funcGroup,
 					Type.FUNCGROUP, "");// TODO FIND OUT HOW TO ADD AN ID
 			groups.add(richFuncGroup);
-			System.out.println(richFuncGroup);
 		}
 		return groups;
 	}
