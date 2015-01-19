@@ -23,6 +23,7 @@ public class StructuralFormula {
     private ArrayList<String> richAtomSetAtoms = new ArrayList<String>();
     private boolean useSubScripts;
     private ArrayList<String> appendedAtoms = new ArrayList<String>();
+    private ArrayList<String> allConnectingAtoms = new ArrayList<String>();
 
     /**
      * Computes a structural formula using a Structural Analysis
@@ -62,6 +63,14 @@ public class StructuralFormula {
         // subStructures or superStructures
         Set connectingAtoms = richAtomSet.getConnectingAtoms();
 
+        // Adds all connectingAtoms from all RichAtomSets to a list
+        // for checking when adding neighbours
+        for (RichAtomSet set : structuralAnalysis.getAtomSets()) {
+            for (String connectingAtom : set.getConnectingAtoms()) {
+                allConnectingAtoms.add(connectingAtom);
+            }
+        }
+
         // The atom positions of the current RichAtomSet
         this.componentPositions = richAtomSet.componentPositions;
 
@@ -92,19 +101,27 @@ public class StructuralFormula {
      */
     private void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
         // This is where the subStructure is printed
-        this.structuralFormula += "(";
         // We get every connecting atom to the current atom
         Set<Connection> connections = currentRichAtom.getConnections();
         for (Connection connection : connections) {
             // Assign the connected atom in question
             String currentSubAtom = connection.getConnected();
-            // We check if this currentSubAtom is a member of the current RichAtomSet
-            if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
-                appendAtom(currentSubAtom);
-                addNeighbours(currentSubAtom, connectingAtoms);
+
+            // Check for duplicate branches being printed
+            if (!appendedAtoms.contains(currentSubAtom)) {
+                // We check if this currentSubAtom is a member of the current RichAtomSet
+                if (!connectingAtoms.contains(currentSubAtom) && !this.componentPositions.contains(currentSubAtom)) {
+
+                    this.structuralFormula += "(";
+                    appendAtom(currentSubAtom);
+                    addNeighbours(currentSubAtom, connectingAtoms);
+
+                }
             }
         }
+
         this.structuralFormula += ")";
+
     }
 
     /**
@@ -118,13 +135,15 @@ public class StructuralFormula {
     private void addNeighbours(String atomID, Set connectingAtoms) {
 
         RichAtom currentRichSubAtom = this.structuralAnalysis.getRichAtom(atomID);
+        structuralAnalysis.getAtoms();
 
         for (Connection connection : currentRichSubAtom.getConnections()) {
             // This is a atom or atom set connected to the atom in question
             String neighbour = connection.getConnected();
 
             // If this connection is not a connectingAtom or an atomSet then will append
-            if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)) {
+            if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)
+                    && !allConnectingAtoms.contains(neighbour)) {
                 appendAtom(neighbour);
             }
         }

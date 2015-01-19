@@ -44,6 +44,8 @@ public class Cli {
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
         options.addOption("sf", "structuralformula", false, "Print the structural formula");
         options.addOption("sub", "subscript", false, "Use subscripts with structural formula");
+        options.addOption("c", "compare", true, "Comparison heuristics given as a comma" +
+                          "separated list. Currently available heuristics: type, weight, size");
         
         CommandLineParser parser = new BasicParser();
         try {

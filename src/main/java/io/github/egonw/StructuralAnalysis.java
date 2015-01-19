@@ -97,7 +97,10 @@ public class StructuralAnalysis {
         this.makeTopSet();
         this.makeBottomSet();
     }
-
+    
+    public IAtomContainer getMolecule(){
+    	return molecule;
+    }
 
     public boolean isAtom(String id) {
         return this.richAtoms.containsKey(id);
@@ -561,7 +564,7 @@ public class StructuralAnalysis {
     public ComponentsPositions path(StructuralGraph graph) {
         ComponentsPositions path = new ComponentsPositions();
         NeighborIndex index = new NeighborIndex(graph);
-        Comparator<String> comparator = new RichStructureCompare();
+        Comparator<String> comparator = new AnalysisCompare();
         Stack<String> rest = new Stack<String>();
         List<String> vertices = new ArrayList<String>(graph.vertexSet());
         Collections.sort(vertices, comparator);
@@ -591,45 +594,18 @@ public class StructuralAnalysis {
 
 
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
-    // TODO (sorge): Maybe reverse this?
-    public class RichStructureCompare implements Comparator<String> {
+    public class AnalysisCompare implements Comparator<String> {
+        
+        String heur = StructuralAnalysis.this.cli.cl.hasOption("c") ?
+            StructuralAnalysis.this.cli.cl.getOptionValue("c") : "";
 
-        // TODO (sorge): Rationalise this code!
-        //private Boolean moreInteresting(String vertexA, String vertexB) {
         public int compare(String vertexA, String vertexB) {
-            if (vertexB.equals("")) {
-                return -1;
-            }
-            if (StructuralAnalysis.this.isAtom(vertexA)) {
-                return 1;
-            }
-            // TODO (sorge): Take Atom weight into account!
-            if (StructuralAnalysis.this.isAtom(vertexB)) {
-                return -1;
-            }
-            // Now both should be rich atom sets!
-            RichAtomSet structureA = StructuralAnalysis.this.getRichAtomSet(vertexA);
-            RichAtomSet structureB = StructuralAnalysis.this.getRichAtomSet(vertexB);
-            RichAtomSet.Type typeA = structureA.getType();
-            RichAtomSet.Type typeB = structureB.getType();
-            if (typeA == RichAtomSet.Type.ALIPHATIC && 
-                (typeB == RichAtomSet.Type.FUSED || 
-                 typeB == RichAtomSet.Type.ISOLATED ||
-                 typeB == RichAtomSet.Type.SMALLEST)) {
-                return 1;
-            }
-        if (typeB == RichAtomSet.Type.ALIPHATIC && 
-            (typeA == RichAtomSet.Type.FUSED || 
-             typeA == RichAtomSet.Type.ISOLATED ||
-             typeA == RichAtomSet.Type.SMALLEST)) {
-            return -1;
+            Comparator comparator = new Heuristics(heur);
+            
+            Integer aux = comparator.compare(StructuralAnalysis.this.getRichStructure(vertexA),
+                                             StructuralAnalysis.this.getRichStructure(vertexB));
+            return aux;
         }
-        // (TODO) sorge: Add functional group cases!
-        
-        return -1 * Integer.compare(structureA.getStructure().getAtomCount(), 
-                                    structureB.getStructure().getAtomCount());
-        }
-        
     }
 
 
