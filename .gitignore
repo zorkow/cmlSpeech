@@ -2,3 +2,8 @@
 .settings/
 .classpath
 .project
+*.cml
+*.svg
+*.mol
+*.log
+*~

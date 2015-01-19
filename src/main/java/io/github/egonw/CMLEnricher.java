@@ -62,18 +62,6 @@ import nu.xom.Node;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
-import org.openscience.cdk.interfaces.IBond;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.HashSet;
-import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.alg.interfaces.MinimumSpanningTree;
-import nu.xom.XPathContext;
-import java.util.Arrays;
-import java.util.regex.PatternSyntaxException;
-import java.util.Map;
-import java.util.TreeMap;
-import com.google.common.base.Joiner;
 
 public class CMLEnricher {
     private final Cli cli;
@@ -85,7 +73,7 @@ public class CMLEnricher {
     private Document doc;
     private IAtomContainer molecule;
     private CactusExecutor executor = new CactusExecutor();
-    private StructuralGraph structure = new StructuralGraph();
+    private StructuralFormula formula = new StructuralFormula();
 
     /**
      * Constructor
@@ -127,8 +115,6 @@ public class CMLEnricher {
             this.analysis = new StructuralAnalysis(this.molecule, this.cli,
                     this.logger);
             this.sreOutput = new SreOutput(this.analysis);
-            getAbstractionGraph();
-            this.analysis.majorPath(this.structure);
             this.analysis.computePositions();
             this.analysis.printPositions();
 
@@ -144,6 +130,12 @@ public class CMLEnricher {
             }
             this.sreOutput.computeDescriptions(this.doc);
             FunctionalGroups.compute(this.analysis);
+            
+            if (this.cli.cl.hasOption("sf")){
+            	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
+            	System.out.println(structuralFormula);
+            }
+            
             this.doc.getRootElement().appendChild(
                     this.sreOutput.getDescriptions());
             writeFile(fileName);
@@ -156,8 +148,7 @@ public class CMLEnricher {
             return;
         }
         if (this.cli.cl.hasOption("vis")) {
-            this.structure.visualize(this.analysis.getMajorSystems(),
-                    this.analysis.getSingletonAtoms());
+            this.analysis.visualize();
         }
     }
 
@@ -295,6 +286,7 @@ public class CMLEnricher {
         }
     }
 
+<<<<<<< HEAD
     /** Computes the major path in the molecule. */
     private void getAbstractionGraph() {
         // TODO (sorge) Maybe refactor this out of path computation.

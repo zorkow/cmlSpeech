@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cml="http://www.xml-cml.org/schema" width="166.959" height="146.138" x="0" y="0" font-family="sans-serif" stroke="rgb(0,0,0)" stroke-width="1"  stroke-linecap="round">
+<rect x="0%" y="0%" width="100%" height="100%" stroke-width="0" fill="rgb(255,255,255)"  />
+<line x1="106.4" y1="73.1" x2="119.5" y2="51.1" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<line x1="60.6" y1="73.3" x2="47.0" y2="51.9" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<line x1="60.6" y1="70.3" x2="106.4" y2="70.1" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<line x1="60.6" y1="76.3" x2="106.4" y2="76.1" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<line x1="60.6" y1="73.3" x2="47.5" y2="95.0" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<line x1="106.4" y1="73.1" x2="120.1" y2="95.1" stroke="rgb(0,0,0)"  stroke-width="1.0"/>
+<text x="34.000000" y="48.979818" fill="rgb(191,191,191)"  stroke="rgb(191,191,191)" stroke-width="1" font-size="16" >H</text>
+<text x="120.223971" y="48.000000" fill="rgb(191,191,191)"  stroke="rgb(191,191,191)" stroke-width="1" font-size="16" >H</text>
+<text x="34.734863" y="114.137705" fill="rgb(191,191,191)"  stroke="rgb(191,191,191)" stroke-width="1" font-size="16" >H</text>
+<text x="120.958834" y="114.137705" fill="rgb(191,191,191)"  stroke="rgb(191,191,191)" stroke-width="1" font-size="16" >H</text>
+
+
+</svg>
