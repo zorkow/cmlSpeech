@@ -172,6 +172,10 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     private IAtom getExternallyConnectedAtom() {
         for (IAtom atom : this.getStructure().atoms()) {
+            // FG: This is not working yet.
+            //
+            // It needs to be checked, wrt. external bonds as well.
+            //
             if (this.connectingAtoms.contains(atom.getID())) {
                 return atom;
             }

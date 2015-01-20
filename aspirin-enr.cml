@@ -32,7 +32,7 @@
     <atomSet title="Isolated ring" id="as1" size="6" sre:iupac="BENZENE" sre:name="BENZENE" sre:formula="C6H6">a8 a2 a4 a3 a7 a5</atomSet>
     <atomSet title="Functional Group" id="as2" size="3" name="Carboxylic acid">a9 a11 a12</atomSet>
     <atomSet title="Functional Group" id="as3" size="5" name="Ester">a1 a6 a10 a13 a8</atomSet>
-    <atomSet title="Molecule" id="as4" size="13" sre:name="Acenterine" sre:iupac="2-acetyloxybenzoic acid" sre:formula="C9H8O4">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
+    <atomSet title="Molecule" id="as4" size="13" sre:name="Acenterine" sre:formula="C9H8O4" sre:iupac="2-acetyloxybenzoic acid">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
     <sre:annotations>
         <sre:annotation>
             <sre:atom>a1</sre:atom>
@@ -545,6 +545,9 @@
                 <sre:bond>b12</sre:bond>
                 <sre:bond>b13</sre:bond>
             </sre:component>
+            <sre:externalBonds>
+                <sre:bond>b10</sre:bond>
+            </sre:externalBonds>
             <sre:connections>
                 <sre:connection>
                     <sre:bond>b10</sre:bond>
@@ -563,6 +566,9 @@
             <sre:superSystem>
                 <sre:atomSet>as4</sre:atomSet>
             </sre:superSystem>
+            <sre:connectingAtoms>
+                <sre:atom>a9</sre:atom>
+            </sre:connectingAtoms>
         </sre:annotation>
         <sre:annotation>
             <sre:atomSet>as3</sre:atomSet>
@@ -580,6 +586,10 @@
                 <sre:bond>b8</sre:bond>
                 <sre:bond>b11</sre:bond>
             </sre:component>
+            <sre:externalBonds>
+                <sre:bond>b6</sre:bond>
+                <sre:bond>b9</sre:bond>
+            </sre:externalBonds>
             <sre:connections>
                 <sre:sharedAtom>
                     <sre:atom>a8</sre:atom>
@@ -602,6 +612,9 @@
             <sre:superSystem>
                 <sre:atomSet>as4</sre:atomSet>
             </sre:superSystem>
+            <sre:connectingAtoms>
+                <sre:atom>a8</sre:atom>
+            </sre:connectingAtoms>
         </sre:annotation>
         <sre:annotation>
             <sre:atomSet>as4</sre:atomSet>
@@ -710,7 +723,7 @@
         </sre:desc>
         <sre:desc sre:level="3">
             <sre:subdesc sre:level="3">
-                <sre:content>Carbon 1 double bonded to Carbon 2 single bonded to Carbon 6 single bonded to Oxygen 9</sre:content>
+                <sre:content>Carbon 1 double bonded to Carbon 2 single bonded to Carbon 6 single bonded to Oxygen 7</sre:content>
                 <sre:component>
                     <sre:atom>a8</sre:atom>
                     <sre:bond>b6</sre:bond>
@@ -762,7 +775,7 @@
                 </sre:component>
             </sre:subdesc>
             <sre:subdesc sre:level="3">
-                <sre:content>Carbon 6 double bonded to Carbon 5 single bonded to Carbon 1 single bonded to Carbon 12</sre:content>
+                <sre:content>Carbon 6 double bonded to Carbon 5 single bonded to Carbon 1 single bonded to Carbon 11</sre:content>
                 <sre:component>
                     <sre:atom>a7</sre:atom>
                     <sre:bond>b5</sre:bond>

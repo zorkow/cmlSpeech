@@ -343,8 +343,10 @@ public class StructuralAnalysis {
      * @param atomSet A rich atom set.
      */
     private void atomSetAttachments(RichAtomSet atomSet) {
+        System.out.println(atomSet.getId());
         IAtomContainer container = atomSet.getStructure();
         Set<IBond> externalBonds = externalBonds(container);
+        System.out.println(externalBonds);
         for (IBond bond : externalBonds) {
             atomSet.getExternalBonds().add(bond.getID());
         }
@@ -363,9 +365,11 @@ public class StructuralAnalysis {
      */
     private Set<IBond> externalBonds(IAtomContainer container) {
         Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
+        System.out.println(internalBonds);
         Set<IBond> allBonds = Sets.newHashSet();
         for (IAtom atom : container.atoms()) {
             allBonds.addAll(this.molecule.getConnectedBondsList(atom));
+            System.out.println(allBonds);
         }
         return Sets.difference(allBonds, internalBonds);
     }
