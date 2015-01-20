@@ -157,7 +157,6 @@ public class SreOutput {
 
     private void describeAtomSet(RichAtomSet system) {
         System.out.println(system.type);
-        try {
         switch (system.type) {
         case MOLECULE:
         case FUNCGROUP:
@@ -169,11 +168,6 @@ public class SreOutput {
         case ISOLATED:
             describeIsolatedRing(system);
             break;
-        }
-        // FG: Temporary
-        // VS: This exception has to be removed!
-        } catch (Exception e) {
-            return;
         }
     }
 
