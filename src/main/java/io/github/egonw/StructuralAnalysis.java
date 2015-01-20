@@ -602,10 +602,6 @@ public class StructuralAnalysis {
             minorGraphs.put(system.getId(), minorGraph);
             minorGraph.visualize(system.getId());
         }
-        
-       // //  this.structures = new ArrayList<RichStructure>(atomSets);
-       // //  this.structures.addAll(singletonAtoms);
-       // // this.init();
     }
 
 
