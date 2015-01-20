@@ -38,6 +38,7 @@ import java.util.SortedSet;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.Iterator;
+import java.util.Collection;
 
 /**
  *
@@ -304,11 +305,35 @@ public class StructuralAnalysis {
 
 
     /**
-     * Computes the longest aliphatic chain for the molecule.
+     * Computes functional groups.
      */
     private void functionalGroups() {
         FunctionalGroups fg = FunctionalGroups.getInstance();
-        FunctionalGroups.compute(this.molecule);        
+        // IAtomContainer newMolecule;
+        // try {
+        //     newMolecule = this.molecule.clone();
+        // }
+        // catch (CloneNotSupportedException e) {
+        //     System.out.println("Error " + e.getMessage());
+        //     e.printStackTrace();
+        //     return;
+        // }
+        // System.out.println(this.molecule.getAtomCount());
+        // System.out.println(this.molecule.getBondCount());
+        // for (RichAtomSet set : this.getAtomSets()) {
+        //     System.out.println("Removing: " + set.getId());
+        //     //newMolecule.remove(set.getStructure());
+        //     this.molecule.remove(set.getStructure());
+        // }
+        // System.out.println(this.molecule.getAtomCount());
+        // System.out.println(this.molecule.getBondCount());
+        fg.compute(this.molecule);
+        Map<String, IAtomContainer> groups = fg.getGroups();
+        for (String key : groups.keySet()) {
+            RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
+                                                               RichAtomSet.Type.FUNCGROUP);
+            set.name = key;            
+        }
     }
     
 
@@ -524,7 +549,9 @@ public class StructuralAnalysis {
      * larger supersystem. */
     private void majorSystems() {
         this.majorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
+            .filter(as -> as.type != RichAtomSet.Type.SMALLEST &&
+                    // FG: Temporary
+                    as.type != RichAtomSet.Type.FUNCGROUP)
             .collect(Collectors.toList());
         this.majorGraph = new StructuralGraph(this.getMajorSystems(),
                                               this.getSingletonAtoms());
@@ -545,7 +572,9 @@ public class StructuralAnalysis {
      * sub-system. */
     private void minorSystems() {
         this.minorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.FUSED)
+            .filter(as -> as.type != RichAtomSet.Type.FUSED &&
+                    // FG: Temporary
+                    as.type != RichAtomSet.Type.FUNCGROUP)
             .collect(Collectors.toList());
         this.minorGraph = new StructuralGraph(this.getMinorSystems(),
                                               this.getSingletonAtoms());

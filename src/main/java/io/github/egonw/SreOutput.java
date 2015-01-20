@@ -156,8 +156,11 @@ public class SreOutput {
     }
 
     private void describeAtomSet(RichAtomSet system) {
+        System.out.println(system.type);
+        try {
         switch (system.type) {
         case MOLECULE:
+        case FUNCGROUP:
             break;
         case ALIPHATIC:
             describeAliphaticChain(system);
@@ -166,6 +169,9 @@ public class SreOutput {
         case ISOLATED:
             describeIsolatedRing(system);
             break;
+        }
+        } catch (Exception e) {
+            return;
         }
     }
 

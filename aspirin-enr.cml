@@ -30,7 +30,31 @@
         <bond id="b13" atomRefs2="a9 a12" order="S"/>
     </bondArray>
     <atomSet title="Isolated ring" id="as1" size="6" sre:formula="C6H6" sre:iupac="BENZENE" sre:name="BENZENE">a8 a2 a4 a3 a7 a5</atomSet>
-    <atomSet title="Molecule" id="as2" size="13" sre:formula="C9H8O4" sre:name="Acenterine" sre:iupac="2-acetyloxybenzoic acid">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
+    <atomSet title="Functional Group" id="as2" size="5" name="Vinylogous carbonyl or carboxyl derivative-1">a9 a11 a7 a8 a13</atomSet>
+    <atomSet title="Functional Group" id="as3" size="2" name="Carbonyl group. Low specificity-20">a9 a11</atomSet>
+    <atomSet title="Functional Group" id="as4" size="3" name="Carbonyl with Oxygen-8">a6 a10 a13</atomSet>
+    <atomSet title="Functional Group" id="as5" size="2" name="Hydroxyl in Alcohol-5">a9 a12</atomSet>
+    <atomSet title="Functional Group" id="as6" size="1" name="Hydroxyl Acidic-22">a12</atomSet>
+    <atomSet title="Functional Group" id="as7" size="5" name="Ester-4">a1 a6 a10 a13 a8</atomSet>
+    <atomSet title="Functional Group" id="as8" size="3" name="Carbonyl with Oxygen-9">a9 a11 a12</atomSet>
+    <atomSet title="Functional Group" id="as9" size="3" name="Hydroxyl in Carboxylic Acid-10">a12 a9 a11</atomSet>
+    <atomSet title="Functional Group" id="as10" size="1" name="Hydroxyl-14">a12</atomSet>
+    <atomSet title="Functional Group" id="as11" size="1" name="Alkyl Carbon-18">a1</atomSet>
+    <atomSet title="Functional Group" id="as12" size="5" name="Vinylogous ester-3">a9 a11 a7 a8 a5</atomSet>
+    <atomSet title="Functional Group" id="as13" size="1" name="Alanine side chain-13">a1</atomSet>
+    <atomSet title="Functional Group" id="as14" size="3" name="Carboxylic acid or conjugate base-11">a9 a11 a12</atomSet>
+    <atomSet title="Functional Group" id="as15" size="3" name="Carboxylic acid-12">a9 a11 a12</atomSet>
+    <atomSet title="Functional Group" id="as16" size="5" name="Vinylogous ester-2">a9 a11 a7 a4 a2</atomSet>
+    <atomSet title="Functional Group" id="as17" size="4" name="Carboxylic ester-17">a6 a10 a13 a8</atomSet>
+    <atomSet title="Functional Group" id="as18" size="3" name="Ether-24">a13 a8 a6</atomSet>
+    <atomSet title="Functional Group" id="as19" size="3" name="Carboxylic acid derivative-6">a6 a10 a13</atomSet>
+    <atomSet title="Functional Group" id="as20" size="3" name="Ether-23">a13 a6 a8</atomSet>
+    <atomSet title="Functional Group" id="as21" size="3" name="Carboxylic acid derivative-7">a9 a11 a12</atomSet>
+    <atomSet title="Functional Group" id="as22" size="1" name="Carbonyl group-16">a9</atomSet>
+    <atomSet title="Functional Group" id="as23" size="1" name="Carbonyl group-15">a6</atomSet>
+    <atomSet title="Functional Group" id="as24" size="3" name="Carbonyl with Carbon-21">a6 a10 a1</atomSet>
+    <atomSet title="Functional Group" id="as25" size="2" name="Carbonyl group. Low specificity-19">a6 a10</atomSet>
+    <atomSet title="Molecule" id="as26" size="13" sre:iupac="2-acetyloxybenzoic acid" sre:formula="C9H8O4" sre:name="Acenterine">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13</atomSet>
     <sre:descriptions>
         <sre:desc sre:level="1">
             <sre:subdesc sre:level="1">
@@ -81,72 +105,6 @@
                     <sre:bond>b5</sre:bond>
                     <sre:bond>b6</sre:bond>
                     <sre:bond>b9</sre:bond>
-                </sre:component>
-            </sre:subdesc>
-        </sre:desc>
-        <sre:desc sre:level="3">
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 1 double bonded to Carbon 2 single bonded to Carbon 6 single bonded to Oxygen 10</sre:content>
-                <sre:component>
-                    <sre:atom>a8</sre:atom>
-                    <sre:bond>b6</sre:bond>
-                    <sre:atom>a5</sre:atom>
-                    <sre:bond>b9</sre:bond>
-                    <sre:atom>a7</sre:atom>
-                    <sre:bond>b11</sre:bond>
-                    <sre:atom>a13</sre:atom>
-                </sre:component>
-            </sre:subdesc>
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 2 bonded to 1 hydrogen single bonded to Carbon 3 double bonded to Carbon 1</sre:content>
-                <sre:component>
-                    <sre:atom>a5</sre:atom>
-                    <sre:bond>b4</sre:bond>
-                    <sre:atom>a3</sre:atom>
-                    <sre:bond>b6</sre:bond>
-                    <sre:atom>a8</sre:atom>
-                </sre:component>
-            </sre:subdesc>
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 3 bonded to 1 hydrogen double bonded to Carbon 4 single bonded to Carbon 2</sre:content>
-                <sre:component>
-                    <sre:atom>a3</sre:atom>
-                    <sre:bond>b2</sre:bond>
-                    <sre:atom>a2</sre:atom>
-                    <sre:bond>b4</sre:bond>
-                    <sre:atom>a5</sre:atom>
-                </sre:component>
-            </sre:subdesc>
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 4 bonded to 1 hydrogen double bonded to Carbon 3 single bonded to Carbon 5</sre:content>
-                <sre:component>
-                    <sre:atom>a2</sre:atom>
-                    <sre:bond>b2</sre:bond>
-                    <sre:atom>a3</sre:atom>
-                    <sre:bond>b3</sre:bond>
-                    <sre:atom>a4</sre:atom>
-                </sre:component>
-            </sre:subdesc>
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 5 bonded to 1 hydrogen single bonded to Carbon 4 double bonded to Carbon 6</sre:content>
-                <sre:component>
-                    <sre:atom>a4</sre:atom>
-                    <sre:bond>b3</sre:bond>
-                    <sre:atom>a2</sre:atom>
-                    <sre:bond>b5</sre:bond>
-                    <sre:atom>a7</sre:atom>
-                </sre:component>
-            </sre:subdesc>
-            <sre:subdesc sre:level="3">
-                <sre:content>Carbon 6 double bonded to Carbon 5 single bonded to Carbon 1 single bonded to Carbon 7</sre:content>
-                <sre:component>
-                    <sre:atom>a7</sre:atom>
-                    <sre:bond>b5</sre:bond>
-                    <sre:atom>a4</sre:atom>
-                    <sre:bond>b9</sre:bond>
-                    <sre:atom>a8</sre:atom>
-                    <sre:bond>b10</sre:bond>
-                    <sre:atom>a9</sre:atom>
                 </sre:component>
             </sre:subdesc>
         </sre:desc>

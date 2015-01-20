@@ -259,7 +259,11 @@ public class CMLEnricher {
             CMLAtomSet set = richSet.getCML(this.doc);
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
-            nameMolecule(richSet.getId(), richSet.getStructure());
+            if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
+                set.setAttribute("name", richSet.name);
+            } else {
+                nameMolecule(richSet.getId(), richSet.getStructure());
+            }
         }
     }
 

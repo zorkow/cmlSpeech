@@ -1,0 +1,210 @@
+#
+#
+# SMARTS patterns from http://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html
+#
+#
+
+## This is only section 2 of the examples:
+
+# C
+
+Alkyl Carbon: [CX4]
+Allenic Carbon: [$([CX2](=C)=C)]
+Vinylic Carbon: [$([CX3]=[CX3])]
+Acetylenic Carbon: [$([CX2]#C)]
+# Arene: c
+
+# CO
+Carbonyl group. Low specificity: [CX3]=[OX1]
+Carbonyl group: [$([CX3]=[OX1]),$([CX3+]-[OX1-])]
+Carbonyl with Carbon: [CX3](=[OX1])C
+Carbonyl with Nitrogen: [OX1]=CN
+Carbonyl with Oxygen: [CX3](=[OX1])O
+Acyl Halide: [CX3](=[OX1])[F,Cl,Br,I]
+Aldehyde: [CX3H1](=O)[#6]
+Anhydride: [CX3](=[OX1])[OX2][CX3](=[OX1])
+Amide: [NX3][CX3](=[OX1])[#6]
+Amidinium: [NX3][CX3]=[NX3+]
+Carbamate: [NX3,NX4+][CX3](=[OX1])[OX2,OX1-]
+Carbamic ester: [NX3][CX3](=[OX1])[OX2H0]
+Carbamic acid: [NX3,NX4+][CX3](=[OX1])[OX2H,OX1-]
+Carboxylate Ion: [CX3](=O)[O-]
+Carbonic Acid or Carbonic Ester: [CX3](=[OX1])(O)O
+Carbonic Acid or Carbonic Acid-Ester: [CX3](=[OX1])([OX2])[OX2H,OX1H0-1]
+Carbonic Ester (carbonic acid diester): C[OX2][CX3](=[OX1])[OX2]C
+Carboxylic acid: [CX3](=O)[OX2H1]
+Carboxylic acid or conjugate base: [CX3](=O)[OX1H0-,OX2H1]
+Cyanamide: [NX3][CX2]#[NX1]
+Ester: [#6][CX3](=O)[OX2H0][#6]
+Ketone: [#6][CX3](=O)[#6]
+Ether: [OD2]([#6])[#6]
+
+# H
+# Commented as they are uninteresting!
+
+# Hydrogen Atom: [H]
+# Not a Hydrogen Atom: [!#1]
+# Proton: [H+]
+# Mono-Hydrogenated Cation: [+H]
+# Not Mono-Hydrogenated: [!H] or [!H1]
+
+# N
+
+Amine: [NX3;H2,H1;!$(NC=O)]
+Enamine: [NX3][CX3]=[CX3]
+Primary amine: [NX3;H2;!$(NC=[!#6]);!$(NC#[!#6])][#6]
+Two primary or secondary amines: [NX3;H2,H1;!$(NC=O)].[NX3;H2,H1;!$(NC=O)]
+Enamine or Aniline Nitrogen: [NX3][$(C=C),$(cc)]
+Generic amino acid low specificity: [NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]
+Dipeptide group. generic amino acid low specificity: [NX3H2,NH3X4+][CX4H]([*])[CX3](=[OX1])[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[OX2H,OX1-]
+Amino Acid: [$([NX3H2,NX4H3+]),$([NX3H](C)(C))][CX4H]([*])[CX3](=[OX1])[OX2H,OX1-,N]
+Alanine side chain: [CH3X4]
+
+Arginine side chain: [CH2X4][CH2X4][CH2X4][NHX3][CH0X3](=[NH2X3+,NHX2+0])[NH2X3]
+Aspargine side chain: [CH2X4][CX3](=[OX1])[NX3H2]
+Aspartate (or Aspartic acid) side chain: [CH2X4][CX3](=[OX1])[OH0-,OH]
+Cysteine side chain: [CH2X4][SX2H,SX1H0-]
+Glutamate (or Glutamic acid) side chain: [CH2X4][CH2X4][CX3](=[OX1])[OH0-,OH]
+Glycine: [$([$([NX3H2,NX4H3+]),$([NX3H](C)(C))][CX4H2][CX3](=[OX1])[OX2H,OX1-,N])]
+Histidine side chain: [CH2X4][#6X3]1:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]1
+Isoleucine side chain: [CHX4]([CH3X4])[CH2X4][CH3X4]
+
+Leucine side chain: [CH2X4][CHX4]([CH3X4])[CH3X4]
+
+Lysine side chain: [CH2X4][CH2X4][CH2X4][CH2X4][NX4+,NX3+0]
+Methionine side chain: [CH2X4][CH2X4][SX2][CH3X4]
+
+Phenylalanine side chain: [CH2X4][cX3]1[cX3H][cX3H][cX3H][cX3H][cX3H]1
+
+Proline: [$([NX3H,NX4H2+]),$([NX3](C)(C)(C))]1[CX4H]([CH2][CH2][CH2]1)[CX3](=[OX1])[OX2H,OX1-,N]
+
+Serine side chain: [CH2X4][OX2H]
+
+Thioamide: [NX3][CX3]=[SX1]
+
+Threonine side chain: [CHX4]([CH3X4])[OX2H]
+
+Tryptophan side chain: [CH2X4][cX3]1[cX3H][nX3H][cX3]2[cX3H][cX3H][cX3H][cX3H][cX3]12
+
+Tyrosine side chain: [CH2X4][cX3]1[cX3H][cX3H][cX3]([OHX2,OH0X1-])[cX3H][cX3H]1
+Valine side chain: [CHX4]([CH3X4])[CH3X4]
+
+
+Azide group: [$(*-[NX2-]-[NX2+]#[NX1]),$(*-[NX2]=[NX2+]=[NX1-])]
+Azide ion: [$([NX1-]=[NX2+]=[NX1-]),$([NX1]#[NX2+]-[NX1-2])]
+Nitrogen: [#7]
+Azo Nitrogen. Low specificity: [NX2]=N
+Azo Nitrogen.diazene: [NX2]=[NX2]
+Azoxy Nitrogen: [$([NX2]=[NX3+]([O-])[#6]),$([NX2]=[NX3+0](=[O])[#6])]
+
+Diazo Nitrogen: [$([#6]=[N+]=[N-]),$([#6-]-[N+]#[N])]
+
+Azole: [$([nr5]:[nr5,or5,sr5]),$([nr5]:[cr5]:[nr5,or5,sr5])]
+Hydrazine H2NNH2: [NX3][NX3]
+
+
+Hydrazone C=NNH2: [NX3][NX2]=[*]
+
+
+Substituted imine: [CX3;$([C]([#6])[#6]),$([CH][#6])]=[NX2][#6]
+Substituted or un-substituted imine: [$([CX3]([#6])[#6]),$([CX3H][#6])]=[$([NX2][#6]),$([NX2H])]
+
+Iminium: [NX3+]=[CX3]
+
+
+Unsubstituted dicarboximide: [CX3](=[OX1])[NX3H][CX3](=[OX1])
+
+Substituted dicarboximide: [CX3](=[OX1])[NX3H0]([#6])[CX3](=[OX1])
+
+Dicarboxdiimide: [CX3](=[OX1])[NX3H0]([NX3H0]([CX3](=[OX1]))[CX3](=[OX1]))[CX3](=[OX1])
+
+
+Nitrate group: [$([NX3](=[OX1])(=[OX1])O),$([NX3+]([OX1-])(=[OX1])O)]
+Nitrate Anion: [$([OX1]=[NX3](=[OX1])[OX1-]),$([OX1]=[NX3+]([OX1-])[OX1-])]
+
+
+Nitrile: [NX1]#[CX2]
+
+Isonitrile: [CX1-]#[NX2+]
+
+
+Nitro group: [$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8]
+
+Two Nitro groups: [$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8].[$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8]
+
+
+Nitroso-group: [NX2]=[OX1]
+
+
+N-Oxide: [$([#7+][OX1-]),$([#7v5]=[OX1]);!$([#7](~[O])~[O]);!$([#7]=[#7])]
+
+# O
+
+
+
+
+Hydroxyl: [OX2H]
+
+Hydroxyl in Alcohol: [#6][OX2H]
+
+Hydroxyl in Carboxylic Acid: [OX2H][CX3]=[OX1]
+
+Hydroxyl in H-O-P-: [OX2H]P
+
+Enol: [OX2H][#6X3]=[#6]
+
+Phenol: [OX2H][cX3]:[c]
+
+Enol or Phenol: [OX2H][$(C=C),$(cc)]
+
+Hydroxyl Acidic: [$([OH]-*=[!#6])]
+Peroxide groups: [OX2,OX1-][OX2,OX1-]
+
+# P
+## These are better in smarts-pattern.
+
+# Phosphoric_acid groups: [$(P(=[OX1])([$([OX2H]),$([OX1-]),$([OX2]P)])([$([OX2H]),$([OX1-]),$([OX2]P)])[$([OX2H]),$([OX1-]),$([OX2]P)]),$([P+]([OX1-])([$([OX2H]),$([OX1-]),$([OX2]P)])([$([OX2H]),$([OX1-]),$([OX2]P)])[$([OX2H]),$([OX1-]),$([OX2]P)])]
+# Phosphoric_ester groups: [$(P(=[OX1])([OX2][#6])([$([OX2H]),$([OX1-]),$([OX2][#6])])[$([OX2H]),$([OX1-]),$([OX2][#6]),$([OX2]P)]),$([P+]([OX1-])([OX2][#6])([$([OX2H]),$([OX1-]),$([OX2][#6])])[$([OX2H]),$([OX1-]),$([OX2][#6]),$([OX2]P)])]
+
+# S
+
+Carbo-Thiocarboxylate: [S-][CX3](=S)[#6]
+Carbo-Thioester: S([#6])[CX3](=O)[#6]
+Thio analog of carbonyl: [#6X3](=[SX1])([!N])[!N]
+Thiol, Sulfide or Disulfide Sulfur: [SX2]
+Thiol: [#16X2H]
+
+Sulfur with at-least one hydrogen: [#16!H0]
+
+Thioamide: [NX3][CX3]=[SX1]
+
+
+Sulfide: [#16X2H0]
+Mono-sulfide: [#16X2H0][!#16]
+Di-sulfide: [#16X2H0][#16X2H0]
+Two Sulfides: [#16X2H0][!#16].[#16X2H0][!#16]
+Sulfinate: [$([#16X3](=[OX1])[OX2H0]),$([#16X3+]([OX1-])[OX2H0])]
+Sulfinic Acid: [$([#16X3](=[OX1])[OX2H,OX1H0-]),$([#16X3+]([OX1-])[OX2H,OX1H0-])]
+Sulfone. Low specificity: [$([#16X4](=[OX1])=[OX1]),$([#16X4+2]([OX1-])[OX1-])]
+Sulfone. High specificity: [$([#16X4](=[OX1])(=[OX1])([#6])[#6]),$([#16X4+2]([OX1-])([OX1-])([#6])[#6])]
+Sulfonic acid.  High specificity: [$([#16X4](=[OX1])(=[OX1])([#6])[OX2H,OX1H0-]),$([#16X4+2]([OX1-])([OX1-])([#6])[OX2H,OX1H0-])]
+Sulfonate: [$([#16X4](=[OX1])(=[OX1])([#6])[OX2H0]),$([#16X4+2]([OX1-])([OX1-])([#6])[OX2H0])]
+Sulfonamide: [$([#16X4]([NX3])(=[OX1])(=[OX1])[#6]),$([#16X4+2]([NX3])([OX1-])([OX1-])[#6])]
+Carbo-azosulfone: [SX4](C)(C)(=O)=N
+Sulfonamide: [$([SX4](=[OX1])(=[OX1])([!O])[NX3]),$([SX4+2]([OX1-])([OX1-])([!O])[NX3])]
+Sulfoxide Low specificity: [$([#16X3]=[OX1]),$([#16X3+][OX1-])]
+Sulfoxide High specificity: [$([#16X3](=[OX1])([#6])[#6]),$([#16X3+]([OX1-])([#6])[#6])]
+Sulfate: [$([#16X4](=[OX1])(=[OX1])([OX2H,OX1H0-])[OX2][#6]),$([#16X4+2]([OX1-])([OX1-])([OX2H,OX1H0-])[OX2][#6])]
+Sulfuric acid ester (sulfate ester)  Low specificity: [$([SX4](=O)(=O)(O)O),$([SX4+2]([O-])([O-])(O)O)]
+Sulfuric Acid Diester: [$([#16X4](=[OX1])(=[OX1])([OX2][#6])[OX2][#6]),$([#16X4](=[OX1])(=[OX1])([OX2][#6])[OX2][#6])]
+Sulfamate: [$([#16X4]([NX3])(=[OX1])(=[OX1])[OX2][#6]),$([#16X4+2]([NX3])([OX1-])([OX1-])[OX2][#6])]
+Sulfamic Acid: [$([#16X4]([NX3])(=[OX1])(=[OX1])[OX2H,OX1H0-]),$([#16X4+2]([NX3])([OX1-])([OX1-])[OX2H,OX1H0-])]
+Sulfenic acid: [#16X2][OX2H,OX1H0-]
+Sulfenate: [#16X2][OX2H0]
+
+# X
+
+Any carbon attached to any halogen: [#6][F,Cl,Br,I]
+Halogen: [F,Cl,Br,I]
+Three_halides groups: [F,Cl,Br,I].[F,Cl,Br,I].[F,Cl,Br,I]
+Acyl Halide: [CX3](=[OX1])[F,Cl,Br,I]

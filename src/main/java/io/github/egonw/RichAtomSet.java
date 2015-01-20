@@ -47,7 +47,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     public Type type;
     public CMLAtomSet cml;
-
+    // For functional groups.
+    public String name = "";
+    
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
 
     public ComponentsPositions componentPositions = new ComponentsPositions();
@@ -131,6 +133,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             throw new SreException("Illegal position computation for ring systems!");
         case ALIPHATIC:
             computeAtomPositionsAliphatic();
+            break;
+        case FUNCGROUP:
+            System.out.println("functional group positions");
             break;
         case SMALLEST:
         case ISOLATED:

@@ -21,18 +21,28 @@ import java.util.HashMap;
 public class FunctionalGroups {
 
     private static volatile FunctionalGroups instance = null;
-    private final static String smartsFile = "src/main/resources/smarts/smarts-pattern.txt";
+    private final static String[] smartsFiles = {
+        "src/main/resources/smarts/daylight-pattern.txt",
+        "src/main/resources/smarts/smarts-pattern.txt"
+    };
     private static Map<String, String> smartsPatterns = new HashMap<String, String>();
     private static Map<String, IAtomContainer> groups;
+    private static Integer groupCounter = 1;
     
     protected FunctionalGroups() {
-        FunctionalGroups.loadSmartsFile();
+        FunctionalGroups.loadSmartsFiles();
     }
 
 
-    private static void loadSmartsFile() {
+    private static void loadSmartsFiles() {
+        for (String file : smartsFiles) {
+            loadSmartsFile(file);
+        }
+    }
+
+    private static void loadSmartsFile(String file) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(smartsFile)));
+            BufferedReader br = new BufferedReader(new FileReader(new File(file)));
             String line;
             while ((line = br.readLine()) != null) {
                 int colonIndex = line.indexOf(":");
@@ -66,7 +76,7 @@ public class FunctionalGroups {
      * 
      * @param molecule
      */
-    public static void compute(IAtomContainer molecule) {
+    public void compute(IAtomContainer molecule) {
         groups = new HashMap<String, IAtomContainer>();
         for (Map.Entry<String, String> smarts : smartsPatterns.entrySet()) {
             try {
@@ -133,18 +143,19 @@ public class FunctionalGroups {
     private static void getMappedAtoms(List<List<Integer>> mappings,
                                        String name, IAtomContainer mol) {
         // Goes through each match for the pattern
+        System.out.println(mappings.size());
         for (List<Integer> mappingList : mappings) {
             IAtomContainer funcGroup = new AtomContainer();
             // Adds the matched molecule to the atomcontainer
             for (Integer i : mappingList) {
                 funcGroup.addAtom(mol.getAtom(i));
             }
-            groups.put(name, funcGroup);
+            groups.put(name + "-" + groupCounter++, funcGroup);
         }
     }
 
 
-    public static Map<String, IAtomContainer> getGroups() {
+    public Map<String, IAtomContainer> getGroups() {
         return groups;
     }
 }
