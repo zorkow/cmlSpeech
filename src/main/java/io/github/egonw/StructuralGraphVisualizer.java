@@ -9,29 +9,25 @@ package io.github.egonw;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 import javax.swing.JFrame;
-
+import javax.swing.JScrollPane;
+import javax.vecmath.Point2d;
 import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
-
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.ListenableUndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-import java.awt.geom.Rectangle2D;
-import javax.swing.JScrollPane;
-
-import java.util.List;
-import java.util.Set;
+import org.jgrapht.graph.ListenableUndirectedGraph;
+import org.jgrapht.graph.SimpleGraph;
 import org.openscience.cdk.interfaces.IAtom;
-import java.util.ArrayList;
-import javax.vecmath.Point2d;
 
 /**
  * A demo applet that shows how to use JGraph to visualize JGraphT graphs.
@@ -44,10 +40,10 @@ public class StructuralGraphVisualizer {
     private static final Color DEFAULT_BG_COLOR = Color.decode("#B6D1C2");
     private static final Dimension DEFAULT_SIZE = new Dimension(750, 750);
 
-    private static final int scale = 150;
-    private static final int offset = 10;
-    private static int minX = 0;
-    private static int minY = 0;
+    private final int scale = 150;
+    private final int offset = 10;
+    private int minX = 0;
+    private int minY = 0;
 
     class NamedPoint {
         private int x;
@@ -74,14 +70,14 @@ public class StructuralGraphVisualizer {
     }
     
     // 
-    private JGraphModelAdapter m_jgAdapter;
-
+    private JGraphModelAdapter<?, ?> m_jgAdapter;
+    
     /**
      * @see java.applet.Applet#init().
      */
-    public void init(SimpleGraph sg, List<RichStructure> structures, String name) {
-        ListenableGraph g = new ListenableUndirectedGraph(sg);
-        m_jgAdapter = new JGraphModelAdapter(g);
+    public void init(SimpleGraph<?, ?> sg, List<RichStructure<?>> structures, String name) {
+        ListenableGraph<?, ?> g = new ListenableUndirectedGraph<>(sg);
+        m_jgAdapter = new JGraphModelAdapter<>(g);
 
         JGraph jgraph = new JGraph(m_jgAdapter);
         jgraph.setBackground(DEFAULT_BG_COLOR);
@@ -94,8 +90,8 @@ public class StructuralGraphVisualizer {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
-        List<NamedPoint> points = new ArrayList();
-        for (RichStructure structure : structures) {
+        List<NamedPoint> points = new ArrayList<NamedPoint>();
+        for (RichStructure<?> structure : structures) {
             if (structure instanceof RichAtomSet) {
                 points.add(computeCentroid((RichAtomSet)structure));
             } else {
@@ -146,12 +142,12 @@ public class StructuralGraphVisualizer {
 
     private void positionVertexAt(Object vertex, int x, int y) {
         DefaultGraphCell cell = m_jgAdapter.getVertexCell(vertex);
-        Map attr = cell.getAttributes();
+        AttributeMap attr = cell.getAttributes();
         Rectangle2D b = GraphConstants.getBounds(attr);
 
         GraphConstants.setBounds(attr, new Rectangle(x, y, (int)b.getWidth(), (int)b.getHeight()));
 
-        Map cellAttr = new HashMap();
+        Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
         cellAttr.put(cell, attr);
         m_jgAdapter.edit(cellAttr, null, null, null);
     }

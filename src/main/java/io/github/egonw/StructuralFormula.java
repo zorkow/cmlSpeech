@@ -61,7 +61,7 @@ public class StructuralFormula {
     public void computeRAS(RichAtomSet richAtomSet) {
         // Set of atoms in the richAtomSet which connect to a
         // subStructures or superStructures
-        Set connectingAtoms = richAtomSet.getConnectingAtoms();
+        Set<String> connectingAtoms = richAtomSet.getConnectingAtoms();
 
         // Adds all connectingAtoms from all RichAtomSets to a list
         // for checking when adding neighbours
@@ -99,7 +99,7 @@ public class StructuralFormula {
      * @param currentRichAtom
      * @param connectingAtoms
      */
-    private void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set connectingAtoms) {
+    private void addSubSctructure(String currentAtom, RichAtom currentRichAtom, Set<String> connectingAtoms) {
         // This is where the subStructure is printed
         // We get every connecting atom to the current atom
         Set<Connection> connections = currentRichAtom.getConnections();
@@ -132,7 +132,7 @@ public class StructuralFormula {
      * @param connectingAtoms
      *            Set of connectingAtoms in the richAtomSet
      */
-    private void addNeighbours(String atomID, Set connectingAtoms) {
+    private void addNeighbours(String atomID, Set<String> connectingAtoms) {
 
         RichAtom currentRichSubAtom = this.structuralAnalysis.getRichAtom(atomID);
         structuralAnalysis.getAtoms();

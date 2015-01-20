@@ -10,58 +10,33 @@
 
 package io.github.egonw;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;
-import nu.xom.Nodes;
 import nux.xom.pool.XOMUtil;
-
 import org.apache.commons.io.FilenameUtils;
-
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemFile;
-import org.openscience.cdk.interfaces.IRingSet;
 import org.openscience.cdk.io.CMLWriter;
 import org.openscience.cdk.io.ISimpleChemObjectReader;
 import org.openscience.cdk.io.ReaderFactory;
-import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.ringsearch.AllRingsFinder;
-import org.openscience.cdk.ringsearch.RingSearch;
-import org.openscience.cdk.ringsearch.SSSRFinder;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-
-import org.xmlcml.cml.base.CMLBuilder;
-import org.xmlcml.cml.element.CMLAtom;
-import org.xmlcml.cml.element.CMLAtomSet;
-import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.PrintWriter;
-import nu.xom.Namespace;
-import nu.xom.Element;
-import nu.xom.Elements;
-import nu.xom.Attribute;
-import nu.xom.Node;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
-import java.util.Collection;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
+import org.xmlcml.cml.base.CMLBuilder;
+import org.xmlcml.cml.element.CMLAtomSet;
 
 public class CMLEnricher {
     // TODO (sorge): Refactor Cli and Logger to singleton patterns.
@@ -137,7 +112,9 @@ public class CMLEnricher {
                 this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
             }
             if (this.cli.cl.hasOption("sf")){
-            	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
+            	String structuralFormula =
+                    this.formula.getStructuralFormula(this.analysis,
+                                                      this.cli.cl.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
             writeFile(fileName);
@@ -216,8 +193,7 @@ public class CMLEnricher {
      *             Problems with writing the CML XOM.
      */
     private void writeFile(String fileName) throws IOException, CDKException {
-        FilenameUtils fileUtil = new FilenameUtils();
-        String basename = fileUtil.getBaseName(fileName);
+        String basename = FilenameUtils.getBaseName(fileName);
         OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
                 basename + "-enr.cml"));
         PrintWriter output = new PrintWriter(outFile);
@@ -263,7 +239,7 @@ public class CMLEnricher {
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
-                set.setAttribute("name", richSet.name);
+                set.addAttribute(new SreAttribute("name", richSet.name));
             } else {
                 nameMolecule(richSet.getId(), richSet.getStructure());
             }

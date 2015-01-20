@@ -11,26 +11,21 @@
 package io.github.egonw;
 
 import io.github.egonw.CactusException;
-
-import java.io.IOException;
-
-import java.net.MalformedURLException;
-
-import java.net.URL;
-
-import org.openscience.cdk.interfaces.IAtomContainer;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.inchi.InChIGeneratorFactory;
-import org.openscience.cdk.inchi.InChIGenerator;
-import org.openscience.cdk.exception.CDKException;
-import java.util.stream.Collectors;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.inchi.InChIGenerator;
+import org.openscience.cdk.inchi.InChIGeneratorFactory;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 
 public class Cactus {

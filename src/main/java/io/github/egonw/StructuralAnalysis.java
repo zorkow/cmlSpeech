@@ -51,12 +51,12 @@ public class StructuralAnalysis {
     // TODO(sorge) Refactor this into a separate flags module.
     private final Cli cli;
 
-    private static SortedMap<String, RichStructure> richAtoms = 
-        new TreeMap(new CMLNameComparator());
-    private static SortedMap<String, RichStructure> richBonds = 
-        new TreeMap(new CMLNameComparator());
-    private static SortedMap<String, RichStructure> richAtomSets = 
-        new TreeMap(new CMLNameComparator());
+    private static SortedMap<String, RichStructure<?>> richAtoms = 
+        new TreeMap<>(new CMLNameComparator());
+    private static SortedMap<String, RichStructure<?>> richBonds = 
+        new TreeMap<>(new CMLNameComparator());
+    private static SortedMap<String, RichStructure<?>> richAtomSets = 
+        new TreeMap<>(new CMLNameComparator());
 
     private List<RichAtomSet> majorSystems;
     private List<RichAtomSet> minorSystems;
@@ -104,82 +104,90 @@ public class StructuralAnalysis {
     }
 
     public boolean isAtom(String id) {
-        return this.richAtoms.containsKey(id);
+        return StructuralAnalysis.richAtoms.containsKey(id);
     }
 
     public boolean isBond(String id) {
-        return this.richBonds.containsKey(id);
+        return StructuralAnalysis.richBonds.containsKey(id);
     }
 
     public boolean isAtomSet(String id) {
-        return this.richAtomSets.containsKey(id);
+        return StructuralAnalysis.richAtomSets.containsKey(id);
     }
 
 
     public RichAtom getRichAtom(String id) {
-        return (RichAtom)this.richAtoms.get(id);
+        return (RichAtom)StructuralAnalysis.richAtoms.get(id);
     }
 
-    private RichStructure setRichAtom(IAtom atom) {
-        return this.setRichStructure(this.richAtoms, atom.getID(), new RichAtom(atom));
+    private RichStructure<?> setRichAtom(IAtom atom) {
+        return this.setRichStructure(StructuralAnalysis.richAtoms, atom.getID(), new RichAtom(atom));
     }
     
 
 
     public RichBond getRichBond(String id) {
-        return (RichBond)this.richBonds.get(id);
+        return (RichBond)StructuralAnalysis.richBonds.get(id);
     }
 
-    public RichStructure getRichBond(IBond bond) {
+    public RichStructure<?> getRichBond(IBond bond) {
         return this.getRichBond(bond.getID());
     }
 
-    private RichStructure setRichBond(IBond bond) {
-        return this.setRichStructure(this.richBonds, bond.getID(), new RichBond(bond));
+    private RichStructure<?> setRichBond(IBond bond) {
+        return this.setRichStructure(StructuralAnalysis.richBonds, bond.getID(), new RichBond(bond));
     }
     
 
 
     public RichAtomSet getRichAtomSet(String id) {
-        return (RichAtomSet)this.richAtomSets.get(id);
+        return (RichAtomSet)StructuralAnalysis.richAtomSets.get(id);
     }
 
-    private RichStructure setRichAtomSet(IAtomContainer atomSet, RichAtomSet.Type type) {
+    private RichStructure<?> setRichAtomSet(IAtomContainer atomSet, RichAtomSet.Type type) {
         String id = getAtomSetId();
-        return this.setRichStructure(this.richAtomSets, id, new RichAtomSet(atomSet, type, id));
+        return this.setRichStructure(StructuralAnalysis.richAtomSets, id, new RichAtomSet(atomSet, type, id));
     }
 
     
-    private RichStructure setRichStructure(SortedMap map, String id, RichStructure structure) {
+    private RichStructure<?> setRichStructure(SortedMap<String, RichStructure<?>> map,
+                                              String id, RichStructure<?> structure) {
         map.put(id, structure);
         return structure;
     }
 
-    public RichStructure getRichStructure(String id) {
-        RichStructure structure = this.richAtoms.get(id);
+    public RichStructure<?> getRichStructure(String id) {
+        RichStructure<?> structure = StructuralAnalysis.richAtoms.get(id);
         if (structure != null) {
             return structure;
         } 
-        structure = this.richBonds.get(id);
+        structure = StructuralAnalysis.richBonds.get(id);
         if (structure != null) {
             return structure;
         } 
-        return this.richAtomSets.get(id);
+        return StructuralAnalysis.richAtomSets.get(id);
     }
 
     
+    @SuppressWarnings("unchecked")
     public List<RichAtom> getAtoms() {
-        return (List<RichAtom>)(List<?>)new ArrayList(this.richAtoms.values());
+        return (List<RichAtom>)(List<?>)
+            new ArrayList<RichStructure<?>>(StructuralAnalysis.richAtoms.values());
     }
 
+    @SuppressWarnings("unchecked")
     public List<RichBond> getBonds() {
-        return (List<RichBond>)(List<?>)new ArrayList(this.richBonds.values());
+        return (List<RichBond>)(List<?>)
+            new ArrayList<RichStructure<?>>(StructuralAnalysis.richBonds.values());
     }
 
+    @SuppressWarnings("unchecked")
     public List<RichAtomSet> getAtomSets() {
-        return (List<RichAtomSet>)(List<?>)new ArrayList(this.richAtomSets.values());
+        return (List<RichAtomSet>)(List<?>)
+            new ArrayList<RichStructure<?>>(StructuralAnalysis.richAtomSets.values());
     }
 
+    @SuppressWarnings("unchecked")
     public List<RichAtom> getSingletonAtoms() {
         return (List<RichAtom>)(List<?>)this.singletonAtoms.stream()
             .map(this::getRichAtom).collect(Collectors.toList());
@@ -192,7 +200,7 @@ public class StructuralAnalysis {
         for (IBond bond : this.molecule.bonds()) {
             this.setRichBond(bond);
             for (IAtom atom : bond.atoms()) {
-                RichStructure richAtom = this.getRichAtom(atom.getID());
+                RichStructure<?> richAtom = this.getRichAtom(atom.getID());
                 richAtom.getContexts().add(bond.getID());
                 richAtom.getExternalBonds().add(bond.getID());
             }
@@ -215,9 +223,9 @@ public class StructuralAnalysis {
     private void makeTopSet() {
         this.top = (RichAtomSet)this.setRichAtomSet(this.molecule, RichAtomSet.Type.MOLECULE);
         String id = this.top.getId();
-        this.setContexts(this.richAtoms.keySet(), id);
-        this.setContexts(this.richBonds.keySet(), id);
-        this.setContexts(this.richAtomSets.keySet(), id);
+        this.setContexts(StructuralAnalysis.richAtoms.keySet(), id);
+        this.setContexts(StructuralAnalysis.richBonds.keySet(), id);
+        this.setContexts(StructuralAnalysis.richAtomSets.keySet(), id);
         this.top.getContexts().remove(id);
         for (RichAtomSet system : this.majorSystems) {
             system.getSuperSystems().add(id);
@@ -252,16 +260,16 @@ public class StructuralAnalysis {
     }
 
 
-    private String valuesToString(SortedMap<String, RichStructure> map) {
+    private String valuesToString(SortedMap<String, RichStructure<?>> map) {
         return Joiner.on("\n").join(map.values()
                                     .stream().map(RichStructure::toString)
                                     .collect(Collectors.toList()));
     }
 
     public String toString() {
-        return valuesToString(this.richAtoms) + "\n"
-            + valuesToString(this.richBonds) + "\n"
-            + valuesToString(this.richAtomSets);
+        return valuesToString(StructuralAnalysis.richAtoms) + "\n"
+            + valuesToString(StructuralAnalysis.richBonds) + "\n"
+            + valuesToString(StructuralAnalysis.richAtomSets);
     }
 
 
@@ -275,10 +283,10 @@ public class StructuralAnalysis {
         Boolean sssr = this.cli.cl.hasOption("sssr");
 
         for (IAtomContainer ring : ringSystem.fusedRings()) {
-            RichStructure fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
+            RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
             if (sub) {
                 for (IAtomContainer subSystem : ringSystem.subRings(ring, sssr)) {
-                RichStructure subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
+                RichStructure<?> subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
                 String ringId = fusedRing.getId();
                 String subRingId = subRing.getId();
                 subRing.getSuperSystems().add(ringId);
@@ -329,14 +337,14 @@ public class StructuralAnalysis {
 
     /** Computes the contexts of single atoms. */
     private void contexts() {
-        for (String key : this.richAtomSets.keySet()) {
+        for (String key : StructuralAnalysis.richAtomSets.keySet()) {
             this.setContexts(this.getRichAtomSet(key).getComponents(), key);
         }
     }
 
 
     private void atomSetsAttachments() {
-        this.richAtomSets.values().
+        StructuralAnalysis.richAtomSets.values().
             forEach(as -> this.atomSetAttachments((RichAtomSet)as));
     }
 
@@ -401,8 +409,8 @@ public class StructuralAnalysis {
      *         substructure.
      */
     private void connectingBonds() {
-        for (String bond : this.richBonds.keySet()) {
-            RichStructure richBond = this.getRichBond(bond);
+        for (String bond : StructuralAnalysis.richBonds.keySet()) {
+            RichStructure<?> richBond = this.getRichBond(bond);
             String first = ((TreeSet<String>)richBond.getComponents()).first();
             String last = ((TreeSet<String>)richBond.getComponents()).last();
             if (richBond.getContexts().isEmpty()) {
@@ -415,7 +423,7 @@ public class StructuralAnalysis {
     }
 
     
-    private void addConnectingBond(RichStructure structure, String bond, String connected) {
+    private void addConnectingBond(RichStructure<?> structure, String bond, String connected) {
         structure.getConnections().add
             (new Connection(Connection.Type.CONNECTINGBOND, bond, connected));
     }
@@ -429,7 +437,7 @@ public class StructuralAnalysis {
     private Set<String> contextCloud(String atom) {
         Set<String> contextAtom = Sets.intersection
             (this.getRichAtom(atom).getContexts(), 
-             this.richAtomSets.keySet());
+             StructuralAnalysis.richAtomSets.keySet());
         if (contextAtom.isEmpty()) {
             contextAtom = new HashSet<String>();
             contextAtom.add(atom);
@@ -448,9 +456,9 @@ public class StructuralAnalysis {
         Set<String> contextAtomA = this.contextCloud(atomA);
         Set<String> contextAtomB = this.contextCloud(atomB);
         for (String contextA : contextAtomA) {
-            RichStructure richStructureA = this.getRichStructure(contextA);
+            RichStructure<?> richStructureA = this.getRichStructure(contextA);
             for (String contextB : contextAtomB) {
-                RichStructure richStructureB = this.getRichStructure(contextB);
+                RichStructure<?> richStructureB = this.getRichStructure(contextB);
                 this.addConnectingBond(richStructureA, bond, contextB);
                 this.addConnectingBond(richStructureB, bond, contextA);
             }
@@ -460,14 +468,14 @@ public class StructuralAnalysis {
 
     /** Computes bridge atoms and bonds for structures that share components. */
     private void sharedComponents() {
-        for (String atomSet : this.richAtomSets.keySet()) {
+        for (String atomSet : StructuralAnalysis.richAtomSets.keySet()) {
             RichAtomSet richAtomSet = this.getRichAtomSet(atomSet);
             Set<String> internalComponents = Sets.difference
-                (richAtomSet.getComponents(), this.richAtomSets.keySet());
+                (richAtomSet.getComponents(), StructuralAnalysis.richAtomSets.keySet());
             for (String component : internalComponents) {
-                RichStructure richComponent = this.getRichStructure(component);
+                RichStructure<?> richComponent = this.getRichStructure(component);
                 Set<String> contexts = Sets.intersection
-                    (richComponent.getContexts(), this.richAtomSets.keySet());
+                    (richComponent.getContexts(), StructuralAnalysis.richAtomSets.keySet());
                 for (String context : contexts) {
                     if (richAtomSet.getSubSystems().contains(context) ||
                         richAtomSet.getSuperSystems().contains(context) ||
@@ -496,7 +504,7 @@ public class StructuralAnalysis {
         Set<String> result = new HashSet<String>();
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             for (String superSystem : atomSet.getSuperSystems()) {
-                result.addAll(((RichAtomSet)this.getRichAtomSet(superSystem)).getSubSystems());
+                result.addAll((this.getRichAtomSet(superSystem)).getSubSystems());
             }
         }
         result.remove(atomSet);
@@ -509,7 +517,7 @@ public class StructuralAnalysis {
      * @param atomSet The given atom set.
      * @return A list of siblings.
      */
-    public Set<RichStructure> siblings(RichAtomSet atomSet) {
+    public Set<RichStructure<?>> siblings(RichAtomSet atomSet) {
         Set<String> result = new HashSet<String>();
         if (atomSet.type == RichAtomSet.Type.SMALLEST) {
             for (String superSystem : atomSet.getSuperSystems()) {
@@ -525,9 +533,9 @@ public class StructuralAnalysis {
     
     private void singletonAtoms() {
         Set<String> atomSetComponents = new HashSet<String>();
-        this.richAtomSets.values().
+        StructuralAnalysis.richAtomSets.values().
             forEach(as -> atomSetComponents.addAll(as.getComponents()));
-        for (String atom : this.richAtoms.keySet()) {
+        for (String atom : StructuralAnalysis.richAtoms.keySet()) {
             if (!atomSetComponents.contains(atom)) {
                 this.singletonAtoms.add(atom);
             }
@@ -593,7 +601,7 @@ public class StructuralAnalysis {
         
         Map<String, StructuralGraph> minorGraphs = new HashMap<String, StructuralGraph>();
         for (RichAtomSet system: this.getMinorSystems()) {
-            List<RichStructure> atoms = new ArrayList<RichStructure>();
+            List<RichStructure<?>> atoms = new ArrayList<RichStructure<?>>();
             for (String id: system.getComponents()) {
                 RichAtom atom = this.getRichAtom(id);
                 if (atom != null) {
@@ -613,7 +621,7 @@ public class StructuralAnalysis {
      */
     public ComponentsPositions path(StructuralGraph graph) {
         ComponentsPositions path = new ComponentsPositions();
-        NeighborIndex index = new NeighborIndex(graph);
+        NeighborIndex<String, StructuralEdge> index = new NeighborIndex<String, StructuralEdge>(graph);
         Comparator<String> comparator = new AnalysisCompare();
         Stack<String> rest = new Stack<String>();
         List<String> vertices = new ArrayList<String>(graph.vertexSet());
@@ -651,10 +659,11 @@ public class StructuralAnalysis {
             StructuralAnalysis.this.cli.cl.getOptionValue("c") : "";
 
         public int compare(String vertexA, String vertexB) {
-            Comparator comparator = new Heuristics(heur);
+            Comparator<RichChemObject> comparator = new Heuristics(heur);
             
-            Integer aux = comparator.compare(StructuralAnalysis.this.getRichStructure(vertexA),
-                                             StructuralAnalysis.this.getRichStructure(vertexB));
+            Integer aux = comparator.
+                compare((RichChemObject)StructuralAnalysis.this.getRichStructure(vertexA),
+                        (RichChemObject)StructuralAnalysis.this.getRichStructure(vertexB));
             return aux;
         }
     }

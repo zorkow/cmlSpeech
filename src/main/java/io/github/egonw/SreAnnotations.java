@@ -19,11 +19,11 @@ import java.util.Set;
 
 public class SreAnnotations extends SreElement {
 
-    private static SortedMap<String, Element> annotationNodes;
+    private SortedMap<String, Element> annotationNodes;
 
     SreAnnotations() {
         super(SreNamespace.Tag.ANNOTATIONS);
-        this.annotationNodes = new TreeMap(new CMLNameComparator());
+        this.annotationNodes = new TreeMap<>(new CMLNameComparator());
     }
 
     SreAnnotations(IAtomContainer molecule) {
