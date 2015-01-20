@@ -64,6 +64,7 @@ import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
 
 public class CMLEnricher {
+    // TODO (sorge): Refactor Cli and Logger to singleton patterns.
     private final Cli cli;
     private final Logger logger;
 
@@ -116,6 +117,7 @@ public class CMLEnricher {
                     this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             this.analysis.computePositions();
+            // TODO (sorge): Write to logger
             this.analysis.printPositions();
 
             this.appendAtomSets();

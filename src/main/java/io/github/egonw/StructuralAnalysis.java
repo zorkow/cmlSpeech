@@ -318,6 +318,7 @@ public class StructuralAnalysis {
             RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
                                                                RichAtomSet.Type.FUNCGROUP);
             set.name = key.split("-")[0];
+            // TODO (sorge): Write to logger
             System.out.println(set.name + ": " + container.getAtomCount() + " atoms "
                                + container.getBondCount() + " bonds");
         }
@@ -343,10 +344,8 @@ public class StructuralAnalysis {
      * @param atomSet A rich atom set.
      */
     private void atomSetAttachments(RichAtomSet atomSet) {
-        System.out.println(atomSet.getId());
         IAtomContainer container = atomSet.getStructure();
         Set<IBond> externalBonds = externalBonds(container);
-        System.out.println(externalBonds);
         for (IBond bond : externalBonds) {
             atomSet.getExternalBonds().add(bond.getID());
         }
@@ -365,11 +364,9 @@ public class StructuralAnalysis {
      */
     private Set<IBond> externalBonds(IAtomContainer container) {
         Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
-        System.out.println(internalBonds);
         Set<IBond> allBonds = Sets.newHashSet();
         for (IAtom atom : container.atoms()) {
             allBonds.addAll(this.molecule.getConnectedBondsList(atom));
-            System.out.println(allBonds);
         }
         return Sets.difference(allBonds, internalBonds);
     }
@@ -542,7 +539,6 @@ public class StructuralAnalysis {
         this.majorSystems = this.getAtomSets().stream()
             .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
             .collect(Collectors.toList());
-        System.out.println(this.majorSystems);
         this.majorGraph = new StructuralGraph(this.getMajorSystems(),
                                               this.getSingletonAtoms());
         this.majorPath = this.path(this.majorGraph);

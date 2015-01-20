@@ -156,7 +156,6 @@ public class SreOutput {
     }
 
     private void describeAtomSet(RichAtomSet system) {
-        System.out.println(system.type);
         switch (system.type) {
         case MOLECULE:
         case FUNCGROUP:
@@ -283,6 +282,7 @@ public class SreOutput {
     private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
         List<String> result = new ArrayList<String>();
         for (Connection connection : atom.getConnections()) {
+            // TODO (sorge): Write to logger
             System.out.println("this is a connection:" + connection.toString());
             result.add(describeConnectingBond(system, connection));
         }
