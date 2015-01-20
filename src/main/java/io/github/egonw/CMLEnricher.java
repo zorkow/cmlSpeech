@@ -238,7 +238,7 @@ public class CMLEnricher {
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
-                set.setAttribute("name", richSet.name);
+                set.addAttribute(new SreAttribute("name", richSet.name));
             } else {
                 nameMolecule(richSet.getId(), richSet.getStructure());
             }
