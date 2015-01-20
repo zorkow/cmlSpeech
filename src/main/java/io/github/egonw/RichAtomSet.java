@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.naming.OperationNotSupportedException;
+import java.util.Stack;
 
 /**
  *
@@ -47,7 +48,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     public Type type;
     public CMLAtomSet cml;
-
+    // For functional groups.
+    public String name = "";
+    
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
 
     public ComponentsPositions componentPositions = new ComponentsPositions();
@@ -129,6 +132,9 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         switch (this.type) {
         case FUSED:
             throw new SreException("Illegal position computation for ring systems!");
+        case FUNCGROUP:
+            computeAtomPositionsFuncGroup();
+            break;
         case ALIPHATIC:
             computeAtomPositionsAliphatic();
             break;
@@ -154,16 +160,65 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
 
-    private void computeAtomPositionsAliphatic() {
-        IAtom startAtom = null;
+    private IAtom getSinglyConnectedAtom() {
         for (IAtom atom : this.getStructure().atoms()) {
-            if (this.getStructure().getConnectedAtomsList(atom).size() == 1) {
-                startAtom = atom;
-                if (this.atomConnections.contains(startAtom)) {
-                    return;
-                }
+            if (this.getStructure().getConnectedAtomsList(atom).size() <= 1) {
+                return atom;
             }
         }
+        return null;
+    }
+
+
+    private IAtom getExternallyConnectedAtom() {
+        for (IAtom atom : this.getStructure().atoms()) {
+            // FG: This is not working yet.
+            //
+            // It needs to be checked, wrt. external bonds as well.
+            //
+            if (this.connectingAtoms.contains(atom.getID())) {
+                return atom;
+            }
+        }
+        return null;
+    }
+
+    
+    private void computeAtomPositionsFuncGroup() {
+        IAtom startAtom = getExternallyConnectedAtom();
+        if (startAtom == null) {
+            startAtom = getSinglyConnectedAtom();
+        }
+        if (startAtom == null) {
+            throw new SreException("Aliphatic chain without start atom!");
+        }
+        this.walkGroup(startAtom);
+    }
+
+
+    // Walk functional group depth first starting at atom.
+    private void walkGroup(IAtom atom) {
+        if (atom == null) {
+            return;
+        }
+        List<IAtom> visited =  new ArrayList<IAtom>();
+        Stack<IAtom> frontier = new Stack<IAtom>();
+        frontier.push(atom);
+        while (!frontier.empty()) {
+            IAtom current = frontier.pop();
+            if (visited.contains(current)) {
+                continue;
+            }
+            visited.add(current);
+            this.componentPositions.addNext(current.getID());
+            this.getStructure().getConnectedAtomsList(current).stream().
+                forEach(a -> frontier.push(a));
+        }
+    }
+
+    
+    private void computeAtomPositionsAliphatic() {
+        IAtom startAtom = getSinglyConnectedAtom();
         if (startAtom == null) {
             throw new SreException("Aliphatic chain without start atom!");
         }
@@ -227,7 +282,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             "\nSub Systems:" + joiner.join(this.getSubSystems()) +
             "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
     }
-
+  
 
     // This should only ever be called once!
     // Need a better solution!

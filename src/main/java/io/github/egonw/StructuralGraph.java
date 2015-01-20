@@ -21,6 +21,8 @@ import org.jgrapht.graph.DefaultEdge;
 import org.openscience.cdk.interfaces.IAtom;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *

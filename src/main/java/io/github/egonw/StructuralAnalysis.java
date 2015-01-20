@@ -12,32 +12,32 @@
 package io.github.egonw;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.jgrapht.alg.NeighborIndex;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
-import java.util.Stack;
-import java.util.Comparator;
-import java.util.Collections;
-import org.jgrapht.alg.NeighborIndex;
-import java.util.SortedSet;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import java.util.Iterator;
 
 /**
  *
@@ -64,6 +64,7 @@ public class StructuralAnalysis {
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
+    private StructuralGraph recursiveGraph;
 
     private ComponentsPositions majorPath;
     private ComponentsPositions minorPath;
@@ -82,7 +83,7 @@ public class StructuralAnalysis {
         
         this.rings();
         this.aliphaticChains();
-        // TODO(sorge): functionalGroups();
+        this.functionalGroups();
         
         this.contexts();
 
@@ -258,8 +259,8 @@ public class StructuralAnalysis {
     }
 
     public String toString() {
-        return valuesToString(this.richAtoms) + "\n" 
-            + valuesToString(this.richBonds) + "\n" 
+        return valuesToString(this.richAtoms) + "\n"
+            + valuesToString(this.richBonds) + "\n"
             + valuesToString(this.richAtomSets);
     }
 
@@ -292,20 +293,39 @@ public class StructuralAnalysis {
     }
 
 
-
     /**
      * Computes the longest aliphatic chain for the molecule.
      */
     private void aliphaticChains() {
-        IAtomContainer container = this.molecule;
-        if (container == null) { return; }
-        AliphaticChain chain = new AliphaticChain();
-        chain.calculate(container);
+        if (this.molecule == null) { return; }
+        AliphaticChain chain = new AliphaticChain(3);
+        chain.calculate(this.molecule);
         for (IAtomContainer set : chain.extract()) {
             this.setRichAtomSet(set, RichAtomSet.Type.ALIPHATIC);
         }
     }
 
+
+    /**
+     * Computes functional groups.
+     */
+    private void functionalGroups() {
+        FunctionalGroups fg = FunctionalGroups.getInstance();
+        fg.compute(this.molecule);
+        FunctionalGroupsFilter filter = new FunctionalGroupsFilter(this.getAtomSets(),
+                                                                   fg.getGroups());
+        Map<String, IAtomContainer> groups = filter.filter();
+        for (String key : groups.keySet()) {
+            IAtomContainer container = groups.get(key);
+            RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
+                                                               RichAtomSet.Type.FUNCGROUP);
+            set.name = key.split("-")[0];
+            // TODO (sorge): Write to logger
+            System.out.println(set.name + ": " + container.getAtomCount() + " atoms "
+                               + container.getBondCount() + " bonds");
+        }
+    }
+    
 
     /** Computes the contexts of single atoms. */
     private void contexts() {
@@ -557,6 +577,36 @@ public class StructuralAnalysis {
     }
 
 
+    /** Compute the major systems, i.e., all systems that are not part of a
+     * larger supersystem. */
+    private void recursiveSystems() {
+        List<RichAtomSet> subRings = this.getAtomSets().stream()
+            .filter(as -> as.type == RichAtomSet.Type.FUSED)
+            .collect(Collectors.toList());
+        for (RichAtomSet ring: subRings) {
+            StructuralGraph ringGraph =
+                new StructuralGraph(ring.getSubSystems().stream().
+                                    map(this::getRichStructure).
+                                    collect(Collectors.toList()));
+            ringGraph.visualize(ring.getId());
+        }
+        
+        Map<String, StructuralGraph> minorGraphs = new HashMap<String, StructuralGraph>();
+        for (RichAtomSet system: this.getMinorSystems()) {
+            List<RichStructure> atoms = new ArrayList<RichStructure>();
+            for (String id: system.getComponents()) {
+                RichAtom atom = this.getRichAtom(id);
+                if (atom != null) {
+                    atoms.add((RichStructure)atom);
+                }
+            }
+            StructuralGraph minorGraph = new StructuralGraph(atoms);
+            minorGraphs.put(system.getId(), minorGraph);
+            minorGraph.visualize(system.getId());
+        }
+    }
+
+
     /**
      * Computes a path through the molecule.
      * @param graph An abstraction graph for the molecule.
@@ -590,6 +640,7 @@ public class StructuralAnalysis {
     public void visualize() {
         this.majorGraph.visualize("Major System Abstraction");
         this.minorGraph.visualize("Minor System Abstraction");
+        this.recursiveSystems();
     }
 
 
