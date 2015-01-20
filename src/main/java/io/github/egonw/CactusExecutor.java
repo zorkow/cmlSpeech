@@ -13,16 +13,15 @@ package io.github.egonw;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import nu.xom.Document;
-import java.util.stream.Collectors;
-import java.util.concurrent.Future;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Nodes;
 
@@ -49,7 +48,7 @@ public class CactusExecutor {
 
     /** Execute all callables currently in the pool. */
     public void execute() {
-        this.executor = Executors.newFixedThreadPool(pool.size());
+        CactusExecutor.executor = Executors.newFixedThreadPool(pool.size());
         for (CactusCallable callable : pool) {
             Future<SreAttribute> future = executor.submit(callable);
             registry.put(callable.id, future);
@@ -79,7 +78,7 @@ public class CactusExecutor {
 
     /** Shut down the Cactus executor. */
     public void shutdown() {
-        this.executor.shutdown();
+        CactusExecutor.executor.shutdown();
     }
 
 }
