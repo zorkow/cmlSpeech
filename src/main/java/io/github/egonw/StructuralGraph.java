@@ -30,6 +30,8 @@ import java.util.HashMap;
 
 public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     
+    private static final long serialVersionUID = 1L;
+
     private List<RichStructure<?>> structures;
 
     StructuralGraph() {

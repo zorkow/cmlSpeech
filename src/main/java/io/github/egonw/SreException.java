@@ -16,6 +16,8 @@ package io.github.egonw;
 
 public class SreException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     public SreException(String message) {
 	super(message);
     }

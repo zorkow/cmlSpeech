@@ -67,7 +67,7 @@ public class Connection implements Comparator<Connection>, Comparable<Connection
 
     public int compare(Connection con1, Connection con2) {
         if (con1.type.equals(con2.type)) {
-            Comparator comp = new CMLNameComparator();
+            Comparator<String> comp = new CMLNameComparator();
             Integer comparison = comp.compare(con1.getConnector(), con2.getConnector());
             if (comparison == 0) {
                 return comp.compare(con1.getConnected(), con2.getConnected());

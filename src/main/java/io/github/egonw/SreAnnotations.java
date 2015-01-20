@@ -20,7 +20,7 @@ import java.util.Set;
 public class SreAnnotations extends SreElement {
 
     private static SortedMap<String, Element> annotationNodes = 
-        new TreeMap(new CMLNameComparator());
+        new TreeMap<String, Element>(new CMLNameComparator());
 
     SreAnnotations() {
         super(SreNamespace.Tag.ANNOTATIONS);
@@ -79,20 +79,20 @@ public class SreAnnotations extends SreElement {
 
 
     private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
-        Element element = this.annotationNodes.get(id);
+        Element element = SreAnnotations.annotationNodes.get(id);
         if (element != null) {
             return element;
         }
         Element annotation = new SreElement(SreNamespace.Tag.ANNOTATION);
         Element node = new SreElement(tag, id);
         annotation.appendChild(node);
-        this.annotationNodes.put(id, annotation);
+        SreAnnotations.annotationNodes.put(id, annotation);
         return annotation;
     }
 
 
     public SreElement retrieveAnnotation(String id, SreNamespace.Tag tag) {
-        Element element = this.annotationNodes.get(id);
+        Element element = SreAnnotations.annotationNodes.get(id);
         if (element == null) {
             return null;
         }
@@ -101,15 +101,15 @@ public class SreAnnotations extends SreElement {
 
 
     public void finalize() {
-        for (String key : this.annotationNodes.keySet()) {
-            this.appendChild(this.annotationNodes.get(key));
+        for (String key : SreAnnotations.annotationNodes.keySet()) {
+            this.appendChild(SreAnnotations.annotationNodes.get(key));
         }
     }
 
     public String toString() {
         String result = "";
-        for (String key : this.annotationNodes.keySet()) {
-            result += key + ": " + this.annotationNodes.get(key).toXML() + "\n";
+        for (String key : SreAnnotations.annotationNodes.keySet()) {
+            result += key + ": " + SreAnnotations.annotationNodes.get(key).toXML() + "\n";
         }
         return result;
     }

@@ -657,10 +657,11 @@ public class StructuralAnalysis {
             StructuralAnalysis.this.cli.cl.getOptionValue("c") : "";
 
         public int compare(String vertexA, String vertexB) {
-            Comparator comparator = new Heuristics(heur);
+            Comparator<RichChemObject> comparator = new Heuristics(heur);
             
-            Integer aux = comparator.compare(StructuralAnalysis.this.getRichStructure(vertexA),
-                                             StructuralAnalysis.this.getRichStructure(vertexB));
+            Integer aux = comparator.
+                compare((RichChemObject)StructuralAnalysis.this.getRichStructure(vertexA),
+                        (RichChemObject)StructuralAnalysis.this.getRichStructure(vertexB));
             return aux;
         }
     }

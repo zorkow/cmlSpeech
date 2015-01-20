@@ -33,25 +33,25 @@ import nu.xom.Nodes;
 public class CactusExecutor {
     
     /** Pool of callables for Cactus. */
-    private static List<CactusCallable> pool = new ArrayList<>();
+    private List<CactusCallable> pool = new ArrayList<>();
     /** Registry for futures expecting results from Cactus calls. */
-    private static Multimap<String, Future<SreAttribute>> registry = HashMultimap.create();
-    private static ExecutorService executor;
+    private Multimap<String, Future<SreAttribute>> registry = HashMultimap.create();
+    private ExecutorService executor;
         
     /**
      * Register callables for cactus in the pool.
      * @param callable A callable to register.
      */
-    public static void register(CactusCallable callable) {
+    public void register(CactusCallable callable) {
         pool.add(callable);
     }
 
     /** Execute all callables currently in the pool. */
     public void execute() {
-        CactusExecutor.executor = Executors.newFixedThreadPool(pool.size());
+        this.executor = Executors.newFixedThreadPool(pool.size());
         for (CactusCallable callable : pool) {
             Future<SreAttribute> future = executor.submit(callable);
-            registry.put(callable.id, future);
+            this.registry.put(callable.id, future);
         }
     }
 
@@ -60,8 +60,8 @@ public class CactusExecutor {
      * @param doc The current document.
      * @param logger A logger to write error messages to.
      */
-    public static void addResults(Document doc, Logger logger) {
-        for (Map.Entry<String, Future<SreAttribute>> entry : registry.entries()) {
+    public void addResults(Document doc, Logger logger) {
+        for (Map.Entry<String, Future<SreAttribute>> entry : this.registry.entries()) {
             String id = entry.getKey();
             Future<SreAttribute> future = entry.getValue();
             try {
@@ -78,7 +78,7 @@ public class CactusExecutor {
 
     /** Shut down the Cactus executor. */
     public void shutdown() {
-        CactusExecutor.executor.shutdown();
+        this.executor.shutdown();
     }
 
 }

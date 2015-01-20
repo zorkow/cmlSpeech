@@ -17,6 +17,8 @@ package io.github.egonw;
 
 public class CactusException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     public CactusException(String message) {
 	super(message);
     }
