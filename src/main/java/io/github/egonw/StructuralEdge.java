@@ -8,7 +8,7 @@ import org.jgrapht.graph.DefaultEdge;
  *
  */
 
-public class StructuralEdge<V> extends DefaultEdge {
+public class StructuralEdge extends DefaultEdge {
     
     private String label;
 

@@ -28,25 +28,25 @@ import java.util.HashMap;
  *
  */
 
-public class StructuralGraph extends SimpleGraph {
+public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     
-    private List<RichStructure> structures;
+    private List<RichStructure<?>> structures;
 
     StructuralGraph() {
         super(StructuralEdge.class);
-        this.structures = new ArrayList<RichStructure>();
+        this.structures = new ArrayList<RichStructure<?>>();
     }
 
 
     StructuralGraph(List<RichAtomSet> atomSets, List<RichAtom> singletonAtoms) {
         super(StructuralEdge.class);
-        this.structures = new ArrayList<RichStructure>(atomSets);
+        this.structures = new ArrayList<RichStructure<?>>(atomSets);
         this.structures.addAll(singletonAtoms); 
        this.init();
     }
 
 
-    StructuralGraph(List<RichStructure> structures) {
+    StructuralGraph(List<RichStructure<?>> structures) {
         super(StructuralEdge.class);
         this.structures = structures;
         this.init();
@@ -58,7 +58,7 @@ public class StructuralGraph extends SimpleGraph {
             .map(RichStructure::getId).collect(Collectors.toList());
         names.stream().forEach(this::addVertex);
 
-        for (RichStructure structure : this.structures) {
+        for (RichStructure<?> structure : this.structures) {
             Set<Connection> connections = structure.getConnections();
             if (!connections.isEmpty()) {
                 this.addSingleEdges(structure.getId(), connections, names);
@@ -66,7 +66,7 @@ public class StructuralGraph extends SimpleGraph {
         }
     }
 
-
+   
     private void addSingleEdges(String source, Set<Connection> connections, List<String> systems) {
         for (Connection connection : connections) {
             if (systems.contains(connection.getConnected())) {
