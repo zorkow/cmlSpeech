@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import nu.xom.Attribute;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Node;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
-import java.util.Set;
-import nu.xom.Document;
-import nu.xom.Node;
-import nu.xom.Element;
 
 /**
  *
@@ -25,7 +25,6 @@ import nu.xom.Element;
 
 public class SreSpeech extends SreXML {
     
-    private AtomTable atomTable = AtomTable.getInstance();
     public Document doc;
 
     SreSpeech(StructuralAnalysis analysis) {
@@ -107,7 +106,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeMolecule(RichStructure structure) {
+    private String describeMolecule(RichStructure<?> structure) {
         String id = structure.getId();
         Node element = SreUtil.xpathQueryElement(this.doc.getRootElement(), "//cml:atomSet[@id='" + id + "']");
         System.out.println(element);
@@ -265,7 +264,7 @@ public class SreSpeech extends SreXML {
     }
 
     private String describeAtom(IAtom atom) {
-        return this.atomTable.lookup(atom);
+        return AtomTable.lookup(atom);
     }
 
 
@@ -300,7 +299,7 @@ public class SreSpeech extends SreXML {
     //     return bonds;
     // };
 
-   private SreElement describeComponents(RichStructure system) {
+   private SreElement describeComponents(RichStructure<?> system) {
        return this.describeComponents
            (Lists.newArrayList(system.getComponents()));
     }

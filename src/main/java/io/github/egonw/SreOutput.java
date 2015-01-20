@@ -58,7 +58,7 @@ public class SreOutput extends SreXML {
     }
 
 
-    private void toSreConnections(RichStructure structure) {
+    private void toSreConnections(RichStructure<?> structure) {
         String id = structure.getId();
         Set<Connection> connections = structure.getConnections();
         for (Connection connection : connections) {
@@ -82,7 +82,7 @@ public class SreOutput extends SreXML {
         }
     }
 
-    private void toSreStructure(RichStructure structure) {
+    private void toSreStructure(RichStructure<?> structure) {
         String id = structure.getId();
         this.toSreSet(id, SreNamespace.Tag.CONTEXT, structure.getContexts());
         this.toSreSet(id, SreNamespace.Tag.COMPONENT, structure.getComponents());
