@@ -28,7 +28,6 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
     public int compare(RichAtomSet set1, RichAtomSet set2) {
         Integer result = 0;
         for (String heuristic : this.heuristics) {
-            System.out.println(heuristic);
             switch (heuristic) {
             case "size":
                 result = this.size.compare(set1, set2);

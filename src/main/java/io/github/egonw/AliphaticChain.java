@@ -43,14 +43,20 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
 
     private static final String[] names = {"allLAC"};
 
+    // VS: added this.
+    // Containers of chains.
+    private List<IAtomContainer> chain = new ArrayList<>();
+    // Minimum length of aliphatic chain to extract. 
+    private Integer minLength = 2;
+
     /**
      *  Constructor for the AliphaticChainDescriptor object.
      */
     public AliphaticChain() { }
 
-    // VS: added this.
-    // Containers of chains.
-    private List<IAtomContainer> chain = new ArrayList<>();
+    public AliphaticChain(Integer minLength) {
+        this.minLength = minLength;
+    }
 
     // VS: added this.
     // The longest chain container.
@@ -185,7 +191,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
                     return getDummyDescriptorValue(e);
                 }
                 IAtomContainer aliphaticChain =createAtomContainerFromPath(container,path);
-                if (aliphaticChain.getAtomCount()>1){
+                if (aliphaticChain.getAtomCount() >= this.minLength){
                     double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
                     Integer[][] pathMatrix = new Integer[conMat.length][conMat.length];
                     int[][] apsp = computeFloydAPSP(conMat, pathMatrix);

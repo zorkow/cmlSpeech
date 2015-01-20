@@ -64,6 +64,7 @@ import org.openscience.cdk.tools.CDKHydrogenAdder;
 import java.util.Collection;
 
 public class CMLEnricher {
+    // TODO (sorge): Refactor Cli and Logger to singleton patterns.
     private final Cli cli;
     private final Logger logger;
 
@@ -116,6 +117,7 @@ public class CMLEnricher {
                     this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             this.analysis.computePositions();
+            // TODO (sorge): Write to logger
             this.analysis.printPositions();
 
             this.appendAtomSets();
@@ -129,7 +131,6 @@ public class CMLEnricher {
                 executor.shutdown();
             }
             this.sreOutput.computeDescriptions(this.doc);
-            FunctionalGroups.compute(this.analysis);
             
             if (this.cli.cl.hasOption("sf")){
             	String structuralFormula = this.formula.getStructuralFormula(this.analysis, this.cli.cl.hasOption("sub"));
@@ -260,7 +261,11 @@ public class CMLEnricher {
             CMLAtomSet set = richSet.getCML(this.doc);
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
-            nameMolecule(richSet.getId(), richSet.getStructure());
+            if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
+                set.setAttribute("name", richSet.name);
+            } else {
+                nameMolecule(richSet.getId(), richSet.getStructure());
+            }
         }
     }
 
