@@ -558,9 +558,7 @@ public class StructuralAnalysis {
      * sub-system. */
     private void minorSystems() {
         this.minorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.FUSED &&
-                    // FG: Temporary
-                    as.type != RichAtomSet.Type.FUNCGROUP)
+            .filter(as -> as.type != RichAtomSet.Type.FUSED)
             .collect(Collectors.toList());
         this.minorGraph = new StructuralGraph(this.getMinorSystems(),
                                               this.getSingletonAtoms());

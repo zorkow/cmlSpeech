@@ -164,7 +164,8 @@ public class FunctionalGroups {
     private static void getMappedBonds(IAtomContainer fg, IAtomContainer mol) {
         for (IAtom atom : fg.atoms()) {
             for (IBond bond : mol.getConnectedBondsList(atom)) {
-                if (StreamSupport.stream(bond.atoms().spliterator(), false).
+                if (!fg.contains(bond) &&
+                    StreamSupport.stream(bond.atoms().spliterator(), false).
                     allMatch(a -> fg.contains(a))) {
                     fg.addBond(bond);
                 }
