@@ -309,30 +309,14 @@ public class StructuralAnalysis {
      */
     private void functionalGroups() {
         FunctionalGroups fg = FunctionalGroups.getInstance();
-        // IAtomContainer newMolecule;
-        // try {
-        //     newMolecule = this.molecule.clone();
-        // }
-        // catch (CloneNotSupportedException e) {
-        //     System.out.println("Error " + e.getMessage());
-        //     e.printStackTrace();
-        //     return;
-        // }
-        // System.out.println(this.molecule.getAtomCount());
-        // System.out.println(this.molecule.getBondCount());
-        // for (RichAtomSet set : this.getAtomSets()) {
-        //     System.out.println("Removing: " + set.getId());
-        //     //newMolecule.remove(set.getStructure());
-        //     this.molecule.remove(set.getStructure());
-        // }
-        // System.out.println(this.molecule.getAtomCount());
-        // System.out.println(this.molecule.getBondCount());
         fg.compute(this.molecule);
-        Map<String, IAtomContainer> groups = fg.getGroups();
+        FunctionalGroupsFilter filter = new FunctionalGroupsFilter(this.getAtomSets(),
+                                                                   fg.getGroups());
+        Map<String, IAtomContainer> groups = filter.filter();
         for (String key : groups.keySet()) {
             RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
                                                                RichAtomSet.Type.FUNCGROUP);
-            set.name = key;            
+            set.name = key.split("-")[0];
         }
     }
     
