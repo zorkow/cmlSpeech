@@ -170,6 +170,8 @@ public class SreOutput {
             describeIsolatedRing(system);
             break;
         }
+        // FG: Temporary
+        // VS: This exception has to be removed!
         } catch (Exception e) {
             return;
         }

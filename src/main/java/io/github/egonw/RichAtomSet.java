@@ -232,7 +232,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             "\nSub Systems:" + joiner.join(this.getSubSystems()) +
             "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
     }
-
+  
 
     // This should only ever be called once!
     // Need a better solution!

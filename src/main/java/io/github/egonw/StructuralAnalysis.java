@@ -314,9 +314,12 @@ public class StructuralAnalysis {
                                                                    fg.getGroups());
         Map<String, IAtomContainer> groups = filter.filter();
         for (String key : groups.keySet()) {
+            IAtomContainer container = groups.get(key);
             RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
                                                                RichAtomSet.Type.FUNCGROUP);
             set.name = key.split("-")[0];
+            System.out.println(set.name + ": " + container.getAtomCount() + " atoms "
+                               + container.getBondCount() + " bonds");
         }
     }
     
@@ -533,10 +536,9 @@ public class StructuralAnalysis {
      * larger supersystem. */
     private void majorSystems() {
         this.majorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.SMALLEST &&
-                    // FG: Temporary
-                    as.type != RichAtomSet.Type.FUNCGROUP)
+            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
             .collect(Collectors.toList());
+        System.out.println(this.majorSystems);
         this.majorGraph = new StructuralGraph(this.getMajorSystems(),
                                               this.getSingletonAtoms());
         this.majorPath = this.path(this.majorGraph);

@@ -17,6 +17,9 @@ import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 import org.openscience.cdk.smiles.smarts.SmartsPattern;
 import java.util.Map;
 import java.util.HashMap;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IBond;
+import java.util.stream.StreamSupport;
 
 public class FunctionalGroups {
 
@@ -110,8 +113,6 @@ public class FunctionalGroups {
             // the matches
             if (matchesFound) {
                 List<List<Integer>> mappings = query.getMatchingAtoms();
-                System.out.println(name);
-                System.out.println(pattern);
                 getMappedAtoms(mappings, name, mol);
             }
         } catch (IllegalArgumentException e) {
@@ -125,11 +126,8 @@ public class FunctionalGroups {
     }
 
     /**
-     * Method that takes a list of matched atom positions and returns a list of
-     * the relevant atom sets
-     * 
-     * This is the part that deals with any functionality and it has been
-     * abstracted out to make editing it easier
+     * Retrieves matched atoms from the molecule container by position and adds
+     * them to the functional group container.
      * 
      * @param mappings
      *            A list of the list of matched atom positions for each separate
@@ -138,22 +136,41 @@ public class FunctionalGroups {
      *            The name of the functional group
      * @param mol
      *            The atom the pattern was matched against
-     * @return a list of atom containers for each atom matched
      */
     private static void getMappedAtoms(List<List<Integer>> mappings,
                                        String name, IAtomContainer mol) {
         // Goes through each match for the pattern
-        System.out.println(mappings.size());
         for (List<Integer> mappingList : mappings) {
             IAtomContainer funcGroup = new AtomContainer();
             // Adds the matched molecule to the atomcontainer
             for (Integer i : mappingList) {
                 funcGroup.addAtom(mol.getAtom(i));
             }
+            getMappedBonds(funcGroup, mol);
             groups.put(name + "-" + groupCounter++, funcGroup);
         }
     }
 
+
+    /**
+     * Retrieves the necessary bonds for a functional group from the molecule
+     * container and adds them to the functional group container.
+     * 
+     * @param fg
+     *            Functonal group container.
+     * @param mol
+     *            Molecule container. 
+     */
+    private static void getMappedBonds(IAtomContainer fg, IAtomContainer mol) {
+        for (IAtom atom : fg.atoms()) {
+            for (IBond bond : mol.getConnectedBondsList(atom)) {
+                if (StreamSupport.stream(bond.atoms().spliterator(), false).
+                    allMatch(a -> fg.contains(a))) {
+                    fg.addBond(bond);
+                }
+            }
+        }
+    }
 
     public Map<String, IAtomContainer> getGroups() {
         return groups;
