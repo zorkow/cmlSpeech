@@ -122,7 +122,7 @@ public class FunctionalGroups {
         } catch (IllegalArgumentException e) {
             // Shows which (if any) functional groups have illegal smarts
             // patterns in the file
-            System.out.println("Error: " + name);
+            Logger.error("SMARTS Error: " + name);
         } catch (CDKException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

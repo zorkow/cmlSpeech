@@ -109,8 +109,6 @@ public class SreSpeech extends SreXML {
     private String describeMolecule(RichStructure<?> structure) {
         String id = structure.getId();
         Node element = SreUtil.xpathQueryElement(this.doc.getRootElement(), "//cml:atomSet[@id='" + id + "']");
-        System.out.println(element);
-        
         return SreUtil.xpathValue((Element)element, "@sre:name | @sre:iupac | @sre:formula");
     }
 
@@ -202,7 +200,7 @@ public class SreSpeech extends SreXML {
     private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
         List<String> result = new ArrayList<String>();
         for (Connection connection : atom.getConnections()) {
-            System.out.println("this is a connection:" + connection.toString());
+            Logger.logging("Connection in molecule:" + connection.toString());
             result.add(describeConnectingBond(system, connection));
         }
         Joiner joiner = Joiner.on(" ");

@@ -269,7 +269,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 
     public void printPositions () {
-        System.out.println(componentPositions.toString());
+        Logger.logging(componentPositions.toString());
     }
 
     

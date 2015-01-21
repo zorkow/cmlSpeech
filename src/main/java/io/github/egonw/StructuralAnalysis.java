@@ -696,10 +696,10 @@ public class StructuralAnalysis {
 
 
     public void printPositions () { 
-        System.out.println(this.componentPositions.toString());
+        Logger.logging(this.componentPositions.toString());
         this.majorPath.forEach(a -> 
                                {if (this.isAtomSet(a)) {
-                                       System.out.println(a);
+                                       Logger.logging(a);
                                        this.getRichAtomSet(a).printPositions();
                                    }});
     }
