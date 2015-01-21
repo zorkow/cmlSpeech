@@ -46,7 +46,6 @@ import org.openscience.cdk.interfaces.IBond;
 public class StructuralAnalysis {
     
     private int atomSetCount = 0;
-    private final Logger logger;
     private final IAtomContainer molecule;
 
     private static SortedMap<String, RichStructure<?>> richAtoms = 
@@ -69,8 +68,7 @@ public class StructuralAnalysis {
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
-    public StructuralAnalysis(IAtomContainer molecule, Logger logger) {
-        this.logger = logger;
+    public StructuralAnalysis(IAtomContainer molecule) {
         this.molecule = molecule;
         
 
@@ -323,9 +321,8 @@ public class StructuralAnalysis {
             RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
                                                                RichAtomSet.Type.FUNCGROUP);
             set.name = key.split("-")[0];
-            // TODO (sorge): Write to logger
-            System.out.println(set.name + ": " + container.getAtomCount() + " atoms "
-                               + container.getBondCount() + " bonds");
+            Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
+                           + container.getBondCount() + " bonds");
         }
     }
     
