@@ -274,8 +274,8 @@ public class StructuralAnalysis {
      */
     private void rings() {
         RingSystem ringSystem = new RingSystem(this.molecule);
-        Boolean sub = !Cli.cl.hasOption("s");
-        Boolean sssr = Cli.cl.hasOption("sssr");
+        Boolean sub = !Cli.hasOption("s");
+        Boolean sssr = Cli.hasOption("sssr");
 
         for (IAtomContainer ring : ringSystem.fusedRings()) {
             RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
@@ -650,7 +650,7 @@ public class StructuralAnalysis {
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     public class AnalysisCompare implements Comparator<String> {
         
-        String heur = Cli.cl.hasOption("c") ? Cli.cl.getOptionValue("c") : "";
+        String heur = Cli.hasOption("c") ? Cli.getOptionValue("c") : "";
 
         public int compare(String vertexA, String vertexB) {
             Comparator<RichChemObject> comparator = new Heuristics(heur);

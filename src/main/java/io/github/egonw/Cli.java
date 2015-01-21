@@ -14,30 +14,20 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-public class Cli {
+public final class Cli {
 
-    private static volatile Cli instance = null;
+    private static CommandLine cl;
 
-    public static CommandLine cl;
-
-    public static List<String> files = new ArrayList<String>();
+    private static List<String> files = new ArrayList<String>();
 
     protected Cli() {
     }
 
-    public static Cli getInstance() {
-        if(instance == null) {
-            instance = new Cli();
-        }
-        return instance;
-    }
-
-    
     public static void init(String[] args) {
 	Cli.parse(args);
     }
 
-    public static void parse( String[] args ) {
+    private static void parse( String[] args ) {
         Options options = new Options();
 	// Basic Options
         options.addOption("help", false, "Print this message");
@@ -93,4 +83,19 @@ public class Cli {
         System.err.println("Warning: File " 
                            + fileName + " does not exist. Ignored!");
     }
+
+
+    public static boolean hasOption(String option) {
+        return Cli.cl.hasOption(option);
+    }
+
+
+    public static String getOptionValue(String option) {
+        return Cli.cl.getOptionValue(option);
+    }
+
+    public static List<String> getFiles() {
+        return Cli.files;
+    }    
+
 }

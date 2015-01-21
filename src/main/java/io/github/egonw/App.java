@@ -7,9 +7,9 @@ import io.github.egonw.Logger;
 public class App {
 
     public static void main(String[] args) throws Exception {
-	Cli.parse(args);
+	Cli.init(args);
 	Logger logger = new Logger();
-	if (!Cli.files.isEmpty()) {
+	if (!Cli.getFiles().isEmpty()) {
 	    CMLEnricher cmle = new CMLEnricher(logger);
 	    cmle.enrichFiles();
 	}

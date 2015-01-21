@@ -15,17 +15,17 @@ public class Logger {
     public PrintWriter errFile = new PrintWriter(System.err);
     
     public Logger() {
-        debug = Cli.cl.hasOption("d");
-        verbose = Cli.cl.hasOption("v");
+        debug = Cli.hasOption("d");
+        verbose = Cli.hasOption("v");
         openLogfile("l", (PrintWriter stream) -> {logFile = stream;});
         openLogfile("x", (PrintWriter stream) -> {errFile = stream;});
     }
 
     public void openLogfile (String optionName, Consumer<PrintWriter> logFile) {
-        if (!Cli.cl.hasOption(optionName)) {
+        if (!Cli.hasOption(optionName)) {
                 return;                
             }
-        String fileName = Cli.cl.getOptionValue(optionName);
+        String fileName = Cli.getOptionValue(optionName);
         File file = new File(fileName);
         try {
 	    logFile.accept(new PrintWriter(file));

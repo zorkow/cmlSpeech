@@ -67,7 +67,7 @@ public class CMLEnricher {
      * 
      */
     public void enrichFiles() {
-        for (String file : Cli.files) {
+        for (String file : Cli.getFiles()) {
             enrichFile(file);
         }
     }
@@ -91,21 +91,21 @@ public class CMLEnricher {
             this.analysis.printPositions();
 
             this.appendAtomSets();
-            if (Cli.cl.hasOption("ann")) {
+            if (Cli.hasOption("ann")) {
                 this.doc.getRootElement().appendChild(
                         this.sreOutput.getAnnotations());
             }
-            if (!Cli.cl.hasOption("nonih")) {
+            if (!Cli.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
                 executor.shutdown();
             }
             this.sreOutput.computeDescriptions(this.doc);
             
-            if (Cli.cl.hasOption("sf")){
+            if (Cli.hasOption("sf")){
             	String structuralFormula =
                     this.formula.getStructuralFormula(this.analysis,
-                                                      Cli.cl.hasOption("sub"));
+                                                      Cli.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
             
@@ -120,7 +120,7 @@ public class CMLEnricher {
             e.printStackTrace();
             return;
         }
-        if (Cli.cl.hasOption("vis")) {
+        if (Cli.hasOption("vis")) {
             this.analysis.visualize();
         }
     }
