@@ -39,9 +39,6 @@ import org.xmlcml.cml.base.CMLBuilder;
 import org.xmlcml.cml.element.CMLAtomSet;
 
 public class CMLEnricher {
-    // TODO (sorge): Refactor Cli and Logger to singleton patterns.
-    private final Logger logger;
-
     private StructuralAnalysis analysis;
     private SreOutput sreOutput;
     private SreSpeech sreSpeech;
@@ -53,14 +50,9 @@ public class CMLEnricher {
 
     /**
      * Constructor
-     * 
-     * @param initLogger
-     *            The logger structure.
-     * 
      * @return The newly created object.
      */
-    public CMLEnricher(Logger initLogger) {
-        logger = initLogger;
+    public CMLEnricher() {
     }
 
     /**
@@ -85,7 +77,7 @@ public class CMLEnricher {
             buildXOM();
             removeExplicitHydrogens();
 
-            this.analysis = new StructuralAnalysis(this.molecule, this.logger);
+            this.analysis = new StructuralAnalysis(this.molecule);
             this.sreOutput = new SreOutput(this.analysis);
             this.analysis.computePositions();
             // TODO (sorge): Write to logger
@@ -99,7 +91,7 @@ public class CMLEnricher {
             }
             if (!Cli.hasOption("nonih")) {
                 executor.execute();
-                executor.addResults(this.doc, this.logger);
+                executor.addResults(this.doc);
                 executor.shutdown();
             }
             if (Cli.hasOption("descr")) {
@@ -116,7 +108,7 @@ public class CMLEnricher {
         } catch (Exception e) {
             // TODO (sorge) Meaningful exception handling by
             // exceptions/functions.
-            this.logger.error("Something went wrong when parsing File "
+            Logger.error("Something went wrong when parsing File "
                     + fileName + ":" + e.getMessage() + "\n");
             e.printStackTrace();
             return;
@@ -146,7 +138,7 @@ public class CMLEnricher {
                 IChemFile.class));
         reader.close();
         this.molecule = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
-        this.logger.logging(this.molecule);
+        Logger.logging(this.molecule);
     }
 
     /**
@@ -170,7 +162,7 @@ public class CMLEnricher {
         // this.doc.getRootElement().addNamespaceDeclaration
         // ("cml", "http://www.xml-cml.org/schema");
         this.doc = builder.build(cmlcode, "");
-        this.logger.logging(this.doc.toXML());
+        Logger.logging(this.doc.toXML());
     }
 
     private void removeExplicitHydrogens() {
@@ -216,10 +208,10 @@ public class CMLEnricher {
             CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance())
                     .addImplicitHydrogens(newcontainer);
         } catch (CloneNotSupportedException e) {
-            this.logger.error("Something went wrong cloning atom container: "
+            Logger.error("Something went wrong cloning atom container: "
                     + e.getMessage());
         } catch (Throwable e) {
-            this.logger.error("Error " + e.getMessage());
+            Logger.error("Error " + e.getMessage());
         }
         return newcontainer;
     }
@@ -251,7 +243,7 @@ public class CMLEnricher {
      */
     private void nameMolecule(String id, IAtomContainer container) {
         // TODO (sorge) catch the right exception.
-        this.logger.logging("Registering calls for " + id);
+        Logger.logging("Registering calls for " + id);
         IAtomContainer newcontainer = checkedClone(container);
         if (newcontainer != null) {
             this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,

@@ -58,9 +58,8 @@ public class CactusExecutor {
     /**
      * Adds attributes from returned by all current Cactus futures to a document.
      * @param doc The current document.
-     * @param logger A logger to write error messages to.
      */
-    public void addResults(Document doc, Logger logger) {
+    public void addResults(Document doc) {
         for (Map.Entry<String, Future<SreAttribute>> entry : this.registry.entries()) {
             String id = entry.getKey();
             Future<SreAttribute> future = entry.getValue();
@@ -70,7 +69,7 @@ public class CactusExecutor {
                 element.addAttribute(result);
             }
             catch (Throwable e) {
-                logger.error("Cactus Error: " + e.getMessage() + "\n");
+                Logger.error("Cactus Error: " + e.getMessage() + "\n");
                 continue;
             }
         }

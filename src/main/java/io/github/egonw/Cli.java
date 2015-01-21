@@ -1,10 +1,8 @@
 package io.github.egonw;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
