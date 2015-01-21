@@ -14,17 +14,20 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-public class Cli {
+public final class Cli {
 
-    public CommandLine cl;
+    private static CommandLine cl;
 
-    public List<String> files = new ArrayList<String>();
+    private static List<String> files = new ArrayList<String>();
 
-    public Cli (String[] args) {
-	parse(args);
+    protected Cli() {
     }
 
-    public void parse( String[] args ) {
+    public static void init(String[] args) {
+	Cli.parse(args);
+    }
+
+    private static void parse( String[] args ) {
         Options options = new Options();
 	// Basic Options
         options.addOption("help", false, "Print this message");
@@ -49,22 +52,22 @@ public class Cli {
         
         CommandLineParser parser = new BasicParser();
         try {
-            this.cl = parser.parse(options, args);
+            Cli.cl = parser.parse(options, args);
         }
         catch (ParseException e) {
             usage(options, 1);
         }
-        if (this.cl.hasOption("help")) {
+        if (Cli.cl.hasOption("help")) {
             usage(options, 0);
         }
 
-	for (int i = 0; i < this.cl.getArgList().size(); i++) {
-	    String fileName = this.cl.getArgList().get(i).toString();
+	for (int i = 0; i < Cli.cl.getArgList().size(); i++) {
+	    String fileName = Cli.cl.getArgList().get(i).toString();
 	    File f = new File(fileName);
 	    if (f.exists() && !f.isDirectory()) {
-		files.add(fileName);
+		Cli.files.add(fileName);
 	    } else {
-		warning(fileName);
+		Cli.warning(fileName);
 	    }
 	}
 
@@ -81,4 +84,19 @@ public class Cli {
         System.err.println("Warning: File " 
                            + fileName + " does not exist. Ignored!");
     }
+
+
+    public static boolean hasOption(String option) {
+        return Cli.cl.hasOption(option);
+    }
+
+
+    public static String getOptionValue(String option) {
+        return Cli.cl.getOptionValue(option);
+    }
+
+    public static List<String> getFiles() {
+        return Cli.files;
+    }    
+
 }

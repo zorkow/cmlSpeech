@@ -40,7 +40,6 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 public class CMLEnricher {
     // TODO (sorge): Refactor Cli and Logger to singleton patterns.
-    private final Cli cli;
     private final Logger logger;
 
     private StructuralAnalysis analysis;
@@ -55,15 +54,12 @@ public class CMLEnricher {
     /**
      * Constructor
      * 
-     * @param initCli
-     *            The interpreted command line.
      * @param initLogger
      *            The logger structure.
      * 
      * @return The newly created object.
      */
-    public CMLEnricher(Cli initCli, Logger initLogger) {
-        cli = initCli;
+    public CMLEnricher(Logger initLogger) {
         logger = initLogger;
     }
 
@@ -72,7 +68,7 @@ public class CMLEnricher {
      * 
      */
     public void enrichFiles() {
-        for (String file : cli.files) {
+        for (String file : Cli.getFiles()) {
             enrichFile(file);
         }
     }
@@ -89,32 +85,31 @@ public class CMLEnricher {
             buildXOM();
             removeExplicitHydrogens();
 
-            this.analysis = new StructuralAnalysis(this.molecule, this.cli,
-                    this.logger);
+            this.analysis = new StructuralAnalysis(this.molecule, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             this.analysis.computePositions();
             // TODO (sorge): Write to logger
             this.analysis.printPositions();
 
             this.appendAtomSets();
-            if (this.cli.cl.hasOption("ann")) {
+            if (Cli.hasOption("ann")) {
                 this.sreOutput = new SreOutput(this.analysis);
                 this.doc.getRootElement().appendChild(
                         this.sreOutput.getAnnotations());
             }
-            if (!this.cli.cl.hasOption("nonih")) {
+            if (!Cli.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
                 executor.shutdown();
             }
-            if (this.cli.cl.hasOption("descr")) {
+            if (Cli.hasOption("descr")) {
                 this.sreSpeech = new SreSpeech(this.analysis, this.doc);
                 this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
             }
-            if (this.cli.cl.hasOption("sf")){
+            if (Cli.hasOption("sf")){
             	String structuralFormula =
                     this.formula.getStructuralFormula(this.analysis,
-                                                      this.cli.cl.hasOption("sub"));
+                                                      Cli.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
             writeFile(fileName);
@@ -126,7 +121,7 @@ public class CMLEnricher {
             e.printStackTrace();
             return;
         }
-        if (this.cli.cl.hasOption("vis")) {
+        if (Cli.hasOption("vis")) {
             this.analysis.visualize();
         }
     }

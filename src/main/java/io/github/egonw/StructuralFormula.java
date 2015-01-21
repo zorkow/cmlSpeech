@@ -30,7 +30,6 @@ public class StructuralFormula {
      * 
      * @param saImported
      *            The StructuralAnalysis to be used
-     * @param cli
      */
     public void computeAnalysis() {
         List<RichAtomSet> atomSets = this.structuralAnalysis.getAtomSets();

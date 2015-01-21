@@ -48,8 +48,6 @@ public class StructuralAnalysis {
     private int atomSetCount = 0;
     private final Logger logger;
     private final IAtomContainer molecule;
-    // TODO(sorge) Refactor this into a separate flags module.
-    private final Cli cli;
 
     private static SortedMap<String, RichStructure<?>> richAtoms = 
         new TreeMap<>(new CMLNameComparator());
@@ -73,8 +71,7 @@ public class StructuralAnalysis {
     public RichAtomSet top;
 
 
-    public StructuralAnalysis(IAtomContainer molecule, Cli cli, Logger logger) {
-        this.cli = cli;
+    public StructuralAnalysis(IAtomContainer molecule, Logger logger) {
         this.logger = logger;
         this.molecule = molecule;
         
@@ -279,8 +276,8 @@ public class StructuralAnalysis {
      */
     private void rings() {
         RingSystem ringSystem = new RingSystem(this.molecule);
-        Boolean sub = !this.cli.cl.hasOption("s");
-        Boolean sssr = this.cli.cl.hasOption("sssr");
+        Boolean sub = !Cli.hasOption("s");
+        Boolean sssr = Cli.hasOption("sssr");
 
         for (IAtomContainer ring : ringSystem.fusedRings()) {
             RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
@@ -655,8 +652,7 @@ public class StructuralAnalysis {
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     public class AnalysisCompare implements Comparator<String> {
         
-        String heur = StructuralAnalysis.this.cli.cl.hasOption("c") ?
-            StructuralAnalysis.this.cli.cl.getOptionValue("c") : "";
+        String heur = Cli.hasOption("c") ? Cli.getOptionValue("c") : "";
 
         public int compare(String vertexA, String vertexB) {
             Comparator<RichChemObject> comparator = new Heuristics(heur);
