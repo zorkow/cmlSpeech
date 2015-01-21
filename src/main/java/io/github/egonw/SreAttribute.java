@@ -2,7 +2,6 @@
 //
 package io.github.egonw;
 
-import io.github.egonw.SreNamespace;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
