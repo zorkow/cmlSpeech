@@ -16,15 +16,28 @@ import org.apache.commons.cli.ParseException;
 
 public class Cli {
 
-    public CommandLine cl;
+    private static volatile Cli instance = null;
 
-    public List<String> files = new ArrayList<String>();
+    public static CommandLine cl;
 
-    public Cli (String[] args) {
-	parse(args);
+    public static List<String> files = new ArrayList<String>();
+
+    protected Cli() {
     }
 
-    public void parse( String[] args ) {
+    public static Cli getInstance() {
+        if(instance == null) {
+            instance = new Cli();
+        }
+        return instance;
+    }
+
+    
+    public static void init(String[] args) {
+	Cli.parse(args);
+    }
+
+    public static void parse( String[] args ) {
         Options options = new Options();
 	// Basic Options
         options.addOption("help", false, "Print this message");
@@ -48,22 +61,22 @@ public class Cli {
         
         CommandLineParser parser = new BasicParser();
         try {
-            this.cl = parser.parse(options, args);
+            Cli.cl = parser.parse(options, args);
         }
         catch (ParseException e) {
             usage(options, 1);
         }
-        if (this.cl.hasOption("help")) {
+        if (Cli.cl.hasOption("help")) {
             usage(options, 0);
         }
 
-	for (int i = 0; i < this.cl.getArgList().size(); i++) {
-	    String fileName = this.cl.getArgList().get(i).toString();
+	for (int i = 0; i < Cli.cl.getArgList().size(); i++) {
+	    String fileName = Cli.cl.getArgList().get(i).toString();
 	    File f = new File(fileName);
 	    if (f.exists() && !f.isDirectory()) {
-		files.add(fileName);
+		Cli.files.add(fileName);
 	    } else {
-		warning(fileName);
+		Cli.warning(fileName);
 	    }
 	}
 

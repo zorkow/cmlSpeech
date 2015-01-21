@@ -40,7 +40,6 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 public class CMLEnricher {
     // TODO (sorge): Refactor Cli and Logger to singleton patterns.
-    private final Cli cli;
     private final Logger logger;
 
     private StructuralAnalysis analysis;
@@ -54,15 +53,12 @@ public class CMLEnricher {
     /**
      * Constructor
      * 
-     * @param initCli
-     *            The interpreted command line.
      * @param initLogger
      *            The logger structure.
      * 
      * @return The newly created object.
      */
-    public CMLEnricher(Cli initCli, Logger initLogger) {
-        cli = initCli;
+    public CMLEnricher(Logger initLogger) {
         logger = initLogger;
     }
 
@@ -71,7 +67,7 @@ public class CMLEnricher {
      * 
      */
     public void enrichFiles() {
-        for (String file : cli.files) {
+        for (String file : Cli.files) {
             enrichFile(file);
         }
     }
@@ -88,29 +84,28 @@ public class CMLEnricher {
             buildXOM();
             removeExplicitHydrogens();
 
-            this.analysis = new StructuralAnalysis(this.molecule, this.cli,
-                    this.logger);
+            this.analysis = new StructuralAnalysis(this.molecule, this.logger);
             this.sreOutput = new SreOutput(this.analysis);
             this.analysis.computePositions();
             // TODO (sorge): Write to logger
             this.analysis.printPositions();
 
             this.appendAtomSets();
-            if (this.cli.cl.hasOption("ann")) {
+            if (Cli.cl.hasOption("ann")) {
                 this.doc.getRootElement().appendChild(
                         this.sreOutput.getAnnotations());
             }
-            if (!this.cli.cl.hasOption("nonih")) {
+            if (!Cli.cl.hasOption("nonih")) {
                 executor.execute();
                 executor.addResults(this.doc, this.logger);
                 executor.shutdown();
             }
             this.sreOutput.computeDescriptions(this.doc);
             
-            if (this.cli.cl.hasOption("sf")){
+            if (Cli.cl.hasOption("sf")){
             	String structuralFormula =
                     this.formula.getStructuralFormula(this.analysis,
-                                                      this.cli.cl.hasOption("sub"));
+                                                      Cli.cl.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
             
@@ -125,7 +120,7 @@ public class CMLEnricher {
             e.printStackTrace();
             return;
         }
-        if (this.cli.cl.hasOption("vis")) {
+        if (Cli.cl.hasOption("vis")) {
             this.analysis.visualize();
         }
     }
