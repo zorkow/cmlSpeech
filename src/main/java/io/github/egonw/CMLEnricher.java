@@ -75,6 +75,9 @@ public class CMLEnricher {
         try {
             readFile(fileName);
             buildXOM();
+            if (Cli.hasOption("c")) {
+                writeFile(fileName, "simple");
+            }
             removeExplicitHydrogens();
 
             this.analysis = new StructuralAnalysis(this.molecule);
@@ -104,7 +107,7 @@ public class CMLEnricher {
                                                       Cli.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
-            writeFile(fileName);
+            writeFile(fileName, "enr");
         } catch (Exception e) {
             // TODO (sorge) Meaningful exception handling by
             // exceptions/functions.
@@ -173,16 +176,17 @@ public class CMLEnricher {
      * Writes current document to a CML file.
      * 
      * @param fileName
+     * @param extension
      *
      * @throws IOException
      *             Problems with opening output file.
      * @throws CDKException
      *             Problems with writing the CML XOM.
      */
-    private void writeFile(String fileName) throws IOException, CDKException {
+    private void writeFile(String fileName, String extension) throws IOException, CDKException {
         String basename = FilenameUtils.getBaseName(fileName);
         OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
-                basename + "-enr.cml"));
+                basename + "-" + extension + ".cml"));
         PrintWriter output = new PrintWriter(outFile);
         this.doc.getRootElement().addNamespaceDeclaration(
                 SreNamespace.getInstance().prefix,

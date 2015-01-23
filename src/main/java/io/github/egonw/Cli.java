@@ -37,6 +37,7 @@ public final class Cli {
 	options.addOption("l", "log", true, "Log File");
 	options.addOption("x", "error", true, "Debug File");
 	// Processing Options
+        options.addOption("c", "cml", false, "Also write a CML file without annotations. Name addition -simple.");
         options.addOption("a", "ann", false, "Include annotations in CML output");
         options.addOption("r", "descr", false, "Include speech descriptions in CML output");
         options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
@@ -45,7 +46,7 @@ public final class Cli {
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
         options.addOption("sf", "structuralformula", false, "Print the structural formula");
         options.addOption("sub", "subscript", false, "Use subscripts with structural formula");
-        options.addOption("c", "compare", true, "Comparison heuristics given as a comma" +
+        options.addOption("m", "molcom", true, "Comparison heuristics for molecules given as a comma" +
                           "separated list. Currently available heuristics: type, weight, size");
         
         CommandLineParser parser = new BasicParser();
