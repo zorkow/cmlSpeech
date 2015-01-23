@@ -647,7 +647,7 @@ public class StructuralAnalysis {
     // Comparison in terms of "interestingness". The most interesting is sorted to the front.
     public class AnalysisCompare implements Comparator<String> {
         
-        String heur = Cli.hasOption("c") ? Cli.getOptionValue("c") : "";
+        String heur = Cli.hasOption("m") ? Cli.getOptionValue("m") : "";
 
         public int compare(String vertexA, String vertexB) {
             Comparator<RichChemObject> comparator = new Heuristics(heur);

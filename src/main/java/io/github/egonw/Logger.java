@@ -16,7 +16,6 @@ public class Logger {
     protected Logger() { }
 
     public static void start() {
-        System.out.println("Option setting");
         debug = Cli.hasOption("d");
         verbose = Cli.hasOption("v");
         openLogfile("l", (PrintWriter stream) -> {logFile = stream;});
@@ -24,11 +23,9 @@ public class Logger {
     }
 
      private static void openLogfile (String optionName, Consumer<PrintWriter> logFile) {
-         System.out.println("Option: " + optionName);
         if (!Cli.hasOption(optionName)) {
             return;                
             }
-        System.out.println("Execute Option: " + optionName);
         String fileName = Cli.getOptionValue(optionName);
         File file = new File(fileName);
         try {

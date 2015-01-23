@@ -21,6 +21,7 @@ public class Heuristics extends DefaultComparator<RichChemObject> {
     private Comparator<RichChemObject> size = new SizeComparator();
 
     public Heuristics(String heuristic) {
+        // TODO (sorge) Do something with non-existent heuristics.
         this.heuristics = heuristic == "" ?
             new String[] {"type", "weight", "size"} : heuristic.split(",");
     }
