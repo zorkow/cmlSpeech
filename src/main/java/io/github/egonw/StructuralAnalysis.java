@@ -687,23 +687,13 @@ public class StructuralAnalysis {
 
     public void appendPositions(RichAtomSet atomSet) {
         atomSet.computePositions(this.componentPositions.size());
-        Iterator<String> iterator = atomSet.iterator();
-        while (iterator.hasNext()) {
-            String value = iterator.next();
-            if (!this.componentPositions.contains(value)) { 
-                this.componentPositions.addNext(value);
-            }
-        }
+        this.componentPositions.putAll(atomSet.componentPositions);
     }
 
 
     public void printPositions () { 
         Logger.logging(this.componentPositions.toString());
-        this.majorPath.forEach(a -> 
-                               {if (this.isAtomSet(a)) {
-                                       Logger.logging(a);
-                                       this.getRichAtomSet(a).printPositions();
-                                   }});
+        this.getAtomSets().forEach(RichAtomSet::printPositions);
     }
 
 
