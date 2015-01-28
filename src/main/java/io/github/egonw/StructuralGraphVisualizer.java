@@ -42,6 +42,9 @@ public class StructuralGraphVisualizer {
     private static final Dimension DEFAULT_SIZE = new Dimension(500, 500);
 
     // TODO (sorge) Test if this is better done with double and infinity.
+    // 
+    // TODO (sorge) Refactor into visualiser class that sets all frames at the
+    // right point.
     private final int scale = 150;
     private final int offset = 10;
     private final int padding = 120;
