@@ -39,13 +39,17 @@ public class StructuralGraphVisualizer {
     private static final Color BLACK = Color.decode("#000000");
     private static final Color GRAY = Color.decode("#C2CBCC");
 
-    private static final Dimension DEFAULT_SIZE = new Dimension(750, 750);
+    private static final Dimension DEFAULT_SIZE = new Dimension(500, 500);
 
+    // TODO (sorge) Test if this is better done with double and infinity.
     private final int scale = 150;
     private final int offset = 10;
-    private int minX = 0;
-    private int minY = 0;
-
+    private final int padding = 120;
+    private int minX = Integer.MAX_VALUE;
+    private int minY = Integer.MAX_VALUE;
+    private int maxX = Integer.MIN_VALUE;
+    private int maxY = Integer.MIN_VALUE;
+    
     private boolean colour = true;
 
     class NamedPoint {
@@ -92,16 +96,8 @@ public class StructuralGraphVisualizer {
             jgraph.setForeground(BLACK);
         }
         
-
-
         JScrollPane scroller = new JScrollPane(jgraph);
         JFrame frame = new JFrame(name);
-        // TODO (sorge): set the frame size to what is actually needed!
-        frame.setSize(DEFAULT_SIZE);
-        frame.add(scroller);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 
         List<NamedPoint> points = new ArrayList<NamedPoint>();
         for (RichStructure<?> structure : structures) {
@@ -113,7 +109,12 @@ public class StructuralGraphVisualizer {
         }
         positionPoints(points);
 
-
+        frame.setBounds(this.minX, this.minY,
+                        this.maxX - this.minX + this.padding,
+                        this.maxY - this.minY + this.padding);
+        frame.add(scroller);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jgraph.getGraphLayoutCache().reload();
         jgraph.repaint();
     }
@@ -140,6 +141,8 @@ public class StructuralGraphVisualizer {
         NamedPoint point = new NamedPoint(set.getId(), (int)x / n, -1 * (int)y / n);
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
+        this.maxX = Math.max(this.maxX, point.getX());
+        this.maxY = Math.max(this.maxY, point.getY());
         return point;
     }
     
@@ -152,6 +155,8 @@ public class StructuralGraphVisualizer {
                                           (int)(-1 * x2d.y * scale));
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
+        this.maxX = Math.max(this.maxX, point.getX());
+        this.maxY = Math.max(this.maxY, point.getY());
         return point;
     }
     
