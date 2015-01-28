@@ -20,7 +20,8 @@ public class StructuralEdge extends DefaultEdge {
     }
 
     public String toString() {
-        return "(" + this.getSource().toString() + " : " + 
-            this.label + " : " + this.getTarget().toString() + ")";
+        // return "(" + this.getSource().toString() + " : " + 
+        //     this.label + " : " + this.getTarget().toString() + ")";
+        return this.label;
     }
 }

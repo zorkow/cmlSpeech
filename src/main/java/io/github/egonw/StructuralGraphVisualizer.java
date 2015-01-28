@@ -38,6 +38,9 @@ import org.openscience.cdk.interfaces.IAtom;
  */
 public class StructuralGraphVisualizer {
     private static final Color DEFAULT_BG_COLOR = Color.decode("#B6D1C2");
+    private static final Color WHITE = Color.decode("#FFFFFF");
+    private static final Color BLACK = Color.decode("#000000");
+    private static final Color GRAY = Color.decode("#C2CBCC");
     private static final Dimension DEFAULT_SIZE = new Dimension(750, 750);
 
     private final int scale = 150;
@@ -80,7 +83,11 @@ public class StructuralGraphVisualizer {
         m_jgAdapter = new JGraphModelAdapter<>(g);
 
         JGraph jgraph = new JGraph(m_jgAdapter);
-        jgraph.setBackground(DEFAULT_BG_COLOR);
+        //jgraph.setBackground(DEFAULT_BG_COLOR);
+
+        // Black & White:
+        jgraph.setBackground(WHITE);
+        jgraph.setForeground(BLACK);
 
         JScrollPane scroller = new JScrollPane(jgraph);
         JFrame frame = new JFrame(name);
@@ -99,6 +106,7 @@ public class StructuralGraphVisualizer {
             }
         }
         positionPoints(points);
+
 
         jgraph.getGraphLayoutCache().reload();
         jgraph.repaint();
@@ -140,10 +148,15 @@ public class StructuralGraphVisualizer {
     }
     
 
-    private void positionVertexAt(Object vertex, int x, int y) {
+    private void positionVertexAt(String vertex, int x, int y) {
         DefaultGraphCell cell = m_jgAdapter.getVertexCell(vertex);
         AttributeMap attr = cell.getAttributes();
         Rectangle2D b = GraphConstants.getBounds(attr);
+
+        attr.applyValue("foregroundColor", BLACK);
+        attr.applyValue("backgroundColor", GRAY);
+        
+        System.out.println(attr);
 
         GraphConstants.setBounds(attr, new Rectangle(x, y, (int)b.getWidth(), (int)b.getHeight()));
 
