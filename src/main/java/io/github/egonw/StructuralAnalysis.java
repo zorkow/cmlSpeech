@@ -691,10 +691,7 @@ public class StructuralAnalysis {
 
     public void printPositions () { 
         System.out.println(this.componentPositions.toString());
-        this.getAtomSets().forEach(a -> {
-                System.out.println(a.getId());
-                a.printPositions();
-            });
+        this.getAtomSets().forEach(RichAtomSet::printPositions);
     }
 
 
