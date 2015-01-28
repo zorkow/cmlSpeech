@@ -30,20 +30,30 @@ import org.jgrapht.graph.SimpleGraph;
 import org.openscience.cdk.interfaces.IAtom;
 
 /**
- * A demo applet that shows how to use JGraph to visualize JGraphT graphs.
- *
- * @author Barak Naveh
- *
- * @since Aug 3, 2003
+ * Basic visualiser for structural graphs.
  */
 public class StructuralGraphVisualizer {
     private static final Color DEFAULT_BG_COLOR = Color.decode("#B6D1C2");
-    private static final Dimension DEFAULT_SIZE = new Dimension(750, 750);
+    // Some colours for binary graphs.
+    private static final Color WHITE = Color.decode("#FFFFFF");
+    private static final Color BLACK = Color.decode("#000000");
+    private static final Color GRAY = Color.decode("#C2CBCC");
 
+    private static final Dimension DEFAULT_SIZE = new Dimension(500, 500);
+
+    // TODO (sorge) Test if this is better done with double and infinity.
+    // 
+    // TODO (sorge) Refactor into visualiser class that sets all frames at the
+    // right point.
     private final int scale = 150;
     private final int offset = 10;
-    private int minX = 0;
-    private int minY = 0;
+    private final int padding = 120;
+    private int minX = Integer.MAX_VALUE;
+    private int minY = Integer.MAX_VALUE;
+    private int maxX = Integer.MIN_VALUE;
+    private int maxY = Integer.MIN_VALUE;
+    
+    private boolean colour = true;
 
     class NamedPoint {
         private int x;
@@ -76,19 +86,21 @@ public class StructuralGraphVisualizer {
      * @see java.applet.Applet#init().
      */
     public void init(SimpleGraph<?, ?> sg, List<RichStructure<?>> structures, String name) {
+        this.colour = !Cli.hasOption("vis_bw");
         ListenableGraph<?, ?> g = new ListenableUndirectedGraph<>(sg);
         m_jgAdapter = new JGraphModelAdapter<>(g);
 
         JGraph jgraph = new JGraph(m_jgAdapter);
-        jgraph.setBackground(DEFAULT_BG_COLOR);
 
+        if (this.colour) {
+            jgraph.setBackground(DEFAULT_BG_COLOR);
+        } else {
+            jgraph.setBackground(WHITE);
+            jgraph.setForeground(BLACK);
+        }
+        
         JScrollPane scroller = new JScrollPane(jgraph);
         JFrame frame = new JFrame(name);
-        frame.setSize(DEFAULT_SIZE);
-        frame.add(scroller);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 
         List<NamedPoint> points = new ArrayList<NamedPoint>();
         for (RichStructure<?> structure : structures) {
@@ -100,6 +112,12 @@ public class StructuralGraphVisualizer {
         }
         positionPoints(points);
 
+        frame.setBounds(this.minX, this.minY,
+                        this.maxX - this.minX + this.padding,
+                        this.maxY - this.minY + this.padding);
+        frame.add(scroller);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jgraph.getGraphLayoutCache().reload();
         jgraph.repaint();
     }
@@ -126,6 +144,8 @@ public class StructuralGraphVisualizer {
         NamedPoint point = new NamedPoint(set.getId(), (int)x / n, -1 * (int)y / n);
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
+        this.maxX = Math.max(this.maxX, point.getX());
+        this.maxY = Math.max(this.maxY, point.getY());
         return point;
     }
     
@@ -133,20 +153,30 @@ public class StructuralGraphVisualizer {
     private NamedPoint computeAtom(RichAtom richAtom) {
         IAtom atom = richAtom.getStructure();
         Point2d x2d = atom.getPoint2d();
-        NamedPoint point = new NamedPoint(atom.getID(), (int)(x2d.x * scale), (int)(-1 * x2d.y * scale));
+        NamedPoint point = new NamedPoint(atom.getID(),
+                                          (int)(x2d.x * scale),
+                                          (int)(-1 * x2d.y * scale));
         this.minX = Math.min(this.minX, point.getX());
         this.minY = Math.min(this.minY, point.getY());
+        this.maxX = Math.max(this.maxX, point.getX());
+        this.maxY = Math.max(this.maxY, point.getY());
         return point;
     }
     
 
-    private void positionVertexAt(Object vertex, int x, int y) {
+    private void positionVertexAt(String vertex, int x, int y) {
         DefaultGraphCell cell = m_jgAdapter.getVertexCell(vertex);
         AttributeMap attr = cell.getAttributes();
         Rectangle2D b = GraphConstants.getBounds(attr);
 
-        GraphConstants.setBounds(attr, new Rectangle(x, y, (int)b.getWidth(), (int)b.getHeight()));
-
+        if (!this.colour) {
+            attr.applyValue("foregroundColor", BLACK);
+            attr.applyValue("backgroundColor", GRAY);
+        }
+        
+        GraphConstants.setBounds(attr, new Rectangle(x, y,
+                                                     (int)b.getWidth(),
+                                                     (int)b.getHeight()));
         Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
         cellAttr.put(cell, attr);
         m_jgAdapter.edit(cellAttr, null, null, null);

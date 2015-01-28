@@ -37,16 +37,23 @@ public final class Cli {
 	options.addOption("l", "log", true, "Log File");
 	options.addOption("x", "error", true, "Debug File");
 	// Processing Options
-        options.addOption("c", "cml", false, "Also write a CML file without annotations. Name addition -simple.");
+        options.addOption("c", "cml", false,
+                          "Also write a CML file without annotations: adds -simple to name");
         options.addOption("a", "ann", false, "Include annotations in CML output");
         options.addOption("r", "descr", false, "Include speech descriptions in CML output");
         options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
         options.addOption("s", "subrings", false, "Do not compute subrings");
         options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
+        options.addOption("vr", "vis_recursive", false,
+                          "Visualize sub graphs recursively");
+        options.addOption("vb", "vis_bw", false,
+                          "Visualize graph black and white; default colour");
+        options.addOption("vs", "vis_short", false, "Visualize bonds short");
         options.addOption("sf", "structuralformula", false, "Print the structural formula");
         options.addOption("sub", "subscript", false, "Use subscripts with structural formula");
-        options.addOption("m", "molcom", true, "Comparison heuristics for molecules given as a comma" +
+        options.addOption("m", "molcom", true,
+                          "Comparison heuristics for molecules given as a comma" +
                           "separated list. Currently available heuristics: type, weight, size");
         
         CommandLineParser parser = new BasicParser();

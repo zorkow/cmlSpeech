@@ -642,7 +642,9 @@ public class StructuralAnalysis {
     public void visualize() {
         this.majorGraph.visualize("Major System Abstraction");
         this.minorGraph.visualize("Minor System Abstraction");
-        this.recursiveSystems();
+        if (Cli.hasOption("vis_recursive")) {
+            this.recursiveSystems();
+        }
     }
 
 
