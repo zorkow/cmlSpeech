@@ -685,13 +685,7 @@ public class StructuralAnalysis {
 
     public void appendPositions(RichAtomSet atomSet) {
         atomSet.computePositions(this.componentPositions.size());
-        Iterator<String> iterator = atomSet.iterator();
-        while (iterator.hasNext()) {
-            String value = iterator.next();
-            if (!this.componentPositions.contains(value)) { 
-                this.componentPositions.addNext(value);
-            }
-        }
+        this.componentPositions.putAll(atomSet.componentPositions);
     }
 
 

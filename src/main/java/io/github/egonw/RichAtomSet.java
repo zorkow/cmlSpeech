@@ -147,16 +147,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     
     public void appendPositions(RichAtomSet atomSet) {
-        if (this.componentPositions.isEmpty()) {
-            this.offset = atomSet.offset;
-            this.componentPositions.putAll(atomSet.componentPositions);
-            return;
-        }
-        for (String atom : atomSet.componentPositions) {
-            if (!this.componentPositions.contains(atom)) { 
-                this.componentPositions.addNext(atom);
-            }
-        }
+        this.componentPositions.putAll(atomSet.componentPositions);
     }
 
 

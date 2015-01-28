@@ -43,7 +43,16 @@ public class ComponentsPositions implements Iterable<String> {
     }
 
     public void putAll(ComponentsPositions componentPositions) {
-        this.atomPositions.putAll(componentPositions.atomPositions);
+        if (this.atomPositions.isEmpty()) {
+            this.atomPositions.putAll(componentPositions.atomPositions);
+            this.atomCount = componentPositions.size();
+            return;
+        }
+        for (String atom : componentPositions) {
+            if (!this.contains(atom)) { 
+                this.addNext(atom);
+            }
+        }
     }
 
     public void addNext(String atomID) {
