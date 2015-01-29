@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 public class Logger {
     private static Boolean debug = false;
     private static Boolean verbose = false;
-    private static PrintWriter logFile = new PrintWriter(System.err);
+    private static PrintWriter logFile = new PrintWriter(System.out);
     private static PrintWriter errFile = new PrintWriter(System.err);
     
     protected Logger() { }

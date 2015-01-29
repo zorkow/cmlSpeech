@@ -121,7 +121,6 @@ public class SreAnnotations extends SreElement {
 
     public void finalize() {
         for (String key : this.annotationNodes.keySet()) {
-            System.out.println(this.annotationNodes.get(key).getParent());
             this.appendChild(this.annotationNodes.get(key));
         }
     }

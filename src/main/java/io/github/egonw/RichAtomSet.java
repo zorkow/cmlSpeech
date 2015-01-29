@@ -176,6 +176,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     
     private void computeAtomPositionsFuncGroup() {
+        System.out.println("Functional group!");
         IAtom startAtom = getExternallyConnectedAtom();
         if (startAtom == null) {
             startAtom = getSinglyConnectedAtom();

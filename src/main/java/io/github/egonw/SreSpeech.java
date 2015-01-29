@@ -47,6 +47,7 @@ public class SreSpeech extends SreXML {
 
 
     private void atom(RichAtom atom) {
+        // This is all rather naive!
         RichAtomSet system = this.analysis.getRichAtomSet((atom.getSuperSystems().iterator()).next());
         String id = atom.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
@@ -67,7 +68,7 @@ public class SreSpeech extends SreXML {
 
     private void atomSet(RichAtomSet atomSet) {
         String id = atomSet.getId();
-        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtomSet(atomSet));
+        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atomSet.getSuperSystems());
         this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getSubSystems());
         this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
@@ -82,7 +83,7 @@ public class SreSpeech extends SreXML {
 
     private SreAttribute speechAtom(RichAtom atom) {
         return speechAttribute(describeAtomPosition(atom) + " "
-                              + this.describeHydrogenBonds(atom.getStructure()));
+                               + this.describeHydrogenBonds(atom.getStructure()));
     }
 
     private SreAttribute speechBond(RichBond bond) {
@@ -90,17 +91,30 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private SreAttribute speechAtomSet(RichAtomSet atomSet) {
-        String result = "";
+    private String describeAtomSet(RichAtomSet atomSet) {
         switch (atomSet.type) {
         case MOLECULE:
-            result = describeMolecule(atomSet);
+            return describeMolecule(atomSet);
+        case ALIPHATIC:
+            return describeAliphaticChain(atomSet);
+        case ISOLATED:
+            return describeIsolatedRing(atomSet);
+        default:
+            return "";
+        }
+    }
+
+
+    private SreAttribute speechAtomSet(RichAtomSet atomSet) {
+        String result = describeAtomSet(atomSet);
+        switch (atomSet.type) {
+        case MOLECULE:
             break;
         case ALIPHATIC:
-            result = describeAliphaticChain(atomSet);
+            result += " " + describeBlock(atomSet);
             break;
         case ISOLATED:
-            result =  describeIsolatedRing(atomSet);
+            result += " " + describeBlock(atomSet);
         }
         return speechAttribute(result);
     }
@@ -114,22 +128,24 @@ public class SreSpeech extends SreXML {
 
 
     private String describeAliphaticChain(RichAtomSet system) {
-        String descr = "Aliphatic chain of length " + system.getStructure().getAtomCount();
-        descr += " " + this.describeMultiBonds(system);
-        descr += " " + this.describeSubstitutions(system);
-        return descr;
+        return "Aliphatic chain of length " +
+               system.getStructure().getAtomCount();
     }
-
+    
 
     private String describeIsolatedRing(RichAtomSet system) {
         String descr = "Ring with " + system.getStructure().getAtomCount() + " elements.";
         descr += " " + this.describeReplacements(system);
-        descr += " " + this.describeMultiBonds(system);
-        descr += " " + this.describeSubstitutions(system);
-        this.describeRingStepwise(system);
         return descr;
     }
-    
+
+
+    private String describeBlock(RichAtomSet system) {
+        String descr = this.describeMultiBonds(system);
+        descr += " " + this.describeSubstitutions(system);
+        return descr;
+    }
+
 
     private void describeConnections(RichChemObject structure) {
         String id = structure.getId();
@@ -177,8 +193,9 @@ public class SreSpeech extends SreXML {
             SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
             
             SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
-            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
-
+            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE,
+                                                system.getExternalBonds().contains(connection.getConnector()) ?
+                                                "external" : "internal");
             element.addAttribute(speech);
             positions.addAttribute(bond);
             positions.addAttribute(ext);
@@ -216,7 +233,11 @@ public class SreSpeech extends SreXML {
         }
         String bond = this.describeBond(this.analysis.
                                         getRichBond(connection.getConnector()).getStructure(), false);
-        String atom = this.describeAtomPosition(connection.getConnected());
+        RichStructure<?> structure = this.analysis.getRichStructure(connection.getConnected());
+        String atom = (structure instanceof RichAtom) ?
+            this.describeAtomPosition((RichAtom)structure) :
+            this.describeAtomSet((RichAtomSet)structure);
+        System.out.println("This atom: " + atom);
         return bond + " bonded to " + atom;
     }
 
@@ -252,7 +273,7 @@ public class SreSpeech extends SreXML {
     private String describeAtomPosition(String atom) {
         Integer position = this.analysis.getPosition(atom);
         if (position == null) { return "Not an atom."; }
-        return describeAtom(this.analysis.getRichAtom(atom)) 
+        return describeAtom(this.analysis.getRichAtom(atom))
             + " " + position.toString();
     }
 
