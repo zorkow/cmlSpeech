@@ -3,7 +3,6 @@
 package io.github.egonw;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -69,6 +68,19 @@ public class SreSpeech extends SreXML {
     }
 
 
+    /** 
+     * Turns a speech string into an attribute.
+     * 
+     * @param speech The speech string.
+     * 
+     * @return The newly created attribute.
+     */
+    private SreAttribute speechAttribute(String speech) {
+        return new SreAttribute(SreNamespace.Attribute.SPEECH, speech);
+    }
+
+
+    // Atom to speech translation.
     private void atom(RichAtom atom, RichAtomSet system) {
         String id = atom.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
@@ -77,6 +89,44 @@ public class SreSpeech extends SreXML {
     }
 
 
+    private SreAttribute speechAtom(RichAtom atom) {
+        return speechAttribute(describeAtomPosition(atom) + " "
+                               + this.describeHydrogenBonds(atom.getStructure()));
+    }
+
+
+    private String describeAtom(RichAtom atom) {
+        return AtomTable.lookup(atom.getStructure());
+    }
+
+
+    private String describeAtomPosition(RichAtom atom) {
+        Integer position = this.analysis.getPosition(atom.getId());
+        if (position == null) { return describeAtom(atom) + " unknown position."; }
+        return describeAtom(atom) + " " + position.toString();
+    }
+
+
+    private String describeHydrogenBonds(IAtom atom) {
+        String hydrogens = describeHydrogens(atom);
+        return hydrogens.equals("") ? "" :  
+            "bonded to " + hydrogens;
+    }
+
+    private String describeHydrogens(IAtom atom) {
+        Integer count = atom.getImplicitHydrogenCount();
+        switch (count) {
+        case 0:
+            return "";
+        case 1:
+            return count.toString() + " hydrogen";
+        default:
+            return count.toString() + " hydrogens";
+        }
+    }
+
+
+    // Bond to speech translation.
     private void bond(RichBond bond) {
         String id = bond.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.BOND, this.speechBond(bond));
@@ -86,6 +136,32 @@ public class SreSpeech extends SreXML {
     }
 
 
+    private SreAttribute speechBond(RichBond bond) {
+        return speechAttribute(this.describeBond(bond, false) + " bond");
+    }
+
+
+    private String describeBond(RichBond bond, Boolean ignoreSingle) {
+        return describeBond(bond.getStructure(), ignoreSingle);
+    }
+
+
+    private String describeBond(IBond bond, Boolean ignoreSingle) {
+        IBond.Order order = bond.getOrder();
+        if (ignoreSingle && order == IBond.Order.SINGLE) {
+            return "";
+        } else {
+            return describeBondOrder(order);
+        }
+    }
+
+
+    private String describeBondOrder(IBond.Order bond) {
+        return bond.toString().toLowerCase();
+    }
+
+
+    // AtomSet to speech translation.
     private void atomSet(RichAtomSet atomSet) {
         String id = atomSet.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
@@ -97,39 +173,6 @@ public class SreSpeech extends SreXML {
     private void atomSet(RichAtomSet atomSet, RichAtomSet superSystem) {
         atomSet(atomSet);
         this.describeConnections(superSystem, atomSet, atomSet.getId());
-    }
-
-
-    private SreAttribute speechAttribute(String speech) {
-        return new SreAttribute(SreNamespace.Attribute.SPEECH, speech);
-    }
-
-
-    private SreAttribute speechAtom(RichAtom atom) {
-        return speechAttribute(describeAtomPosition(atom) + " "
-                               + this.describeHydrogenBonds(atom.getStructure()));
-    }
-
-    private SreAttribute speechBond(RichBond bond) {
-        return speechAttribute(this.describeBond(bond, false) + " bond");
-    }
-
-
-    private String describeAtomSet(RichAtomSet atomSet) {
-        switch (atomSet.type) {
-        case MOLECULE:
-            return describeMolecule(atomSet);
-        case FUSED:
-            return describeFusedRing(atomSet);
-        case ALIPHATIC:
-            return describeAliphaticChain(atomSet);
-        case ISOLATED:
-            return describeIsolatedRing(atomSet);
-        case FUNCGROUP:
-            return describeFunctionalGroup(atomSet);
-        default:
-            return "";
-        }
     }
 
 
@@ -148,6 +191,24 @@ public class SreSpeech extends SreXML {
             break;
         }
         return speechAttribute(result);
+    }
+
+
+    private String describeAtomSet(RichAtomSet atomSet) {
+        switch (atomSet.type) {
+        case MOLECULE:
+            return describeMolecule(atomSet);
+        case FUSED:
+            return describeFusedRing(atomSet);
+        case ALIPHATIC:
+            return describeAliphaticChain(atomSet);
+        case ISOLATED:
+            return describeIsolatedRing(atomSet);
+        case FUNCGROUP:
+            return describeFunctionalGroup(atomSet);
+        default:
+            return "";
+        }
     }
 
 
@@ -180,6 +241,60 @@ public class SreSpeech extends SreXML {
 
     private String describeFunctionalGroup(RichAtomSet system) {
         return "Functional group " + system.name + ".";
+    }
+
+
+    private String describeReplacements(RichAtomSet system) {
+        String descr = "";
+        Iterator<String> iterator = system.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            RichAtom atom = this.analysis.getRichAtom(value);
+            if (!atom.isCarbon()) {
+                descr += " with " + this.describeAtom(atom) 
+                    + " at position "
+                    + system.getPosition(value).toString();
+            }
+        }
+        return descr;
+    }
+
+    
+   private String describeSubstitutions(RichAtomSet system) {
+        SortedSet<Integer> subst = new TreeSet<Integer>();
+        for (String atom : system.getConnectingAtoms()) {
+            subst.add(system.getPosition(atom));
+        }
+        switch (subst.size()) {
+        case 0:
+            return "";
+        case 1: 
+            return "Substitution at position " + subst.iterator().next();
+        default:
+            Joiner joiner = Joiner.on(" and ");
+            return "Substitutions at position " + joiner.join(subst);
+        }
+    }
+
+
+    private String describeMultiBonds(RichAtomSet system) {
+        Map<Integer, String> bounded = new TreeMap<Integer, String>();
+        for (IBond bond : system.getStructure().bonds()) {
+            String order = this.describeBond(bond, true);
+            if (order.equals("")) { continue; }
+            // TODO (sorge) Make this one safer!
+            Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
+            Integer atomA = system.getPosition(atoms.next());
+            Integer atomB = system.getPosition(atoms.next());
+            if (atomA > atomB) {
+                Integer aux = atomA;
+                atomA = atomB;
+                atomB = aux;
+            }
+            bounded.put(atomA, order + " bond between position " + atomA + " and " + atomB + ".");
+        }
+        Joiner joiner = Joiner.on(" ");
+        return joiner.join(bounded.values());
     }
 
 
@@ -246,7 +361,7 @@ public class SreSpeech extends SreXML {
         default:
             throw(new SreException("Unknown connection type in structure."));
         }
-        element.addAttribute(new SreAttribute(SreNamespace.Attribute.SPEECH, elementSpeech));
+        element.addAttribute(this.speechAttribute(elementSpeech));
         position.addAttribute(new SreAttribute(connAttr, connector));
         position.addAttribute(connSpeech);
         position.addAttribute(new SreAttribute(SreNamespace.Attribute.TYPE,
@@ -267,111 +382,5 @@ public class SreSpeech extends SreXML {
             this.describeAtomPosition(this.analysis.getRichAtom(connected)) :
             this.describeAtomSet(this.analysis.getRichAtomSet(connected));
         return bond + " bonded to " + structure;
-    }
-
-
-    private String describeBond(RichBond bond, Boolean ignoreSingle) {
-        return describeBond(bond.getStructure(), ignoreSingle);
-    }
-
-
-    private String describeBond(IBond bond, Boolean ignoreSingle) {
-        IBond.Order order = bond.getOrder();
-        if (ignoreSingle && order == IBond.Order.SINGLE) {
-            return "";
-        } else {
-            return describeBondOrder(order);
-        }
-    }
-
-
-    private String describeBondOrder(IBond.Order bond) {
-        return bond.toString().toLowerCase();
-    }
-
-
-    private String describeAtomPosition(RichAtom atom) {
-        Integer position = this.analysis.getPosition(atom.getId());
-        if (position == null) { return describeAtom(atom) + " unknown position."; }
-        return describeAtom(atom) + " " + position.toString();
-    }
-
-
-    private String describeAtom(RichAtom atom) {
-        return AtomTable.lookup(atom.getStructure());
-    }
-
-
-    private String describeHydrogenBonds(IAtom atom) {
-        String hydrogens = describeHydrogens(atom);
-        return hydrogens.equals("") ? "" :  
-            "bonded to " + hydrogens;
-    }
-
-    private String describeHydrogens(IAtom atom) {
-        Integer count = atom.getImplicitHydrogenCount();
-        switch (count) {
-        case 0:
-            return "";
-        case 1:
-            return count.toString() + " hydrogen";
-        default:
-            return count.toString() + " hydrogens";
-        }
-    }
-
-
-    private String describeReplacements(RichAtomSet system) {
-        String descr = "";
-        Iterator<String> iterator = system.iterator();
-        while (iterator.hasNext()) {
-            String value = iterator.next();
-            RichAtom atom = this.analysis.getRichAtom(value);
-            if (!atom.isCarbon()) {
-                descr += " with " + this.describeAtom(atom) 
-                    + " at position "
-                    + system.getPosition(value).toString();
-            }
-        }
-        return descr;
-    }
-
-    
-   private String describeSubstitutions(RichAtomSet system) {
-        SortedSet<Integer> subst = new TreeSet<Integer>();
-        for (String atom : system.getConnectingAtoms()) {
-            subst.add(system.getPosition(atom));
-        }
-        switch (subst.size()) {
-        case 0:
-            return "";
-        case 1: 
-            return "Substitution at position " + subst.iterator().next();
-        default:
-            Joiner joiner = Joiner.on(" and ");
-            return "Substitutions at position " + joiner.join(subst);
-        }
-    }
-
-
-
-    private String describeMultiBonds(RichAtomSet system) {
-        Map<Integer, String> bounded = new TreeMap<Integer, String>();
-        for (IBond bond : system.getStructure().bonds()) {
-            String order = this.describeBond(bond, true);
-            if (order.equals("")) { continue; }
-            // TODO (sorge) Make this one safer!
-            Iterator<String> atoms = this.analysis.getRichBond(bond).getComponents().iterator();
-            Integer atomA = system.getPosition(atoms.next());
-            Integer atomB = system.getPosition(atoms.next());
-            if (atomA > atomB) {
-                Integer aux = atomA;
-                atomA = atomB;
-                atomB = aux;
-            }
-            bounded.put(atomA, order + " bond between position " + atomA + " and " + atomB + ".");
-        }
-        Joiner joiner = Joiner.on(" ");
-        return joiner.join(bounded.values());
     }
 }
