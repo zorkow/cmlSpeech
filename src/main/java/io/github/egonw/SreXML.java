@@ -45,9 +45,7 @@ public abstract class SreXML {
     }
 
     public void toSreSet(String annotate, SreNamespace.Tag tag, ComponentsPositions positions) {
-        System.out.println(positions);
         for (String element : positions) {
-            System.out.println(element);
             this.annotations.appendAnnotation(annotate, tag, this.toSreElement(element));
         }
     }

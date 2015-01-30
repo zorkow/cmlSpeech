@@ -47,7 +47,6 @@ public class SreSpeech extends SreXML {
 
         // Describe the first level.
         for (Integer i = 1; i <= this.analysis.majorPath.size(); i++) {
-            System.out.println("Getting here " + i);
             String structure = this.analysis.majorPath.get(i);
             if (this.analysis.isAtom(structure)) {
                 this.atom(this.analysis.getRichAtom(structure), molecule);
@@ -57,7 +56,6 @@ public class SreSpeech extends SreXML {
                 // TODO (sorge) Deal with FUSED rings here.
                 // Describe the bottom level.
                 for (String atom : atomSet.componentPositions) {
-                    System.out.println(atom);
                     this.atom(this.analysis.getRichAtom(atom), atomSet);
                 }
             }
@@ -299,11 +297,9 @@ public class SreSpeech extends SreXML {
 
 
     private void describeConnections(RichAtomSet system, RichChemObject block, String id) {
-        System.out.println("Doing connections for: " + id);
         List<String> result = new ArrayList<String>();
         Integer count = 0;
         for (Connection connection : block.getConnections()) {
-            System.out.println(connection);
             String connected = connection.getConnected();
             if (!system.componentPositions.contains(connected)) {
                 continue;
