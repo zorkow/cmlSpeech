@@ -86,6 +86,7 @@ public class CMLEnricher {
             // TODO (sorge): Write to logger
             this.analysis.printPositions();
 
+            MolecularFormula.set(this.analysis.getAtomSets());
             this.appendAtomSets();
             if (Cli.hasOption("ann")) {
                 this.sreOutput = new SreOutput(this.analysis);
@@ -229,6 +230,7 @@ public class CMLEnricher {
             CMLAtomSet set = richSet.getCML(this.doc);
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
+            set.addAttribute(new SreAttribute("formula", richSet.molecularFormula));
             if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
                 set.addAttribute(new SreAttribute("name", richSet.name));
             } else {
@@ -253,8 +255,6 @@ public class CMLEnricher {
             this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
                     newcontainer));
             this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
-                    newcontainer));
-            this.executor.register(new CactusCallable(id, Cactus.Type.FORMULA,
                     newcontainer));
         }
     }
