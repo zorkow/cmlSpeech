@@ -48,8 +48,11 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
     public Type type;
     public CMLAtomSet cml;
-    // For functional groups.
+
+    public String iupac = "";
     public String name = "";
+    public String molecularFormula = "";
+    public String structuralFormula = "";
     
     private SortedSet<String> connectingAtoms = new TreeSet<String>(new CMLNameComparator());
 
