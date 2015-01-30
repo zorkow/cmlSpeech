@@ -60,8 +60,8 @@
             <bondStereo dictRef="cml:W">W</bondStereo>
         </bond>
     </bondArray>
-    <atomSet title="Aliphatic chain" id="as1" size="5" sre:formula="C5H10">a12 a9 a10 a13 a2</atomSet>
-    <atomSet title="Molecule" id="as2" size="6" sre:iupac="3-Methylpent-2-ene" sre:name="3-Methylpent-2-ene" sre:formula="C6H12">a1 a2 a9 a10 a12 a13</atomSet>
+    <atomSet title="Aliphatic chain" id="as1" size="5" sre:formula="C5H9">a12 a9 a10 a13 a2</atomSet>
+    <atomSet title="Molecule" id="as2" size="6" sre:formula="C6H12" sre:name="3-Methylpent-2-ene" sre:iupac="3-Methylpent-2-ene">a1 a2 a9 a10 a12 a13</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="Carbon 6 bonded to 3 hydrogens">
             <sre:atom>a1</sre:atom>

@@ -73,7 +73,7 @@ public class SreSpeech extends SreXML {
         String id = atom.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
-        this.describeBlockConnections(system, atom, id);
+        this.describeConnections(system, atom, id);
     }
 
 
@@ -96,7 +96,7 @@ public class SreSpeech extends SreXML {
 
     private void atomSet(RichAtomSet atomSet, RichAtomSet superSystem) {
         atomSet(atomSet);
-        this.describeBlockConnections(superSystem, atomSet, atomSet.getId());
+        this.describeConnections(superSystem, atomSet, atomSet.getId());
     }
 
 
@@ -140,9 +140,10 @@ public class SreSpeech extends SreXML {
             break;
         case ALIPHATIC:
         case ISOLATED:
-        case FUSED:
-            result += " " + describeBlock(atomSet);
+            result += " " + this.describeMultiBonds(atomSet);
+            result += " " + this.describeSubstitutions(atomSet);
             break;
+        case FUSED:
         case FUNCGROUP:
             break;
         }
@@ -182,21 +183,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeBlock(RichAtomSet system) {
-        String descr = this.describeMultiBonds(system);
-        descr += " " + this.describeSubstitutions(system);
-        return descr;
-    }
-
-
-    private void describeConnections(RichChemObject structure) {
-        String id = structure.getId();
-        for (Connection connection : structure.getConnections()) {
-            
-        }
-    }
-
-    private void describeBlockConnections(RichAtomSet system, RichChemObject block, String id) {
+    private void describeConnections(RichAtomSet system, RichChemObject block, String id) {
         System.out.println("Doing connections for: " + id);
         List<String> result = new ArrayList<String>();
         Integer count = 0;
@@ -331,15 +318,6 @@ public class SreSpeech extends SreXML {
         default:
             return count.toString() + " hydrogens";
         }
-    }
-
-
-    private SreElement describeComponents(List<String> components) {
-        SreElement element = new SreElement(SreNamespace.Tag.COMPONENT);
-        for (String component : components) {
-            element.appendChild(this.toSreElement(component));
-        }
-        return element;
     }
 
 
