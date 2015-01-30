@@ -119,6 +119,8 @@ public class SreSpeech extends SreXML {
         switch (atomSet.type) {
         case MOLECULE:
             return describeMolecule(atomSet);
+        case FUSED:
+            return describeFusedRing(atomSet);
         case ALIPHATIC:
             return describeAliphaticChain(atomSet);
         case ISOLATED:
@@ -132,13 +134,13 @@ public class SreSpeech extends SreXML {
 
 
     private SreAttribute speechAtomSet(RichAtomSet atomSet) {
-            System.out.println("Default..." + atomSet.type);
         String result = describeAtomSet(atomSet);
         switch (atomSet.type) {
         case MOLECULE:
             break;
         case ALIPHATIC:
         case ISOLATED:
+        case FUSED:
             result += " " + describeBlock(atomSet);
             break;
         case FUNCGROUP:
@@ -160,6 +162,13 @@ public class SreSpeech extends SreXML {
                system.getStructure().getAtomCount();
     }
     
+
+    private String describeFusedRing(RichAtomSet system) {
+        String descr = "Fused ring system with " + system.getSubSystems().size() + " subrings.";
+        descr += " " + this.describeReplacements(system);
+        return descr;
+    }
+
 
     private String describeIsolatedRing(RichAtomSet system) {
         String descr = "Ring with " + system.getStructure().getAtomCount() + " elements.";
