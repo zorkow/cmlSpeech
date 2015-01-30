@@ -63,7 +63,7 @@ public class StructuralAnalysis {
     private StructuralGraph minorGraph;
     private StructuralGraph recursiveGraph;
 
-    private ComponentsPositions majorPath;
+    public ComponentsPositions majorPath;
     private ComponentsPositions minorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
@@ -111,6 +111,7 @@ public class StructuralAnalysis {
     }
 
 
+    // TODO (sorge) Make these methods safe!
     public RichAtom getRichAtom(String id) {
         return (RichAtom)StructuralAnalysis.richAtoms.get(id);
     }

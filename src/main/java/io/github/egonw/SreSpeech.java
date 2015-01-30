@@ -18,6 +18,8 @@ import nu.xom.Element;
 import nu.xom.Node;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
+import org.openscience.cdk.interfaces.IMolecularFormula;
+import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 /**
  *
@@ -40,20 +42,40 @@ public class SreSpeech extends SreXML {
 
     @Override
     public void compute() {
-        this.analysis.getAtoms().stream().forEach(this::atom);
+        // TODO (sorge) This should not be set here, but during positions computations!
+        RichAtomSet molecule = this.analysis.getRichAtomSet(this.analysis.getMolecule().getID());
+        molecule.componentPositions = this.analysis.majorPath;
+        // Describe the molecule.
+        this.atomSet(molecule);
+
+        // Describe the first level.
+        for (Integer i = 1; i <= this.analysis.majorPath.size(); i++) {
+            System.out.println("Getting here " + i);
+            String structure = this.analysis.majorPath.get(i);
+            if (this.analysis.isAtom(structure)) {
+                this.atom(this.analysis.getRichAtom(structure), molecule);
+            } else {
+                RichAtomSet atomSet = this.analysis.getRichAtomSet(structure);
+                this.atomSet(atomSet, molecule);
+                // TODO (sorge) Deal with FUSED rings here.
+                // Describe the bottom level.
+                for (String atom : atomSet.componentPositions) {
+                    System.out.println(atom);
+                    this.atom(this.analysis.getRichAtom(atom), atomSet);
+                }
+            }
+        }
+
+        // Finally add the bonds.
         this.analysis.getBonds().stream().forEach(this::bond);
-        this.analysis.getAtomSets().stream().forEach(this::atomSet);
     }
 
 
-    private void atom(RichAtom atom) {
-        // This is all rather naive!
-        RichAtomSet system = this.analysis.getRichAtomSet((atom.getSuperSystems().iterator()).next());
+    private void atom(RichAtom atom, RichAtomSet system) {
         String id = atom.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
-        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atom.getSubSystems());
-        this.describeAtomConnections2(system, atom, id);
+        this.describeBlockConnections(system, atom, id);
     }
 
 
@@ -70,9 +92,13 @@ public class SreSpeech extends SreXML {
         String id = atomSet.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atomSet.getSuperSystems());
-        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getSubSystems());
+        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.componentPositions);
         this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
-        this.describeConnections(atomSet);
+    }
+
+    private void atomSet(RichAtomSet atomSet, RichAtomSet superSystem) {
+        atomSet(atomSet);
+        this.describeBlockConnections(superSystem, atomSet, atomSet.getId());
     }
 
 
@@ -99,6 +125,8 @@ public class SreSpeech extends SreXML {
             return describeAliphaticChain(atomSet);
         case ISOLATED:
             return describeIsolatedRing(atomSet);
+        case FUNCGROUP:
+            return describeFunctionalGroup(atomSet);
         default:
             return "";
         }
@@ -106,15 +134,17 @@ public class SreSpeech extends SreXML {
 
 
     private SreAttribute speechAtomSet(RichAtomSet atomSet) {
+            System.out.println("Default..." + atomSet.type);
         String result = describeAtomSet(atomSet);
         switch (atomSet.type) {
         case MOLECULE:
             break;
         case ALIPHATIC:
-            result += " " + describeBlock(atomSet);
-            break;
         case ISOLATED:
             result += " " + describeBlock(atomSet);
+            break;
+        case FUNCGROUP:
+            break;
         }
         return speechAttribute(result);
     }
@@ -140,6 +170,13 @@ public class SreSpeech extends SreXML {
     }
 
 
+    private String describeFunctionalGroup(RichAtomSet system) {
+        IMolecularFormula form = MolecularFormulaManipulator.getMolecularFormula(system.getStructure());
+        System.out.println("Functional Group formula: " + MolecularFormulaManipulator.getString(form));
+        return "Functional group " + system.name + ".";
+    }
+
+
     private String describeBlock(RichAtomSet system) {
         String descr = this.describeMultiBonds(system);
         descr += " " + this.describeSubstitutions(system);
@@ -154,91 +191,127 @@ public class SreSpeech extends SreXML {
         }
     }
 
-    private void describeAtomConnections(RichAtomSet system, RichAtom atom, String id) {
-        List<String> result = new ArrayList<String>();
-        for (Connection connection : atom.getConnections()) {
-            String connected = connection.getConnected();
-            SreElement element = null;
-            if (this.analysis.isAtom(connected)) {
-                element = new SreElement(this.analysis.getRichAtom(connected).getStructure());
-                } else {
-                element = new SreElement(this.analysis.getRichAtomSet(connected).getStructure());
-                }
-            SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
-            SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
-            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
-            element.addAttribute(speech);
-            element.addAttribute(bond);
-            element.addAttribute(ext);
-            this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
-        }
-                                          
-    }
+    // private void describeAtomConnectionsOld(RichAtomSet system, RichAtom atom, String id) {
+    //     List<String> result = new ArrayList<String>();
+    //     for (Connection connection : atom.getConnections()) {
+    //         String connected = connection.getConnected();
+    //         SreElement element = null;
+    //         if (this.analysis.isAtom(connected)) {
+    //             element = new SreElement(this.analysis.getRichAtom(connected).getStructure());
+    //             } else {
+    //             element = new SreElement(this.analysis.getRichAtomSet(connected).getStructure());
+    //             }
+    //         SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
+    //         SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
+    //         SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE, "internal");
+    //         element.addAttribute(speech);
+    //         element.addAttribute(bond);
+    //         element.addAttribute(ext);
+    //         this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
+    //     }
+    // }
         
 
-    private void describeAtomConnections2(RichAtomSet system, RichAtom atom, String id) {
+    private void describeBlockConnections(RichAtomSet system, RichChemObject block, String id) {
+        System.out.println("Doing connections for: " + id);
         List<String> result = new ArrayList<String>();
         Integer count = 0;
-        for (Connection connection : atom.getConnections()) {
-            count++;
+        for (Connection connection : block.getConnections()) {
+            System.out.println(connection);
             String connected = connection.getConnected();
+            if (!system.componentPositions.contains(connected)) {
+                continue;
+            }
+            count++;
+
+            // Build the XML elements structure.
             SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+            SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
+
+            // Add type depended attributes.
+            describeConnection(system, connection, element, positions);
+            
             if (this.analysis.isAtom(connected)) {
                 element.appendChild(new SreElement(this.analysis.getRichAtom(connected).getStructure()));
                 } else {
                 element.appendChild(new SreElement(this.analysis.getRichAtomSet(connected).getStructure()));
                 }
-            SreAttribute speech = new SreAttribute(SreNamespace.Attribute.SPEECH, describeConnectingBond(system, connection));
-            SreElement via = new SreElement(SreNamespace.Tag.VIA);
-            SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
-            
-            SreAttribute bond = new SreAttribute(SreNamespace.Attribute.BOND, connection.getConnector());
-            SreAttribute ext = new SreAttribute(SreNamespace.Attribute.TYPE,
-                                                system.getExternalBonds().contains(connection.getConnector()) ?
-                                                "external" : "internal");
-            element.addAttribute(speech);
-            positions.addAttribute(bond);
-            positions.addAttribute(ext);
-            positions.addAttribute(this.speechBond(this.analysis.getRichBond(connection.getConnector())));
+
+            // Putting it all together.
             SreElement position = new SreElement(SreNamespace.Tag.POSITION, count.toString());
             positions.appendChild(position);
+            SreElement via = new SreElement(SreNamespace.Tag.VIA);
             via.appendChild(positions);
             element.appendChild(via);
             this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
         }
     }
+
+    
+    // private String describeAtomConnections(RichAtomSet system, String atom) {
+    //     return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
+    // }
         
 
-    private String describeAtomConnections(RichAtomSet system, String atom) {
-        return this.describeAtomConnections(system, this.analysis.getRichAtom(atom));
-    }
-        
+    // private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
+    //     List<String> result = new ArrayList<String>();
+    //     for (Connection connection : atom.getConnections()) {
+    //         Logger.logging("Connection in molecule:" + connection.toString());
+    //         result.add(describeConnectingBond(system, connection));
+    //     }
+    //     Joiner joiner = Joiner.on(" ");
+    //     return describeAtomPosition(atom) + " "
+    //         + this.describeHydrogenBonds(atom.getStructure()) + " "
+    //         + joiner.join(result);
+    // }
+    private void describeConnection(RichAtomSet system, Connection connection,
+                                      SreElement element, SreElement position) {
+        String connector = connection.getConnector();
+        String connected = connection.getConnected();
 
-    private String describeAtomConnections(RichAtomSet system, RichAtom atom) {
-        List<String> result = new ArrayList<String>();
-        for (Connection connection : atom.getConnections()) {
-            Logger.logging("Connection in molecule:" + connection.toString());
-            result.add(describeConnectingBond(system, connection));
+        String elementSpeech = "";
+        SreAttribute connSpeech;
+        SreNamespace.Attribute connAttr;
+        switch(connection.getType()) {
+        case CONNECTINGBOND:
+            elementSpeech = describeConnectingBond(system, connector, connected);
+            connAttr = SreNamespace.Attribute.BOND;
+            connSpeech = this.speechBond(this.analysis.getRichBond(connector));
+            break;
+        case SHAREDATOM:
+            elementSpeech = describeSharedAtom(system, connector, connected);
+            connAttr = SreNamespace.Attribute.ATOM;
+            connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
+            break;
+        case SHAREDBOND:
+            // elementSpeech = ???
+            connAttr = SreNamespace.Attribute.BOND;
+            connSpeech = this.speechBond(this.analysis.getRichBond(connector));
+            break;
+        default:
+            throw(new SreException("Unknown connection type in structure."));
         }
-        Joiner joiner = Joiner.on(" ");
-        return describeAtomPosition(atom) + " "
-            + this.describeHydrogenBonds(atom.getStructure()) + " "
-            + joiner.join(result);
+        element.addAttribute(new SreAttribute(SreNamespace.Attribute.SPEECH, elementSpeech));
+        position.addAttribute(new SreAttribute(connAttr, connector));
+        position.addAttribute(connSpeech);
+        position.addAttribute(new SreAttribute(SreNamespace.Attribute.TYPE,
+                                               connection.getType().toString().toLowerCase()));
     }
 
-    private String describeConnectingBond(RichAtomSet system, Connection connection) {
-        // TODO (sorge) Make this one safer!
-        if (connection.getType() != Connection.Type.CONNECTINGBOND) {
-            throw(new SreException("Wrong connection type in structure."));
-        }
-        String bond = this.describeBond(this.analysis.
-                                        getRichBond(connection.getConnector()).getStructure(), false);
-        RichStructure<?> structure = this.analysis.getRichStructure(connection.getConnected());
-        String atom = (structure instanceof RichAtom) ?
-            this.describeAtomPosition((RichAtom)structure) :
-            this.describeAtomSet((RichAtomSet)structure);
-        System.out.println("This atom: " + atom);
-        return bond + " bonded to " + atom;
+
+    private String describeSharedAtom(RichAtomSet system, String connector, String connected) {
+        String atom = this.describeAtom(this.analysis.getRichAtom(connector));
+        String structure = this.describeAtomSet(this.analysis.getRichAtomSet(connected));
+        return "spiro atom " + atom + " to " + structure;
+    }
+
+
+    private String describeConnectingBond(RichAtomSet system, String connector, String connected) {
+        String bond = this.describeBond(this.analysis.getRichBond(connector), false);
+        String structure = this.analysis.isAtom(connected) ?
+            this.describeAtomPosition(this.analysis.getRichAtom(connected)) :
+            this.describeAtomSet(this.analysis.getRichAtomSet(connected));
+        return bond + " bonded to " + structure;
     }
 
 
@@ -270,12 +343,12 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeAtomPosition(String atom) {
-        Integer position = this.analysis.getPosition(atom);
-        if (position == null) { return "Not an atom."; }
-        return describeAtom(this.analysis.getRichAtom(atom))
-            + " " + position.toString();
-    }
+    // private String describeAtomPosition(String atom) {
+    //     Integer position = this.analysis.getPosition(atom);
+    //     if (position == null) { return "Not an atom."; }
+    //     return describeAtom(this.analysis.getRichAtom(atom))
+    //         + " " + position.toString();
+    // }
 
 
     private String describeAtom(RichAtom atom) {
@@ -318,10 +391,10 @@ public class SreSpeech extends SreXML {
     //     return bonds;
     // };
 
-   private SreElement describeComponents(RichStructure<?> system) {
-       return this.describeComponents
-           (Lists.newArrayList(system.getComponents()));
-    }
+   // private SreElement describeComponents(RichStructure<?> system) {
+   //     return this.describeComponents
+   //         (Lists.newArrayList(system.getComponents()));
+   //  }
 
     private SreElement describeComponents(List<String> components) {
         SreElement element = new SreElement(SreNamespace.Tag.COMPONENT);
@@ -354,9 +427,9 @@ public class SreSpeech extends SreXML {
         return descr;
     }
 
-    private void describeRingStepwise(RichAtomSet system) {
-        this.describeAliphaticChainStepwise(system);
-    }
+    // private void describeRingStepwise(RichAtomSet system) {
+    //     this.describeAliphaticChainStepwise(system);
+    // }
 
     
    private String describeSubstitutions(RichAtomSet system) {
@@ -398,27 +471,27 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private void describeAliphaticChainStepwise(RichAtomSet system) {
-        //for (int i = 1; i <= system.atomPositions.size(); i++) {            
-            // this.description.addDescription
-            //     (3,
-            //      this.describeAtomConnections(system, system.getPositionAtom(i)),
-            //      // This is temporary!
-            //      this.describeAtomComponents(system.getPositionAtom(i)));
-        //}
-    }
+    // private void describeAliphaticChainStepwise(RichAtomSet system) {
+    //     for (int i = 1; i <= system.atomPositions.size(); i++) {            
+    //         this.description.addDescription
+    //             (3,
+    //              this.describeAtomConnections(system, system.getPositionAtom(i)),
+    //              // This is temporary!
+    //              this.describeAtomComponents(system.getPositionAtom(i)));
+    //     }
+    // }
 
 
     // This is temporary!
-    private SreElement describeAtomComponents(String atom) {
-        List<String> components = new ArrayList<String>();
-        components.add(atom);
-        RichAtom richAtom = this.analysis.getRichAtom(atom);
-        for (Connection connection : richAtom.getConnections()) {
-            components.add(connection.getConnector());
-            components.add(connection.getConnected());
-        }
-        return this.describeComponents(components);
-    }
+    // private SreElement describeAtomComponents(String atom) {
+    //     List<String> components = new ArrayList<String>();
+    //     components.add(atom);
+    //     RichAtom richAtom = this.analysis.getRichAtom(atom);
+    //     for (Connection connection : richAtom.getConnections()) {
+    //         components.add(connection.getConnector());
+    //         components.add(connection.getConnected());
+    //     }
+    //     return this.describeComponents(components);
+    // }
 
 }

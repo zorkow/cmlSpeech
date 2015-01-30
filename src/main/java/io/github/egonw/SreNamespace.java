@@ -94,6 +94,7 @@ public class SreNamespace {
 
         SPEECH ("speech"),
         ORDER ("order"),
+        ATOM ("bond"),
         BOND ("bond"),
         TYPE ("type"),
         ;
