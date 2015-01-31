@@ -59,10 +59,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public ComponentsPositions componentPositions = new ComponentsPositions();
     public Integer offset = 0;
 
-    // To remove!
-    public Set<IAtom> atomConnections = new HashSet<IAtom>();
-    public Set<IAtom> setConnections = new HashSet<IAtom>();
-
 
     private RichAtomSet (IAtomContainer container) {
         super(container);
@@ -111,15 +107,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
 
-    public void addConnection(IAtom atom, RichAtomSet set, IBond bond) {
-        this.setConnections.add(atom);
-    }
-
-    public void addConnection(IAtom atom, IAtom extAtom, IBond bond) {
-        this.atomConnections.add(atom);
-    }
-    
-
     /**
      * Computes positions of atoms or substructures in the atom set.
      * We use the following heuristical preferences:
@@ -155,6 +142,8 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
 
 
     private IAtom getSinglyConnectedAtom() {
+        // TODO (sorge) Choose start wrt. position of internal/external
+        // substitution.
         for (IAtom atom : this.getStructure().atoms()) {
             if (this.getStructure().getConnectedAtomsList(atom).size() <= 1) {
                 return atom;
@@ -184,7 +173,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
             startAtom = getSinglyConnectedAtom();
         }
         if (startAtom == null) {
-            throw new SreException("Aliphatic chain without start atom!");
+            throw new SreException("Functional group without start atom!");
         }
         this.walkGroup(startAtom);
     }
@@ -220,16 +209,12 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
     private void computeAtomPositionsIsolated() {
-        IAtom startAtom;
-        if (this.atomConnections.size() == 0 && setConnections.size() == 0) {
-            List<IAtom> atoms = Lists.newArrayList(this.getStructure().atoms());
-            startAtom = atoms.get(0);
-        } else if (this.atomConnections.size() == 0) {
-            startAtom = this.setConnections.iterator().next();
-        } else {
-            startAtom = this.atomConnections.iterator().next();
-        }
-        this.walkRing(startAtom, new ArrayList<IAtom>());
+        // TODO (sorge) Choose start wrt. replacements, preferring O, then by
+        // weight. Then wrt. position OH substitution then other substitutions
+        // by weight. For direction: choose second by smallest distance to
+        // first!
+        this.walkRing(this.getStructure().atoms().iterator().next(),
+                      new ArrayList<IAtom>());
     }
 
     private void walkRing(IAtom atom, List<IAtom> visited) {
