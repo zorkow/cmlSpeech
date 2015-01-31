@@ -38,6 +38,9 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
+import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.Multiset;
+import java.util.NavigableSet;
 
 /**
  *
@@ -464,6 +467,8 @@ public class StructuralAnalysis {
     /** Computes bridge atoms and bonds for structures that share components. */
     private void sharedComponents() {
         for (String atomSet : StructuralAnalysis.richAtomSets.keySet()) {
+            TreeMultimap<String, String> connectionsSet =
+                TreeMultimap.create(new CMLNameComparator(), new CMLNameComparator());
             RichAtomSet richAtomSet = this.getRichAtomSet(atomSet);
             for (String component : richAtomSet.getComponents()) {
                 RichStructure<?> richComponent = this.getRichStructure(component);
@@ -475,26 +480,43 @@ public class StructuralAnalysis {
                         context.equals(atomSet)) {
                         continue;
                     }
-                    // TODO (sorge) Refactor:
-                    // Add spiro atom
-                    // create lists of bonds and atoms
-                    // take bonds components
-                    // intersect with atoms -> shared atoms
-                    // setdifference from atoms -> spiro atoms
-                    //
-                    if (this.isBond(component)) {
-                        richAtomSet.getConnections().add
-                            (new Connection(Connection.Type.SHAREDBOND, component, context));
-                    } else {
-                        richAtomSet.getConnections().add
-                            (new Connection(Connection.Type.SHAREDATOM, component, context));
-                    }
+                    connectionsSet.put(context, component);
                 }
             }
+            this.makeConnections(richAtomSet, connectionsSet);
         }
     }
 
+
+    private void makeConnections(RichAtomSet atomSet, TreeMultimap<String, String> connectionsSet) {
+        for (String key : connectionsSet.keySet()) {
+            NavigableSet<String> allConnections = connectionsSet.get(key);
+            SortedSet<String> sharedAtoms = new TreeSet<String>(new CMLNameComparator());
+            for (String bond : allConnections.descendingSet()) {
+                if (!this.isBond(bond)) {
+                    break;
+                }
+                atomSet.getConnections().add
+                    (new Connection(Connection.Type.SHAREDBOND, bond, key));
+                for (IAtom atom : this.getRichBond(bond).getStructure().atoms()) {
+                    sharedAtoms.add(atom.getID());
+                }
+            }
+            for (String shared : sharedAtoms) {
+                atomSet.getConnections().add
+                    (new Connection(Connection.Type.SHAREDATOM, shared, key));
+            }
+            for (String connection : Sets.difference(allConnections, sharedAtoms)) {
+                if (!this.isAtom(connection)) {
+                   break;
+                }
+                atomSet.getConnections().add
+                    (new Connection(Connection.Type.SPIROATOM, connection, key));
+            }
+        }
+    }
     
+
     /**
      * Computes the siblings of this atom set if it is a subring.
      * @param atomSet The given atom set.

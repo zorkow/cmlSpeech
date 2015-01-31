@@ -345,6 +345,12 @@ public class SreSpeech extends SreXML {
             connSpeech = this.speechBond(this.analysis.getRichBond(connector));
             break;
         case SHAREDATOM:
+            // TODO (sorge) Different description for shared atoms!
+            elementSpeech = describeSharedAtom(system, connector, connected);
+            connAttr = SreNamespace.Attribute.ATOM;
+            connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
+            break;
+        case SPIROATOM:
             elementSpeech = describeSharedAtom(system, connector, connected);
             connAttr = SreNamespace.Attribute.ATOM;
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));

@@ -60,6 +60,7 @@ public class SreNamespace {
         CONNECTIONS ("connections"),
         SHAREDBOND ("sharedBond"),
         SHAREDATOM ("sharedAtom"),
+        SPIROATOM ("spiroAtom"),
         CONNECTION ("connection"),
 
         DESCRIPTIONS ("descriptions"),

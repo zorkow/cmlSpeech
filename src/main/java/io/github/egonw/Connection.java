@@ -26,6 +26,7 @@ public class Connection implements Comparator<Connection>, Comparable<Connection
         CONNECTINGBOND ("connectingBond"),
         SHAREDBOND ("sharedBond"),
         SHAREDATOM ("sharedAtom"),
+        SPIROATOM ("spiroAtom"),
         ;
 
         public final String type;
@@ -74,8 +75,11 @@ public class Connection implements Comparator<Connection>, Comparable<Connection
             }
             return comparison;
         }
-        if (con1.type.equals(Connection.Type.SHAREDATOM) || 
-            (con1.type.equals(Connection.Type.SHAREDBOND) && 
+        if (con1.type.equals(Connection.Type.SPIROATOM) ||
+            (con1.type.equals(Connection.Type.SHAREDATOM) &&
+             !con2.type.equals(Connection.Type.SPIROATOM)) || 
+            (con1.type.equals(Connection.Type.SHAREDBOND) &&
+             !con2.type.equals(Connection.Type.SPIROATOM) &&
              !con2.type.equals(Connection.Type.SHAREDATOM))) {
             return -1;
         }
