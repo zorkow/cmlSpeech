@@ -465,9 +465,7 @@ public class StructuralAnalysis {
     private void sharedComponents() {
         for (String atomSet : StructuralAnalysis.richAtomSets.keySet()) {
             RichAtomSet richAtomSet = this.getRichAtomSet(atomSet);
-            Set<String> internalComponents = Sets.difference
-                (richAtomSet.getComponents(), StructuralAnalysis.richAtomSets.keySet());
-            for (String component : internalComponents) {
+            for (String component : richAtomSet.getComponents()) {
                 RichStructure<?> richComponent = this.getRichStructure(component);
                 Set<String> contexts = Sets.intersection
                     (richComponent.getContexts(), StructuralAnalysis.richAtomSets.keySet());
@@ -477,7 +475,14 @@ public class StructuralAnalysis {
                         context.equals(atomSet)) {
                         continue;
                     }
-                    if(this.isBond(component)) {
+                    // TODO (sorge) Refactor:
+                    // Add spiro atom
+                    // create lists of bonds and atoms
+                    // take bonds components
+                    // intersect with atoms -> shared atoms
+                    // setdifference from atoms -> spiro atoms
+                    //
+                    if (this.isBond(component)) {
                         richAtomSet.getConnections().add
                             (new Connection(Connection.Type.SHAREDBOND, component, context));
                     } else {
