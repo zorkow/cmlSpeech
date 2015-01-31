@@ -477,7 +477,7 @@ public class StructuralAnalysis {
                         context.equals(atomSet)) {
                         continue;
                     }
-                    if(this.isBond(context)) {
+                    if(this.isBond(component)) {
                         richAtomSet.getConnections().add
                             (new Connection(Connection.Type.SHAREDBOND, component, context));
                     } else {
