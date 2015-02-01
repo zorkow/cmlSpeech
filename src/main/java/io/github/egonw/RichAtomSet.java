@@ -277,4 +277,10 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public CMLAtomSet getCML() {
         return this.cml;
     }
+
+    public static boolean isRing(RichAtomSet atomSet) {
+        return atomSet.type == RichAtomSet.Type.FUSED ||
+            atomSet.type == RichAtomSet.Type.ISOLATED ||
+            atomSet.type == RichAtomSet.Type.SMALLEST;
+    }
 }

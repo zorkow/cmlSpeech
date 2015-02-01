@@ -351,7 +351,7 @@ public class SreSpeech extends SreXML {
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
             break;
         case SPIROATOM:
-            elementSpeech = describeSharedAtom(system, connector, connected);
+            elementSpeech = describeSpiroAtom(system, connector, connected);
             connAttr = SreNamespace.Attribute.ATOM;
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
             break;
@@ -374,7 +374,18 @@ public class SreSpeech extends SreXML {
     private String describeSharedAtom(RichAtomSet system, String connector, String connected) {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
         String structure = this.describeAtomSet(this.analysis.getRichAtomSet(connected));
-        return "spiro atom " + atom + " to " + structure;
+        return "bridge atom " + atom + " to " + structure;
+    }
+
+
+    private String describeSpiroAtom(RichAtomSet system, String connector, String connected) {
+        String atom = this.describeAtom(this.analysis.getRichAtom(connector));
+        RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
+        String structure = this.describeAtomSet(connectedSet);
+        if (RichAtomSet.isRing(system) && (RichAtomSet.isRing(connectedSet))) {
+            return "spiro atom " + atom + " to " + structure;
+        }
+        return "shared " + atom + " atom with " + structure;
     }
 
 
