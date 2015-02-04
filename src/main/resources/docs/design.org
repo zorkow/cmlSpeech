@@ -53,7 +53,7 @@ c c c o c    O is 1 but at position 4.
       + bond: empty
       + atom: all bonds
    4. Connections: Triples of 
-      - type: shared atom, shared bond, or connecting bond
+      - type: shared atom, shared bond, spiro atom, or connecting bond 
       - element: shared atom or bond or the external bond that connects
       - connected structure: an atom or a atom set
 
@@ -63,3 +63,23 @@ c c c o c    O is 1 but at position 4.
       + atom: can only have connecting bond
       + atomset: can have all three
 
+* Testing
+** Structures we are interested in
+*** Structures from the books
+*** Simple ring structures
+**** with OH substitution:
+**** with other substitutions:
+**** with O replacement:
+**** with other replacement:
+*** Multi ring structures
+*** Complex fused rings: Sterane, US06358966-20020319-C00001
+*** Inner rings: asphaltenes, coronene, hexahelicene, corannulene
+    http://www.chemcomp.com/journal/depictor.htm
+** We need image, mol, svg for all.
+** Testing cycle:
+*** image to mol for reimplementation
+*** mol to simple cml for cmlSpeech
+*** cml to svg for cdk-renderer
+*** cml to annotated cml for cmlSpeech
+** Some of the internet images:
+*** Rings: 7.tif
