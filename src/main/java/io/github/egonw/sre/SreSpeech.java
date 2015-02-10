@@ -42,7 +42,7 @@ public class SreSpeech extends SreXML {
         this.compute();
     }
 
-    SreSpeech(StructuralAnalysis analysis, Document document) {
+    public SreSpeech(StructuralAnalysis analysis, Document document) {
         super(analysis);
         this.doc = document;
         this.compute();

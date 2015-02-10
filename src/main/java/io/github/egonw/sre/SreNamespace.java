@@ -12,7 +12,7 @@ public class SreNamespace {
 
     private static volatile SreNamespace instance = null;
 
-    protected SreNamespace() {
+    public SreNamespace() {
     }
 
     public static SreNamespace getInstance() {

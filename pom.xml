@@ -112,7 +112,7 @@
       <configuration>
 	<programs>
 	  <program>
-	    <mainClass>io.github.egonw.App</mainClass>
+	    <mainClass>io.github.egonw.base.App</mainClass>
 	    <name>enrich</name>
 	  </program>
 	</programs>

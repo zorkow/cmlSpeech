@@ -11,12 +11,12 @@ import nu.xom.Element;
 
 public class SreAttribute extends Attribute {
  
-    SreAttribute(String localName, String value) {
+    public SreAttribute(String localName, String value) {
         super(SreNamespace.getInstance().prefix + ":" + localName,
               SreNamespace.getInstance().uri, value);
     }
 
-    SreAttribute(SreNamespace.Attribute attr, String value) {
+    public SreAttribute(SreNamespace.Attribute attr, String value) {
         super(SreNamespace.getInstance().prefix + ":" + attr.attribute,
               SreNamespace.getInstance().uri, value);
     }

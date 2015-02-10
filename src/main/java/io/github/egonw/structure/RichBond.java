@@ -21,7 +21,7 @@ import org.openscience.cdk.interfaces.IBond;
 
 public class RichBond extends RichChemObject {
 
-    RichBond(IBond structure) {
+    public RichBond(IBond structure) {
         super(structure);
 
         for (IAtom atom : structure.atoms()) {

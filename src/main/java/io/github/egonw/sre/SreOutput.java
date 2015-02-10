@@ -52,7 +52,7 @@ import org.openscience.cdk.interfaces.IAtom;
 
 public class SreOutput extends SreXML {
 
-    SreOutput(StructuralAnalysis analysis) {
+    public SreOutput(StructuralAnalysis analysis) {
         super(analysis);
         this.compute();
     }

@@ -19,7 +19,7 @@ import org.openscience.cdk.interfaces.IAtom;
 
 public class RichAtom extends RichChemObject {
 
-    RichAtom(IAtom structure) {
+    public RichAtom(IAtom structure) {
         super(structure);
     };
 

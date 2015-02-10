@@ -47,7 +47,7 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     }
 
 
-    StructuralGraph(List<RichAtomSet> atomSets, List<RichAtom> singletonAtoms) {
+    public StructuralGraph(List<RichAtomSet> atomSets, List<RichAtom> singletonAtoms) {
         super(StructuralEdge.class);
         this.structures = new ArrayList<RichStructure<?>>(atomSets);
         this.structures.addAll(singletonAtoms); 
@@ -55,7 +55,7 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     }
 
 
-    StructuralGraph(List<RichStructure<?>> structures) {
+    public StructuralGraph(List<RichStructure<?>> structures) {
         super(StructuralEdge.class);
         this.structures = structures;
         this.init();
