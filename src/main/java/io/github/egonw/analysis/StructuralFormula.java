@@ -1,6 +1,5 @@
-package io.github.egonw.graph;
+package io.github.egonw.analysis;
 
-import io.github.egonw.analysis.StructuralAnalysis;
 import io.github.egonw.structure.ComponentsPositions;
 import io.github.egonw.structure.Connection;
 import io.github.egonw.structure.RichAtom;

@@ -12,10 +12,10 @@ package io.github.egonw.base;
 
 import io.github.egonw.analysis.MolecularFormula;
 import io.github.egonw.analysis.StructuralAnalysis;
+import io.github.egonw.analysis.StructuralFormula;
 import io.github.egonw.cactus.Cactus;
 import io.github.egonw.cactus.CactusCallable;
 import io.github.egonw.cactus.CactusExecutor;
-import io.github.egonw.graph.StructuralFormula;
 import io.github.egonw.sre.SreAttribute;
 import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreOutput;
