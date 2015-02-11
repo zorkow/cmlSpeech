@@ -12,7 +12,7 @@
 package io.github.egonw.connection;
 
 /**
- *
+ * Enum class for connection types.
  */
 
 public enum ConnectionType {

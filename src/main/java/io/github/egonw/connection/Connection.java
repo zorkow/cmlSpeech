@@ -14,22 +14,16 @@ package io.github.egonw.connection;
 
 /**
  * Connections consist of
- * -- a type string: shared atom, shared bond, connecting bond
  * -- the connecting structure: name of either bond or atom
  * -- the connected structure: name of an atom or an atom set
  */
 
-public class Connection extends ConnectionComparator implements Comparable<Connection> {
+public abstract class Connection extends ConnectionComparator implements Comparable<Connection> {
     
-    private ConnectionType type;
     private String connector = "";
     private String connected = "";
 
-    public Connection() {
-    }
-
-    public Connection(ConnectionType type, String connector, String connected) {
-        this.type = type;
+    public Connection(String connector, String connected) {
         this.connector = connector;
         this.connected = connected;
     }
@@ -42,12 +36,10 @@ public class Connection extends ConnectionComparator implements Comparable<Conne
         return this.connected;
     }
     
-    public ConnectionType getType() {
-        return this.type;
-    }
-    
+    public abstract ConnectionType getType();
+     
     public boolean hasType(ConnectionType type) {
-        return type.equals(this.type);
+        return type.equals(this.getType());
     }
 
     @Override

@@ -21,6 +21,10 @@ import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
 import io.github.egonw.base.Logger;
 import io.github.egonw.connection.Connection;
+import io.github.egonw.connection.ConnectingBond;
+import io.github.egonw.connection.SharedAtom;
+import io.github.egonw.connection.SharedBond;
+import io.github.egonw.connection.SpiroAtom;
 import io.github.egonw.graph.StructuralEdge;
 import io.github.egonw.graph.StructuralGraph;
 import io.github.egonw.structure.ComponentsPositions;
@@ -441,7 +445,7 @@ public class StructuralAnalysis {
     
     private void addConnectingBond(RichStructure<?> structure, String bond, String connected) {
         structure.getConnections().add
-            (new Connection(ConnectionType.CONNECTINGBOND, bond, connected));
+            (new ConnectingBond(bond, connected));
     }
 
     /**
@@ -515,21 +519,21 @@ public class StructuralAnalysis {
                     break;
                 }
                 atomSet.getConnections().add
-                    (new Connection(ConnectionType.SHAREDBOND, bond, key));
+                    (new SharedBond(bond, key));
                 for (IAtom atom : this.getRichBond(bond).getStructure().atoms()) {
                     sharedAtoms.add(atom.getID());
                 }
             }
             for (String shared : sharedAtoms) {
                 atomSet.getConnections().add
-                    (new Connection(ConnectionType.SHAREDATOM, shared, key));
+                    (new SharedAtom(shared, key));
             }
             for (String connection : Sets.difference(allConnections, sharedAtoms)) {
                 if (!this.isAtom(connection)) {
                    break;
                 }
                 atomSet.getConnections().add
-                    (new Connection(ConnectionType.SPIROATOM, connection, key));
+                    (new SpiroAtom(connection, key));
             }
         }
     }

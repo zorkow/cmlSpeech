@@ -13,6 +13,7 @@ package io.github.egonw.structure;
 
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.connection.Connection;
+import io.github.egonw.connection.ConnectionComparator;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -63,7 +64,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     };
 
 
-    private SortedSet<Connection> connections = new TreeSet<Connection>(new Connection());
+    private SortedSet<Connection> connections = new TreeSet<Connection>(new ConnectionComparator());
 
     @Override
     public Set<Connection> getConnections() {
