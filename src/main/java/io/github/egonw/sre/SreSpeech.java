@@ -322,7 +322,7 @@ public class SreSpeech extends SreXML {
             SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
 
             // Add type depended attributes.
-            describeConnection(system, connection, element, positions);
+            describeConnection(connection, element, positions);
             
             if (this.analysis.isAtom(connected)) {
                 element.appendChild(new SreElement(this.analysis.getRichAtom(connected).getStructure()));
@@ -341,7 +341,7 @@ public class SreSpeech extends SreXML {
     }
 
     
-    private void describeConnection(RichAtomSet system, Connection connection,
+    private void describeConnection(Connection connection,
                                     SreElement element, SreElement position) {
         String connector = connection.getConnector();
         String connected = connection.getConnected();
@@ -351,22 +351,22 @@ public class SreSpeech extends SreXML {
         SreNamespace.Attribute connAttr;
         switch(connection.getType()) {
         case CONNECTINGBOND:
-            elementSpeech = describeConnectingBond(system, connector, connected);
+            elementSpeech = describeConnectingBond(connector, connected);
             connAttr = SreNamespace.Attribute.BOND;
             connSpeech = this.speechBond(this.analysis.getRichBond(connector));
             break;
         case BRIDGEATOM:
-            elementSpeech = describeBridgeAtom(system, connector, connected);
+            elementSpeech = describeBridgeAtom(connector, connected);
             connAttr = SreNamespace.Attribute.ATOM;
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
             break;
         case SHAREDATOM:
-            elementSpeech = describeSharedAtom(system, connector, connected);
+            elementSpeech = describeSharedAtom(connector, connected);
             connAttr = SreNamespace.Attribute.ATOM;
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
             break;
         case SPIROATOM:
-            elementSpeech = describeSpiroAtom(system, connector, connected);
+            elementSpeech = describeSpiroAtom(connector, connected);
             connAttr = SreNamespace.Attribute.ATOM;
             connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
             break;
@@ -386,7 +386,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeBridgeAtom(RichAtomSet system, String connector, String connected) {
+    private String describeBridgeAtom(String connector, String connected) {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
         RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
         String structure = this.describeAtomSet(connectedSet);
@@ -394,7 +394,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeSpiroAtom(RichAtomSet system, String connector, String connected) {
+    private String describeSpiroAtom(String connector, String connected) {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
         RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
         String structure = this.describeAtomSet(connectedSet);
@@ -402,7 +402,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeSharedAtom(RichAtomSet system, String connector, String connected) {
+    private String describeSharedAtom(String connector, String connected) {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
         RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
         String structure = this.describeAtomSet(connectedSet);
@@ -410,7 +410,7 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeConnectingBond(RichAtomSet system, String connector, String connected) {
+    private String describeConnectingBond(String connector, String connected) {
         String bond = this.describeBond(this.analysis.getRichBond(connector), false);
         String structure = this.analysis.isAtom(connected) ?
             this.describeAtomPosition(this.analysis.getRichAtom(connected)) :
