@@ -31,11 +31,15 @@ public class ConnectionComparator implements Comparator<Connection> {
             return comparison;
         }
         if (con1.getType().equals(ConnectionType.SPIROATOM) ||
+            (con1.getType().equals(ConnectionType.BRIDGEATOM) &&
+             !con2.getType().equals(ConnectionType.SPIROATOM)) ||
             (con1.getType().equals(ConnectionType.SHAREDATOM) &&
+             !con2.getType().equals(ConnectionType.BRIDGEATOM) &&
              !con2.getType().equals(ConnectionType.SPIROATOM)) || 
             (con1.getType().equals(ConnectionType.SHAREDBOND) &&
-             !con2.getType().equals(ConnectionType.SPIROATOM) &&
-             !con2.getType().equals(ConnectionType.SHAREDATOM))) {
+             !con2.getType().equals(ConnectionType.BRIDGEATOM) &&
+             !con2.getType().equals(ConnectionType.SHAREDATOM) &&
+             !con2.getType().equals(ConnectionType.SPIROATOM))) {
             return -1;
         }
         return 1;

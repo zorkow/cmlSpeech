@@ -355,6 +355,12 @@ public class SreSpeech extends SreXML {
             connAttr = SreNamespace.Attribute.BOND;
             connSpeech = this.speechBond(this.analysis.getRichBond(connector));
             break;
+        case BRIDGEATOM:
+            // TODO (sorge) Different description for bridge atoms!
+            elementSpeech = describeBridgeAtom(system, connector, connected);
+            connAttr = SreNamespace.Attribute.ATOM;
+            connSpeech = this.speechAtom(this.analysis.getRichAtom(connector));
+            break;
         case SHAREDATOM:
             // TODO (sorge) Different description for shared atoms!
             elementSpeech = describeSharedAtom(system, connector, connected);
@@ -382,9 +388,10 @@ public class SreSpeech extends SreXML {
     }
 
 
-    private String describeSharedAtom(RichAtomSet system, String connector, String connected) {
+    private String describeBridgeAtom(RichAtomSet system, String connector, String connected) {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
-        String structure = this.describeAtomSet(this.analysis.getRichAtomSet(connected));
+        RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
+        String structure = this.describeAtomSet(connectedSet);
         return "bridge atom " + atom + " to " + structure;
     }
 
@@ -393,9 +400,14 @@ public class SreSpeech extends SreXML {
         String atom = this.describeAtom(this.analysis.getRichAtom(connector));
         RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
         String structure = this.describeAtomSet(connectedSet);
-        if (RichAtomSet.isRing(system) && (RichAtomSet.isRing(connectedSet))) {
             return "spiro atom " + atom + " to " + structure;
-        }
+    }
+
+
+    private String describeSharedAtom(RichAtomSet system, String connector, String connected) {
+        String atom = this.describeAtom(this.analysis.getRichAtom(connector));
+        RichAtomSet connectedSet = this.analysis.getRichAtomSet(connected);
+        String structure = this.describeAtomSet(connectedSet);
         return "shared " + atom + " atom with " + structure;
     }
 

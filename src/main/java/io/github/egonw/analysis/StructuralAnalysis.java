@@ -20,6 +20,7 @@ import com.google.common.collect.Sets;
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
 import io.github.egonw.base.Logger;
+import io.github.egonw.connection.BridgeAtom;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectingBond;
 import io.github.egonw.connection.SharedAtom;
@@ -526,14 +527,20 @@ public class StructuralAnalysis {
             }
             for (String shared : sharedAtoms) {
                 atomSet.getConnections().add
-                    (new SharedAtom(shared, key));
+                    (new BridgeAtom(shared, key));
             }
+            Boolean ring = RichAtomSet.isRing(atomSet);
             for (String connection : Sets.difference(allConnections, sharedAtoms)) {
                 if (!this.isAtom(connection)) {
                    break;
                 }
-                atomSet.getConnections().add
-                    (new SpiroAtom(connection, key));
+                if (ring && RichAtomSet.isRing(this.getRichAtomSet(key))) {
+                    atomSet.getConnections().add
+                        (new SpiroAtom(connection, key));
+                } else {
+                    atomSet.getConnections().add
+                        (new SharedAtom(connection, key));
+                }
             }
         }
     }

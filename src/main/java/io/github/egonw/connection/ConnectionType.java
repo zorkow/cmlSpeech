@@ -17,6 +17,7 @@ package io.github.egonw.connection;
 
 public enum ConnectionType {
 
+    BRIDGEATOM ("bridgeAtom"),
     CONNECTINGBOND ("connectingBond"),
     SHAREDBOND ("sharedBond"),
     SHAREDATOM ("sharedAtom"),

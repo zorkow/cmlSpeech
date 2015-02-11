@@ -83,6 +83,9 @@ public class SreOutput extends SreXML {
             case SHAREDBOND:
                 tag = SreNamespace.Tag.SHAREDBOND;
                 break;
+            case BRIDGEATOM:
+                tag = SreNamespace.Tag.BRIDGEATOM;
+                break;
             case SHAREDATOM:
                 tag = SreNamespace.Tag.SHAREDATOM;
                 break;
