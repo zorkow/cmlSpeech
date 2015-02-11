@@ -342,7 +342,7 @@ public class SreSpeech extends SreXML {
 
     
     private void describeConnection(RichAtomSet system, Connection connection,
-                                      SreElement element, SreElement position) {
+                                    SreElement element, SreElement position) {
         String connector = connection.getConnector();
         String connected = connection.getConnected();
 
