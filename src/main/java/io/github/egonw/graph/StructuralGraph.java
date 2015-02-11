@@ -14,7 +14,7 @@ package io.github.egonw.graph;
 
 import org.jgrapht.graph.SimpleGraph;
 
-import io.github.egonw.structure.Connection;
+import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichStructure;

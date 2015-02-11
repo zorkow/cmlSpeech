@@ -12,7 +12,7 @@
 package io.github.egonw.sre;
 
 import io.github.egonw.analysis.StructuralAnalysis;
-import io.github.egonw.structure.Connection;
+import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;

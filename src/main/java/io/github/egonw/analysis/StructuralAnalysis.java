@@ -20,10 +20,10 @@ import com.google.common.collect.Sets;
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
 import io.github.egonw.base.Logger;
+import io.github.egonw.connection.Connection;
 import io.github.egonw.graph.StructuralEdge;
 import io.github.egonw.graph.StructuralGraph;
 import io.github.egonw.structure.ComponentsPositions;
-import io.github.egonw.structure.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
@@ -58,6 +58,7 @@ import com.google.common.collect.TreeMultimap;
 import com.google.common.collect.Multiset;
 
 import java.util.NavigableSet;
+import io.github.egonw.connection.ConnectionType;
 
 /**
  *
@@ -440,7 +441,7 @@ public class StructuralAnalysis {
     
     private void addConnectingBond(RichStructure<?> structure, String bond, String connected) {
         structure.getConnections().add
-            (new Connection(Connection.Type.CONNECTINGBOND, bond, connected));
+            (new Connection(ConnectionType.CONNECTINGBOND, bond, connected));
     }
 
     /**
@@ -514,21 +515,21 @@ public class StructuralAnalysis {
                     break;
                 }
                 atomSet.getConnections().add
-                    (new Connection(Connection.Type.SHAREDBOND, bond, key));
+                    (new Connection(ConnectionType.SHAREDBOND, bond, key));
                 for (IAtom atom : this.getRichBond(bond).getStructure().atoms()) {
                     sharedAtoms.add(atom.getID());
                 }
             }
             for (String shared : sharedAtoms) {
                 atomSet.getConnections().add
-                    (new Connection(Connection.Type.SHAREDATOM, shared, key));
+                    (new Connection(ConnectionType.SHAREDATOM, shared, key));
             }
             for (String connection : Sets.difference(allConnections, sharedAtoms)) {
                 if (!this.isAtom(connection)) {
                    break;
                 }
                 atomSet.getConnections().add
-                    (new Connection(Connection.Type.SPIROATOM, connection, key));
+                    (new Connection(ConnectionType.SPIROATOM, connection, key));
             }
         }
     }

@@ -11,6 +11,8 @@
 //
 package io.github.egonw.structure;
 
+import io.github.egonw.connection.Connection;
+
 import java.util.Set;
 
 /**

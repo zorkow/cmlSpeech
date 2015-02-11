@@ -12,6 +12,7 @@
 package io.github.egonw.structure;
 
 import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.connection.Connection;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

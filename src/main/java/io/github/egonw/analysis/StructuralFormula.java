@@ -1,7 +1,7 @@
 package io.github.egonw.analysis;
 
+import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.ComponentsPositions;
-import io.github.egonw.structure.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 
