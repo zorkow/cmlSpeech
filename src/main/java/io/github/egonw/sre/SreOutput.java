@@ -94,7 +94,7 @@ public class SreOutput extends SreXML {
                 break;
             case CONNECTINGBOND:
             default:
-                tag = SreNamespace.Tag.CONNECTION;
+                tag = SreNamespace.Tag.CONNECTINGBOND;
                 break;
             }
             this.annotations.appendAnnotation(id, SreNamespace.Tag.CONNECTIONS,
