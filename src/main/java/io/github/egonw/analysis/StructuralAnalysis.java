@@ -26,17 +26,10 @@
 //
 package io.github.egonw.analysis;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
 import io.github.egonw.base.Logger;
 import io.github.egonw.connection.BridgeAtom;
-import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectingBond;
 import io.github.egonw.connection.SharedAtom;
 import io.github.egonw.connection.SharedBond;
@@ -50,35 +43,31 @@ import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichStructure;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.collect.TreeMultimap;
+
+import org.jgrapht.alg.NeighborIndex;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.jgrapht.alg.NeighborIndex;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IBond;
-
-import com.google.common.collect.TreeMultimap;
-import com.google.common.collect.Multiset;
-
-import java.util.NavigableSet;
-import io.github.egonw.connection.ConnectionType;
 
 /**
  * Main functionality for the structural analysis of molecules.

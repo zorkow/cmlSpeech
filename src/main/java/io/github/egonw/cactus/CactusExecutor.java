@@ -26,25 +26,22 @@
 //
 package io.github.egonw.cactus;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 import io.github.egonw.base.Logger;
 import io.github.egonw.sre.SreAttribute;
 import io.github.egonw.sre.SreUtil;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
+import nu.xom.Document;
+import nu.xom.Element;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
-
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Nodes;
 
 
 /**

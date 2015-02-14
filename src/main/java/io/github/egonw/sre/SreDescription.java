@@ -26,13 +26,14 @@
 //
 package io.github.egonw.sre;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.List;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 
 /**

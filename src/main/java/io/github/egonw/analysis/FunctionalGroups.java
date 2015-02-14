@@ -28,28 +28,22 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.base.Logger;
 
-import java.awt.image.BufferedImage;
+import org.openscience.cdk.AtomContainer;
+import org.openscience.cdk.DefaultChemObjectBuilder;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
+import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.openscience.cdk.AtomContainer;
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
-import org.openscience.cdk.smiles.smarts.SmartsPattern;
-
-import java.util.Map;
 import java.util.HashMap;
-
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-
+import java.util.List;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 
 /**

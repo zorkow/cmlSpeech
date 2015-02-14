@@ -26,18 +26,18 @@
 //
 package io.github.egonw.sre;
 
-import nu.xom.Element;
-import nu.xom.Attribute;
-import nu.xom.Nodes;
 import nu.xom.Document;
+import nu.xom.Element;
 import nu.xom.Node;
+import nu.xom.Nodes;
 import nu.xom.XPathContext;
-import org.openscience.cdk.interfaces.IChemObject;
+
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import org.xmlcml.cml.element.CMLAtomSet;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility functions for the Sre annotations.

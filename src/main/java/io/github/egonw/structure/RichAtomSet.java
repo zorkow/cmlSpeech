@@ -26,44 +26,27 @@
 //
 package io.github.egonw.structure;
 
-import org.xmlcml.cml.element.CMLAtomSet;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.AtomContainer;
-
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Logger;
 import io.github.egonw.sre.SreException;
 import io.github.egonw.sre.SreUtil;
 
-import java.util.List;
-
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import nu.xom.Document;
-import nu.xom.Element;
-
-import org.xmlcml.cml.element.CMLAtom;
-
 import com.google.common.base.Joiner;
 
+import nu.xom.Document;
+
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
+import org.xmlcml.cml.element.CMLAtom;
+import org.xmlcml.cml.element.CMLAtomSet;
+
 import java.util.ArrayList;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
-
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import javax.naming.OperationNotSupportedException;
-
+import java.util.List;
+import java.util.SortedSet;
 import java.util.Stack;
+import java.util.TreeSet;
 
 /**
  * Base class for all atom sets with admin information.

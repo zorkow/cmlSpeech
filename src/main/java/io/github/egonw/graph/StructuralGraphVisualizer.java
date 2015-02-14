@@ -31,6 +31,16 @@ import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichStructure;
 
+import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgrapht.ListenableGraph;
+import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.ListenableUndirectedGraph;
+import org.jgrapht.graph.SimpleGraph;
+import org.openscience.cdk.interfaces.IAtom;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -39,22 +49,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.vecmath.Point2d;
-
-import org.jgraph.JGraph;
-import org.jgraph.graph.AttributeMap;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.ListenableUndirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.openscience.cdk.interfaces.IAtom;
 
 /**
  * Basic visualiser for structural graphs.

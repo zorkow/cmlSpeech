@@ -26,21 +26,17 @@
 //
 package io.github.egonw.sre;
 
-import nu.xom.Element;
-
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import org.xmlcml.cml.element.CMLAtomSet;
-
-import nu.xom.Nodes;
 import io.github.egonw.base.CMLNameComparator;
 
-import java.util.TreeMap;
-import java.util.SortedMap;
+import nu.xom.Element;
+import nu.xom.Nodes;
 
+import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
 
-import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 
 /**

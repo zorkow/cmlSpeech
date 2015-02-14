@@ -32,14 +32,11 @@ import io.github.egonw.structure.ComponentsPositions;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 
+import org.openscience.cdk.interfaces.IAtom;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.openscience.cdk.interfaces.IAtom;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 /**
  * Class which takes a RichAtomSet or an IAtomContainer and returns a string

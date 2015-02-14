@@ -26,8 +26,6 @@
 //
 package io.github.egonw.sre;
 
-import com.google.common.base.Joiner;
-
 import io.github.egonw.analysis.StructuralAnalysis;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
@@ -36,22 +34,22 @@ import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichStructure;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import com.google.common.base.Joiner;
 
-import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Node;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Constructs the Sre speech annotations.

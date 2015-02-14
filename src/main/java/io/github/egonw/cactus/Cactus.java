@@ -26,6 +26,11 @@
 //
 package io.github.egonw.cactus;
 
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.inchi.InChIGenerator;
+import org.openscience.cdk.inchi.InChIGeneratorFactory;
+import org.openscience.cdk.interfaces.IAtomContainer;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,11 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.inchi.InChIGenerator;
-import org.openscience.cdk.inchi.InChIGeneratorFactory;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IAtomContainer;
 
 
 /**

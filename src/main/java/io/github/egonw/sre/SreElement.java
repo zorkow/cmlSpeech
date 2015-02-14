@@ -27,11 +27,10 @@
 package io.github.egonw.sre;
 
 import nu.xom.Element;
-import org.openscience.cdk.interfaces.IChemObject;
+
 import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import org.xmlcml.cml.element.CMLAtomSet;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
 
 /**
  * Basic elements for Sre annotations.

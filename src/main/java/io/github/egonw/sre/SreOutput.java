@@ -33,33 +33,8 @@ import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichStructure;
 
-import java.util.stream.Collectors;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-
-import nu.xom.Element;
-
-import java.util.Arrays;
-import java.util.regex.PatternSyntaxException;
-
-import nu.xom.Document;
-
-import com.google.common.collect.Lists;
-
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.openscience.cdk.interfaces.IBond;
-
-import java.util.Iterator;
-
-import com.google.common.base.Joiner;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import org.openscience.cdk.interfaces.IAtom;
+import java.util.stream.Collectors;
 
 /**
  * Constructs structural annotations for Sre.

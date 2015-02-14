@@ -28,10 +28,10 @@ package io.github.egonw.sre;
 
 import io.github.egonw.structure.RichAtom;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.openscience.cdk.interfaces.IAtom;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Maps atom identifiers to their proper names.

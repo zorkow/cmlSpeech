@@ -28,9 +28,9 @@ package io.github.egonw.cactus;
 
 import io.github.egonw.sre.SreAttribute;
 
-import java.util.concurrent.Callable;
-
 import org.openscience.cdk.interfaces.IAtomContainer;
+
+import java.util.concurrent.Callable;
 
 /**
  * Callables for Cactus Futures.

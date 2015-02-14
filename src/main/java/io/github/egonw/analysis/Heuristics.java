@@ -31,9 +31,6 @@ import io.github.egonw.structure.RichChemObject;
 
 import java.util.Comparator;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-
 /**
  * Combines basic comparators as a single heuristic.
  */

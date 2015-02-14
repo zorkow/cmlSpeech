@@ -33,15 +33,12 @@
 package io.github.egonw.analysis;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 import org.openscience.cdk.CDKConstants;
-import org.openscience.cdk.annotations.TestClass;
 import org.openscience.cdk.annotations.TestMethod;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.exception.NoSuchAtomException;
-import org.openscience.cdk.graph.PathTools;
 import org.openscience.cdk.graph.SpanningTree;
 import org.openscience.cdk.graph.matrix.ConnectionMatrix;
 import org.openscience.cdk.interfaces.IAtom;
@@ -54,9 +51,9 @@ import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.IMolecularDescriptor;
 import org.openscience.cdk.qsar.result.IDescriptorResult;
 import org.openscience.cdk.qsar.result.IntegerResult;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import java.util.HashMap;
-import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Class that returns a list of aliphatic chains in a given container.

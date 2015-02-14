@@ -27,24 +27,17 @@
 package io.github.egonw.graph;
 
 
-import org.jgrapht.graph.SimpleGraph;
-
 import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichStructure;
 
+import org.jgrapht.graph.SimpleGraph;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.openscience.cdk.interfaces.IAtom;
-
 import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * The structural graph.

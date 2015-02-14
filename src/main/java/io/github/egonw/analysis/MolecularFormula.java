@@ -26,10 +26,10 @@
 //
 package io.github.egonw.analysis;
 
+import io.github.egonw.structure.RichAtomSet;
+
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
-
-import io.github.egonw.structure.RichAtomSet;
 
 import java.util.List;
 

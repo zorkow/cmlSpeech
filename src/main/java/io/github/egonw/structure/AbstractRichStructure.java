@@ -30,12 +30,11 @@ import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectionComparator;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Set;
-
 import com.google.common.base.Joiner;
 
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**

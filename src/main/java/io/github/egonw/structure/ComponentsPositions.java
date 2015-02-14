@@ -26,12 +26,11 @@
 //
 package io.github.egonw.structure;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 /**

@@ -29,21 +29,19 @@ package io.github.egonw.analysis;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 
-import java.util.Map;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IAtom;
-
-import java.util.Set;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collections;
-import java.util.ListIterator;
-
 import com.google.common.collect.Sets;
+
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
