@@ -3,8 +3,7 @@
  * @author Volker Sorge <sorge@zorkstone>
  * @date   Tue Jan 20 01:12:31 2015
  * 
- * @brief Filtering functions to restrict ourselves to the most interesting
- * functional groups.
+ * @brief Filters for functional groups by interestingness.
  * 
  * 
  */
@@ -33,7 +32,9 @@ import com.google.common.collect.Sets;
 
 
 /**
- *
+ * Filtering functions to restrict ourselves to the most interesting functional
+ * groups. In particular we filter with respect to overlap with other already
+ * identified atom sets.
  */
 
 public class FunctionalGroupsFilter {

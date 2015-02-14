@@ -32,7 +32,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- *
+ * The structural graph.
+ * @extends SimpleGraph
  */
 
 public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {

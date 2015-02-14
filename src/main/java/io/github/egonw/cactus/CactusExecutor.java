@@ -33,7 +33,7 @@ import nu.xom.Nodes;
 
 
 /**
- *
+ * Executes Cactus calls and collects their results.
  */
 
 public class CactusExecutor {

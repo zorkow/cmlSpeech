@@ -16,7 +16,7 @@ import io.github.egonw.connection.Connection;
 import java.util.Set;
 
 /**
- *
+ * Interface for all structures with admin information.
  */
 
 public interface RichStructure<S> {

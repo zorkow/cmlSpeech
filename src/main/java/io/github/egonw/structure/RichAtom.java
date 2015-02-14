@@ -14,7 +14,7 @@ package io.github.egonw.structure;
 import org.openscience.cdk.interfaces.IAtom;
 
 /**
- *
+ * Atoms with admin information.
  */
 
 public class RichAtom extends RichChemObject {

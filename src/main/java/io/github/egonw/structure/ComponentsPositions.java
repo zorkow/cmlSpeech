@@ -1,3 +1,14 @@
+/**
+ * @file   ComponentsPositions.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:17:23 2015
+ * 
+ * @brief  Data structure for positions in rich structures.
+ * 
+ * 
+ */
+
+//
 package io.github.egonw.structure;
 
 import java.util.Iterator;
@@ -7,6 +18,10 @@ import java.util.Set;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.util.function.Consumer;
+
+/**
+ * Iterable bijective map for positions and structure names.
+ */
 
 public class ComponentsPositions implements Iterable<String> {
 

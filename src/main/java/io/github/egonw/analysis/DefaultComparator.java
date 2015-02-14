@@ -9,7 +9,6 @@
  */
 
 //
-
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtom;

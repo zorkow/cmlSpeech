@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 
 /**
- *
+ * Basic speech rescriptions.
  */
 
 public class SreDescription extends SreElement {

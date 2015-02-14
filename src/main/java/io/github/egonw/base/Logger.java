@@ -1,3 +1,15 @@
+/**
+ * @file   Logger.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:06:23 2015
+ * 
+ * @brief  Logger facilities for logging and error output.
+ * 
+ * 
+ */
+
+
+//
 package io.github.egonw.base;
 
 import java.io.File;
@@ -5,8 +17,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.function.Consumer;
 
-// TODO: Eventually inherit from Logger class. Currently I am too lazy.
-/** Description for Logger. */
+/**
+ * Logger facilities:
+ *
+ * Error logging is either to file or stderr.
+ * Message logging is either to file or stdout.
+ * 
+ */
 public class Logger {
     private static Boolean debug = false;
     private static Boolean verbose = false;

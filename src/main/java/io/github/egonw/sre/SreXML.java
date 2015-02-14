@@ -17,7 +17,7 @@ import io.github.egonw.structure.ComponentsPositions;
 import java.util.Set;
 
 /**
- *
+ * Abstract class for XML like Sre annotations.
  */
 
 public abstract class SreXML {

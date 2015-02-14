@@ -1,10 +1,15 @@
+/**
+ * @file   StructuralGraphVisualizer.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:36:33 2015
+ * 
+ * @brief  A basic visualiser for molecule graphs.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.graph;
-
-/**
- *
- */
 
 import io.github.egonw.base.Cli;
 import io.github.egonw.structure.RichAtom;

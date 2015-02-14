@@ -47,7 +47,7 @@ import java.util.TreeSet;
 import org.openscience.cdk.interfaces.IAtom;
 
 /**
- *
+ * Constructs structural annotations for Sre.
  */
 
 public class SreOutput extends SreXML {

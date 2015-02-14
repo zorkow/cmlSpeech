@@ -8,6 +8,7 @@
  * 
  */
 
+//
 package io.github.egonw.analysis;
 
 import org.openscience.cdk.interfaces.IMolecularFormula;
@@ -18,7 +19,7 @@ import io.github.egonw.structure.RichAtomSet;
 import java.util.List;
 
 /**
- *
+ * Utility class for molecular formula computation.
  */
 
 public class MolecularFormula {

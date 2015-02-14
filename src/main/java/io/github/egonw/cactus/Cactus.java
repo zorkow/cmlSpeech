@@ -8,6 +8,7 @@
  * 
  */
 
+//
 package io.github.egonw.cactus;
 
 import java.io.BufferedReader;
@@ -27,6 +28,10 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 
+/**
+ * Utility functions to call the NIH Cactus chemical structure identifier
+ * service.
+ */
 public class Cactus {
     
     /** Enum type for different translations via Cactus */

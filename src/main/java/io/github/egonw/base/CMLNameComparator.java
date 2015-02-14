@@ -14,7 +14,7 @@ package io.github.egonw.base;
 import java.util.Comparator;
 
 /**
- *
+ * Compares CML names, promoting atoms over bonds over atomsets.
  */
 
 public class CMLNameComparator implements Comparator<String> {

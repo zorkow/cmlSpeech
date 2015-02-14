@@ -1,7 +1,19 @@
-/* This is based on the LongestAliphaticChainDescriptor class from the CDK.  The
- * intention is to get the actual chains out, not just a number for the longest
- * chain.
+/**
+ * @file   AliphaticChain.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:54:55 2015
+ * 
+ * @brief  Computations of Aliphatic Chains.
+ * 
+ * 
  */
+
+//
+// This is based on the LongestAliphaticChainDescriptor class from the CDK.  The
+// intention is to get the actual chains out, not just a number for the longest
+// chain.
+//
+// TODO (sorge): This file is badly in need of refactoring!
 //
 package io.github.egonw.analysis;
 
@@ -36,14 +48,12 @@ import com.google.common.collect.Lists;
  *
  */
 // TODO (sorge): Refactor this to return the chains rather than a descriptor.
-// TODO (sorge): Chains of length 2 don't seem to work.
 public class AliphaticChain extends AbstractMolecularDescriptor implements IMolecularDescriptor {
-    // VS: changed this to true.
+
     private boolean checkRingSystem = true;
 
     private static final String[] names = {"allLAC"};
 
-    // VS: added this.
     // Containers of chains.
     private List<IAtomContainer> chain = new ArrayList<>();
     // Minimum length of aliphatic chain to extract. 
@@ -58,7 +68,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
         this.minLength = minLength;
     }
 
-    // VS: added this.
     // The longest chain container.
     public List<IAtomContainer> extract() {
         return chain;
@@ -200,7 +209,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
                     IAtomContainer longestAliphaticChain =
                     createAtomContainerFromPath(aliphaticChain,
                                                 longestPath(pathMatrix, pathCoordinates[0], pathCoordinates[1], aliphaticChain));
-                    // VS: added this.
                     // The longest chain container.
                     this.chain.add(longestAliphaticChain);
                     if (tmpLongestChainAtomCount>=longestChainAtomsCount){
@@ -254,7 +262,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
                 for (j = 0; j < nrow; j++) {
                     if (distMatrix[i][k] + distMatrix[k][j] < distMatrix[i][j]) {
                         distMatrix[i][j] = distMatrix[i][k] + distMatrix[k][j];
-                        pathMatrix[i][j] = pathMatrix[i][k];        // k is included in the shortest path
+                        pathMatrix[i][j] = pathMatrix[i][k];
                     }
                 }
             }
@@ -360,10 +368,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements IMole
             }
     	}
     	
-    	//for (int i=0;i<aliphaticChain.getAtomCount();i++){
-    	//	logger.debug("container-->atom:"+i+" Nr: "+container.getAtomNumber(aliphaticChain.getAtomAt(i))+" maxBondOrder:"+aliphaticChain.getMaximumBondOrder(aliphaticChain.getAtomAt(i))+" Aromatic:"+aliphaticChain.getAtomAt(i).getFlag(CDKConstants.ISAROMATIC)+" Ring:"+aliphaticChain.getAtomAt(i).getFlag(CDKConstants.ISINRING)+" FormalCharge:"+aliphaticChain.getAtomAt(i).getFormalCharge()+" Charge:"+aliphaticChain.getAtomAt(i).getCharge()+" Flag:"+aliphaticChain.getAtomAt(i).getFlag(CDKConstants.VISITED));
-    	//}
-    	//logger.debug("BondCount:"+aliphaticChain.getBondCount());
     	if (aliphaticChain.getBondCount()==0){
             aliphaticChain.removeAllElements();
     	}

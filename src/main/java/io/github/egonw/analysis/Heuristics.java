@@ -7,6 +7,8 @@
  * 
  * 
  */
+
+//
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
@@ -16,6 +18,10 @@ import java.util.Comparator;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+
+/**
+ * Combines basic comparators as a single heuristic.
+ */
 
 public class Heuristics extends DefaultComparator<RichChemObject> {
 

@@ -8,6 +8,8 @@
  * 
  */
 
+
+//
 package io.github.egonw.base;
 
 import io.github.egonw.analysis.MolecularFormula;
@@ -51,6 +53,10 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 import org.xmlcml.cml.base.CMLBuilder;
 import org.xmlcml.cml.element.CMLAtomSet;
+
+/**
+ * The basic loop for semantically enriching chemical diagrams.
+ */
 
 public class CMLEnricher {
     private StructuralAnalysis analysis;

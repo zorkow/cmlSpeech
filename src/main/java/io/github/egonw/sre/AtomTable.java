@@ -19,7 +19,7 @@ import java.util.HashMap;
 import org.openscience.cdk.interfaces.IAtom;
 
 /**
- *
+ * Maps atom identifiers to their proper names.
  */
 
 public class AtomTable {

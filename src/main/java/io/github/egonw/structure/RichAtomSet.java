@@ -1,3 +1,13 @@
+/**
+ * @file   RichAtomSet.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:19:38 2015
+ * 
+ * @brief  Rich atom set structures.
+ * 
+ * 
+ */
+
 //
 package io.github.egonw.structure;
 
@@ -41,7 +51,7 @@ import javax.naming.OperationNotSupportedException;
 import java.util.Stack;
 
 /**
- *
+ * Base class for all atom sets with admin information.
  */
 
 public class RichAtomSet extends RichChemObject implements Iterable<String> {

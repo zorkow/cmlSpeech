@@ -1,3 +1,12 @@
+/**
+ * @file   SreAnnotations.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:21:38 2015
+ * 
+ * @brief  XML annotations structures.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
@@ -20,7 +29,8 @@ import java.util.Set;
 
 
 /**
- *
+ * Basic class to add annotations like speech and structural representations to 
+ * CML objects.
  */
 
 public class SreAnnotations extends SreElement {

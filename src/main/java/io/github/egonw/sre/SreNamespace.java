@@ -1,9 +1,18 @@
+/**
+ * @file   SreNamespace.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:31:44 2015
+ * 
+ * @brief  Namespace definitions for Sre.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
 
 /**
- *
+ * Reference to the basic namespace for speech tags.
  */
 
 public class SreNamespace {

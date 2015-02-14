@@ -1,3 +1,15 @@
+/**
+ * @file   Cli.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:06:05 2015
+ * 
+ * @brief  Command line interface.
+ * 
+ * 
+ */
+
+
+//
 package io.github.egonw.base;
 
 import java.io.File;
@@ -11,6 +23,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
+/**
+ * Command line interface for enricher app.
+ */
 
 public final class Cli {
 

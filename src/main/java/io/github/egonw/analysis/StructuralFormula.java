@@ -1,3 +1,15 @@
+/**
+ * @file   StructuralFormula.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 13:04:20 2015
+ * 
+ * @brief  Computation of structural formulas.
+ * 
+ * 
+ */
+
+// TODO (sorge): This seems to be currently broken!
+//
 package io.github.egonw.analysis;
 
 import io.github.egonw.connection.Connection;
@@ -15,7 +27,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * Class which takes a RichAtomSet or an IAtomContainer and returns a string with the structural formula.
+ * Class which takes a RichAtomSet or an IAtomContainer and returns a string
+ * with the structural formula.
  * 
  * @author Joshie
  */

@@ -1,3 +1,12 @@
+/**
+ * @file   SreUtil.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:33:43 2015
+ * 
+ * @brief  Utility class for Sre output.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
@@ -16,7 +25,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- *
+ * Utility functions for the Sre annotations.
  */
 
 public class SreUtil {

@@ -16,7 +16,8 @@ import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 
 /**
- *
+ * Rich Structure comparison methods wrt. types of atom sets. 
+ * Promotes rings over chains over functional groups.
  */
 
 public class TypeComparator extends DefaultComparator<RichChemObject> {

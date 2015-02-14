@@ -1,3 +1,12 @@
+/**
+ * @file   SreAttribute.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:29:44 2015
+ * 
+ * @brief  Attributes for speech annotations.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
@@ -6,7 +15,8 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 /**
- *
+ * Attribute structure.
+ * @extends Attribute
  */
 
 public class SreAttribute extends Attribute {

@@ -1,3 +1,12 @@
+/**
+ * @file   SreElement.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:31:09 2015
+ * 
+ * @brief  Sre Elements
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
@@ -10,7 +19,8 @@ import org.xmlcml.cml.element.CMLAtomSet;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- *
+ * Basic elements for Sre annotations.
+ * @extends Element
  */
 
 public class SreElement extends Element {

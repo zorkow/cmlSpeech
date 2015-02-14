@@ -16,7 +16,7 @@ import io.github.egonw.base.CMLNameComparator;
 import java.util.Comparator;
 
 /**
- *
+ * Comparison of connections currently implemented on their type identifier.
  */
 
 public class ConnectionComparator implements Comparator<Connection> {

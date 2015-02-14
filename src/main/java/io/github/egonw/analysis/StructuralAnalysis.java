@@ -66,7 +66,7 @@ import java.util.NavigableSet;
 import io.github.egonw.connection.ConnectionType;
 
 /**
- *
+ * Main functionality for the structural analysis of molecules.
  */
 
 public class StructuralAnalysis {

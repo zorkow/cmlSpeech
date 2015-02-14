@@ -24,7 +24,7 @@ import org.openscience.cdk.ringsearch.RingSearch;
 import org.openscience.cdk.ringsearch.SSSRFinder;
 
 /**
- *
+ * Computes ring systems using ring search algorithms.
  */
 
 public class RingSystem {

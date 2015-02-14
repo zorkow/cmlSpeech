@@ -16,7 +16,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 
 /**
- *
+ * Bonds with admin informatoin.
  */
 
 public class RichBond extends RichChemObject {

@@ -1,3 +1,12 @@
+/**
+ * @file   StructuralEdge.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:34:38 2015
+ * 
+ * @brief  Edges for the structural graph.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.graph;
@@ -7,7 +16,8 @@ import io.github.egonw.base.Cli;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- *
+ * Edges for the structural graph.
+ * @extends DefaultEdge
  */
 
 public class StructuralEdge extends DefaultEdge {

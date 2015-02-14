@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- *
+ * Callables for Cactus Futures.
  */
 public class CactusCallable implements Callable<SreAttribute> {
 

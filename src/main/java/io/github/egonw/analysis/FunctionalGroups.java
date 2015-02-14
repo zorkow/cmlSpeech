@@ -1,3 +1,14 @@
+/**
+ * @file   FunctionalGroups.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:58:54 2015
+ * 
+ * @brief  Computation of Functional Groups using smarts.
+ * 
+ * 
+ */
+
+//
 package io.github.egonw.analysis;
 
 import io.github.egonw.base.Logger;
@@ -25,6 +36,11 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 
 import java.util.stream.StreamSupport;
+
+/**
+ * Computes functions groups using smarts patterns. These patterns are currently
+ * loaded from files given in hard coded pathnames.
+ */
 
 public class FunctionalGroups {
 

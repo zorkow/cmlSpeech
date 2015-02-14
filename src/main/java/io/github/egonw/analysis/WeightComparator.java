@@ -17,7 +17,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 /**
- *
+ * Comparison of atom sets with respect to their molecular weight.
  */
 
 public class WeightComparator extends DefaultComparator<RichChemObject> {

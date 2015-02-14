@@ -1,3 +1,12 @@
+/**
+ * @file   SreSpeech.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:33:18 2015
+ * 
+ * @brief  Sre speech output.
+ * 
+ * 
+ */
 
 //
 package io.github.egonw.sre;
@@ -30,7 +39,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 
 /**
- *
+ * Constructs the Sre speech annotations.
  */
 
 public class SreSpeech extends SreXML {

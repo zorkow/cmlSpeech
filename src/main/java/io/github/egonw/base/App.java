@@ -1,3 +1,15 @@
+/**
+ * @file   App.java
+ * @author Volker Sorge <sorge@zorkstone>
+ * @date   Sat Feb 14 12:05:04 2015
+ * 
+ * @brief  Basci application file for project.
+ * 
+ * 
+ */
+
+
+//
 package io.github.egonw.base;
 
 public class App {

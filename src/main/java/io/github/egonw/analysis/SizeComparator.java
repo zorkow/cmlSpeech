@@ -14,7 +14,7 @@ import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 
 /**
- *
+ * Compare atom sets by number of atoms contained.
  */
 
 public class SizeComparator extends DefaultComparator<RichChemObject> {
