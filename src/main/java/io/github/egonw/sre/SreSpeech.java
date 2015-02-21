@@ -197,7 +197,8 @@ public class SreSpeech extends SreXML {
         String id = atomSet.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
         this.toSreSet(id, SreNamespace.Tag.PARENTS, atomSet.getSuperSystems());
-        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getSubSystems());
+        // Children are given in the order of their positions!
+        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.componentPositions);
         this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
     }
 
