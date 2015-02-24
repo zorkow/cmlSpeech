@@ -14,11 +14,11 @@
 
 
 /**
- * @file   RichChemObject.java
+ * @file   RichSubRing.java
  * @author Volker Sorge <sorge@zorkstone>
- * @date   Wed Jun 11 15:14:55 2014
+ * @date   Tue Feb 24 17:13:29 2015
  * 
- * @brief  Annotated ChemObject structure.
+ * @brief  Implementation of rich sub ring.
  * 
  * 
  */
@@ -26,23 +26,22 @@
 //
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IChemObject;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- * Chemical objects with admin information.
+ * Atom sets that are rich sub rings.
  */
 
-public class RichChemObject extends AbstractRichStructure<IChemObject> {
-    
+public class RichSubRing extends RichAtomSet {
 
-    RichChemObject(IChemObject structure) {
-        super(structure);
-    };
-
-
-    @Override
-    public String getId() {
-        return this.structure.getID();
+    public RichSubRing(IAtomContainer container, String id) {
+        super(container, id, RichSetType.SMALLEST);
     }
-    
+
+
+    protected final void walk() {
+        // TODO (sorge) Compute this with respect to the positions of the fused
+        // ring system.
+        this.walkStraight(this.getStructure().atoms().iterator().next());
+    }
 }

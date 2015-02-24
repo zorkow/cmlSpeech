@@ -14,11 +14,11 @@
 
 
 /**
- * @file   RichChemObject.java
+ * @file   RichMolecule.java
  * @author Volker Sorge <sorge@zorkstone>
- * @date   Wed Jun 11 15:14:55 2014
+ * @date   Tue Feb 24 17:13:29 2015
  * 
- * @brief  Annotated ChemObject structure.
+ * @brief  Implementation of rich molecule.
  * 
  * 
  */
@@ -26,23 +26,20 @@
 //
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IChemObject;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- * Chemical objects with admin information.
+ * Atom sets that form a molecule of their own. I.e., the topmost structure.
  */
 
-public class RichChemObject extends AbstractRichStructure<IChemObject> {
-    
+public class RichMolecule extends RichAtomSet {
 
-    RichChemObject(IChemObject structure) {
-        super(structure);
-    };
-
-
-    @Override
-    public String getId() {
-        return this.structure.getID();
+    public RichMolecule(IAtomContainer container, String id) {
+        super(container, id, RichSetType.MOLECULE);
     }
+
     
+    // TODO sorge This should eventually become the major path computation.
+    protected final void walk() {}
+
 }

@@ -14,11 +14,11 @@
 
 
 /**
- * @file   RichChemObject.java
+ * @file   RichFusedRing.java
  * @author Volker Sorge <sorge@zorkstone>
- * @date   Wed Jun 11 15:14:55 2014
+ * @date   Tue Feb 24 17:13:29 2015
  * 
- * @brief  Annotated ChemObject structure.
+ * @brief  Implementation of rich fused ring.
  * 
  * 
  */
@@ -26,23 +26,20 @@
 //
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IChemObject;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- * Chemical objects with admin information.
+ * Atom sets that are rich fused rings.
  */
 
-public class RichChemObject extends AbstractRichStructure<IChemObject> {
-    
+public class RichFusedRing extends RichAtomSet {
 
-    RichChemObject(IChemObject structure) {
-        super(structure);
-    };
-
-
-    @Override
-    public String getId() {
-        return this.structure.getID();
+    public RichFusedRing(IAtomContainer container, String id) {
+        super(container, id, RichSetType.FUSED);
     }
-    
+
+
+    protected final void walk() {
+        System.out.println("Not yet implemented!");
+    }
 }

@@ -28,6 +28,7 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
+import io.github.egonw.structure.RichFunctionalGroup;
 import io.github.egonw.structure.RichSetType;
 
 import com.google.common.collect.Sets;
@@ -57,7 +58,7 @@ public class FunctionalGroupsFilter {
     private Map<String, IAtomContainer> newSets;
     private Map<String, IAtomContainer> resultSets = new HashMap<String, IAtomContainer>();
     // The set that is reduced to distil the interesting functional groups.
-    private List<RichAtomSet> workingSets = new ArrayList<RichAtomSet>();
+    private List<RichFunctionalGroup> workingSets = new ArrayList<RichFunctionalGroup>();
 
     static private Integer minimalSize = 2;
     static private Integer minimalOverlap = 1;
@@ -68,6 +69,7 @@ public class FunctionalGroupsFilter {
             collect(Collectors.toList());
         newSets = groups;
     }
+
     // Heuristics to implements:
     // + largest group subsumes subsets
     // - minimal overlap with others.
@@ -110,10 +112,10 @@ public class FunctionalGroupsFilter {
         }
         Integer count = 0;
         while (workingSets.size() > count) {
-            RichAtomSet outer = workingSets.get(count++);
+            RichFunctionalGroup outer = workingSets.get(count++);
             Integer i = workingSets.size() - 1;
             while (i >= count) {
-                RichAtomSet inner = workingSets.get(i--);
+                RichFunctionalGroup inner = workingSets.get(i--);
                 if (Sets.difference(inner.getComponents(), outer.getComponents()).isEmpty()) {
                     workingSets.remove(inner);
                 }
@@ -148,7 +150,7 @@ public class FunctionalGroupsFilter {
             IAtomContainer set = entry.getValue();
             if (considerSize(set) &&
                 considerOverlap(set)) {
-                workingSets.add(new RichAtomSet(set, RichSetType.FUNCGROUP, entry.getKey()));
+                workingSets.add(new RichFunctionalGroup(set, entry.getKey()));
             }
         }
 
@@ -156,7 +158,7 @@ public class FunctionalGroupsFilter {
         Collections.sort(workingSets, new SizeAndNameComparator());
         subsumeSubsets();
         
-        for (RichAtomSet set : workingSets){
+        for (RichFunctionalGroup set : workingSets){
             String id = set.getId();
             resultSets.put(id, newSets.get(id));
         }

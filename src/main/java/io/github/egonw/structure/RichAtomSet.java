@@ -52,7 +52,7 @@ import java.util.TreeSet;
  * Base class for all atom sets with admin information.
  */
 
-public class RichAtomSet extends RichChemObject implements Iterable<String> {
+public abstract class RichAtomSet extends RichChemObject implements RichSet {
 	
     public RichSetType type;
     public CMLAtomSet cml;
@@ -67,38 +67,17 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     public ComponentsPositions componentPositions = new ComponentsPositions();
     public Integer offset = 0;
 
-
-    private RichAtomSet (IAtomContainer container) {
-        super(container);
-    }
-
-    private RichAtomSet (IAtomContainer container, RichSetType type) {
+    public RichAtomSet (IAtomContainer container, String id, RichSetType type) {
         super(container);
         this.type = type;
-    }
-
-    public RichAtomSet (IAtomContainer container, RichSetType type, String id) {
-        super(container);
         this.getStructure().setID(id);
-        this.type = type;
         for (IAtom atom : this.getStructure().atoms()) {
             this.getComponents().add(atom.getID());
         }
         for (IBond bond : this.getStructure().bonds()) {
             this.getComponents().add(bond.getID());
         }
-
         this.makeCML();
-    }
-
-
-    public RichSetType getType() {
-        return this.type;
-    }
-    
-
-    public SortedSet<String> getConnectingAtoms() {
-        return this.connectingAtoms;
     }
 
 
@@ -107,11 +86,16 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         return (IAtomContainer)this.structure;
     }
 
+
+    @Override
+    public RichSetType getType() {
+        return this.type;
+    }
     
-    private void makeCML() {
-        this.cml = new CMLAtomSet();
-        this.cml.setTitle(this.type.name);
-        this.cml.setId(this.getId());
+
+    @Override
+    public SortedSet<String> getConnectingAtoms() {
+        return this.connectingAtoms;
     }
 
 
@@ -123,33 +107,22 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
      *    (or later with a functional group, as this can be voiced as substitution).
      * @param offset The position offset.
      * @param globalPositions Map of already assigned global positions.
-     *          
+     *
      */
+    @Override
     public void computePositions(Integer offset) {
         this.offset = offset;
-        switch (this.type) {
-        case FUSED:
-            throw new SreException("Illegal position computation for ring systems!");
-        case FUNCGROUP:
-            computeAtomPositionsFuncGroup();
-            break;
-        case ALIPHATIC:
-            computeAtomPositionsAliphatic();
-            break;
-        case SMALLEST:
-        case ISOLATED:
-        default:
-            computeAtomPositionsIsolated();
-        }
+        this.walk();
     }
 
+
+    /** 
+     * Walks the structure and computes the positions of its elements.
+     */
+    protected abstract void walk();
     
-    public void appendPositions(RichAtomSet atomSet) {
-        this.componentPositions.putAll(atomSet.componentPositions);
-    }
-
-
-    private IAtom getSinglyConnectedAtom() {
+    
+    protected final IAtom getSinglyConnectedAtom() {
         // TODO (sorge) Choose start wrt. position of internal/external
         // substitution.
         for (IAtom atom : this.getStructure().atoms()) {
@@ -161,7 +134,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
 
-    private IAtom getExternallyConnectedAtom() {
+    protected final IAtom getExternallyConnectedAtom() {
         for (IAtom atom : this.getStructure().atoms()) {
             // FG: This is not working yet.
             //
@@ -175,20 +148,38 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
     
-    private void computeAtomPositionsFuncGroup() {
-        IAtom startAtom = getExternallyConnectedAtom();
-        if (startAtom == null) {
-            startAtom = getSinglyConnectedAtom();
-        }
-        if (startAtom == null) {
-            throw new SreException("Functional group without start atom!");
-        }
-        this.walkGroup(startAtom);
+    @Override
+    public void appendPositions(RichAtomSet atomSet) {
+        this.componentPositions.putAll(atomSet.componentPositions);
     }
 
 
-    // Walk functional group depth first starting at atom.
-    private void walkGroup(IAtom atom) {
+    protected final void walkStraight(IAtom atom) {
+        this.walkStraight(atom, new ArrayList<IAtom>());
+    }
+
+    
+    private void walkStraight(IAtom atom, List<IAtom> visited) {
+        if (visited.contains(atom)) {
+            return;
+        }
+        this.componentPositions.addNext(atom.getID());
+        visited.add(atom);
+        for (IAtom connected : this.getStructure().getConnectedAtomsList(atom)) {
+            if (!visited.contains(connected)) {
+                walkStraight(connected, visited);
+                return;
+            }
+        }
+    }
+
+
+    /** 
+     * Depth first traversal of structure.
+     * 
+     * @param atom The start atom.
+     */
+    protected final void walkDepthFirst(IAtom atom) {
         if (atom == null) {
             return;
         }
@@ -207,49 +198,20 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         }
     }
 
-    
-    private void computeAtomPositionsAliphatic() {
-        IAtom startAtom = getSinglyConnectedAtom();
-        if (startAtom == null) {
-            throw new SreException("Aliphatic chain without start atom!");
-        }
-        this.walkRing(startAtom, new ArrayList<IAtom>());
-    }
 
-    private void computeAtomPositionsIsolated() {
-        // TODO (sorge) Choose start wrt. replacements, preferring O, then by
-        // weight. Then wrt. position OH substitution then other substitutions
-        // by weight. For direction: choose second by smallest distance to
-        // first!
-        this.walkRing(this.getStructure().atoms().iterator().next(),
-                      new ArrayList<IAtom>());
-    }
-
-    private void walkRing(IAtom atom, List<IAtom> visited) {
-        if (visited.contains(atom)) {
-            return;
-        }
-        this.componentPositions.addNext(atom.getID());
-        visited.add(atom);
-        for (IAtom connected : this.getStructure().getConnectedAtomsList(atom)) {
-            if (!visited.contains(connected)) {
-                walkRing(connected, visited);
-                return;
-            }
-        }
-    }
-
-
+    @Override
     public String getAtom(Integer position) {
         return this.componentPositions.getAtom(position);
     }
 
 
+    @Override
     public Integer getPosition(String atom) {
         return this.componentPositions.getPosition(atom);
     }
     
 
+    @Override
     public Iterator<String> iterator() {
         return componentPositions.iterator();
     }
@@ -271,8 +233,16 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
   
 
+    private void makeCML() {
+        this.cml = new CMLAtomSet();
+        this.cml.setTitle(this.type.name);
+        this.cml.setId(this.getId());
+    }
+
+
     // This should only ever be called once!
     // Need a better solution!
+    @Override
     public CMLAtomSet getCML(Document doc) {
         for (IAtom atom : this.getStructure().atoms()) { 
             String atomId = atom.getID();
@@ -282,9 +252,6 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         return this.cml;
     }
 
-    public CMLAtomSet getCML() {
-        return this.cml;
-    }
 
     public static boolean isRing(RichAtomSet atomSet) {
         return atomSet.type == RichSetType.FUSED ||

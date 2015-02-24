@@ -37,12 +37,18 @@ import io.github.egonw.connection.SpiroAtom;
 import io.github.egonw.graph.StructuralEdge;
 import io.github.egonw.graph.StructuralGraph;
 import io.github.egonw.structure.ComponentsPositions;
+import io.github.egonw.structure.RichAliphaticChain;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichChemObject;
+import io.github.egonw.structure.RichFunctionalGroup;
+import io.github.egonw.structure.RichFusedRing;
+import io.github.egonw.structure.RichIsolatedRing;
+import io.github.egonw.structure.RichMolecule;
 import io.github.egonw.structure.RichSetType;
 import io.github.egonw.structure.RichStructure;
+import io.github.egonw.structure.RichSubRing;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -104,7 +110,6 @@ public class StructuralAnalysis {
     public StructuralAnalysis(IAtomContainer molecule) {
         this.molecule = molecule;
         
-
         this.initStructure();
         
         this.rings();
@@ -171,9 +176,8 @@ public class StructuralAnalysis {
         return (RichAtomSet)this.richAtomSets.get(id);
     }
 
-    private RichStructure<?> setRichAtomSet(IAtomContainer atomSet, RichSetType type) {
-        String id = getAtomSetId();
-        return this.setRichStructure(this.richAtomSets, id, new RichAtomSet(atomSet, type, id));
+    private RichAtomSet setRichAtomSet(RichAtomSet atomSet) {
+        return (RichAtomSet)this.setRichStructure(this.richAtomSets, atomSet.getId(), atomSet);
     }
 
     
@@ -248,8 +252,8 @@ public class StructuralAnalysis {
     
 
     private void makeTopSet() {
-        this.top = (RichAtomSet)this.setRichAtomSet(this.molecule, RichSetType.MOLECULE);
-        String id = this.top.getId();
+        String id = this.getAtomSetId();
+        this.top = this.setRichAtomSet(new RichMolecule(this.molecule, id));
         this.setContexts(this.richAtoms.keySet(), id);
         this.setContexts(this.richBonds.keySet(), id);
         this.setContexts(this.richAtomSets.keySet(), id);
@@ -310,20 +314,20 @@ public class StructuralAnalysis {
         Boolean sssr = Cli.hasOption("sssr");
 
         for (IAtomContainer ring : ringSystem.fusedRings()) {
-            RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichSetType.FUSED);
+            RichStructure<?> fusedRing = this.setRichAtomSet(new RichFusedRing(ring, this.getAtomSetId()));
             if (sub) {
                 for (IAtomContainer subSystem : ringSystem.subRings(ring, sssr)) {
-                RichStructure<?> subRing = this.setRichAtomSet(subSystem, RichSetType.SMALLEST);
-                String ringId = fusedRing.getId();
-                String subRingId = subRing.getId();
-                subRing.getSuperSystems().add(ringId);
-                subRing.getContexts().add(ringId);
-                fusedRing.getSubSystems().add(subRingId);
+                    RichStructure<?> subRing = this.setRichAtomSet(new RichSubRing(subSystem, this.getAtomSetId()));
+                    String ringId = fusedRing.getId();
+                    String subRingId = subRing.getId();
+                    subRing.getSuperSystems().add(ringId);
+                    subRing.getContexts().add(ringId);
+                    fusedRing.getSubSystems().add(subRingId);
                 }
             }
         }
         for (IAtomContainer ring : ringSystem.isolatedRings()) {
-            this.setRichAtomSet(ring, RichSetType.ISOLATED);
+            this.setRichAtomSet(new RichIsolatedRing(ring, this.getAtomSetId()));
         }
     }
 
@@ -336,7 +340,7 @@ public class StructuralAnalysis {
         AliphaticChain chain = new AliphaticChain(3);
         chain.calculate(this.molecule);
         for (IAtomContainer set : chain.extract()) {
-            this.setRichAtomSet(set, RichSetType.ALIPHATIC);
+            this.setRichAtomSet(new RichAliphaticChain(set, this.getAtomSetId()));
         }
     }
 
@@ -351,8 +355,7 @@ public class StructuralAnalysis {
         Map<String, IAtomContainer> groups = filter.filter();
         for (String key : groups.keySet()) {
             IAtomContainer container = groups.get(key);
-            RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
-                                                               RichSetType.FUNCGROUP);
+            RichAtomSet set = this.setRichAtomSet(new RichFunctionalGroup(groups.get(key), this.getAtomSetId()));
             set.name = key.split("-")[0];
             Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
                            + container.getBondCount() + " bonds");
