@@ -28,6 +28,7 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
+import io.github.egonw.structure.RichSetType;
 
 import com.google.common.collect.Sets;
 
@@ -63,7 +64,7 @@ public class FunctionalGroupsFilter {
     
     FunctionalGroupsFilter(List<RichAtomSet> existing, Map<String, IAtomContainer> groups) {
         existingSets = existing.stream().
-            filter(as -> as.type != RichAtomSet.Type.SMALLEST).
+            filter(as -> as.type != RichSetType.SMALLEST).
             collect(Collectors.toList());
         newSets = groups;
     }
@@ -147,7 +148,7 @@ public class FunctionalGroupsFilter {
             IAtomContainer set = entry.getValue();
             if (considerSize(set) &&
                 considerOverlap(set)) {
-                workingSets.add(new RichAtomSet(set, RichAtomSet.Type.FUNCGROUP, entry.getKey()));
+                workingSets.add(new RichAtomSet(set, RichSetType.FUNCGROUP, entry.getKey()));
             }
         }
 

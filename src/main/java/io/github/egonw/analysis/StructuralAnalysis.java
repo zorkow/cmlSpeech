@@ -41,6 +41,7 @@ import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichChemObject;
+import io.github.egonw.structure.RichSetType;
 import io.github.egonw.structure.RichStructure;
 
 import com.google.common.base.Joiner;
@@ -170,7 +171,7 @@ public class StructuralAnalysis {
         return (RichAtomSet)this.richAtomSets.get(id);
     }
 
-    private RichStructure<?> setRichAtomSet(IAtomContainer atomSet, RichAtomSet.Type type) {
+    private RichStructure<?> setRichAtomSet(IAtomContainer atomSet, RichSetType type) {
         String id = getAtomSetId();
         return this.setRichStructure(this.richAtomSets, id, new RichAtomSet(atomSet, type, id));
     }
@@ -247,7 +248,7 @@ public class StructuralAnalysis {
     
 
     private void makeTopSet() {
-        this.top = (RichAtomSet)this.setRichAtomSet(this.molecule, RichAtomSet.Type.MOLECULE);
+        this.top = (RichAtomSet)this.setRichAtomSet(this.molecule, RichSetType.MOLECULE);
         String id = this.top.getId();
         this.setContexts(this.richAtoms.keySet(), id);
         this.setContexts(this.richBonds.keySet(), id);
@@ -309,10 +310,10 @@ public class StructuralAnalysis {
         Boolean sssr = Cli.hasOption("sssr");
 
         for (IAtomContainer ring : ringSystem.fusedRings()) {
-            RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichAtomSet.Type.FUSED);
+            RichStructure<?> fusedRing = this.setRichAtomSet(ring, RichSetType.FUSED);
             if (sub) {
                 for (IAtomContainer subSystem : ringSystem.subRings(ring, sssr)) {
-                RichStructure<?> subRing = this.setRichAtomSet(subSystem, RichAtomSet.Type.SMALLEST);
+                RichStructure<?> subRing = this.setRichAtomSet(subSystem, RichSetType.SMALLEST);
                 String ringId = fusedRing.getId();
                 String subRingId = subRing.getId();
                 subRing.getSuperSystems().add(ringId);
@@ -322,7 +323,7 @@ public class StructuralAnalysis {
             }
         }
         for (IAtomContainer ring : ringSystem.isolatedRings()) {
-            this.setRichAtomSet(ring, RichAtomSet.Type.ISOLATED);
+            this.setRichAtomSet(ring, RichSetType.ISOLATED);
         }
     }
 
@@ -335,7 +336,7 @@ public class StructuralAnalysis {
         AliphaticChain chain = new AliphaticChain(3);
         chain.calculate(this.molecule);
         for (IAtomContainer set : chain.extract()) {
-            this.setRichAtomSet(set, RichAtomSet.Type.ALIPHATIC);
+            this.setRichAtomSet(set, RichSetType.ALIPHATIC);
         }
     }
 
@@ -351,7 +352,7 @@ public class StructuralAnalysis {
         for (String key : groups.keySet()) {
             IAtomContainer container = groups.get(key);
             RichAtomSet set = (RichAtomSet)this.setRichAtomSet(groups.get(key),
-                                                               RichAtomSet.Type.FUNCGROUP);
+                                                               RichSetType.FUNCGROUP);
             set.name = key.split("-")[0];
             Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
                            + container.getBondCount() + " bonds");
@@ -556,7 +557,7 @@ public class StructuralAnalysis {
      */
     public Set<String> siblingsNEW(RichAtomSet atomSet) {
         Set<String> result = new HashSet<String>();
-        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+        if (atomSet.getType() == RichSetType.SMALLEST) {
             for (String superSystem : atomSet.getSuperSystems()) {
                 result.addAll((this.getRichAtomSet(superSystem)).getSubSystems());
             }
@@ -573,7 +574,7 @@ public class StructuralAnalysis {
      */
     public Set<RichStructure<?>> siblings(RichAtomSet atomSet) {
         Set<String> result = new HashSet<String>();
-        if (atomSet.type == RichAtomSet.Type.SMALLEST) {
+        if (atomSet.getType() == RichSetType.SMALLEST) {
             for (String superSystem : atomSet.getSuperSystems()) {
                 result.addAll(this.getRichAtomSet(superSystem).getSubSystems());
             }
@@ -601,7 +602,7 @@ public class StructuralAnalysis {
      * larger supersystem. */
     private void majorSystems() {
         this.majorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.SMALLEST)
+            .filter(as -> as.type != RichSetType.SMALLEST)
             .collect(Collectors.toList());
         this.majorGraph = new StructuralGraph(this.getMajorSystems(),
                                               this.getSingletonAtoms());
@@ -622,7 +623,7 @@ public class StructuralAnalysis {
      * sub-system. */
     private void minorSystems() {
         this.minorSystems = this.getAtomSets().stream()
-            .filter(as -> as.type != RichAtomSet.Type.FUSED)
+            .filter(as -> as.type != RichSetType.FUSED)
             .collect(Collectors.toList());
         this.minorGraph = new StructuralGraph(this.getMinorSystems(),
                                               this.getSingletonAtoms());
@@ -643,7 +644,7 @@ public class StructuralAnalysis {
      * larger supersystem. */
     private void recursiveSystems() {
         List<RichAtomSet> subRings = this.getAtomSets().stream()
-            .filter(as -> as.type == RichAtomSet.Type.FUSED)
+            .filter(as -> as.getType() == RichSetType.FUSED)
             .collect(Collectors.toList());
         for (RichAtomSet ring: subRings) {
             StructuralGraph ringGraph =
@@ -731,7 +732,7 @@ public class StructuralAnalysis {
                 this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = this.getRichAtomSet(structure);
-                if (atomSet.getType() == RichAtomSet.Type.FUSED) {
+                if (atomSet.getType() == RichSetType.FUSED) {
                     for (String sub : atomSet.getSubSystems()) {
                         RichAtomSet subSystem = this.getRichAtomSet(sub);
                         this.appendPositions(subSystem);

@@ -29,6 +29,7 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
+import io.github.egonw.structure.RichSetType;
 
 /**
  * Rich Structure comparison methods wrt. types of atom sets. 
@@ -38,18 +39,18 @@ import io.github.egonw.structure.RichChemObject;
 public class TypeComparator extends DefaultComparator<RichChemObject> {
     
     public int compare(RichAtomSet set1, RichAtomSet set2) {
-        RichAtomSet.Type typeA = set1.getType();
-        RichAtomSet.Type typeB = set2.getType();
-        if (typeA == RichAtomSet.Type.ALIPHATIC && 
-            (typeB == RichAtomSet.Type.FUSED || 
-             typeB == RichAtomSet.Type.ISOLATED ||
-             typeB == RichAtomSet.Type.SMALLEST)) {
+        RichSetType typeA = set1.getType();
+        RichSetType typeB = set2.getType();
+        if (typeA == RichSetType.ALIPHATIC && 
+            (typeB == RichSetType.FUSED || 
+             typeB == RichSetType.ISOLATED ||
+             typeB == RichSetType.SMALLEST)) {
             return 1;
         }
-        if (typeB == RichAtomSet.Type.ALIPHATIC && 
-            (typeA == RichAtomSet.Type.FUSED || 
-             typeA == RichAtomSet.Type.ISOLATED ||
-             typeA == RichAtomSet.Type.SMALLEST)) {
+        if (typeB == RichSetType.ALIPHATIC && 
+            (typeA == RichSetType.FUSED || 
+             typeA == RichSetType.ISOLATED ||
+             typeA == RichSetType.SMALLEST)) {
             return -1;
         }
         return 0;

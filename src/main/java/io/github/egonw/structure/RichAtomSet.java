@@ -54,23 +54,7 @@ import java.util.TreeSet;
 
 public class RichAtomSet extends RichChemObject implements Iterable<String> {
 	
-    public enum Type {
-        ALIPHATIC ("Aliphatic chain"),
-        FUSED ("Fused ring"),
-        ISOLATED ("Isolated ring"),
-        SMALLEST ("Subring"),
-        MOLECULE ("Molecule"),
-        FUNCGROUP ("Functional Group"),
-        ;
-
-        protected final String name;
-
-        private Type (String name) {
-            this.name = name;
-        }
-    }
-
-    public Type type;
+    public RichSetType type;
     public CMLAtomSet cml;
 
     public String iupac = "";
@@ -88,12 +72,12 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
         super(container);
     }
 
-    private RichAtomSet (IAtomContainer container, Type type) {
+    private RichAtomSet (IAtomContainer container, RichSetType type) {
         super(container);
         this.type = type;
     }
 
-    public RichAtomSet (IAtomContainer container, Type type, String id) {
+    public RichAtomSet (IAtomContainer container, RichSetType type, String id) {
         super(container);
         this.getStructure().setID(id);
         this.type = type;
@@ -108,7 +92,7 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
 
-    public Type getType() {
+    public RichSetType getType() {
         return this.type;
     }
     
@@ -303,8 +287,8 @@ public class RichAtomSet extends RichChemObject implements Iterable<String> {
     }
 
     public static boolean isRing(RichAtomSet atomSet) {
-        return atomSet.type == RichAtomSet.Type.FUSED ||
-            atomSet.type == RichAtomSet.Type.ISOLATED ||
-            atomSet.type == RichAtomSet.Type.SMALLEST;
+        return atomSet.type == RichSetType.FUSED ||
+            atomSet.type == RichSetType.ISOLATED ||
+            atomSet.type == RichSetType.SMALLEST;
     }
 }

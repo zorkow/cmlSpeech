@@ -38,6 +38,7 @@ import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreOutput;
 import io.github.egonw.sre.SreSpeech;
 import io.github.egonw.structure.RichAtomSet;
+import io.github.egonw.structure.RichSetType;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -256,7 +257,7 @@ public class CMLEnricher {
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);
             set.addAttribute(new SreAttribute("formula", richSet.molecularFormula));
-            if (richSet.getType() == RichAtomSet.Type.FUNCGROUP) {
+            if (richSet.getType() == RichSetType.FUNCGROUP) {
                 set.addAttribute(new SreAttribute("name", richSet.name));
             } else {
                 nameMolecule(richSet.getId(), richSet.getStructure());
