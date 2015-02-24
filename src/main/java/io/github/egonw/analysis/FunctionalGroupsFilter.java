@@ -52,11 +52,11 @@ import java.util.stream.Collectors;
 
 public class FunctionalGroupsFilter {
 
-    static private List<RichAtomSet> existingSets;
-    static private Map<String, IAtomContainer> newSets;
-    static private Map<String, IAtomContainer> resultSets = new HashMap<String, IAtomContainer>();
+    private List<RichAtomSet> existingSets;
+    private Map<String, IAtomContainer> newSets;
+    private Map<String, IAtomContainer> resultSets = new HashMap<String, IAtomContainer>();
     // The set that is reduced to distil the interesting functional groups.
-    static private List<RichAtomSet> workingSets = new ArrayList<RichAtomSet>();
+    private List<RichAtomSet> workingSets = new ArrayList<RichAtomSet>();
 
     static private Integer minimalSize = 2;
     static private Integer minimalOverlap = 1;
@@ -81,12 +81,12 @@ public class FunctionalGroupsFilter {
     // - At least one (or two?) elements not in another container.
     //
 
-    static private boolean considerSize(IAtomContainer container) {
+    private boolean considerSize(IAtomContainer container) {
         return container.getAtomCount() >= minimalSize;
     }
     
 
-    static private boolean considerOverlap(IAtomContainer container) {
+    private boolean considerOverlap(IAtomContainer container) {
         for (RichAtomSet old : existingSets) {
             Integer count = 0;
             Set<String> components = old.getComponents();
@@ -103,7 +103,7 @@ public class FunctionalGroupsFilter {
     }
 
 
-    static private void subsumeSubsets() {
+    private void subsumeSubsets() {
         if (workingSets.isEmpty()) {
             return;
         }

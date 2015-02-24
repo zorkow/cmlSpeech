@@ -42,7 +42,7 @@ import java.util.TreeMap;
 
 public class SreDescription extends SreElement {
 
-    private static SortedMap<Integer, List<Element>> descriptionNodes = new TreeMap<>();
+    private SortedMap<Integer, List<Element>> descriptionNodes = new TreeMap<>();
 
     SreDescription() {
         super(SreNamespace.Tag.DESCRIPTIONS);
@@ -86,20 +86,20 @@ public class SreDescription extends SreElement {
 
 
     public void addDescription(Integer level, Element element) {
-        List<Element> list = SreDescription.descriptionNodes.get(level);
+        List<Element> list = this.descriptionNodes.get(level);
         if (list == null) {
             list = new ArrayList<Element>();
-            SreDescription.descriptionNodes.put(level, list);
+            this.descriptionNodes.put(level, list);
         }
         list.add(element);
     }
 
     public void finalize() {
-        for (Integer key : SreDescription.descriptionNodes.keySet()) {
+        for (Integer key : this.descriptionNodes.keySet()) {
             Element desc = new SreElement(SreNamespace.Tag.DESC);
             Attribute levelAtt = new SreAttribute(SreNamespace.Attribute.LEVEL.attribute, key.toString());
             desc.addAttribute(levelAtt);
-            for (Element subdesc : SreDescription.descriptionNodes.get(key)) {
+            for (Element subdesc : this.descriptionNodes.get(key)) {
                 desc.appendChild(subdesc);
             }
             this.appendChild(desc);

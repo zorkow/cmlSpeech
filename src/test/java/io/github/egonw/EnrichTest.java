@@ -2,22 +2,21 @@
 //
 package io.github.egonw;
 
-import junit.framework.TestSuite;
-
-import junit.framework.Test;
-
-import junit.framework.TestCase;
-import io.github.egonw.base.Cli;
 import io.github.egonw.base.App;
-import java.util.List;
-import java.util.LinkedList;
+import io.github.egonw.base.Cli;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import org.custommonkey.xmlunit.XMLTestCase;
-import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.custommonkey.xmlunit.XMLTestCase;
+
 
 /**
  * Full functional test for the enricher.
@@ -77,21 +76,21 @@ public class EnrichTest extends XMLTestCase {
         }
     }
 
-    // /**
-    //  * Test enrichment of molecule.
-    //  */
-    // public void testChain()
-    // {
-    //     assertTrue( this.compareEnrichedMolecule("book1-004-05") );
-    // }
+    /**
+     * Test enrichment of molecule.
+     */
+    public void testChain()
+    {
+        this.compareEnrichedMolecule("book1-004-05");
+    }
 
-    // /**
-    //  * Test enrichment of molecule.
-    //  */
-    // public void testFunctional()
-    // {
-    //     assertTrue( this.compareEnrichedMolecule("book1-006-03") );
-    // }
+    /**
+     * Test enrichment of molecule.
+     */
+    public void testFunctional()
+    {
+        this.compareEnrichedMolecule("book1-006-03");
+    }
 
 
     // /**
@@ -99,7 +98,7 @@ public class EnrichTest extends XMLTestCase {
     //  */
     // public void testRing()
     // {
-    //     assertTrue( this.compareEnrichedMolecule("book1-012-00") );
+    //     this.compareEnrichedMolecule("book1-012-00");
     // }
 
 
@@ -112,13 +111,13 @@ public class EnrichTest extends XMLTestCase {
     // }
 
 
-    /**
-     * Test enrichment of molecule.
-     */
-    public void testComplex()
-    {
-        //this.compareEnrichedMolecule("US06358966-20020319-C00001");
-    }
+    // /**
+    //  * Test enrichment of molecule.
+    //  */
+    // public void testComplex()
+    // {
+    //     this.compareEnrichedMolecule("US06358966-20020319-C00001");
+    // }
 
 
 }

@@ -51,14 +51,14 @@ import java.util.stream.StreamSupport;
  */
 public class FunctionalGroups {
 
-    private static Map<String, IAtomContainer> groups = new HashMap<>();
-    private static Integer groupCounter = 1;
+    private Map<String, IAtomContainer> groups = new HashMap<>();
+    private Integer groupCounter = 1;
 
-    private static IAtomContainer molecule;
+    private IAtomContainer molecule;
     
     public FunctionalGroups(IAtomContainer molecule) {
-        FunctionalGroups.molecule = molecule;
-        FunctionalGroups.compute();
+        this.molecule = molecule;
+        this.compute();
     }
 
 
@@ -68,11 +68,11 @@ public class FunctionalGroups {
      * 
      * @param molecule
      */
-    private static void compute() {
+    private void compute() {
         for (Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
             try {
-                checkMolecule(smarts.getValue(), smarts.getKey(),
-                              FunctionalGroups.molecule.clone());
+                this.checkMolecule(smarts.getValue(), smarts.getKey(),
+                              this.molecule.clone());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
@@ -90,7 +90,7 @@ public class FunctionalGroups {
      * @param mol
      *            The molecule being checked against
      */
-    private static void checkMolecule(String pattern, String name,
+    private void checkMolecule(String pattern, String name,
                                       IAtomContainer mol) {
         // deals with illegal smarts strings
         try {
@@ -102,7 +102,7 @@ public class FunctionalGroups {
             // the matches
             if (matchesFound) {
                 List<List<Integer>> mappings = query.getMatchingAtoms();
-                getMappedAtoms(mappings, name);
+                this.getMappedAtoms(mappings, name);
             }
         } catch (IllegalArgumentException e) {
             // Shows which (if any) functional groups have illegal smarts
@@ -124,13 +124,13 @@ public class FunctionalGroups {
      * @param name
      *            The name of the functional group
      */
-    private static void getMappedAtoms(List<List<Integer>> mappings, String name) {
+    private void getMappedAtoms(List<List<Integer>> mappings, String name) {
         // Goes through each match for the pattern
         for (List<Integer> mappingList : mappings) {
             IAtomContainer funcGroup = new AtomContainer();
             // Adds the matched molecule to the atomcontainer
             for (Integer i : mappingList) {
-                funcGroup.addAtom(FunctionalGroups.molecule.getAtom(i));
+                funcGroup.addAtom(this.molecule.getAtom(i));
             }
             getMappedBonds(funcGroup);
             groups.put(name + "-" + groupCounter++, funcGroup);
@@ -145,9 +145,9 @@ public class FunctionalGroups {
      * @param fg
      *            Functonal group container.
      */
-    private static void getMappedBonds(IAtomContainer fg) {
+    private void getMappedBonds(IAtomContainer fg) {
         for (IAtom atom : fg.atoms()) {
-            for (IBond bond : FunctionalGroups.molecule.getConnectedBondsList(atom)) {
+            for (IBond bond : this.molecule.getConnectedBondsList(atom)) {
                 if (!fg.contains(bond) &&
                     StreamSupport.stream(bond.atoms().spliterator(), false).
                     allMatch(a -> fg.contains(a))) {
