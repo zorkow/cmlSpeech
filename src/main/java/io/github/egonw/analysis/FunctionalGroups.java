@@ -47,63 +47,20 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 /**
- * Computes functions groups using smarts patterns. These patterns are currently
- * loaded from files given in hard coded pathnames.
+ * Computes functions groups using smarts patterns. 
  */
-
 public class FunctionalGroups {
 
-    private static volatile FunctionalGroups instance = null;
-    private final static String[] smartsFiles = {
-        "src/main/resources/smarts/daylight-pattern.txt",
-        "src/main/resources/smarts/smarts-pattern.txt"
-    };
-    private static Map<String, String> smartsPatterns = new HashMap<String, String>();
-    private static Map<String, IAtomContainer> groups;
+    private static Map<String, IAtomContainer> groups = new HashMap<>();
     private static Integer groupCounter = 1;
 
     private static IAtomContainer molecule;
     
-    protected FunctionalGroups() {
-        FunctionalGroups.loadSmartsFiles();
+    public FunctionalGroups(IAtomContainer molecule) {
+        FunctionalGroups.molecule = molecule;
+        FunctionalGroups.compute();
     }
 
-
-    private static void loadSmartsFiles() {
-        for (String file : smartsFiles) {
-            loadSmartsFile(file);
-        }
-    }
-
-    private static void loadSmartsFile(String file) {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(file)));
-            String line;
-            while ((line = br.readLine()) != null) {
-                int colonIndex = line.indexOf(":");
-                // Checks that the line has a colon in it and if it is one of
-                // the patterns to be skipped (notated by a '#' before the name
-                // in the file
-                if (colonIndex != -1 && line.charAt(0) != '#') {
-                    smartsPatterns.put(line.substring(0, colonIndex),
-                                       line.substring(colonIndex + 2));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-    public static FunctionalGroups getInstance() {
-        if (instance == null) {
-            instance = new FunctionalGroups();
-        }
-        return instance;
-    }
-    
 
     /**
      * Goes through the file of smarts patterns and checks each pattern against
@@ -111,10 +68,8 @@ public class FunctionalGroups {
      * 
      * @param molecule
      */
-    public void compute(IAtomContainer molecule) {
-        FunctionalGroups.molecule = molecule;
-        groups = new HashMap<String, IAtomContainer>();
-        for (Map.Entry<String, String> smarts : smartsPatterns.entrySet()) {
+    private static void compute() {
+        for (Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
             try {
                 checkMolecule(smarts.getValue(), smarts.getKey(),
                               FunctionalGroups.molecule.clone());

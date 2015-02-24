@@ -91,22 +91,12 @@ public class CMLEnricher {
     }
 
     /**
-     * Enriches all CML files given as input arguments.
-     * 
-     */
-    public void enrichFiles() {
-        for (String file : Cli.getFiles()) {
-            enrichFile(file);
-        }
-    }
-
-    /**
      * Convenience method to enrich a CML file. Does all the error catching.
      * 
      * @param fileName
      *            File to enrich.
      */
-    private void enrichFile(String fileName) {
+    public void enrichFile(String fileName) {
         try {
             readFile(fileName);
             buildXOM();
@@ -262,6 +252,7 @@ public class CMLEnricher {
     private void appendAtomSets() {
         List<RichAtomSet> richSets = this.analysis.getAtomSets();
         for (RichAtomSet richSet : richSets) {
+            System.out.println(richSet.getId());
             CMLAtomSet set = richSet.getCML(this.doc);
             // this.atomSets.add(richSet);
             this.doc.getRootElement().appendChild(set);

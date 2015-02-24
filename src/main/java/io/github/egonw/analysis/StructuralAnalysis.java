@@ -344,8 +344,7 @@ public class StructuralAnalysis {
      * Computes functional groups.
      */
     private void functionalGroups() {
-        FunctionalGroups fg = FunctionalGroups.getInstance();
-        fg.compute(this.molecule);
+        FunctionalGroups fg = new FunctionalGroups(this.molecule);
         FunctionalGroupsFilter filter = new FunctionalGroupsFilter(this.getAtomSets(),
                                                                    fg.getGroups());
         Map<String, IAtomContainer> groups = filter.filter();

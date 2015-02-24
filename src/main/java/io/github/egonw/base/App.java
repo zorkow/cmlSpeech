@@ -32,9 +32,9 @@ public class App {
     public static void main(String[] args) throws Exception {
 	Cli.init(args);
 	Logger.start();
-	if (!Cli.getFiles().isEmpty()) {
+        for (String file : Cli.getFiles()) {
 	    CMLEnricher cmle = new CMLEnricher();
-	    cmle.enrichFiles();
+	    cmle.enrichFile(file);
 	}
 	Logger.end();
     }
