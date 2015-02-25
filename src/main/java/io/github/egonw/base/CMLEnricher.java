@@ -275,7 +275,7 @@ public class CMLEnricher {
      */
     private void nameMolecule(String id, IAtomContainer container) {
         // TODO (sorge) catch the right exception.
-        Logger.logging("Registering calls for " + id);
+        Logger.logging("Registering calls for " + id + "\n");
         IAtomContainer newcontainer = checkedClone(container);
         if (newcontainer != null) {
             this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,

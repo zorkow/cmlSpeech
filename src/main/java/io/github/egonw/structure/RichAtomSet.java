@@ -122,29 +122,29 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     protected abstract void walk();
     
     
-    protected final IAtom getSinglyConnectedAtom() {
-        // TODO (sorge) Choose start wrt. position of internal/external
-        // substitution.
+    protected final List<IAtom> getSinglyConnectedAtoms() {
+        List<IAtom> atoms = new ArrayList<>();
         for (IAtom atom : this.getStructure().atoms()) {
             if (this.getStructure().getConnectedAtomsList(atom).size() <= 1) {
-                return atom;
+                atoms.add(atom);
             }
         }
-        return null;
+        return atoms;
     }
 
 
-    protected final IAtom getExternallyConnectedAtom() {
+    protected final List<IAtom> getExternallyConnectedAtoms() {
+        List<IAtom> atoms = new ArrayList<>();
         for (IAtom atom : this.getStructure().atoms()) {
             // FG: This is not working yet.
             //
             // It needs to be checked, wrt. external bonds as well.
             //
             if (this.connectingAtoms.contains(atom.getID())) {
-                return atom;
+                atoms.add(atom);
             }
         }
-        return null;
+        return atoms;
     }
 
     

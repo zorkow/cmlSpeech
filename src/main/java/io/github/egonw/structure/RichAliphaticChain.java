@@ -32,6 +32,8 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 import java.util.ArrayList;
+import java.util.List;
+import org.openscience.cdk.interfaces.IBond;
 
 /**
  * Atom sets that are rich aliphatic chains.
@@ -52,15 +54,94 @@ public class RichAliphaticChain extends RichAtomSet {
     
 
     protected final void walk() {
-        // TODO (sorge) Choose start wrt. replacements, preferring O, then by
-        // weight. Then wrt. position OH substitution then other substitutions
-        // by weight. For direction: choose second by smallest distance to
-        // first!
-        IAtom startAtom = this.getSinglyConnectedAtom();
-        if (startAtom == null) {
-            throw new SreException("Aliphatic chain without start atom!");
+        List<IAtom> atoms = this.getSinglyConnectedAtoms();
+        // Here we assume that the list is only of length 2.
+        // Otherwise something very peculiar is wrong!
+        if (atoms.size() != 2) {
+            throw new SreException("Aliphatic chain without two ends!");
         }
+        IAtom startAtom = this.findLowestSubstitution(atoms.get(0), atoms.get(1));
         this.walkStraight(startAtom);
     }
     
+
+    private List<IAtom> visited = new ArrayList<>();
+
+
+    /** 
+     * Finds the lowest external or internal substitution. Walks chain from
+     * either side, returns the start atom for the lowest external substitution
+     * if possible. If this is in the middle or does not exist, prefers the
+     * lowest internal substitution.
+     * 
+     * @param leftAtom  One end of the chain.
+     * @param rightAtom  The other end of the chain.
+     * 
+     * @return 
+     */
+    private IAtom findLowestSubstitution(IAtom leftAtom, IAtom rightAtom) {
+        IAtomContainer structure = this.getStructure();
+        IAtom currentLeft = leftAtom;
+        IAtom currentRight = rightAtom;
+        Integer internal = 0;
+        Integer external = 0;
+        Integer pointer = 0;
+        Integer middle = (int)Math.ceil(structure.getAtomCount() / 2d);
+        while (pointer < middle && external == 0) {
+            pointer++;
+            if (this.getConnectingAtoms().contains(currentLeft.getID())) {
+                external = -1 * pointer;
+                break;
+            }
+            if (this.getConnectingAtoms().contains(currentRight.getID())) {
+                external = pointer;
+                break;
+            }
+            IAtom nextLeft = chooseNext(currentLeft);
+            IAtom nextRight = chooseNext(currentRight);
+            // TODO sorge Add stereo chemistry here!
+            if (internal == 0) {
+                if (structure.getBond(currentLeft, nextLeft).getOrder() != IBond.Order.SINGLE) {
+                    internal = -1 * pointer;
+                }
+                if (structure.getBond(currentRight, nextRight).getOrder() != IBond.Order.SINGLE) {
+                    internal = pointer;
+                }
+            }
+            currentLeft = nextLeft;
+            currentRight = nextRight;
+        }
+        if (external == 0 ||
+            (structure.getAtomCount() % 2 == 1 && Math.abs(external) == middle)) {
+            if (internal > 0) {
+                return rightAtom;
+            }
+            return leftAtom;
+        }
+        if (external > 0) {
+            return rightAtom;
+        }
+        return leftAtom;
+    }
+
+
+    /** 
+     * Finds the next atom in the chain that has not yet been visited.
+     * 
+     * @param atom 
+     * 
+     * @return 
+     */
+    private IAtom chooseNext(IAtom atom) {
+        visited.add(atom);
+        List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
+        if (!visited.contains(connected.get(0))) {
+            return connected.get(0);
+        }
+        if (visited.size() > 1 && !visited.contains(connected.get(1))) {
+            return connected.get(1);
+        }
+        return null;
+    }
+
 }

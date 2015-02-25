@@ -30,6 +30,7 @@ import io.github.egonw.sre.SreException;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtom;
+import java.util.List;
 
 /**
  * Atom sets that are rich functional groups.
@@ -44,14 +45,14 @@ public class RichFunctionalGroup extends RichAtomSet {
 
     
     protected final void walk() {
-        IAtom startAtom = this.getExternallyConnectedAtom();
-        if (startAtom == null) {
-            startAtom = this.getSinglyConnectedAtom();
+        List<IAtom> atoms = this.getExternallyConnectedAtoms();
+        if (atoms.size() == 0) {
+            atoms = this.getSinglyConnectedAtoms();
         }
-        if (startAtom == null) {
+        if (atoms.size() == 0) {
             throw new SreException("Functional group without start atom!");
         }
-        this.walkDepthFirst(startAtom);
+        this.walkDepthFirst(atoms.get(0));
     }
 
 }
