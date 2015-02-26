@@ -30,10 +30,10 @@ import io.github.egonw.sre.SreException;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IBond;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.openscience.cdk.interfaces.IBond;
 
 /**
  * Atom sets that are rich aliphatic chains.

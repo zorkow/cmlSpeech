@@ -26,11 +26,12 @@
 //
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IChemObject;
-import java.util.SortedSet;
 import nu.xom.Document;
+
+import org.openscience.cdk.interfaces.IChemObject;
 import org.xmlcml.cml.element.CMLAtomSet;
+
+import java.util.SortedSet;
 
 /**
  *

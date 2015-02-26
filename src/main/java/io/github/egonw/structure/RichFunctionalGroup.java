@@ -28,8 +28,9 @@ package io.github.egonw.structure;
 
 import io.github.egonw.sre.SreException;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+
 import java.util.List;
 
 /**

@@ -28,7 +28,6 @@ package io.github.egonw.structure;
 
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Logger;
-import io.github.egonw.sre.SreException;
 import io.github.egonw.sre.SreUtil;
 
 import com.google.common.base.Joiner;

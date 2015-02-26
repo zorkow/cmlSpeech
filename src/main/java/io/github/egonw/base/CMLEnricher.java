@@ -40,34 +40,14 @@ import io.github.egonw.sre.SreSpeech;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichSetType;
 
-import nu.xom.Builder;
 import nu.xom.Document;
-import nu.xom.ParsingException;
-import nux.xom.pool.XOMUtil;
 
-import org.apache.commons.io.FilenameUtils;
-import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IChemFile;
-import org.openscience.cdk.io.CMLWriter;
-import org.openscience.cdk.io.ISimpleChemObjectReader;
-import org.openscience.cdk.io.ReaderFactory;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
-import org.xmlcml.cml.base.CMLBuilder;
 import org.xmlcml.cml.element.CMLAtomSet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.List;
 
 /**
