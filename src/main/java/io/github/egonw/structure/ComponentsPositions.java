@@ -91,8 +91,8 @@ public class ComponentsPositions implements Iterable<String> {
 
     public String toString() {
         String result = "";
-        for (Integer key : this.atomPositions.keySet()) {
-            result += String.format("%d:\t%s\n", key, this.atomPositions.get(key));
+        for (String key : this) {
+            result += String.format("%d:\t%s\n", this.getPosition(key), key);
         }
         return result;
     }
