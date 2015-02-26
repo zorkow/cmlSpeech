@@ -26,8 +26,6 @@
 //
 package io.github.egonw.base;
 
-import io.github.egonw.sre.SreNamespace;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -132,9 +130,6 @@ public class FileHandler {
         OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
                 basename + "-" + extension + ".cml"));
         PrintWriter output = new PrintWriter(outFile);
-        doc.getRootElement().addNamespaceDeclaration(
-                SreNamespace.getInstance().prefix,
-                SreNamespace.getInstance().uri);
         output.write(XOMUtil.toPrettyXML(doc));
         output.flush();
         output.close();

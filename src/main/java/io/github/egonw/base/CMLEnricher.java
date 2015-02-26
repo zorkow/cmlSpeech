@@ -134,6 +134,9 @@ public class CMLEnricher {
                                                       Cli.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
+            doc.getRootElement().
+                addNamespaceDeclaration(SreNamespace.getInstance().prefix,
+                                        SreNamespace.getInstance().uri);
             FileHandler.writeFile(this.doc, fileName, "enr");
         } catch (Exception e) {
             // TODO (sorge) Meaningful exception handling by
