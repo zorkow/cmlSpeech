@@ -99,10 +99,10 @@ public class CMLEnricher {
      */
     public void enrichFile(String fileName) {
         try {
-            readFile(fileName);
-            buildXOM();
+            this.molecule = FileHandler.readFile(fileName);
+            this.doc = FileHandler.buildXOM(this.molecule);
             if (Cli.hasOption("c")) {
-                writeFile(fileName, "simple");
+                FileHandler.writeFile(this.doc, fileName, "simple");
             }
             removeExplicitHydrogens();
 
@@ -134,7 +134,7 @@ public class CMLEnricher {
                                                       Cli.hasOption("sub"));
             	System.out.println(structuralFormula);
             }
-            writeFile(fileName, "enr");
+            FileHandler.writeFile(this.doc, fileName, "enr");
         } catch (Exception e) {
             // TODO (sorge) Meaningful exception handling by
             // exceptions/functions.
@@ -148,79 +148,8 @@ public class CMLEnricher {
         }
     }
 
-    /**
-     * Loads current file into the molecule IAtomContainer.
-     * 
-     * @param fileName
-     *            File to load.
-     * 
-     * @throws IOException
-     *             Problems with loading file.
-     * @throws CDKException
-     *             Problems with CML file format.
-     */
-    private void readFile(String fileName) throws IOException, CDKException {
-        InputStream file = new BufferedInputStream(
-                new FileInputStream(fileName));
-        ISimpleChemObjectReader reader = new ReaderFactory().createReader(file);
-        IChemFile cFile = null;
-        cFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(
-                IChemFile.class));
-        reader.close();
-        this.molecule = ChemFileManipulator.getAllAtomContainers(cFile).get(0);
-        Logger.logging(this.molecule);
-    }
-
-    /**
-     * Build the CML XOM element.
-     * 
-     * @throws IOException
-     *             Problems with StringWriter
-     * @throws CDKException
-     *             Problems with CMLWriter
-     * @throws ParsingException
-     *             Problems with building CML XOM.
-     */
-    private void buildXOM() throws IOException, CDKException, ParsingException {
-        StringWriter outStr = new StringWriter();
-        CMLWriter cmlwriter = new CMLWriter(outStr);
-        cmlwriter.write(this.molecule);
-        cmlwriter.close();
-        String cmlcode = outStr.toString();
-
-        Builder builder = new CMLBuilder();
-        // this.doc.getRootElement().addNamespaceDeclaration
-        // ("cml", "http://www.xml-cml.org/schema");
-        this.doc = builder.build(cmlcode, "");
-        Logger.logging(this.doc.toXML());
-    }
-
     private void removeExplicitHydrogens() {
         this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
-    }
-
-    /**
-     * Writes current document to a CML file.
-     * 
-     * @param fileName
-     * @param extension
-     *
-     * @throws IOException
-     *             Problems with opening output file.
-     * @throws CDKException
-     *             Problems with writing the CML XOM.
-     */
-    private void writeFile(String fileName, String extension) throws IOException, CDKException {
-        String basename = FilenameUtils.getBaseName(fileName);
-        OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
-                basename + "-" + extension + ".cml"));
-        PrintWriter output = new PrintWriter(outFile);
-        this.doc.getRootElement().addNamespaceDeclaration(
-                SreNamespace.getInstance().prefix,
-                SreNamespace.getInstance().uri);
-        output.write(XOMUtil.toPrettyXML(this.doc));
-        output.flush();
-        output.close();
     }
 
     /**
