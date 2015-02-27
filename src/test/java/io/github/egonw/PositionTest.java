@@ -27,6 +27,13 @@
 package io.github.egonw;
 
 import java.nio.file.Paths;
+import io.github.egonw.base.CMLEnricher;
+import io.github.egonw.structure.RichAtomSet;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A basic environment to run position tests.
@@ -34,9 +41,37 @@ import java.nio.file.Paths;
 
 public class PositionTest {
 
-    private static String testSources = "src/main/resources";
-    
-    public PositionTest(String input, String[] order) {
-        Paths.get(PositionTest.testSources, input);
+    private static String testSources = "src/main/resources/test_files";
+
+    private void comparePositions(String input, String set, String[] order) {
+        CMLEnricher enricher = new CMLEnricher();
+        enricher.loadMolecule
+            (Paths.get(PositionTest.testSources, input).toString());
+        enricher.analyseMolecule();
+        RichAtomSet atomSet = enricher.analysis.getRichAtomSet(set);
+        List<String> actual = new ArrayList<String>();
+        for (String atom: atomSet) {
+            actual.add(atom);
+        }
+        assertArrayEquals(actual.toArray(), order);
+    }
+
+    @Test
+    public void chainTests() {
+        this.comparePositions("chains/5-bromo-6-nonene.mol", "as1",
+                              new String[]{"a10", "a9", "a8", "a7", "a6", "a5", "a4", "a3", "a2"});
+        this.comparePositions("chains/5-bromo-8-decene.mol", "as1",
+                              new String[]{"a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10", "a11"});
+        this.comparePositions("chains/6-bromo-2-decene.mol", "as1",
+                              new String[]{"a11", "a10", "a9", "a8", "a7", "a6", "a5", "a4", "a3", "a2"});
+        this.comparePositions("chains/6-bromo-2-nonene.mol", "as1",
+                              new String[]{"a10", "a9", "a8", "a7", "a6", "a5", "a4", "a3", "a2"});
+        this.comparePositions("chains/6-nonene.mol", "as1",
+                              new String[]{"a9","a8","a7","a6","a5","a4","a3","a2","a1"});
+        this.comparePositions("chains/1_chloro_2_pentene.mol", "as1",
+                              new String[]{"a5", "a4", "a3", "a2", "a1"});
     }
 }
+
+
+

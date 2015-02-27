@@ -58,12 +58,12 @@ import nu.xom.ParsingException;
  */
 
 public class CMLEnricher {
-    private StructuralAnalysis analysis;
-    private SreOutput sreOutput;
-    private SreSpeech sreSpeech;
-
+    public StructuralAnalysis analysis;
+    
     private Document doc;
     private IAtomContainer molecule;
+    private SreOutput sreOutput;
+    private SreSpeech sreSpeech;
     private CactusExecutor executor = new CactusExecutor();
     private StructuralFormula formula = new StructuralFormula();
 
