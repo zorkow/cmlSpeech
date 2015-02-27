@@ -84,6 +84,7 @@ public class FileHandler {
         return molecule;
     }
 
+
     /**
      * Builds the CML XOM element.
      * 
@@ -113,6 +114,7 @@ public class FileHandler {
         Logger.logging(doc.toXML());
         return doc;
     }
+
 
     /**
      * Writes a document to a CML file.

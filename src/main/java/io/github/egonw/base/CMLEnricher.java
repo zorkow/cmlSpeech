@@ -17,10 +17,10 @@
  * @file   CMLEnricher.java
  * @author Volker Sorge <sorge@zorkstone>
  * @date   Mon Apr 28 01:41:35 2014
- * 
+ *
  * @brief  Main class to enrich CML files.
- * 
- * 
+ *
+ *
  */
 
 
@@ -49,6 +49,9 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.util.List;
+import java.io.IOException;
+import org.openscience.cdk.exception.CDKException;
+import nu.xom.ParsingException;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -73,71 +76,125 @@ public class CMLEnricher {
 
     /**
      * Convenience method to enrich a CML file. Does all the error catching.
-     * 
+     *
      * @param fileName
      *            File to enrich.
      */
     public void enrichFile(String fileName) {
-        try {
-            this.molecule = FileHandler.readFile(fileName);
-            this.doc = FileHandler.buildXOM(this.molecule);
-            if (Cli.hasOption("c")) {
+        this.loadMolecule(fileName);
+        if (Cli.hasOption("c")) {
+            try {
                 FileHandler.writeFile(this.doc, fileName, "simple");
+            } catch (IOException e) {
+                Logger.error("IO error: Can't write " + fileName + "\n");
+                e.printStackTrace();
+            } catch (CDKException e) {
+                Logger.error("Not a valid CDK structure to write: " +
+                             e.getMessage() + "\n");
+                e.printStackTrace();
             }
-            removeExplicitHydrogens();
-
-            this.analysis = new StructuralAnalysis(this.molecule);
-            this.sreOutput = new SreOutput(this.analysis);
-            this.analysis.computePositions();
-            // TODO (sorge): Write to logger
-            this.analysis.printPositions();
-
-            MolecularFormula.set(this.analysis.getAtomSets());
-            this.appendAtomSets();
-            if (Cli.hasOption("ann")) {
-                this.sreOutput = new SreOutput(this.analysis);
-                this.doc.getRootElement().appendChild(
-                        this.sreOutput.getAnnotations());
-            }
-            if (!Cli.hasOption("nonih")) {
-                executor.execute();
-                executor.addResults(this.doc);
-                executor.shutdown();
-            }
-            if (Cli.hasOption("descr")) {
-                this.sreSpeech = new SreSpeech(this.analysis, this.doc);
-                this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
-            }
-            if (Cli.hasOption("sf")){
-            	String structuralFormula =
-                    this.formula.getStructuralFormula(this.analysis,
-                                                      Cli.hasOption("sub"));
-            	System.out.println(structuralFormula);
-            }
-            doc.getRootElement().
-                addNamespaceDeclaration(SreNamespace.getInstance().prefix,
-                                        SreNamespace.getInstance().uri);
+        }
+        this.analyseMolecule();
+        this.nameMolecule();
+        this.annotateMolecule();
+        doc.getRootElement().
+            addNamespaceDeclaration(SreNamespace.getInstance().prefix,
+                                    SreNamespace.getInstance().uri);
+        try {
             FileHandler.writeFile(this.doc, fileName, "enr");
-        } catch (Exception e) {
-            // TODO (sorge) Meaningful exception handling by
-            // exceptions/functions.
-            Logger.error("Something went wrong when parsing File "
-                    + fileName + ":" + e.getMessage() + "\n");
+        } catch (IOException e) {
+            Logger.error("IO error: Can't write enriched file " + fileName + "\n");
             e.printStackTrace();
-            return;
+        } catch (CDKException e) {
+            Logger.error("Not a valid CDK structure to write: " +
+                         e.getMessage() + "\n");
+            e.printStackTrace();
         }
         if (Cli.hasOption("vis")) {
             this.analysis.visualize();
         }
     }
 
+
+    /**
+     * Loads a molecule and initiates the CML document.
+     *
+     * @param fileName
+     */
+    public void loadMolecule(String fileName) {
+        try {
+            this.molecule = FileHandler.readFile(fileName);
+            this.doc = FileHandler.buildXOM(this.molecule);
+        } catch (IOException | CDKException | ParsingException e) {
+            Logger.error("IO error: " + e.getMessage() +
+                         " Can't load file " + fileName + "\n");
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+
+    /**
+     * Runs the analysis of the molecule.
+     */
+    public void analyseMolecule() {
+        this.removeExplicitHydrogens();
+        this.analysis = new StructuralAnalysis(this.molecule);
+        this.sreOutput = new SreOutput(this.analysis);
+        this.analysis.computePositions();
+        this.analysis.printPositions();
+    }
+
+
+    /**
+     * Names the molecule and its components and inserts the results in the CML
+     * document.
+     */
+    public void nameMolecule() {
+        MolecularFormula.set(this.analysis.getAtomSets());
+        this.appendAtomSets();
+        if (!Cli.hasOption("nonih")) {
+            executor.execute();
+            executor.addResults(this.doc);
+            executor.shutdown();
+        }
+        if (Cli.hasOption("sf")){
+            String structuralFormula =
+                this.formula.getStructuralFormula(this.analysis,
+                                                  Cli.hasOption("sub"));
+            System.out.println(structuralFormula);
+        }
+    }
+
+
+    /**
+     * Appends annotations to the CML document.
+     */
+    public void annotateMolecule() {
+        if (Cli.hasOption("ann")) {
+            this.sreOutput = new SreOutput(this.analysis);
+            this.doc.getRootElement().
+                appendChild(this.sreOutput.getAnnotations());
+            }
+        if (Cli.hasOption("descr")) {
+            this.sreSpeech = new SreSpeech(this.analysis, this.doc);
+            this.doc.getRootElement().
+                appendChild(this.sreSpeech.getAnnotations());
+        }
+    }
+
+
+    /**
+     * Removes explicit hydrogens from the CML representation.
+     */
     private void removeExplicitHydrogens() {
+        //  TODO (sorge) These should be reattached at the end!
         this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
     }
 
     /**
      * Creates a deep clone of an atom container catching possible errors.
-     * 
+     *
      * @param container
      *            The container to be cloned.
      * @return The cloned container. Possibly null if cloning failed!
@@ -159,6 +216,7 @@ public class CMLEnricher {
         return newcontainer;
     }
 
+
     /**
      * Append the Atom Sets from the structural analysis to the CML documents.
      */
@@ -177,9 +235,10 @@ public class CMLEnricher {
         }
     }
 
+
     /**
      * Computes some names for a molecule by registering calls to Cactus.
-     * 
+     *
      * @param id
      *            The id of the atom set.
      * @param container
