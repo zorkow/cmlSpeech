@@ -55,10 +55,7 @@ abstract class DefaultComparator<RichChemObject> implements RichStructureCompara
     };
 
 
-    public int compare(RichAtomSet set1, RichAtomSet set2) {
-        return -1 * Integer.compare(set1.getStructure().getAtomCount(), 
-                                    set2.getStructure().getAtomCount());
-    }
+    public abstract int compare(RichAtomSet set1, RichAtomSet set2);
 
     public int compare(RichAtomSet set1, RichAtom atom2) {
         return -1;
