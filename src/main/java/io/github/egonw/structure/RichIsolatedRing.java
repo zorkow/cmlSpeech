@@ -27,6 +27,10 @@
 package io.github.egonw.structure;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import org.openscience.cdk.interfaces.IAtom;
 
 /**
  * Atom sets that are rich isolated rings.
@@ -44,6 +48,18 @@ public class RichIsolatedRing extends RichAtomSet {
         // weight. Then wrt. position OH substitution then other substitutions
         // by weight. For direction: choose second by smallest distance to
         // first!
+        System.out.println(
+        this.getInternalSubstitutions());
         this.walkStraight(this.getStructure().atoms().iterator().next());
+    }
+
+    private List<String> getInternalSubstitutions() {
+        List<String> result = new ArrayList<>();
+        for (IAtom atom : this.getStructure().atoms()) {
+            if (!atom.getSymbol().equals("C")) {
+                result.add(atom.getSymbol());
+            }
+        }
+        return result;
     }
 }
