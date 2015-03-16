@@ -25,11 +25,15 @@
 //
 package io.github.egonw.analysis;
 
+import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.tools.AtomicProperties;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+
+import java.io.IOException;
 
 /**
  * Comparison of atom sets with respect to their molecular weight.
@@ -46,4 +50,15 @@ public class WeightComparator extends DefaultComparator<RichChemObject> {
         return (int)Math.signum(weightB - weightA);
     }
 
+    public int compare(RichAtom atom1, RichAtom atom2) {
+        try {
+            double weightA = AtomicProperties.getInstance().getMass(atom1.getStructure().getSymbol());
+            double weightB = AtomicProperties.getInstance().getMass(atom2.getStructure().getSymbol());
+
+            return (int)Math.signum(weightB - weightA);
+        }
+        catch (IOException e) {
+            return 0;
+        }
+    }
 }
