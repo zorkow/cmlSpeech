@@ -26,7 +26,7 @@
 //
 package io.github.egonw.sre;
 
-import io.github.egonw.analysis.StructuralAnalysis;
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
@@ -42,22 +42,22 @@ import java.util.stream.Collectors;
 
 public class SreOutput extends SreXML {
 
-    public SreOutput(StructuralAnalysis analysis) {
-        super(analysis);
+    public SreOutput() {
+        super();
         this.compute();
     }
 
     @Override
     public void compute() {
-        for (RichAtom structure : this.analysis.getAtoms()) {
+        for (RichAtom structure : RichStructureHelper.getAtoms()) {
             this.annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.ATOM);
             this.toSreStructure(structure);
         }
-        for (RichBond structure : this.analysis.getBonds()) {
+        for (RichBond structure : RichStructureHelper.getBonds()) {
             annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.BOND);
             this.toSreStructure(structure);
         }
-        for (RichAtomSet structure : this.analysis.getAtomSets()) {
+        for (RichAtomSet structure : RichStructureHelper.getAtomSets()) {
             annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.ATOMSET);
             this.toSreStructure(structure);
         }
@@ -108,7 +108,7 @@ public class SreOutput extends SreXML {
         this.toSreStructure((RichStructure)structure);
         this.toSreSet(id, SreNamespace.Tag.INTERNALBONDS, 
                       structure.getComponents().stream()
-                      .filter(this.analysis::isBond)
+                      .filter(RichStructureHelper::isBond)
                       .collect(Collectors.toSet()));
         this.toSreSet(id, SreNamespace.Tag.SUBSYSTEM, structure.getSubSystems());
         this.toSreSet(id, SreNamespace.Tag.SUPERSYSTEM, structure.getSuperSystems());

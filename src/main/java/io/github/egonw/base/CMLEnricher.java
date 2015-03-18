@@ -28,6 +28,7 @@
 package io.github.egonw.base;
 
 import io.github.egonw.analysis.MolecularFormula;
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.analysis.StructuralAnalysis;
 import io.github.egonw.analysis.StructuralFormula;
 import io.github.egonw.cactus.Cactus;
@@ -140,7 +141,7 @@ public class CMLEnricher {
     public void analyseMolecule() {
         this.removeExplicitHydrogens();
         this.analysis = new StructuralAnalysis(this.molecule);
-        this.sreOutput = new SreOutput(this.analysis);
+        this.sreOutput = new SreOutput();
         this.analysis.computePositions();
         this.analysis.printPositions();
     }
@@ -151,7 +152,7 @@ public class CMLEnricher {
      * document.
      */
     public void nameMolecule() {
-        MolecularFormula.set(this.analysis.getAtomSets());
+        MolecularFormula.set(RichStructureHelper.getAtomSets());
         this.appendAtomSets();
         if (!Cli.hasOption("nonih")) {
             executor.execute();
@@ -160,8 +161,7 @@ public class CMLEnricher {
         }
         if (Cli.hasOption("sf")){
             String structuralFormula =
-                this.formula.getStructuralFormula(this.analysis,
-                                                  Cli.hasOption("sub"));
+                this.formula.getStructuralFormula(Cli.hasOption("sub"));
             System.out.println(structuralFormula);
         }
     }
@@ -172,7 +172,7 @@ public class CMLEnricher {
      */
     public void annotateMolecule() {
         if (Cli.hasOption("ann")) {
-            this.sreOutput = new SreOutput(this.analysis);
+            this.sreOutput = new SreOutput();
             this.doc.getRootElement().
                 appendChild(this.sreOutput.getAnnotations());
             }
@@ -221,7 +221,7 @@ public class CMLEnricher {
      * Append the Atom Sets from the structural analysis to the CML documents.
      */
     private void appendAtomSets() {
-        List<RichAtomSet> richSets = this.analysis.getAtomSets();
+        List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
         for (RichAtomSet richSet : richSets) {
             CMLAtomSet set = richSet.getCML(this.doc);
             // this.atomSets.add(richSet);

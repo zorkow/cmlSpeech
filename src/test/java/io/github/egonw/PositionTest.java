@@ -27,6 +27,7 @@
 package io.github.egonw;
 
 import java.nio.file.Paths;
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.base.CMLEnricher;
 import io.github.egonw.structure.RichAtomSet;
 import static org.junit.Assert.assertArrayEquals;
@@ -48,7 +49,7 @@ public class PositionTest {
         enricher.loadMolecule
             (Paths.get(PositionTest.testSources, input).toString());
         enricher.analyseMolecule();
-        RichAtomSet atomSet = enricher.analysis.getRichAtomSet(set);
+        RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(set);
         List<String> actual = new ArrayList<String>();
         for (String atom: atomSet) {
             actual.add(atom);

@@ -49,7 +49,6 @@ public class StructuralFormula {
 
     private String structuralFormula = "";
     private ComponentsPositions componentPositions = new ComponentsPositions();
-    private StructuralAnalysis structuralAnalysis;
     private ArrayList<String> richAtomSetAtoms = new ArrayList<String>();
     private boolean useSubScripts;
     private ArrayList<String> appendedAtoms = new ArrayList<String>();
@@ -62,10 +61,10 @@ public class StructuralFormula {
      *            The StructuralAnalysis to be used
      */
     public void computeAnalysis() {
-        List<RichAtomSet> atomSets = this.structuralAnalysis.getAtomSets();
+        List<RichAtomSet> atomSets = RichStructureHelper.getAtomSets();
         // If there is only one atom
         if (atomSets.size() == 1) {
-            for (RichAtom atom : this.structuralAnalysis.getAtoms()) {
+            for (RichAtom atom : RichStructureHelper.getAtoms()) {
                 appendAtom(atom.getId());
             }
         }
@@ -94,7 +93,7 @@ public class StructuralFormula {
 
         // Adds all connectingAtoms from all RichAtomSets to a list
         // for checking when adding neighbours
-        for (RichAtomSet set : structuralAnalysis.getAtomSets()) {
+        for (RichAtomSet set : RichStructureHelper.getAtomSets()) {
             for (String connectingAtom : set.getConnectingAtoms()) {
                 allConnectingAtoms.add(connectingAtom);
             }
@@ -107,7 +106,7 @@ public class StructuralFormula {
         for (int i = 1; i < this.componentPositions.size() + 1; i++) {
             // Get data of the current atom
             String currentAtom = this.componentPositions.get(i);
-            RichAtom currentRichAtom = this.structuralAnalysis.getRichAtom(currentAtom);
+            RichAtom currentRichAtom = RichStructureHelper.getRichAtom(currentAtom);
             // Check if the current atom is connected to a subStructure
             // If not then simply "print" the atom
             if (!connectingAtoms.contains(currentAtom)) {
@@ -163,15 +162,15 @@ public class StructuralFormula {
      */
     private void addNeighbours(String atomID, Set<String> connectingAtoms) {
 
-        RichAtom currentRichSubAtom = this.structuralAnalysis.getRichAtom(atomID);
-        structuralAnalysis.getAtoms();
+        RichAtom currentRichSubAtom = RichStructureHelper.getRichAtom(atomID);
+        RichStructureHelper.getAtoms();
 
         for (Connection connection : currentRichSubAtom.getConnections()) {
             // This is a atom or atom set connected to the atom in question
             String neighbour = connection.getConnected();
 
             // If this connection is not a connectingAtom or an atomSet then will append
-            if (!connectingAtoms.contains(neighbour) && !(structuralAnalysis.getRichAtom(neighbour) == null)
+            if (!connectingAtoms.contains(neighbour) && !(RichStructureHelper.getRichAtom(neighbour) == null)
                     && !allConnectingAtoms.contains(neighbour)) {
                 appendAtom(neighbour);
             }
@@ -189,7 +188,7 @@ public class StructuralFormula {
         } else {
             this.appendedAtoms.add(atomID);
         }
-        IAtom atom = structuralAnalysis.getRichAtom(atomID).getStructure();
+        IAtom atom = RichStructureHelper.getRichAtom(atomID).getStructure();
         this.structuralFormula += atom.getSymbol();
         int hydrogens = atom.getImplicitHydrogenCount();
         if (hydrogens > 0) {
@@ -206,13 +205,11 @@ public class StructuralFormula {
     /**
      * Returns the computed string of Structural Formula
      * 
-     * @param structuralAnalysis
      * @param b
      * @return
      */
-    public String getStructuralFormula(StructuralAnalysis structuralAnalysis, boolean subScripts) {
+    public String getStructuralFormula(boolean subScripts) {
         this.useSubScripts = subScripts;
-        this.structuralAnalysis = structuralAnalysis;
         this.computeAnalysis();
         return this.structuralFormula;
     }
