@@ -53,8 +53,10 @@ public class PositionTest {
         for (String atom: atomSet) {
             actual.add(atom);
         }
+        System.out.println(actual);
         assertArrayEquals(actual.toArray(), order);
     }
+
 
     @Test
     public void chainTests() {
@@ -70,6 +72,25 @@ public class PositionTest {
                               new String[]{"a9","a8","a7","a6","a5","a4","a3","a2","a1"});
         this.comparePositions("chains/1_chloro_2_pentene.mol", "as1",
                               new String[]{"a5", "a4", "a3", "a2", "a1"});
+    }
+
+
+    @Test
+    public void ringIntTests() {
+        this.comparePositions("rings_int/ring_int1.mol", "as1",
+                              new String[]{"a3", "a2", "a1", "a6", "a5", "a4"});
+        this.comparePositions("rings_int/ring_int2.mol", "as1",
+                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+        this.comparePositions("rings_int/ring_int3.mol", "as1",
+                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+        this.comparePositions("rings_int/ring_int4.mol", "as1",
+                              new String[]{"a3", "a2", "a1", "a6", "a5", "a4"});
+        this.comparePositions("rings_int/ring_int5.mol", "as1",
+                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+        this.comparePositions("rings_int/ring_int6.mol", "as1",
+                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+        this.comparePositions("rings_int/ring_int7.mol", "as1",
+                              new String[]{"a5", "a6", "a1", "a2", "a3", "a4"});
     }
 }
 

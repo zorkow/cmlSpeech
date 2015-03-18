@@ -158,7 +158,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
 
     
-    private void walkStraight(IAtom atom, List<IAtom> visited) {
+    protected final void walkStraight(IAtom atom, List<IAtom> visited) {
         if (visited.contains(atom)) {
             return;
         }
@@ -220,7 +220,21 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
         Logger.logging(this.getId() + "\n" + componentPositions.toString());
     }
 
-    
+
+    public final List<String> orderedAtomNames() {
+        if (this.componentPositions.size() == 0) {
+            return null;
+        }
+        List<String> result = new ArrayList<>();
+        while (result.size() < this.getStructure().getAtomCount()) result.add("");
+        for (IAtom atom : this.getStructure().atoms()) {
+            String id = atom.getID();
+            result.set(this.getPosition(id) - 1, atom.getSymbol());
+        }
+        return result;
+    }
+
+        
     @Override
     public String toString() {
         String structure = super.toString();
