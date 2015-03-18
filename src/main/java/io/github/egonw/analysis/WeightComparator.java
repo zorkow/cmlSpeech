@@ -27,7 +27,6 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
-import io.github.egonw.structure.RichChemObject;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.AtomicProperties;

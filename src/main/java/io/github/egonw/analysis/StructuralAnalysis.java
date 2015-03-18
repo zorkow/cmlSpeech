@@ -89,10 +89,7 @@ public class StructuralAnalysis {
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
-    private StructuralGraph recursiveGraph;
-
     public ComponentsPositions majorPath;
-    private ComponentsPositions minorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
     public RichAtomSet top;
@@ -205,6 +202,7 @@ public class StructuralAnalysis {
                                     .collect(Collectors.toList()));
     }
 
+    @Override
     public String toString() {
         return valuesToString(RichStructureHelper.richAtoms) + "\n"
             + valuesToString(RichStructureHelper.richBonds) + "\n"
@@ -538,7 +536,7 @@ public class StructuralAnalysis {
             .collect(Collectors.toList());
         this.minorGraph = new StructuralGraph(this.getMinorSystems(),
                                               this.getSingletonAtoms());
-        this.minorPath = this.path(this.minorGraph);
+        this.path(this.minorGraph);
     }
     
 
@@ -571,7 +569,7 @@ public class StructuralAnalysis {
             for (String id: system.getComponents()) {
                 RichAtom atom = RichStructureHelper.getRichAtom(id);
                 if (atom != null) {
-                    atoms.add((RichStructure)atom);
+                    atoms.add((RichStructure<?>)atom);
                 }
             }
             StructuralGraph minorGraph = new StructuralGraph(atoms);

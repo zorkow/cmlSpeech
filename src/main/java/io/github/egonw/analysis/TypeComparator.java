@@ -28,7 +28,6 @@
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
-import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichSetType;
 
 /**

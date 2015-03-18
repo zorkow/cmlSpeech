@@ -105,7 +105,7 @@ public class SreOutput extends SreXML {
 
     private void toSreStructure(RichAtomSet structure) {
         String id = structure.getId();
-        this.toSreStructure((RichStructure)structure);
+        this.toSreStructure((RichStructure<?>)structure);
         this.toSreSet(id, SreNamespace.Tag.INTERNALBONDS, 
                       structure.getComponents().stream()
                       .filter(RichStructureHelper::isBond)

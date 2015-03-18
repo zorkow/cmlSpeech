@@ -42,7 +42,6 @@ import org.jgrapht.graph.SimpleGraph;
 import org.openscience.cdk.interfaces.IAtom;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -63,8 +62,6 @@ public class StructuralGraphVisualizer {
     private static final Color WHITE = Color.decode("#FFFFFF");
     private static final Color BLACK = Color.decode("#000000");
     private static final Color GRAY = Color.decode("#C2CBCC");
-
-    private static final Dimension DEFAULT_SIZE = new Dimension(500, 500);
 
     // TODO (sorge) Test if this is better done with double and infinity.
     // 
