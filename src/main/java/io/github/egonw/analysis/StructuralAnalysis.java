@@ -130,7 +130,7 @@ public class StructuralAnalysis {
         this.makeBottomSet();
     }
     
-    public IAtomContainer getMolecule(){
+    public IAtomContainer getMolecule() {
     	return molecule;
     }
 
