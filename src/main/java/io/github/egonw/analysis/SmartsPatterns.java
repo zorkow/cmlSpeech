@@ -93,6 +93,7 @@ public class SmartsPatterns {
                             line.substring(colonIndex + 2));
                 }
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

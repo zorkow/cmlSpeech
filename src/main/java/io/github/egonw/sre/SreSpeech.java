@@ -44,9 +44,7 @@ import nu.xom.Node;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -224,6 +222,7 @@ public class SreSpeech extends SreXML {
             break;
         case FUSED:
         case FUNCGROUP:
+        case SMALLEST:
             break;
         }
         return speechAttribute(result);
@@ -335,7 +334,6 @@ public class SreSpeech extends SreXML {
 
 
     private void describeConnections(RichAtomSet system, RichChemObject block, String id) {
-        List<String> result = new ArrayList<String>();
         Integer count = 0;
         for (Connection connection : block.getConnections()) {
             String connected = connection.getConnected();
