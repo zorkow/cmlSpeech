@@ -39,7 +39,7 @@ import java.io.IOException;
  * Comparison of atom sets with respect to their molecular weight.
  */
 
-public class WeightComparator extends DefaultComparator<RichChemObject> {
+public class WeightComparator extends DefaultComparator {
     
     public int compare(RichAtomSet set1, RichAtomSet set2) {
         IAtomContainer container1 = set1.getStructure();

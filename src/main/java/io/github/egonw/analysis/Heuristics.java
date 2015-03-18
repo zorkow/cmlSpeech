@@ -35,7 +35,7 @@ import java.util.Comparator;
  * Combines basic comparators as a single heuristic.
  */
 
-public class Heuristics extends DefaultComparator<RichChemObject> {
+public class Heuristics extends DefaultComparator {
 
     private String[] heuristics;
     private Comparator<RichChemObject> weight = new WeightComparator();

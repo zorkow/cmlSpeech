@@ -28,6 +28,7 @@ package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
+import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichStructureComparator;
 
 /**   
@@ -35,7 +36,7 @@ import io.github.egonw.structure.RichStructureComparator;
  * It should not be overwritten!
  */
 
-abstract class DefaultComparator<RichChemObject> implements RichStructureComparator<RichChemObject> {
+abstract class DefaultComparator implements RichStructureComparator<RichChemObject> {
 
 
     public int compare(RichChemObject obj1, RichChemObject obj2) {

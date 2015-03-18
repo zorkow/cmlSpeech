@@ -36,7 +36,7 @@ import java.util.Comparator;
  * less than the smaller structure!
  */
 
-public interface RichStructureComparator<RichChemObject> extends Comparator<RichChemObject> {
+public interface RichStructureComparator<T> extends Comparator<RichChemObject> {
     
     public int compare(RichAtomSet set1, RichAtomSet set2);
 

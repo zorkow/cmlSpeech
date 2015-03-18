@@ -36,7 +36,7 @@ import io.github.egonw.structure.RichSetType;
  * Promotes rings over chains over functional groups.
  */
 
-public class TypeComparator extends DefaultComparator<RichChemObject> {
+public class TypeComparator extends DefaultComparator {
     
     public int compare(RichAtomSet set1, RichAtomSet set2) {
         RichSetType typeA = set1.getType();
