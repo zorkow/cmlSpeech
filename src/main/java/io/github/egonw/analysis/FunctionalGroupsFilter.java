@@ -123,7 +123,7 @@ public class FunctionalGroupsFilter {
         }
     }
 
-    private class SizeAndNameComparator extends DefaultComparator<RichChemObject> {
+    private class SizeAndNameComparator extends DefaultComparator {
 
         private Comparator<RichChemObject> sizeComparator = new SizeComparator();
         

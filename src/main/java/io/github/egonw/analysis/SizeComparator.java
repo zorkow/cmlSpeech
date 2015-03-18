@@ -32,7 +32,7 @@ import io.github.egonw.structure.RichChemObject;
  * Compare atom sets by number of atoms contained.
  */
 
-public class SizeComparator extends DefaultComparator<RichChemObject> {
+public class SizeComparator extends DefaultComparator {
     
     public int compare(RichAtomSet set1, RichAtomSet set2) {
         return -1 * Integer.compare(set1.getStructure().getAtomCount(), 
