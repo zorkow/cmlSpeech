@@ -26,7 +26,7 @@
 //
 package io.github.egonw.sre;
 
-import io.github.egonw.analysis.StructuralAnalysis;
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.structure.ComponentsPositions;
 
 import java.util.Set;
@@ -38,10 +38,8 @@ import java.util.Set;
 public abstract class SreXML {
 
     SreAnnotations annotations;
-    StructuralAnalysis analysis;
     
-    SreXML(StructuralAnalysis analysis) {
-        this.analysis = analysis;
+    SreXML() {
         this.annotations = new SreAnnotations(); 
     }
 
@@ -69,13 +67,13 @@ public abstract class SreXML {
     }
 
     public SreElement toSreElement(String name) {
-        if (this.analysis.isAtom(name)) {
+        if (RichStructureHelper.isAtom(name)) {
             return new SreElement(SreNamespace.Tag.ATOM, name);
         }
-        if (this.analysis.isBond(name)) {
+        if (RichStructureHelper.isBond(name)) {
             return new SreElement(SreNamespace.Tag.BOND, name);
         }
-        if (this.analysis.isAtomSet(name)) {
+        if (RichStructureHelper.isAtomSet(name)) {
             return new SreElement(SreNamespace.Tag.ATOMSET, name);
         }
         return new SreElement(SreNamespace.Tag.UNKNOWN, name);
