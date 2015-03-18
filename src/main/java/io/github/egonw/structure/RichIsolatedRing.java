@@ -28,14 +28,13 @@ package io.github.egonw.structure;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-import io.github.egonw.analysis.WeightComparator;
-import java.util.Comparator;
 import org.openscience.cdk.tools.AtomicProperties;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**

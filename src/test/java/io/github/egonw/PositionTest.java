@@ -26,13 +26,15 @@
 //
 package io.github.egonw;
 
-import java.nio.file.Paths;
+import static org.junit.Assert.assertArrayEquals;
+
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.base.CMLEnricher;
 import io.github.egonw.structure.RichAtomSet;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
