@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import io.github.egonw.structure.RichStructure;
 
 
 /**
@@ -125,7 +126,7 @@ public class FunctionalGroupsFilter {
 
     private class SizeAndNameComparator extends DefaultComparator {
 
-        private Comparator<RichChemObject> sizeComparator = new SizeComparator();
+        private Comparator<RichStructure<?>> sizeComparator = new SizeComparator();
         
         public int compare(RichAtomSet as1, RichAtomSet as2) {
             Integer size = sizeComparator.compare(as1, as2);

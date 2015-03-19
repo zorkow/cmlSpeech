@@ -36,6 +36,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import io.github.egonw.analysis.RichStructureHelper;
+import io.github.egonw.connection.Connection;
+import io.github.egonw.connection.ConnectionType;
+import io.github.egonw.analysis.WeightComparator;
+import org.openscience.cdk.interfaces.IBond;
+
 
 /**
  * Atom sets that are rich isolated rings.
@@ -53,14 +59,15 @@ public class RichIsolatedRing extends RichAtomSet {
         // weight. Then wrt. position OH substitution then other substitutions
         // by weight. For direction: choose second by smallest distance to
         // first!
-        Queue<IAtom> internalSubst = this.getInternalSubsts();
+        System.out.println(this.getExternalSubsts());
+        List<IAtom> internalSubst = this.getInternalSubsts();
         if (internalSubst.size() > 1) {
-            this.walkInternalSubst(internalSubst.peek());
+            this.walkInternalSubst(internalSubst.get(0));
             return;
         }
         if (this.getConnectingAtoms().size() == 0) {
             if (internalSubst.size() == 1) {
-                this.walkStraight(internalSubst.peek());
+                this.walkStraight(internalSubst.get(0));
                 System.out.println(this.orderedAtomNames());
                 return;
             }
@@ -69,7 +76,7 @@ public class RichIsolatedRing extends RichAtomSet {
             return;
         }
         //        startAtom ? this.enumerateInternalSystem.out.println(startAtom);
-        //this.walkStraight(this.getStructure().atoms().iterator().next());
+        this.walkStraight(this.getStructure().atoms().iterator().next());
     }
 
 
@@ -132,7 +139,6 @@ public class RichIsolatedRing extends RichAtomSet {
         return null;
     }
 
-
     
     private class InternalSubstComparator implements Comparator<IAtom> {
         public int compare (IAtom atom1, IAtom atom2) {
@@ -161,11 +167,102 @@ public class RichIsolatedRing extends RichAtomSet {
     
     // TODO (sorge) Eventually this needs to be rewritten to work with a list of
     // atoms, so it can be used for the rim of a fused ring as well.
-    private Queue<IAtom> getInternalSubsts() {
-        Queue<IAtom> result = new PriorityQueue<>(new InternalSubstComparator());
+    private List<IAtom> getInternalSubsts() {
+        Queue<IAtom> substs = new PriorityQueue<>(new InternalSubstComparator());
         for (IAtom atom : this.getStructure().atoms()) {
             if (!RichIsolatedRing.isCarbon(atom)) {
-                result.add(atom);
+                substs.add(atom);
+            }
+        }
+        List<IAtom> result = new ArrayList<>();
+        while (substs.peek() != null) {
+            result.add(substs.poll());
+        }
+        return result;
+    }
+
+
+    // TODO (sorge) This comparator contains a lot of redundancy. This could be
+    // simplified.
+    private class ExternalSubstComparator implements Comparator<Connection> {
+        private WeightComparator weightCompare = new WeightComparator();
+
+        public int compare(Connection con1, Connection con2) {
+            System.out.println(con1.getType());
+            System.out.println(con2.getType());
+            RichStructure<?> connected1 =
+                RichStructureHelper.getRichStructure(con1.getConnected());
+            RichStructure<?> connected2 =
+                RichStructureHelper.getRichStructure(con2.getConnected());
+            if (this.isHydroxylGroup(connected1)) {
+                System.out.println(connected1.getId());
+                return -1;
+            }
+            if (this.isHydroxylGroup(connected2)) {
+                System.out.println(connected2.getId());
+                return 1;
+            }
+            return weightCompare.compare(connected1, connected2);
+        }
+
+        private boolean isHydroxylGroup(RichStructure<?> structure) {
+            if (!RichStructureHelper.isAtomSet(structure.getId())) {
+                return false;
+            }
+            IAtomContainer container = ((RichAtomSet)structure).getStructure();
+            if (container.getAtomCount() == 1) {
+                return this.isHydroxyl(container.getAtom(0));
+            }
+            if (container.getAtomCount() == 2) {
+                if (RichIsolatedRing.this.getComponents().contains(container.getAtom(0).getID())) {
+                    return this.isHydroxyl(container.getAtom(1));
+                }
+                if (RichIsolatedRing.this.getComponents().contains(container.getAtom(1).getID())) {
+                    return this.isHydroxyl(container.getAtom(0));
+                }
+                return false;
+            }
+            return false;
+        }
+
+        private boolean isHydroxyl(IAtom atom) {
+            return atom.getSymbol() == "O" &&
+                atom.getImplicitHydrogenCount() == 1;
+        }
+    }
+
+    
+
+    // TODO (sorge) Eventually this needs to be rewritten to work with a list of
+    // atoms, so it can be used for the rim of a fused ring as well.
+    private List<IAtom> getExternalSubsts() {
+        Queue<Connection> connections = new PriorityQueue<>(new ExternalSubstComparator());
+        System.out.println(this.getConnectingAtoms());
+        System.out.println(this.getConnections());
+        for (Connection connection : this.getConnections()) {
+            ConnectionType type = connection.getType();
+            if (type == ConnectionType.SPIROATOM ||
+                type == ConnectionType.SHAREDATOM ||
+                type == ConnectionType.CONNECTINGBOND) {
+                connections.add(connection);
+            }
+        }
+        List<IAtom> result = new ArrayList<>();
+        while (connections.peek() != null) {
+            Connection connection = connections.poll();
+            ConnectionType type = connection.getType();
+            if (type == ConnectionType.SPIROATOM ||
+                type == ConnectionType.SHAREDATOM) {
+                result.add
+                    (RichStructureHelper.getRichAtom
+                     (connection.getConnector()).getStructure());
+            }
+            if (type == ConnectionType.CONNECTINGBOND) {
+                IBond bond = RichStructureHelper.getRichBond
+                    (connection.getConnector()).getStructure();
+                if (this.getComponents().contains(bond.getAtom(0).getID())) {
+                    result.add(bond.getAtom(0));
+                } else { result.add(bond.getAtom(1)); }
             }
         }
         return result;

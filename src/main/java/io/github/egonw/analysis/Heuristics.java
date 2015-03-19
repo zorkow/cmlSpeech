@@ -30,6 +30,7 @@ import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 
 import java.util.Comparator;
+import io.github.egonw.structure.RichStructure;
 
 /**
  * Combines basic comparators as a single heuristic.
@@ -38,9 +39,9 @@ import java.util.Comparator;
 public class Heuristics extends DefaultComparator {
 
     private String[] heuristics;
-    private Comparator<RichChemObject> weight = new WeightComparator();
-    private Comparator<RichChemObject> type = new TypeComparator();
-    private Comparator<RichChemObject> size = new SizeComparator();
+    private Comparator<RichStructure<?>> weight = new WeightComparator();
+    private Comparator<RichStructure<?>> type = new TypeComparator();
+    private Comparator<RichStructure<?>> size = new SizeComparator();
 
     public Heuristics(String heuristic) {
         // TODO (sorge) Do something with non-existent heuristics.

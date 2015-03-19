@@ -53,11 +53,12 @@ c c c o c    O is 1 but at position 4.
       + bond: empty
       + atom: all bonds
    4. Connections: Triples of 
-      - type: shared atom, shared bond, spiro atom, or connecting bond 
+      - type: bridge atom, shared bond, spiro atom, shared atom or connecting bond 
         + spiro atoms are atoms shared between rings. Spiro atoms between other Atom sets are called shared.
-        + shared atoms are bridge atoms in rings (i.e., end points of shared bonds)
+        + shared atoms are shared atoms between at least one none ring
+        + bridge atoms are shared atoms inside fused rings (i.e., end points of shared bonds)
       - element: shared atom or bond or the external bond that connects
-      - connected structure: an atom or a atom set
+      - connected structure: an atom or an atom set
 
       Note that there can be multiple versions for the same element, representing the layers.
       

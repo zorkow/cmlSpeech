@@ -624,11 +624,11 @@ public class StructuralAnalysis {
         String heur = Cli.hasOption("m") ? Cli.getOptionValue("m") : "";
 
         public int compare(String vertexA, String vertexB) {
-            Comparator<RichChemObject> comparator = new Heuristics(heur);
+            Comparator<RichStructure<?>> comparator = new Heuristics(heur);
             
             Integer aux = comparator.
-                compare((RichChemObject)RichStructureHelper.getRichStructure(vertexA),
-                        (RichChemObject)RichStructureHelper.getRichStructure(vertexB));
+                compare(RichStructureHelper.getRichStructure(vertexA),
+                        RichStructureHelper.getRichStructure(vertexB));
             return aux;
         }
     }

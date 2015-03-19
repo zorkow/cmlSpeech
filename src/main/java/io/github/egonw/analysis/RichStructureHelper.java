@@ -35,9 +35,9 @@ public final class RichStructureHelper {
 
 
     public static void init() {
-        richAtoms = new TreeMap<>(new CMLNameComparator());
-        richBonds = new TreeMap<>(new CMLNameComparator());
-        richAtomSets = new TreeMap<>(new CMLNameComparator());
+        RichStructureHelper.richAtoms = new TreeMap<>(new CMLNameComparator());
+        RichStructureHelper.richBonds = new TreeMap<>(new CMLNameComparator());
+        RichStructureHelper.richAtomSets = new TreeMap<>(new CMLNameComparator());
     }
 
     public static RichAtom getRichAtom(String id) {

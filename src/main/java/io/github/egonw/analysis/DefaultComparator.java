@@ -30,16 +30,17 @@ import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichStructureComparator;
+import io.github.egonw.structure.RichStructure;
 
 /**   
  * The base compare method redistributes wrt to object sub classes.
  * It should not be overwritten!
  */
 
-abstract class DefaultComparator implements RichStructureComparator<RichChemObject> {
+abstract class DefaultComparator implements RichStructureComparator<RichStructure<?>> {
 
 
-    public int compare(RichChemObject obj1, RichChemObject obj2) {
+    public int compare(RichStructure<?> obj1, RichStructure<?> obj2) {
         if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtomSet) {
             return this.compare((RichAtomSet)obj1, (RichAtomSet)obj2);
         }
