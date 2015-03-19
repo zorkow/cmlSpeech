@@ -57,7 +57,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> components = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public Set<String> getComponents() {
+    public SortedSet<String> getComponents() {
         return this.components;
     };
 
@@ -65,7 +65,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> contexts = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public Set<String> getContexts() {
+    public SortedSet<String> getContexts() {
         return this.contexts;
     };
 
@@ -73,7 +73,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> externalBonds = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public Set<String> getExternalBonds() {
+    public SortedSet<String> getExternalBonds() {
         return this.externalBonds;
     };
 
@@ -81,7 +81,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<Connection> connections = new TreeSet<Connection>(new ConnectionComparator());
 
     @Override
-    public Set<Connection> getConnections() {
+    public SortedSet<Connection> getConnections() {
         return this.connections;
     };
 
@@ -89,7 +89,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public Set<String> getSuperSystems() {
+    public SortedSet<String> getSuperSystems() {
         return this.superSystems;
     };
 

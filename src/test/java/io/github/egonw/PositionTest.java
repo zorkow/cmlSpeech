@@ -37,6 +37,7 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * A basic environment to run position tests.
@@ -56,12 +57,15 @@ public class PositionTest {
         for (String atom: atomSet) {
             actual.add(atom);
         }
+        System.out.println(actual);
+        System.out.println(Arrays.toString(order));
         assertArrayEquals(actual.toArray(), order);
     }
 
 
     @Test
     public void chainTests() {
+        System.out.println("Testing Aliphatic Chains...");
         this.comparePositions("chains/5-bromo-6-nonene.mol", "as1",
                               new String[]{"a10", "a9", "a8", "a7", "a6", "a5", "a4", "a3", "a2"});
         this.comparePositions("chains/5-bromo-8-decene.mol", "as1",
@@ -79,8 +83,9 @@ public class PositionTest {
 
     @Test
     public void ringIntTests() {
+        System.out.println("Testing Ring with Internal Substitutions...");
         this.comparePositions("rings_int/ring_int1.mol", "as1",
-                              new String[]{"a3", "a2", "a1", "a6", "a5", "a4"});
+                              new String[]{"a1", "a2", "a3", "a4", "a5", "a6"});
         this.comparePositions("rings_int/ring_int2.mol", "as1",
                               new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
         this.comparePositions("rings_int/ring_int3.mol", "as1",
@@ -98,6 +103,7 @@ public class PositionTest {
 
     @Test
     public void ringExtTests() {
+        System.out.println("Testing Ring with External Substitutions...");
         this.comparePositions("rings_ext/ring_ext1.mol", "as1",
                               new String[]{"a5", "a2", "a4", "a6", "a7", "a3"});
         this.comparePositions("rings_ext/ring_ext2.mol", "as1",

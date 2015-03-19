@@ -41,6 +41,8 @@ import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectionType;
 import io.github.egonw.analysis.WeightComparator;
 import org.openscience.cdk.interfaces.IBond;
+import com.google.common.collect.Lists;
+import java.util.SortedSet;
 
 
 /**
@@ -65,7 +67,7 @@ public class RichIsolatedRing extends RichAtomSet {
                 this.walkStraight(internalSubst.get(0));
                 return;
             }
-            this.walkStraight(this.getStructure().getFirstAtom());
+            this.walkTrivial();
             return;
         }
         List<IAtom> externalSubst = this.getExternalSubsts();
@@ -81,6 +83,31 @@ public class RichIsolatedRing extends RichAtomSet {
     }
 
 
+    /** 
+     * Walking a ring without any substitutions. This is necessary to keep
+     * stable tests as the choice of first element is non-deterministic.
+     */
+    private void walkTrivial() {
+        // Choose lexicographically smallest start atom.
+        SortedSet<String> components = this.getComponents();
+        String smallestName = components.first();
+        IAtom startAtom = Lists.newArrayList(this.getStructure().atoms()).stream()
+            .filter(x -> x.getID().equals(smallestName)).findFirst().get();
+        List<IAtom> connected = this.getStructure().getConnectedAtomsList(startAtom);
+        // This should be of length 2. Otherwise there is a problem.
+        IAtom nextLeft = connected.get(0);
+        IAtom nextRight = connected.get(1);
+        List<IAtom> path = new ArrayList<IAtom>();
+        path.add(startAtom);
+        if (components.headSet(nextLeft.getID()).size() <=
+            components.headSet(nextRight.getID()).size()) {
+            this.walkFinalise(nextLeft, path);
+        } else {
+            this.walkFinalise(nextRight, path);
+        }
+    }
+
+    
     private void walkOnSubst(IAtom startAtom, List<IAtom> reference) {
         List<IAtom> queueLeft = new ArrayList<>();
         List<IAtom> queueRight = new ArrayList<>();

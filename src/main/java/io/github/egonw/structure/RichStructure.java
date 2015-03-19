@@ -28,7 +28,7 @@ package io.github.egonw.structure;
 
 import io.github.egonw.connection.Connection;
 
-import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Interface for all structures with admin information.
@@ -40,37 +40,37 @@ public interface RichStructure<S> {
     /**
      * @return The list of components of this structure.
      */
-    Set<String> getComponents();
+    SortedSet<String> getComponents();
 
 
     /**
      * @return The list of contexts of this structure.
      */
-    Set<String> getContexts();
+    SortedSet<String> getContexts();
 
 
     /**
      * @return The list of external bonds of this structure.
      */
-    Set<String> getExternalBonds();
+    SortedSet<String> getExternalBonds();
 
 
     /**
      * @return The list of connections of this structure.
      */
-    Set<Connection> getConnections();
+    SortedSet<Connection> getConnections();
 
 
     /**
      * @return The list of direct Super-Systems.
      */
-    Set<String> getSuperSystems();
+    SortedSet<String> getSuperSystems();
 
 
     /**
      * @return The list of direct Sub-Systems. These can also be atoms.
      */
-    Set<String> getSubSystems();
+    SortedSet<String> getSubSystems();
 
 
     /**
