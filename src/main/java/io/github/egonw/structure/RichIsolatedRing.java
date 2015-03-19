@@ -55,32 +55,33 @@ public class RichIsolatedRing extends RichAtomSet {
 
 
     protected final void walk() {
-        // TODO (sorge) Choose start wrt. replacements, preferring O, then by
-        // weight. Then wrt. position OH substitution then other substitutions
-        // by weight. For direction: choose second by smallest distance to
-        // first!
-        System.out.println(this.getExternalSubsts());
         List<IAtom> internalSubst = this.getInternalSubsts();
         if (internalSubst.size() > 1) {
-            this.walkInternalSubst(internalSubst.get(0));
+            this.walkOnSubst(internalSubst.get(0), internalSubst);
             return;
         }
         if (this.getConnectingAtoms().size() == 0) {
             if (internalSubst.size() == 1) {
                 this.walkStraight(internalSubst.get(0));
-                System.out.println(this.orderedAtomNames());
                 return;
             }
             this.walkStraight(this.getStructure().getFirstAtom());
-            System.out.println(this.orderedAtomNames());
             return;
         }
-        //        startAtom ? this.enumerateInternalSystem.out.println(startAtom);
-        this.walkStraight(this.getStructure().atoms().iterator().next());
+        List<IAtom> externalSubst = this.getExternalSubsts();
+        if (internalSubst.size() == 0) {
+            if (externalSubst.size() == 1) {
+                this.walkStraight(externalSubst.get(0));
+                return;
+            }
+            this.walkOnSubst(externalSubst.get(0), externalSubst);
+            return;
+        }
+        this.walkOnSubst(internalSubst.get(0), externalSubst);
     }
 
 
-    private void walkInternalSubst(IAtom startAtom) {
+    private void walkOnSubst(IAtom startAtom, List<IAtom> reference) {
         List<IAtom> queueLeft = new ArrayList<>();
         List<IAtom> queueRight = new ArrayList<>();
         queueLeft.add(startAtom);
@@ -90,19 +91,19 @@ public class RichIsolatedRing extends RichAtomSet {
         IAtom nextLeft = connected.get(0);
         IAtom nextRight = connected.get(1); 
         while (nextLeft != null && nextRight != null) {
-            if (!RichIsolatedRing.isCarbon(nextLeft) && !RichIsolatedRing.isCarbon(nextRight)) {
-                if ((new InternalSubstComparator()).compare(nextLeft, nextRight) <= 0) {
+            if (reference.contains(nextLeft) && reference.contains(nextRight)) {
+                if (reference.indexOf(nextLeft) <= reference.indexOf(nextRight)) {
                     this.walkFinalise(nextLeft, queueLeft);
                     return;
                 }
                 this.walkFinalise(nextRight, queueRight);
                 return;
             }
-            if (!RichIsolatedRing.isCarbon(nextLeft)) {
+            if (reference.contains(nextLeft)) {
                 this.walkFinalise(nextLeft, queueLeft);
                 return;
             }
-            if (!RichIsolatedRing.isCarbon(nextRight)) {
+            if (reference.contains(nextRight)) {
                 this.walkFinalise(nextRight, queueRight);
                 return;
             }
@@ -188,18 +189,14 @@ public class RichIsolatedRing extends RichAtomSet {
         private WeightComparator weightCompare = new WeightComparator();
 
         public int compare(Connection con1, Connection con2) {
-            System.out.println(con1.getType());
-            System.out.println(con2.getType());
             RichStructure<?> connected1 =
                 RichStructureHelper.getRichStructure(con1.getConnected());
             RichStructure<?> connected2 =
                 RichStructureHelper.getRichStructure(con2.getConnected());
             if (this.isHydroxylGroup(connected1)) {
-                System.out.println(connected1.getId());
                 return -1;
             }
             if (this.isHydroxylGroup(connected2)) {
-                System.out.println(connected2.getId());
                 return 1;
             }
             return weightCompare.compare(connected1, connected2);
@@ -232,13 +229,8 @@ public class RichIsolatedRing extends RichAtomSet {
     }
 
     
-
-    // TODO (sorge) Eventually this needs to be rewritten to work with a list of
-    // atoms, so it can be used for the rim of a fused ring as well.
     private List<IAtom> getExternalSubsts() {
         Queue<Connection> connections = new PriorityQueue<>(new ExternalSubstComparator());
-        System.out.println(this.getConnectingAtoms());
-        System.out.println(this.getConnections());
         for (Connection connection : this.getConnections()) {
             ConnectionType type = connection.getType();
             if (type == ConnectionType.SPIROATOM ||

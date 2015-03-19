@@ -56,8 +56,7 @@ public class PositionTest {
         for (String atom: atomSet) {
             actual.add(atom);
         }
-        System.out.println(actual);
-        //assertArrayEquals(actual.toArray(), order);
+        assertArrayEquals(actual.toArray(), order);
     }
 
 
@@ -99,21 +98,20 @@ public class PositionTest {
 
     @Test
     public void ringExtTests() {
-        System.out.println("Hello");
         this.comparePositions("rings_ext/ring_ext1.mol", "as1",
-                              new String[]{"a3", "a2", "a1", "a6", "a5", "a4"});
+                              new String[]{"a5", "a2", "a4", "a6", "a7", "a3"});
         this.comparePositions("rings_ext/ring_ext2.mol", "as1",
-                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+                              new String[]{"a5", "a2", "a4", "a6", "a7", "a3"});
         this.comparePositions("rings_ext/ring_ext3.mol", "as1",
-                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+                              new String[]{"a6", "a4", "a2", "a5", "a3", "a7"});
         this.comparePositions("rings_ext/ring_ext4.mol", "as1",
-                              new String[]{"a3", "a2", "a1", "a6", "a5", "a4"});
+                              new String[]{"a7", "a3", "a5", "a2", "a4", "a6"});
         this.comparePositions("rings_ext/ring_ext5.mol", "as1",
-                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+                              new String[]{"a7", "a6", "a4", "a2", "a5", "a3"});
         this.comparePositions("rings_ext/ring_ext6.mol", "as1",
-                              new String[]{"a5", "a4", "a3", "a2", "a1", "a6"});
+                              new String[]{"a7", "a3", "a5", "a2", "a4", "a6"});
         this.comparePositions("rings_ext/ring_ext7.mol", "as1",
-                              new String[]{"a5", "a6", "a1", "a2", "a3", "a4"});
+                              new String[]{"a6", "a7", "a3", "a5", "a2", "a4"});
     }
 }
 
