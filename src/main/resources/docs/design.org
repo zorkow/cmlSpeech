@@ -38,6 +38,7 @@ c c c o c    O is 1 but at position 4.
 
 
 * Rich Structures
+
 ** Interface functionality
    Some of these will be empty, in particular for Atoms/Bonds
    1. Components 
@@ -76,8 +77,11 @@ c c c o c    O is 1 but at position 4.
 **** with other replacement:
 *** Multi ring structures
 *** Complex fused rings: Sterane, US06358966-20020319-C00001
-*** Inner rings: asphaltenes, coronene, hexahelicene, corannulene
+*** Inner rings: 
+    asphaltenes, coronene, hexahelicene, corannulene,
     http://www.chemcomp.com/journal/depictor.htm
+    Circulene, Ovalene
+
 ** We need image, mol, svg for all.
 ** Testing cycle:
 *** image to mol for reimplementation

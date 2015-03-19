@@ -118,7 +118,9 @@ public class RichIsolatedRing extends RichAtomSet {
         IAtom nextLeft = connected.get(0);
         IAtom nextRight = connected.get(1); 
         while (nextLeft != null && nextRight != null) {
-            if (reference.contains(nextLeft) && reference.contains(nextRight)) {
+            boolean containsLeft = reference.contains(nextLeft);
+            boolean containsRight = reference.contains(nextRight);
+            if (containsLeft && containsRight) {
                 if (reference.indexOf(nextLeft) <= reference.indexOf(nextRight)) {
                     this.walkFinalise(nextLeft, queueLeft);
                     return;
@@ -126,11 +128,11 @@ public class RichIsolatedRing extends RichAtomSet {
                 this.walkFinalise(nextRight, queueRight);
                 return;
             }
-            if (reference.contains(nextLeft)) {
+            if (containsLeft) {
                 this.walkFinalise(nextLeft, queueLeft);
                 return;
             }
-            if (reference.contains(nextRight)) {
+            if (containsRight) {
                 this.walkFinalise(nextRight, queueRight);
                 return;
             }
