@@ -39,6 +39,7 @@ import org.openscience.cdk.ringsearch.SSSRFinder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import io.github.egonw.base.Cli;
 
 /**
  * Computes ring systems using ring search algorithms.
@@ -76,12 +77,10 @@ public class RingSystem {
      * Computes fused rings and their subsystems.
      * 
      * @param fusedRing A fused ring system.
-     * @param sssr Boolean deciding on the subring method.
      */    
-    public List<IAtomContainer> subRings(IAtomContainer fusedRing, 
-                                         Boolean sssr) {
-
-        return this.subRings(fusedRing, sssr ?
+    public List<IAtomContainer> subRings(IAtomContainer fusedRing) {
+        
+        return this.subRings(fusedRing, Cli.hasOption("sssr") ?
                              this::sssrSubRings : this::smallestSubRings);
         }
 
@@ -118,6 +117,7 @@ public class RingSystem {
             }
             List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
             if (ringAtoms.containsAll(restRingAtoms)) {
+                System.out.println(ring.getID());
                 return false;
             };
         }
@@ -142,6 +142,7 @@ public class RingSystem {
             return subRings;
         }
         List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
+        System.out.println(allRings.size());
         for (IAtomContainer subRing : allRings) {
             if (isSmallest(subRing, allRings)) {
                 subRings.add(subRing);
