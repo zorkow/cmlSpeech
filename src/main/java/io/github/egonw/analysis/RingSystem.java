@@ -81,7 +81,7 @@ public class RingSystem {
     public List<IAtomContainer> subRings(IAtomContainer fusedRing) {
         
         return this.subRings(fusedRing, Cli.hasOption("sssr") ?
-                             this::sssrSubRings : this::smallestSubRings);
+                             this::smallestSubRings : this::sssrSubRings);
         }
 
 
@@ -101,6 +101,10 @@ public class RingSystem {
     /** 
      * Predicate that tests if a particular ring has no other ring as proper subset.
      * 
+     * This does NOT produce the list of essential rings! It retains rings that
+     * are rims of ring compositions of three of more rings. Example is
+     * 1H-indeno[7,1-bc]azepine.
+     * 
      * @param ring The ring to be tested.
      * @param restRings The other rings (possibly including the first ring).
      * 
@@ -117,7 +121,6 @@ public class RingSystem {
             }
             List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
             if (ringAtoms.containsAll(restRingAtoms)) {
-                System.out.println(ring.getID());
                 return false;
             };
         }
@@ -142,7 +145,6 @@ public class RingSystem {
             return subRings;
         }
         List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
-        System.out.println(allRings.size());
         for (IAtomContainer subRing : allRings) {
             if (isSmallest(subRing, allRings)) {
                 subRings.add(subRing);
