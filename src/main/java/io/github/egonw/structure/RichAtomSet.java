@@ -267,8 +267,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
 
     public static boolean isRing(RichAtomSet atomSet) {
-        return atomSet.type == RichSetType.FUSED ||
-            atomSet.type == RichSetType.ISOLATED ||
-            atomSet.type == RichSetType.SMALLEST;
+        return false;
     }
 }

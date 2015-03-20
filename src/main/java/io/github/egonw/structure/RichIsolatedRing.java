@@ -49,7 +49,7 @@ import java.util.SortedSet;
  * Atom sets that are rich isolated rings.
  */
 
-public class RichIsolatedRing extends RichAtomSet {
+public class RichIsolatedRing extends RichRing {
 
     public RichIsolatedRing(IAtomContainer container, String id) {
         super(container, id, RichSetType.ISOLATED);
