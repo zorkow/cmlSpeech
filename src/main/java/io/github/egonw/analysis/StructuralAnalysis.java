@@ -217,12 +217,10 @@ public class StructuralAnalysis {
     private void rings() {
         RingSystem ringSystem = new RingSystem(this.molecule);
         Boolean sub = !Cli.hasOption("s");
-        Boolean sssr = Cli.hasOption("sssr");
-
         for (IAtomContainer ring : ringSystem.fusedRings()) {
             RichStructure<?> fusedRing = RichStructureHelper.setRichAtomSet(new RichFusedRing(ring, this.getAtomSetId()));
             if (sub) {
-                for (IAtomContainer subSystem : ringSystem.subRings(ring, sssr)) {
+                for (IAtomContainer subSystem : ringSystem.subRings(ring)) {
                     RichStructure<?> subRing = RichStructureHelper.setRichAtomSet(new RichSubRing(subSystem, this.getAtomSetId()));
                     String ringId = fusedRing.getId();
                     String subRingId = subRing.getId();

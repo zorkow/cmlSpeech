@@ -73,7 +73,7 @@ public final class Cli {
         options.addOption("r", "descr", false, "Include speech descriptions in CML output");
         options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
         options.addOption("s", "subrings", false, "Do not compute subrings");
-        options.addOption("sssr", "sssr", false, "Use SSSR method for sub-ring computation");
+        options.addOption("sssr", "sssr", false, "Do not use SSSR method for sub-ring computation");
         options.addOption("vis", "visualize", false, "Visualize the abstraction graph");
         options.addOption("vr", "vis_recursive", false,
                           "Visualize sub graphs recursively");

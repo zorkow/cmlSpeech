@@ -39,6 +39,7 @@ import org.openscience.cdk.ringsearch.SSSRFinder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import io.github.egonw.base.Cli;
 
 /**
  * Computes ring systems using ring search algorithms.
@@ -76,13 +77,11 @@ public class RingSystem {
      * Computes fused rings and their subsystems.
      * 
      * @param fusedRing A fused ring system.
-     * @param sssr Boolean deciding on the subring method.
      */    
-    public List<IAtomContainer> subRings(IAtomContainer fusedRing, 
-                                         Boolean sssr) {
-
-        return this.subRings(fusedRing, sssr ?
-                             this::sssrSubRings : this::smallestSubRings);
+    public List<IAtomContainer> subRings(IAtomContainer fusedRing) {
+        
+        return this.subRings(fusedRing, Cli.hasOption("sssr") ?
+                             this::smallestSubRings : this::sssrSubRings);
         }
 
 
@@ -101,6 +100,10 @@ public class RingSystem {
 
     /** 
      * Predicate that tests if a particular ring has no other ring as proper subset.
+     * 
+     * This does NOT produce the list of essential rings! It retains rings that
+     * are rims of ring compositions of three of more rings. Example is
+     * 1H-indeno[7,1-bc]azepine.
      * 
      * @param ring The ring to be tested.
      * @param restRings The other rings (possibly including the first ring).
