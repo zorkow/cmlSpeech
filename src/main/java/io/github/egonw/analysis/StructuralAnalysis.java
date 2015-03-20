@@ -210,7 +210,6 @@ public class StructuralAnalysis {
     }
 
 
-
     /**
      * Computes information on ring systems in the molecule.
      */
@@ -218,10 +217,12 @@ public class StructuralAnalysis {
         RingSystem ringSystem = new RingSystem(this.molecule);
         Boolean sub = !Cli.hasOption("s");
         for (IAtomContainer ring : ringSystem.fusedRings()) {
-            RichStructure<?> fusedRing = RichStructureHelper.setRichAtomSet(new RichFusedRing(ring, this.getAtomSetId()));
+            RichStructure<?> fusedRing = RichStructureHelper.setRichAtomSet
+                (new RichFusedRing(ring, this.getAtomSetId()));
             if (sub) {
                 for (IAtomContainer subSystem : ringSystem.subRings(ring)) {
-                    RichStructure<?> subRing = RichStructureHelper.setRichAtomSet(new RichSubRing(subSystem, this.getAtomSetId()));
+                    RichStructure<?> subRing = RichStructureHelper.setRichAtomSet
+                        (new RichSubRing(subSystem, this.getAtomSetId()));
                     String ringId = fusedRing.getId();
                     String subRingId = subRing.getId();
                     subRing.getSuperSystems().add(ringId);
@@ -639,15 +640,15 @@ public class StructuralAnalysis {
                 this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
-                if (atomSet.getType() == RichSetType.FUSED) {
-                    for (String sub : atomSet.getSubSystems()) {
-                        RichAtomSet subSystem = RichStructureHelper.getRichAtomSet(sub);
-                        this.appendPositions(subSystem);
-                        atomSet.appendPositions(subSystem);
-                    }
-                } else {
+                // if (atomSet.getType() == RichSetType.FUSED) {
+                //     for (String sub : atomSet.getSubSystems()) {
+                //         RichAtomSet subSystem = RichStructureHelper.getRichAtomSet(sub);
+                //         this.appendPositions(subSystem);
+                //         atomSet.appendPositions(subSystem);
+                //     }
+                // } else {
                     this.appendPositions(atomSet);
-                }
+                // }
             }
         }
     }
