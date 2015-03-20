@@ -47,10 +47,8 @@ public class RichFusedRing extends RichRing {
         super(container, id, RichSetType.FUSED);
     }
 
-    Set<IAtom> rim = null;
-
     protected final void walk() {
-        Set<IAtom> rim = this.getRim();
+        this.rim = this.getRim();
     }
 
     private Set<IAtom> getRim() {

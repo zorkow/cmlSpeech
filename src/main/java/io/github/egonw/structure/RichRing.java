@@ -27,6 +27,9 @@
 package io.github.egonw.structure;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
+import java.util.Set;
+import org.openscience.cdk.interfaces.IAtom;
+import com.google.common.collect.Sets;
 
 /**
  *
@@ -34,8 +37,11 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 public abstract class RichRing extends RichAtomSet {
     
+    protected Set<IAtom> rim = null;
+
     public RichRing (IAtomContainer container, String id, RichSetType type) {
         super(container, id, type);
+        this.rim = Sets.newHashSet(container.atoms());
     }
 
     public static boolean isRing(RichAtomSet atomSet) {
