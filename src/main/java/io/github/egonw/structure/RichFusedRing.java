@@ -41,7 +41,7 @@ import java.util.ArrayList;
  * Atom sets that are rich fused rings.
  */
 
-public class RichFusedRing extends RichAtomSet {
+public class RichFusedRing extends RichRing {
 
     public RichFusedRing(IAtomContainer container, String id) {
         super(container, id, RichSetType.FUSED);

@@ -14,11 +14,11 @@
 
 
 /**
- * @file   RichSubRing.java
+ * @file   RichRing.java
  * @author Volker Sorge <sorge@zorkstone>
- * @date   Tue Feb 24 17:13:29 2015
+ * @date   Fri Mar 20 21:57:45 2015
  * 
- * @brief  Implementation of rich sub ring.
+ * @brief  An abstract class for ring structures.
  * 
  * 
  */
@@ -29,19 +29,16 @@ package io.github.egonw.structure;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
- * Atom sets that are rich sub rings.
+ *
  */
 
-public class RichSubRing extends RichRing {
-
-    public RichSubRing(IAtomContainer container, String id) {
-        super(container, id, RichSetType.SMALLEST);
+public abstract class RichRing extends RichAtomSet {
+    
+    public RichRing (IAtomContainer container, String id, RichSetType type) {
+        super(container, id, type);
     }
 
-
-    protected final void walk() {
-        // TODO (sorge) Compute this with respect to the positions of the fused
-        // ring system.
-        this.walkStraight(this.getStructure().atoms().iterator().next());
+    public static boolean isRing(RichAtomSet atomSet) {
+        return true;
     }
 }
