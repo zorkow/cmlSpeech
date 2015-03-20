@@ -36,9 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 
@@ -56,14 +54,6 @@ public class EnrichTest extends XMLTestCase {
     public EnrichTest( String testName )
     {
         super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( EnrichTest.class );
     }
 
 
@@ -101,16 +91,18 @@ public class EnrichTest extends XMLTestCase {
     }
 
     /**
-     * Test enrichment of molecule.
+     * Test enrichment of aliphatic chains.
      */
+    @Test
     public void testChain()
     {
         this.compareEnrichedMolecule("book1-004-05");
     }
 
     /**
-     * Test enrichment of molecule.
+     * Test enrichment of functional groups.
      */
+    @Test
     public void testFunctional()
     {
         this.compareEnrichedMolecule("book1-006-03");
