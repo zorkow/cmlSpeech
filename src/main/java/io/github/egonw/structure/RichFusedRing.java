@@ -96,8 +96,6 @@ public class RichFusedRing extends RichRing {
             }
         }
         return rimAtoms;
-        // List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
-        // return connected.stream().filter(a -> rim.contains(a)).collect(Collectors.toList());
     }
 
 }

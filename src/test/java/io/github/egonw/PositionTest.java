@@ -127,4 +127,50 @@ public class PositionTest {
         this.comparePositions("rings_ext/ring_ext7.mol", "as1",
                               new String[]{"a6", "a7", "a3", "a5", "a2", "a4"});
     }
+
+
+    @Test
+    public void fusedRingSimpleTest() {
+        System.out.println("Testing simple fused rings with internal substitutions...");
+        this.comparePositions("rings_fused_simple/1H-indeno[7,1-bc]azepine.mol", "as1",
+                        new String[]{"a8", "a7", "a12", "a13",
+                                     "a1", "a2", "a3", "a4", "a5",
+                                     "a11", "a10", "a9"});
+        this.comparePositions("rings_fused_simple/Pyrido[2,3-b]naphthalene.mol", "as1",
+                              new String[]{"a1", "a2", "a3", "a4", "a5", "a14", "a13",
+                                           "a12", "a11", "a10", "a9", "a8", "a7", "a6"});
+        // This needs to become more deterministic!
+        // this.comparePositions("rings_fused_simple/pyridine.mol", "as1",
+        //                       new String[]{"a18", "a17", "a9", "a10", "a11", "a16", "a15",
+        //                                    "a14", "a13", "a12", "a7", "a6", "a5", "a1",
+        //                                    "a2", "a3", "a4", "a8", "a20", "a19"
+                                           // "a1", "a5", "a6", "a7",
+                                           // "a12", "a13", "a14", "a15", "a16",
+                                           // "a11", "a10", "a9",
+                                           // "a17", "a18", "a19", "a20", "a8",
+                                           // "a4", "a3", "a2"
+                              // });
+    }
+
+    @Test
+    public void fusedRingSimpleExtTest() {
+        System.out.println("Testing simple fused rings with external substitutions...");
+        this.comparePositions("rings_fused_simple_ext/fused_ext1.mol", "as1",
+                              new String[]{"a8", "a7", "a12", "a13",
+                                           "a1", "a2", "a3", "a4", "a5", 
+                                           "a11", "a10", "a9"});
+        this.comparePositions("rings_fused_simple_ext/fused_ext2.mol", "as1",
+                              new String[]{"a13", "a12", "a7", "a8", "a9", "a10", "a11",
+                                           "a5", "a4", "a3", "a2", "a1"});
+    }
+    
+    @Test
+    public void fusedRingComplexTest() {
+        System.out.println("Testing complex fused rings with internal substitutions...");
+        this.comparePositions("rings_fused_inner/ovalene.mol", "as1",
+                        new String[]{"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
+                                     "a9", "a10", "a11", "a12", "a13", "a14", "a15",
+                                     "a16", "a17", "a18", "a19", "a20", "a21", "a22"});
+    }
+
 }
