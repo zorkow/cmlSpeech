@@ -48,10 +48,11 @@ public class RichFusedRing extends RichRing {
     }
 
     protected final void walk() {
-        this.rim = this.getRim();
+        Set<IAtom> r = this.computeRim();
+        this.rim = r;
     }
 
-    private Set<IAtom> getRim() {
+    private Set<IAtom> computeRim() {
         Set<IAtom> result = new HashSet<>();
         IAtomContainer container = this.getStructure();
         Set<String> sharedBonds = new HashSet<>();

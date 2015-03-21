@@ -44,7 +44,12 @@ public abstract class RichRing extends RichAtomSet {
         this.rim = Sets.newHashSet(container.atoms());
     }
 
-    public static boolean isRing(RichAtomSet atomSet) {
+    @Override
+    public final boolean isRing() {
         return true;
+    }
+
+    public final Set<IAtom> getRim() {
+        return this.rim;
     }
 }

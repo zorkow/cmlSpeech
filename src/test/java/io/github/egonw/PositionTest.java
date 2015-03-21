@@ -38,6 +38,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import org.junit.Before;
+import io.github.egonw.base.Cli;
 
 /**
  * A basic environment to run position tests.
@@ -47,7 +49,13 @@ public class PositionTest {
 
     private static String testSources = "src/main/resources/test_files";
 
-    private void comparePositions(String input, String set, String[] order) {
+    @Before
+    public void initCli() throws Exception {
+        String[] dummy = {"-nonih"};
+        Cli.init(dummy);
+    }
+
+    public void comparePositions(String input, String set, String[] order) {
         CMLEnricher enricher = new CMLEnricher();
         enricher.loadMolecule
             (Paths.get(PositionTest.testSources, input).toString());
@@ -120,6 +128,3 @@ public class PositionTest {
                               new String[]{"a6", "a7", "a3", "a5", "a2", "a4"});
     }
 }
-
-
-

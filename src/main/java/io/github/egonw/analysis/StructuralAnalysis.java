@@ -441,12 +441,11 @@ public class StructuralAnalysis {
                 atomSet.getConnections().add
                     (new BridgeAtom(shared, key));
             }
-            Boolean ring = RichAtomSet.isRing(atomSet);
             for (String connection : Sets.difference(allConnections, sharedAtoms)) {
                 if (!RichStructureHelper.isAtom(connection)) {
                    break;
                 }
-                if (ring && RichAtomSet.isRing(RichStructureHelper.getRichAtomSet(key))) {
+                if (atomSet.isRing() && RichStructureHelper.getRichAtomSet(key).isRing()) {
                     atomSet.getConnections().add
                         (new SpiroAtom(connection, key));
                 } else {

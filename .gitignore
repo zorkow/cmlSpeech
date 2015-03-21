@@ -4,6 +4,5 @@ target/
 .project
 *.cml
 *.svg
-*.mol
 *.log
 *~
