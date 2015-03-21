@@ -47,22 +47,29 @@ public class RichFusedRing extends RichRing {
         super(container, id, RichSetType.FUSED);
     }
 
+    private Set<String> sharedBonds = new HashSet<>();
+    
     protected final void walk() {
+        this.computeSharedBonds();
         this.rim = this.computeRim();
         super.walk();
     }
 
+
+    private void computeSharedBonds() {
+        for (String ring : this.getSubSystems()) {
+            RichAtomSet subRing = RichStructureHelper.getRichAtomSet(ring);
+            this.sharedBonds.addAll(subRing.getConnections().stream()
+                                    .filter(c -> c.getType().equals(ConnectionType.SHAREDBOND))
+                                    .map(c -> c.getConnector())
+                                    .collect(Collectors.toSet()));
+        }
+    }
+    
+    
     private Set<IAtom> computeRim() {
         Set<IAtom> result = new HashSet<>();
         IAtomContainer container = this.getStructure();
-        Set<String> sharedBonds = new HashSet<>();
-        for (String ring : this.getSubSystems()) {
-            RichAtomSet subRing = RichStructureHelper.getRichAtomSet(ring);
-            sharedBonds.addAll(subRing.getConnections().stream()
-                               .filter(c -> c.getType().equals(ConnectionType.SHAREDBOND))
-                               .map(c -> c.getConnector())
-                               .collect(Collectors.toSet()));
-        }
         for (IBond bond: container.bonds()) {
             if (!sharedBonds.contains(bond.getID())) {
                 for (IAtom atom : bond.atoms()) {
@@ -75,10 +82,22 @@ public class RichFusedRing extends RichRing {
 
 
     @Override
-    protected List<IAtom> getConnectedOnRim(IAtom atom) {
-        List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
-        Set<IAtom> rim = this.getRim();
-        return connected.stream().filter(a -> rim.contains(a)).collect(Collectors.toList());
+    protected List<IAtom> getConnectedAtomsList(IAtom atom) {
+        List<IBond> rimBonds = this.getStructure().getConnectedBondsList(atom)
+            .stream()
+            .filter(b -> !this.sharedBonds.contains(b.getID()))
+            .collect(Collectors.toList());
+        List<IAtom> rimAtoms = new ArrayList<>();
+        for (IBond bond : rimBonds) {
+            for (IAtom batom : bond.atoms()) {
+                if (atom != batom) {
+                    rimAtoms.add(batom);
+                }
+            }
+        }
+        return rimAtoms;
+        // List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
+        // return connected.stream().filter(a -> rim.contains(a)).collect(Collectors.toList());
     }
 
 }

@@ -176,7 +176,7 @@ public abstract class RichRing extends RichAtomSet {
         String smallestName = components.first();
         IAtom startAtom = Lists.newArrayList(this.getStructure().atoms()).stream()
             .filter(x -> x.getID().equals(smallestName)).findFirst().get();
-        List<IAtom> connected = this.getConnectedOnRim(startAtom);
+        List<IAtom> connected = this.getConnectedAtomsList(startAtom);
         IAtom nextLeft = connected.get(0);
         IAtom nextRight = connected.get(1);
         List<IAtom> path = new ArrayList<IAtom>();
@@ -195,7 +195,7 @@ public abstract class RichRing extends RichAtomSet {
         List<IAtom> queueRight = new ArrayList<>();
         queueLeft.add(startAtom);
         queueRight.add(startAtom);
-        List<IAtom> connected = this.getConnectedOnRim(startAtom);
+        List<IAtom> connected = this.getConnectedAtomsList(startAtom);
         IAtom nextLeft = connected.get(0);
         IAtom nextRight = connected.get(1); 
         while (nextLeft != null && nextRight != null) {
@@ -240,7 +240,7 @@ public abstract class RichRing extends RichAtomSet {
      */
     private IAtom chooseNext(List<IAtom> visited, IAtom atom) {
         visited.add(atom);
-        List<IAtom> connected = this.getConnectedOnRim(atom);
+        List<IAtom> connected = this.getConnectedAtomsList(atom);
         if (!visited.contains(connected.get(0))) {
             return connected.get(0);
         }
@@ -302,17 +302,4 @@ public abstract class RichRing extends RichAtomSet {
         return result;
     }
 
-
-    /** 
-     * Returns a list with two elements that are the connected atoms that lie on
-     * the rim of the ring.
-     * 
-     * @param atom 
-     * 
-     * @return 
-     */
-    protected List<IAtom> getConnectedOnRim(IAtom atom) {
-        return this.getStructure().getConnectedAtomsList(atom);
-    }
-    
 }

@@ -112,6 +112,13 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     public void computePositions(Integer offset) {
         this.offset = offset;
         this.walk();
+        System.out.println(this.getId() + ": " + this.componentPositions);
+    }
+
+
+    @Override
+    public void appendPositions(RichAtomSet atomSet) {
+        this.componentPositions.putAll(atomSet.componentPositions);
     }
 
 
@@ -121,10 +128,23 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     protected abstract void walk();
     
     
+    /** 
+     * Returns a list with two elements that are the connected atoms that lie on
+     * the rim of the ring.
+     * 
+     * @param atom 
+     * 
+     * @return 
+     */
+    protected List<IAtom> getConnectedAtomsList(IAtom atom) {
+        return this.getStructure().getConnectedAtomsList(atom);
+    }
+    
+
     protected final List<IAtom> getSinglyConnectedAtoms() {
         List<IAtom> atoms = new ArrayList<>();
         for (IAtom atom : this.getStructure().atoms()) {
-            if (this.getStructure().getConnectedAtomsList(atom).size() <= 1) {
+            if (this.getConnectedAtomsList(atom).size() <= 1) {
                 atoms.add(atom);
             }
         }
@@ -147,12 +167,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
 
     
-    @Override
-    public void appendPositions(RichAtomSet atomSet) {
-        this.componentPositions.putAll(atomSet.componentPositions);
-    }
-
-
     protected final void walkStraight(IAtom atom) {
         this.walkStraight(atom, new ArrayList<IAtom>());
     }
@@ -164,7 +178,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
         }
         this.componentPositions.addNext(atom.getID());
         visited.add(atom);
-        for (IAtom connected : this.getStructure().getConnectedAtomsList(atom)) {
+        for (IAtom connected : this.getConnectedAtomsList(atom)) {
             if (!visited.contains(connected)) {
                 walkStraight(connected, visited);
                 return;
@@ -192,7 +206,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
             }
             visited.add(current);
             this.componentPositions.addNext(current.getID());
-            this.getStructure().getConnectedAtomsList(current).stream().
+            this.getConnectedAtomsList(current).stream().
                 forEach(a -> frontier.push(a));
         }
     }
