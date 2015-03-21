@@ -48,8 +48,8 @@ public class RichFusedRing extends RichRing {
     }
 
     protected final void walk() {
-        Set<IAtom> r = this.computeRim();
-        this.rim = r;
+        this.rim = this.computeRim();
+        super.walk();
     }
 
     private Set<IAtom> computeRim() {
@@ -73,6 +73,12 @@ public class RichFusedRing extends RichRing {
         return result;
     }
 
-    
+
+    @Override
+    protected List<IAtom> getConnectedOnRim(IAtom atom) {
+        List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
+        Set<IAtom> rim = this.getRim();
+        return connected.stream().filter(a -> rim.contains(a)).collect(Collectors.toList());
+    }
 
 }
