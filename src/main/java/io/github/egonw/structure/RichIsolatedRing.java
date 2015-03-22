@@ -54,9 +54,4 @@ public class RichIsolatedRing extends RichRing {
         super(container, id, RichSetType.ISOLATED);
     }
 
-
-    protected final void walk() {
-        super.walk();
-    }
-
 }

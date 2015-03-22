@@ -38,10 +38,4 @@ public class RichSubRing extends RichRing {
         super(container, id, RichSetType.SMALLEST);
     }
 
-
-    protected final void walk() {
-        // TODO (sorge) Compute this with respect to the positions of the fused
-        // ring system.
-        this.walkStraight(this.getStructure().atoms().iterator().next());
-    }
 }
