@@ -43,7 +43,7 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
     /**
      * @return The type of this rich atom set.
      */
-    RichSetType getType();
+    public RichSetType getType();
 
 
     /**

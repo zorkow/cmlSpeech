@@ -41,7 +41,7 @@ import java.util.ArrayList;
  * Atom sets that are rich fused rings.
  */
 
-public class RichFusedRing extends RichRing {
+public class RichFusedRing extends RichRing implements RichSuperSet {
 
     public RichFusedRing(IAtomContainer container, String id) {
         super(container, id, RichSetType.FUSED);
@@ -53,6 +53,7 @@ public class RichFusedRing extends RichRing {
         this.computeSharedBonds();
         this.rim = this.computeRim();
         super.walk();
+        this.setPath();
     }
 
 
@@ -98,4 +99,23 @@ public class RichFusedRing extends RichRing {
         return rimAtoms;
     }
 
+
+    private ComponentsPositions path = new ComponentsPositions();
+
+
+    @Override
+    public ComponentsPositions getPath() {
+        return path;
+    }
+    
+    @Override
+    public void setPath() {
+        for (String subSystem : this.getSubSystems()) {
+            RichAtomSet richSubSystem = RichStructureHelper.getRichAtomSet(subSystem);
+            richSubSystem.walk();
+            System.out.println(subSystem);
+            System.out.println(richSubSystem.componentPositions);
+        }
+    }
+    
 }

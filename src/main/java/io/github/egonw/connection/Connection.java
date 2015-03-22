@@ -59,7 +59,8 @@ public abstract class Connection extends ConnectionComparator implements Compara
 
     @Override
     public String toString() {
-        return this.getConnector() + " -> " + this.getConnected();
+        return "\n" + getType() + ": "
+            + this.getConnector() + " -> " + this.getConnected();
     }
 
     public int compareTo(Connection con) {

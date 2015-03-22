@@ -145,7 +145,8 @@ public abstract class RichRing extends RichAtomSet {
             this.walkOnSubst(internalSubst.get(0), internalSubst);
             return;
         }
-        if (this.getConnectingAtoms().size() == 0) {
+        this.getExternalConnections();
+        if (this.externalConnections.size() == 0) {
             if (internalSubst.size() == 1) {
                 this.walkStraight(internalSubst.get(0));
                 return;
@@ -270,20 +271,24 @@ public abstract class RichRing extends RichAtomSet {
         return result;
     }
 
+    private Queue<Connection> externalConnections = new PriorityQueue<>(new ExternalSubstComparator());
     
-    private List<IAtom> getExternalSubsts() {
-        Queue<Connection> connections = new PriorityQueue<>(new ExternalSubstComparator());
+    private void getExternalConnections() {
         for (Connection connection : this.getConnections()) {
             ConnectionType type = connection.getType();
             if (type == ConnectionType.SPIROATOM ||
                 type == ConnectionType.SHAREDATOM ||
                 type == ConnectionType.CONNECTINGBOND) {
-                connections.add(connection);
+                this.externalConnections.add(connection);
             }
         }
+        
+    }
+    
+    private List<IAtom> getExternalSubsts() {
         List<IAtom> result = new ArrayList<>();
-        while (connections.peek() != null) {
-            Connection connection = connections.poll();
+        while (this.externalConnections.peek() != null) {
+            Connection connection = this.externalConnections.poll();
             ConnectionType type = connection.getType();
             if (type == ConnectionType.SPIROATOM ||
                 type == ConnectionType.SHAREDATOM) {

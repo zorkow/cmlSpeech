@@ -32,7 +32,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
  * Atom sets that form a molecule of their own. I.e., the topmost structure.
  */
 
-public class RichMolecule extends RichAtomSet {
+public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
     public RichMolecule(IAtomContainer container, String id) {
         super(container, id, RichSetType.MOLECULE);
@@ -41,5 +41,17 @@ public class RichMolecule extends RichAtomSet {
     
     // TODO sorge This should eventually become the major path computation.
     protected final void walk() {}
+
+
+    private ComponentsPositions path = new ComponentsPositions();
+
+
+    @Override
+    public ComponentsPositions getPath() {
+        return path;
+    }
+    
+    @Override
+    public void setPath() {}
 
 }
