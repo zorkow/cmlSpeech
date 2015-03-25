@@ -54,6 +54,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
         this.computeSharedBonds();
         this.computeRim();
         super.walk();
+        richSubSystems.stream().forEach(s -> s.walk());
         this.setPath();
     }
 
@@ -100,13 +101,13 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
 
     private ComponentsPositions path = new ComponentsPositions();
-    private List<RichAtomSet> richSubSystems = null;
+    private Set<RichAtomSet> richSubSystems = null;
 
 
     private void computeRichSubSystems() {
         richSubSystems = this.getSubSystems().stream()
             .map(s -> RichStructureHelper.getRichAtomSet(s))
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
     
     @Override
@@ -114,13 +115,43 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
         return path;
     }
 
+    private RichAtomSet findAtom(List<RichAtomSet> sets, RichAtom atom) {
+        for (RichAtomSet set : sets) {
+            if (set.getStructure().contains(atom.getStructure())) {
+                return set;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void setPath() {
-        for (RichAtomSet richSubSystem : richSubSystems) {
-            richSubSystem.walk();
-            System.out.println(richSubSystem.getId());
-            System.out.println(richSubSystem.componentPositions);
+        List<RichAtomSet> newSystem = new ArrayList<>(richSubSystems);
+        System.out.println(newSystem);
+        RichAtomSet lastSystem = null;
+        for (String atomName : this) {
+            RichAtom atom = RichStructureHelper.getRichAtom(atomName);
+            RichAtomSet container = this.findAtom(newSystem, atom);
+            if (container != null) {
+                lastSystem = container;
+                newSystem.remove(container);
+                this.path.addNext(container.getId());
+            }
         }
+        while (newSystem.size() > 0) {
+            for (String atomName : lastSystem) {
+                RichAtom atom = RichStructureHelper.getRichAtom(atomName);
+                RichAtomSet container = this.findAtom(newSystem, atom);
+                if (container != null) {
+                    System.out.println(container.getId());
+                    lastSystem = container;
+                    newSystem.remove(container);
+                    this.path.addNext(container.getId());
+                    continue;
+                }
+            }
+        }
+        System.out.println(this.path);
     }
     
 }

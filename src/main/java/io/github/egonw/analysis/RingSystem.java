@@ -164,6 +164,7 @@ public class RingSystem {
     private List<IAtomContainer> sssrSubRings(IAtomContainer ring) {
         SSSRFinder sssr = new SSSRFinder(ring);
         IRingSet essentialRings = sssr.findSSSR();
+        System.out.println(essentialRings);
         return Lists.newArrayList(essentialRings.atomContainers());
     }
 
