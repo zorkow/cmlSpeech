@@ -127,7 +127,6 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     @Override
     public void setPath() {
         List<RichAtomSet> newSystem = new ArrayList<>(richSubSystems);
-        System.out.println(newSystem);
         RichAtomSet lastSystem = null;
         for (String atomName : this) {
             RichAtom atom = RichStructureHelper.getRichAtom(atomName);
@@ -143,7 +142,6 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
                 RichAtom atom = RichStructureHelper.getRichAtom(atomName);
                 RichAtomSet container = this.findAtom(newSystem, atom);
                 if (container != null) {
-                    System.out.println(container.getId());
                     lastSystem = container;
                     newSystem.remove(container);
                     this.path.addNext(container.getId());

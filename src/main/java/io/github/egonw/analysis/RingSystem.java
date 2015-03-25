@@ -40,6 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import io.github.egonw.base.Cli;
+import java.util.Comparator;
+import io.github.egonw.base.CMLNameComparator;
+
+import java.util.TreeSet;
+import java.util.SortedSet;
+import java.util.Iterator;
 
 /**
  * Computes ring systems using ring search algorithms.
@@ -50,8 +56,6 @@ public class RingSystem {
 
     RingSearch ringSearch = null;
 
-    // TODO (sorge): Outsource that into a separate module similar to aliphatic
-    //               chain.
     public RingSystem(IAtomContainer container) {
         this.ringSearch = new RingSearch(container);
     }
@@ -79,7 +83,6 @@ public class RingSystem {
      * @param fusedRing A fused ring system.
      */    
     public List<IAtomContainer> subRings(IAtomContainer fusedRing) {
-        
         return this.subRings(fusedRing, Cli.hasOption("sssr") ?
                              this::smallestSubRings : this::sssrSubRings);
         }
@@ -154,6 +157,31 @@ public class RingSystem {
     };
 
 
+    protected class AtomComparator implements Comparator<IAtom> {
+        public int compare(IAtom atom1, IAtom atom2) {
+            CMLNameComparator comparator = new CMLNameComparator();
+            return comparator.compare(atom1.getID(), atom2.getID());
+        }
+    }
+
+    
+    protected class RingComparator implements Comparator<IAtomContainer> {
+        public int compare(IAtomContainer container1, IAtomContainer container2) {
+            AtomComparator comparator = new AtomComparator();
+            SortedSet<IAtom> atoms1 = new TreeSet<>(comparator);
+            SortedSet<IAtom> atoms2 = new TreeSet<>(comparator);
+            container1.atoms().forEach(x -> atoms1.add(x));
+            container2.atoms().forEach(x -> atoms2.add(x));
+            Iterator<IAtom> iterator1 = atoms1.iterator();
+            Iterator<IAtom> iterator2 =  atoms2.iterator();
+            while(iterator1.hasNext() && iterator2.hasNext()) {
+                int result = comparator.compare(iterator1.next(), iterator2.next());
+                if (result != 0) return result;
+            }
+            return 0;
+        }
+    }
+
     /** 
      * Method to compute smallest rings via SSSR finder.
      * 
@@ -164,8 +192,13 @@ public class RingSystem {
     private List<IAtomContainer> sssrSubRings(IAtomContainer ring) {
         SSSRFinder sssr = new SSSRFinder(ring);
         IRingSet essentialRings = sssr.findSSSR();
-        System.out.println(essentialRings);
-        return Lists.newArrayList(essentialRings.atomContainers());
+        // We need to sort the subrings as essential ring finding is not
+        // necessarily deterministic.
+        SortedSet<IAtomContainer> subRings = new TreeSet<>(new RingComparator());
+        for (IAtomContainer subRing : essentialRings.atomContainers()) {
+            subRings.add(subRing);
+        }
+        return Lists.newArrayList(subRings);
     }
 
 }

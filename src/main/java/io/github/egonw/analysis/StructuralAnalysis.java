@@ -85,7 +85,7 @@ public class StructuralAnalysis {
 
     private List<RichAtomSet> majorSystems;
     private List<RichAtomSet> minorSystems;
-    private Set<String> singletonAtoms = new HashSet<String>();
+    private SortedSet<String> singletonAtoms = new TreeSet<String>(new CMLNameComparator());
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
