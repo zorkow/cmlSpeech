@@ -50,16 +50,16 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     private Set<String> sharedBonds = new HashSet<>();
     
     protected final void walk() {
+        this.computeRichSubSystems();
         this.computeSharedBonds();
-        this.rim = this.computeRim();
+        this.computeRim();
         super.walk();
         this.setPath();
     }
 
 
     private void computeSharedBonds() {
-        for (String ring : this.getSubSystems()) {
-            RichAtomSet subRing = RichStructureHelper.getRichAtomSet(ring);
+        for (RichAtomSet subRing : this.richSubSystems) {
             this.sharedBonds.addAll(subRing.getConnections().stream()
                                     .filter(c -> c.getType().equals(ConnectionType.SHAREDBOND))
                                     .map(c -> c.getConnector())
@@ -68,17 +68,16 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     }
     
     
-    private Set<IAtom> computeRim() {
-        Set<IAtom> result = new HashSet<>();
+    private void computeRim() {
         IAtomContainer container = this.getStructure();
+        this.rim = new HashSet<>();
         for (IBond bond: container.bonds()) {
             if (!sharedBonds.contains(bond.getID())) {
                 for (IAtom atom : bond.atoms()) {
-                    result.add(atom);
+                    this.rim.add(atom);
                 }
             }
         }
-        return result;
     }
 
 
@@ -101,19 +100,25 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
 
     private ComponentsPositions path = new ComponentsPositions();
+    private List<RichAtomSet> richSubSystems = null;
 
 
+    private void computeRichSubSystems() {
+        richSubSystems = this.getSubSystems().stream()
+            .map(s -> RichStructureHelper.getRichAtomSet(s))
+            .collect(Collectors.toList());
+    }
+    
     @Override
     public ComponentsPositions getPath() {
         return path;
     }
-    
+
     @Override
     public void setPath() {
-        for (String subSystem : this.getSubSystems()) {
-            RichAtomSet richSubSystem = RichStructureHelper.getRichAtomSet(subSystem);
+        for (RichAtomSet richSubSystem : richSubSystems) {
             richSubSystem.walk();
-            System.out.println(subSystem);
+            System.out.println(richSubSystem.getId());
             System.out.println(richSubSystem.componentPositions);
         }
     }

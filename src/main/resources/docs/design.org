@@ -68,13 +68,15 @@ c c c o c    O is 1 but at position 4.
       + atomset: can have all three
 
 * Walking structures
-** Each structure should have a walk method
-*** In case of Superset computes path and then walks all substructures
-*** Otherwise just walks the structure
 ** Recursively walk
 *** Start with molecule: walk molecule
 *** Assemble path
 *** Walk substructures
+** Each structure should have a walk method and a walkStructure method
+*** walkStructure walks over atoms of the structure (e.g. all atoms, the rim)
+**** walkStructure does nothing for molecules.
+*** walk calls walkStructure by default.
+*** In case of Superset does setPath and then walks all substructures
 * Testing
 ** Structures we are interested in
 *** Structures from the books
