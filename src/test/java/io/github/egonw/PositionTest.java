@@ -31,6 +31,7 @@ import static org.junit.Assert.assertArrayEquals;
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.base.CMLEnricher;
 import io.github.egonw.structure.RichAtomSet;
+import io.github.egonw.structure.RichSuperSet;
 
 import org.junit.Test;
 
@@ -55,14 +56,32 @@ public class PositionTest {
         Cli.init(dummy);
     }
 
-    public void comparePositions(String input, String set, String[] order) {
+    private void loadMolecule(String input) {
         CMLEnricher enricher = new CMLEnricher();
         enricher.loadMolecule
             (Paths.get(PositionTest.testSources, input).toString());
         enricher.analyseMolecule();
+    }
+    
+    
+    public void comparePositions(String input, String set, String[] order) {
+        this.loadMolecule(input);
         RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(set);
         List<String> actual = new ArrayList<String>();
         for (String atom: atomSet) {
+            actual.add(atom);
+        }
+        System.out.println(actual);
+        System.out.println(Arrays.toString(order));
+        assertArrayEquals(actual.toArray(), order);
+    }
+
+
+    public void comparePaths(String input, String set, String[] order) {
+        this.loadMolecule(input);
+        RichSuperSet atomSet = (RichSuperSet)RichStructureHelper.getRichAtomSet(set);
+        List<String> actual = new ArrayList<String>();
+        for (String atom: atomSet.getPath()) {
             actual.add(atom);
         }
         System.out.println(actual);
@@ -141,15 +160,12 @@ public class PositionTest {
                                            "a12", "a11", "a10", "a9", "a8", "a7", "a6"});
         // This needs to become more deterministic!
         // this.comparePositions("rings_fused_simple/pyridine.mol", "as1",
-        //                       new String[]{"a18", "a17", "a9", "a10", "a11", "a16", "a15",
-        //                                    "a14", "a13", "a12", "a7", "a6", "a5", "a1",
-        //                                    "a2", "a3", "a4", "a8", "a20", "a19"
-                                           // "a1", "a5", "a6", "a7",
-                                           // "a12", "a13", "a14", "a15", "a16",
-                                           // "a11", "a10", "a9",
-                                           // "a17", "a18", "a19", "a20", "a8",
-                                           // "a4", "a3", "a2"
-                              // });
+        //                       new String[]{"a1", "a5", "a6", "a7",
+        //                                    "a12", "a13", "a14", "a15", "a16",
+        //                                    "a11", "a10", "a9",
+        //                                    "a17", "a18", "a19", "a20", "a8",
+        //                                    "a4", "a3", "a2"
+        //                       });
     }
 
     @Test
@@ -173,4 +189,19 @@ public class PositionTest {
                                      "a16", "a17", "a18", "a19", "a20", "a21", "a22"});
     }
 
+    @Test
+    public void essentialRingTest() {
+        System.out.println("Testing order of essential rings in fused rings...");
+        this.comparePaths("rings_fused_inner/ovalene.mol", "as1",
+                          new String[]{"as2", "as3", "as4", "as5", "as6", "as7", "as8",
+                                       "as9", "as10", "as11"});
+        this.comparePaths("rings_fused_simple/1H-indeno[7,1-bc]azepine.mol", "as1",
+                          new String[]{"as4", "as2", "as3"});
+        this.comparePaths("rings_fused_simple/Pyrido[2,3-b]naphthalene.mol", "as1",
+                          new String[]{"as2", "as3", "as4"});
+        // This needs to become more deterministic!
+        // Check wrt. largest subring. Then check wrt. smallest atom name.
+        // this.comparePositions("rings_fused_simple/pyridine.mol", "as1",
+        //new String[]{"as2", "as3", "as4", "as5", "as6"});
+    }
 }
