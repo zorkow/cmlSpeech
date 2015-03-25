@@ -67,6 +67,14 @@ c c c o c    O is 1 but at position 4.
       + atom: can only have connecting bond
       + atomset: can have all three
 
+* Walking structures
+** Each structure should have a walk method
+*** In case of Superset computes path and then walks all substructures
+*** Otherwise just walks the structure
+** Recursively walk
+*** Start with molecule: walk molecule
+*** Assemble path
+*** Walk substructures
 * Testing
 ** Structures we are interested in
 *** Structures from the books
