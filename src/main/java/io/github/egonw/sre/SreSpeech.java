@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import io.github.egonw.structure.RichMolecule;
 
 /**
  * Constructs the Sre speech annotations.
@@ -75,14 +76,15 @@ public class SreSpeech extends SreXML {
     @Override
     public void compute() {
         // TODO (sorge) This should not be set here, but during positions computations!
-        RichAtomSet molecule = RichStructureHelper.getRichAtomSet(this.analysis.getMolecule().getID());
-        molecule.componentPositions = this.analysis.majorPath;
+        RichMolecule molecule = this.analysis.top;
+        // TODO (sorge) Get rid of this!
+        molecule.componentPositions = molecule.getPath();
         // Describe the molecule.
         this.atomSet(molecule);
 
         // Describe the first level.
-        for (Integer i = 1; i <= this.analysis.majorPath.size(); i++) {
-            String structure = this.analysis.majorPath.get(i);
+        for (Integer i = 1; i <= molecule.getPath().size(); i++) {
+            String structure = molecule.getPath().get(i);
             if (RichStructureHelper.isAtom(structure)) {
                 this.atom(RichStructureHelper.getRichAtom(structure), molecule);
             } else {

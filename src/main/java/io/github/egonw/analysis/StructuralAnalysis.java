@@ -90,7 +90,6 @@ public class StructuralAnalysis {
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
-    public ComponentsPositions majorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
     public RichMolecule top;
@@ -514,7 +513,6 @@ public class StructuralAnalysis {
             .collect(Collectors.toList());
         this.majorGraph = new StructuralGraph(this.getMajorSystems(),
                                               this.getSingletonAtoms());
-        this.majorPath = this.path(this.majorGraph);
     }
     
 
@@ -535,7 +533,6 @@ public class StructuralAnalysis {
             .collect(Collectors.toList());
         this.minorGraph = new StructuralGraph(this.getMinorSystems(),
                                               this.getSingletonAtoms());
-        this.path(this.minorGraph);
     }
     
 
