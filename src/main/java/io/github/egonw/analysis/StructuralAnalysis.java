@@ -633,23 +633,14 @@ public class StructuralAnalysis {
     }
 
 
-    // TODO (sorge): Refactor this into common positions mapping.
     public void computePositions() {
         ((RichMolecule)(this.top)).walk(this.getMajorSystems(), this.getSingletonAtoms());
-        for (String structure : this.majorPath) {
+        for (String structure : ((RichMolecule)(this.top)).getPath()) {
             if (RichStructureHelper.isAtom(structure)) {
                 this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
-                // if (atomSet.getType() == RichSetType.FUSED) {
-                //     for (String sub : atomSet.getSubSystems()) {
-                //         RichAtomSet subSystem = RichStructureHelper.getRichAtomSet(sub);
-                //         this.appendPositions(subSystem);
-                //         atomSet.appendPositions(subSystem);
-                //     }
-                // } else {
                     this.appendPositions(atomSet);
-                // }
             }
         }
     }
