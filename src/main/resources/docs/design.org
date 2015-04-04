@@ -77,6 +77,10 @@ c c c o c    O is 1 but at position 4.
 **** walkStructure does nothing for molecules.
 *** walk calls walkStructure by default.
 *** In case of Superset does setPath and then walks all substructures
+**** Refactor note:
+***** Eventually all we need is walk to get positions etc.
+***** Move most of the stuff from StructuralAnalysis to RichMolecule
+*** Visualise method per structure.
 * Testing
 ** Structures we are interested in
 *** Structures from the books

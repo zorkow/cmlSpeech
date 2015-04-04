@@ -40,11 +40,25 @@ public class TypeComparator extends DefaultComparator {
     public int compare(RichAtomSet set1, RichAtomSet set2) {
         RichSetType typeA = set1.getType();
         RichSetType typeB = set2.getType();
+        if (typeA == RichSetType.FUNCGROUP && 
+            (typeB == RichSetType.ALIPHATIC ||
+             typeB == RichSetType.FUSED || 
+             typeB == RichSetType.ISOLATED ||
+             typeB == RichSetType.SMALLEST)) {
+            return 1;
+        }
         if (typeA == RichSetType.ALIPHATIC && 
             (typeB == RichSetType.FUSED || 
              typeB == RichSetType.ISOLATED ||
              typeB == RichSetType.SMALLEST)) {
             return 1;
+        }
+        if (typeB == RichSetType.FUNCGROUP && 
+            (typeA == RichSetType.ALIPHATIC ||
+             typeA == RichSetType.FUSED || 
+             typeA == RichSetType.ISOLATED ||
+             typeA == RichSetType.SMALLEST)) {
+            return -1;
         }
         if (typeB == RichSetType.ALIPHATIC && 
             (typeA == RichSetType.FUSED || 

@@ -149,7 +149,6 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
                 }
             }
         }
-        System.out.println(this.path);
     }
     
 }

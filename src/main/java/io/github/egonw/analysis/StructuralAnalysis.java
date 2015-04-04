@@ -74,6 +74,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+
 /**
  * Main functionality for the structural analysis of molecules.
  */
@@ -634,6 +635,7 @@ public class StructuralAnalysis {
 
     // TODO (sorge): Refactor this into common positions mapping.
     public void computePositions() {
+        ((RichMolecule)(this.top)).walk(this.getMajorSystems(), this.getSingletonAtoms());
         for (String structure : this.majorPath) {
             if (RichStructureHelper.isAtom(structure)) {
                 this.componentPositions.addNext(structure);

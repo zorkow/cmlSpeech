@@ -112,7 +112,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     public void computePositions(Integer offset) {
         this.offset = offset;
         this.walk();
-        System.out.println(this.getId() + ": " + this.componentPositions);
     }
 
 
