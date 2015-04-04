@@ -93,7 +93,7 @@ public class StructuralAnalysis {
     public ComponentsPositions majorPath;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
-    public RichAtomSet top;
+    public RichMolecule top;
 
 
     public StructuralAnalysis(IAtomContainer molecule) {
@@ -159,7 +159,7 @@ public class StructuralAnalysis {
 
     private void makeTopSet() {
         String id = this.getAtomSetId();
-        this.top = RichStructureHelper.setRichAtomSet(new RichMolecule(this.molecule, id));
+        this.top = (RichMolecule)RichStructureHelper.setRichAtomSet(new RichMolecule(this.molecule, id));
         this.setContexts(RichStructureHelper.richAtoms.keySet(), id);
         this.setContexts(RichStructureHelper.richBonds.keySet(), id);
         this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
@@ -634,8 +634,8 @@ public class StructuralAnalysis {
 
 
     public void computePositions() {
-        ((RichMolecule)(this.top)).walk(this.getMajorSystems(), this.getSingletonAtoms());
-        for (String structure : ((RichMolecule)(this.top)).getPath()) {
+        this.top.walk(this.getMajorSystems(), this.getSingletonAtoms());
+        for (String structure : this.top.getPath()) {
             if (RichStructureHelper.isAtom(structure)) {
                 this.componentPositions.addNext(structure);
             } else {
