@@ -92,6 +92,7 @@ public class StructuralAnalysis {
     private StructuralGraph minorGraph;
     private ComponentsPositions componentPositions = new ComponentsPositions();
 
+
     public RichMolecule top;
 
 
@@ -572,36 +573,6 @@ public class StructuralAnalysis {
             minorGraphs.put(system.getId(), minorGraph);
             minorGraph.visualize(system.getId());
         }
-    }
-
-
-    /**
-     * Computes a path through the molecule.
-     * @param graph An abstraction graph for the molecule.
-     */
-    public ComponentsPositions path(StructuralGraph graph) {
-        ComponentsPositions path = new ComponentsPositions();
-        NeighborIndex<String, StructuralEdge> index = new NeighborIndex<String, StructuralEdge>(graph);
-        Comparator<String> comparator = new AnalysisCompare();
-        Stack<String> rest = new Stack<String>();
-        List<String> vertices = new ArrayList<String>(graph.vertexSet());
-        Collections.sort(vertices, comparator);
-        List<String> visited = new ArrayList<String>();
-        rest.push(vertices.get(0));
-        while (!rest.empty()) {
-            String current = rest.pop();
-            if (visited.contains(current)) {
-                continue;
-            }
-            path.addNext(current);
-            vertices = new ArrayList<String>(index.neighborsOf(current));
-            Collections.sort(vertices, comparator);
-            for (int i = vertices.size() - 1; i >= 0; i--) {
-                rest.push(vertices.get(i));
-            }
-            visited.add(current);
-        }
-        return path;
     }
 
 
