@@ -204,4 +204,17 @@ public class PositionTest {
         // this.comparePositions("rings_fused_simple/pyridine.mol", "as1",
         //new String[]{"as2", "as3", "as4", "as5", "as6"});
     }
+
+    // @Test
+    // public void moleculeTest() {
+    //     System.out.println("Testing order of blocks in a molecule...");
+    //     this.comparePaths("rings_fused_inner/ovalene.mol", "as1",
+    //                       new String[]{"as2", "as3", "as4", "as5", "as6", "as7", "as8",
+    //                                    "as9", "as10", "as11"});
+    //     this.comparePaths("rings_fused_simple/1H-indeno[7,1-bc]azepine.mol", "as1",
+    //                       new String[]{"as4", "as2", "as3"});
+    //     this.comparePaths("rings_fused_simple/Pyrido[2,3-b]naphthalene.mol", "as1",
+    //                       new String[]{"as2", "as3", "as4"});
+        
+    // }
 }
