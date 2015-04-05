@@ -152,6 +152,14 @@ public class FunctionalGroups {
         }
     }
 
+    public void logGroups() {
+        for (Map.Entry<String, IAtomContainer> entry : groups.entrySet()) {
+            Logger.logging(entry.getKey() + ": ");
+            entry.getValue().atoms().forEach(a -> Logger.logging(a.getID() + " "));
+            Logger.logging("\n");
+        }
+    }
+
     public Map<String, IAtomContainer> getGroups() {
         return groups;
     }

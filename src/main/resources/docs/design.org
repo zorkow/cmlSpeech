@@ -81,6 +81,10 @@ c c c o c    O is 1 but at position 4.
 ***** Eventually all we need is walk to get positions etc.
 ***** Move most of the stuff from StructuralAnalysis to RichMolecule
 *** Visualise method per structure.
+** For Refactoring:
+*** Currently we are walking the molecule wrt. to weight only.
+*** Eventually it should be walked with respect to neighbour positions.
+*** For this it would be useful to have an explicit neighbour field of class components positions.
 * Testing
 ** Structures we are interested in
 *** Structures from the books

@@ -71,7 +71,7 @@ public class FunctionalGroupsFilter {
         newSets = groups;
     }
 
-    // Heuristics to implements:
+    // Heuristics to implement:
     // + largest group subsumes subsets
     // - minimal overlap with others.
     // - with same elements: shortest name.
@@ -154,14 +154,22 @@ public class FunctionalGroupsFilter {
                 workingSets.add(new RichFunctionalGroup(set, entry.getKey()));
             }
         }
-
         // sort by size
         Collections.sort(workingSets, new SizeAndNameComparator());
         subsumeSubsets();
-        
         for (RichFunctionalGroup set : workingSets){
             String id = set.getId();
-            resultSets.put(id, newSets.get(id));
+            // TODO (sorge) This test should be scrutinised:
+            //  1. It removes potentially interesting functional groups.
+            //     Chemical question is:
+            //         Should we present functional groups that have
+            //         multiple atoms as overlap.
+            //  2. It does redundant work, as it rechecks overlap as done
+            //     in the previous loop.
+            if (considerOverlap(set.getStructure())) {
+                resultSets.put(id, newSets.get(id));
+                existingSets.add(set);
+            }
         }
         return resultSets;
     }
