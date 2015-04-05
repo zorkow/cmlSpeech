@@ -205,16 +205,18 @@ public class PositionTest {
         //new String[]{"as2", "as3", "as4", "as5", "as6"});
     }
 
-    // @Test
-    // public void moleculeTest() {
-    //     System.out.println("Testing order of blocks in a molecule...");
-    //     this.comparePaths("rings_fused_inner/ovalene.mol", "as1",
-    //                       new String[]{"as2", "as3", "as4", "as5", "as6", "as7", "as8",
-    //                                    "as9", "as10", "as11"});
-    //     this.comparePaths("rings_fused_simple/1H-indeno[7,1-bc]azepine.mol", "as1",
-    //                       new String[]{"as4", "as2", "as3"});
-    //     this.comparePaths("rings_fused_simple/Pyrido[2,3-b]naphthalene.mol", "as1",
-    //                       new String[]{"as2", "as3", "as4"});
-        
-    // }
+    @Test
+    public void moleculeTest() {
+        System.out.println("Testing order of blocks in a molecule...");
+        this.comparePaths("molecule/book1-004-05.mol", "as2",
+                          new String[]{"as1", "a1"});
+        this.comparePaths("molecule/book1-006-03.mol", "as4",
+                          new String[]{"as1", "as2", "as3"});
+        this.comparePaths("molecule/book1-012-00.mol", "as5",
+                          new String[]{"as1", "as4", "as3", "as2"});
+        this.comparePaths("molecule/aspirin.mol", "as4",
+                          new String[]{"as1", "as3", "as2"});
+        this.comparePaths("molecule/US06358966-20020319-C00001.mol", "as11",
+                          new String[]{"as1", "as7", "as9", "as4", "as8", "as10"});
+    }
 }
