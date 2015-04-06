@@ -70,6 +70,7 @@ public final class Cli {
         options.addOption("c", "cml", false,
                           "Also write a CML file without annotations: adds -simple to name");
         options.addOption("a", "ann", false, "Include annotations in CML output");
+        options.addOption("ao", "annonly", false, "Annotations only output. Omits the original CML output");
         options.addOption("r", "descr", false, "Include speech descriptions in CML output");
         options.addOption("nonih", "nonih", false, "Do not use the NIH naming service");
         options.addOption("s", "subrings", false, "Do not compute subrings");

@@ -1,42 +1,10 @@
-<molecule id="m1" title="Molfile book1-012-00.tif" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema">
-    <atomArray>
-        <atom id="a1" elementType="C" x2="-2.1858" y2="-6.2042" formalCharge="0" hydrogenCount="3"/>
-        <atom id="a2" elementType="C" x2="4.5342" y2="-2.1342" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a3" elementType="C" x2="2.8842" y2="-3.1542" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a4" elementType="C" x2="2.9142" y2="-5.1542" formalCharge="0" hydrogenCount="0"/>
-        <atom id="a5" elementType="C" x2="6.3042" y2="-3.0942" formalCharge="0" hydrogenCount="0"/>
-        <atom id="a6" elementType="C" x2="6.3542" y2="-5.0742" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a7" elementType="C" x2="-0.4858" y2="-5.2442" formalCharge="0" hydrogenCount="0"/>
-        <atom id="a8" elementType="C" x2="4.6442" y2="-6.1242" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a9" elementType="O" x2="7.6842" y2="-2.2342" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a10" elementType="N" x2="1.2142" y2="-5.9742" formalCharge="0" hydrogenCount="1"/>
-        <atom id="a11" elementType="O" x2="-0.5658" y2="-3.6242" formalCharge="0" hydrogenCount="0"/>
-    </atomArray>
-    <bondArray>
-        <bond id="b1" atomRefs2="a3 a2" order="D"/>
-        <bond id="b2" atomRefs2="a3 a4" order="S"/>
-        <bond id="b3" atomRefs2="a2 a5" order="S"/>
-        <bond id="b4" atomRefs2="a6 a5" order="D"/>
-        <bond id="b5" atomRefs2="a7 a1" order="S"/>
-        <bond id="b6" atomRefs2="a8 a6" order="S"/>
-        <bond id="b7" atomRefs2="a8 a4" order="D"/>
-        <bond id="b8" atomRefs2="a5 a9" order="S"/>
-        <bond id="b9" atomRefs2="a10 a4" order="S"/>
-        <bond id="b10" atomRefs2="a10 a7" order="S"/>
-        <bond id="b11" atomRefs2="a11 a7" order="D"/>
-    </bondArray>
-    <atomSet title="Isolated ring" id="as1" size="6" sre:formula="C6H4">a3 a6 a4 a8 a5 a2</atomSet>
-    <atomSet title="Functional Group" id="as2" size="2" sre:formula="CHO" sre:name="Phenol">a9 a5</atomSet>
-    <atomSet title="Functional Group" id="as3" size="3" sre:formula="C2H3O" sre:name="Carbonyl with Carbon">a7 a11 a1</atomSet>
-    <atomSet title="Functional Group" id="as4" size="4" sre:formula="C2HNO" sre:name="Secondary amide">a7 a11 a10 a4</atomSet>
-    <atomSet title="Molecule" id="as5" size="11" sre:formula="C8H9NO2">a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11</atomSet>
+<molecule id="m1" title="Molfile book1-012-00.tif" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema"> 
     <sre:annotations>
         <sre:annotation>
             <sre:atom>a1</sre:atom>
             <sre:context>
                 <sre:bond>b5</sre:bond>
-                <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b5</sre:bond>
@@ -46,6 +14,10 @@
                     <sre:bond>b5</sre:bond>
                     <sre:atom>a7</sre:atom>
                 </sre:connectingBond>
+                <sre:connectingBond>
+                    <sre:bond>b5</sre:bond>
+                    <sre:atomSet>as3</sre:atomSet>
+                </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
         <sre:annotation>
@@ -54,7 +26,7 @@
                 <sre:bond>b1</sre:bond>
                 <sre:bond>b3</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b1</sre:bond>
@@ -77,7 +49,7 @@
                 <sre:bond>b1</sre:bond>
                 <sre:bond>b2</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b1</sre:bond>
@@ -101,8 +73,8 @@
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b9</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b2</sre:bond>
@@ -132,7 +104,7 @@
                 <sre:bond>b8</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
                 <sre:atomSet>as2</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b3</sre:bond>
@@ -160,7 +132,7 @@
                 <sre:bond>b4</sre:bond>
                 <sre:bond>b6</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b4</sre:bond>
@@ -185,7 +157,6 @@
                 <sre:bond>b11</sre:bond>
                 <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b5</sre:bond>
@@ -213,7 +184,7 @@
                 <sre:bond>b6</sre:bond>
                 <sre:bond>b7</sre:bond>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b6</sre:bond>
@@ -235,7 +206,7 @@
             <sre:context>
                 <sre:bond>b8</sre:bond>
                 <sre:atomSet>as2</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b8</sre:bond>
@@ -252,8 +223,8 @@
             <sre:context>
                 <sre:bond>b9</sre:bond>
                 <sre:bond>b10</sre:bond>
+                <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b9</sre:bond>
@@ -276,7 +247,6 @@
                 <sre:bond>b11</sre:bond>
                 <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:externalBonds>
                 <sre:bond>b11</sre:bond>
@@ -292,7 +262,7 @@
             <sre:bond>b1</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a2</sre:atom>
@@ -303,7 +273,7 @@
             <sre:bond>b2</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a3</sre:atom>
@@ -314,7 +284,7 @@
             <sre:bond>b3</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a2</sre:atom>
@@ -325,7 +295,7 @@
             <sre:bond>b4</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a5</sre:atom>
@@ -335,8 +305,7 @@
         <sre:annotation>
             <sre:bond>b5</sre:bond>
             <sre:context>
-                <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a1</sre:atom>
@@ -347,7 +316,7 @@
             <sre:bond>b6</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a6</sre:atom>
@@ -358,7 +327,7 @@
             <sre:bond>b7</sre:bond>
             <sre:context>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a4</sre:atom>
@@ -369,7 +338,7 @@
             <sre:bond>b8</sre:bond>
             <sre:context>
                 <sre:atomSet>as2</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a5</sre:atom>
@@ -379,8 +348,8 @@
         <sre:annotation>
             <sre:bond>b9</sre:bond>
             <sre:context>
+                <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a4</sre:atom>
@@ -390,8 +359,8 @@
         <sre:annotation>
             <sre:bond>b10</sre:bond>
             <sre:context>
+                <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a7</sre:atom>
@@ -403,7 +372,6 @@
             <sre:context>
                 <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as5</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a7</sre:atom>
@@ -413,7 +381,7 @@
         <sre:annotation>
             <sre:atomSet>as1</sre:atomSet>
             <sre:context>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a2</sre:atom>
@@ -436,7 +404,7 @@
             <sre:connections>
                 <sre:sharedAtom>
                     <sre:atom>a4</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
+                    <sre:atomSet>as3</sre:atomSet>
                 </sre:sharedAtom>
                 <sre:sharedAtom>
                     <sre:atom>a5</sre:atom>
@@ -460,7 +428,7 @@
                 <sre:atom>a8</sre:atom>
             </sre:subSystem>
             <sre:superSystem>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:superSystem>
             <sre:connectingAtoms>
                 <sre:atom>a4</sre:atom>
@@ -470,7 +438,7 @@
         <sre:annotation>
             <sre:atomSet>as2</sre:atomSet>
             <sre:context>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a5</sre:atom>
@@ -495,7 +463,7 @@
                 <sre:atom>a9</sre:atom>
             </sre:subSystem>
             <sre:superSystem>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:superSystem>
             <sre:connectingAtoms>
                 <sre:atom>a5</sre:atom>
@@ -504,52 +472,7 @@
         <sre:annotation>
             <sre:atomSet>as3</sre:atomSet>
             <sre:context>
-                <sre:atomSet>as5</sre:atomSet>
-            </sre:context>
-            <sre:component>
-                <sre:atom>a1</sre:atom>
-                <sre:atom>a7</sre:atom>
-                <sre:atom>a11</sre:atom>
-                <sre:bond>b5</sre:bond>
-                <sre:bond>b11</sre:bond>
-            </sre:component>
-            <sre:externalBonds>
-                <sre:bond>b10</sre:bond>
-            </sre:externalBonds>
-            <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a7</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a11</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b11</sre:bond>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:sharedBond>
-            </sre:connections>
-            <sre:internalBonds>
-                <sre:bond>b5</sre:bond>
-                <sre:bond>b11</sre:bond>
-            </sre:internalBonds>
-            <sre:subSystem>
-                <sre:atom>a1</sre:atom>
-                <sre:atom>a7</sre:atom>
-                <sre:atom>a11</sre:atom>
-            </sre:subSystem>
-            <sre:superSystem>
-                <sre:atomSet>as5</sre:atomSet>
-            </sre:superSystem>
-            <sre:connectingAtoms>
-                <sre:atom>a7</sre:atom>
-            </sre:connectingAtoms>
-        </sre:annotation>
-        <sre:annotation>
-            <sre:atomSet>as4</sre:atomSet>
-            <sre:context>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:context>
             <sre:component>
                 <sre:atom>a4</sre:atom>
@@ -566,22 +489,14 @@
                 <sre:bond>b7</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a7</sre:atom>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a11</sre:atom>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
                 <sre:sharedAtom>
                     <sre:atom>a4</sre:atom>
                     <sre:atomSet>as1</sre:atomSet>
                 </sre:sharedAtom>
-                <sre:sharedBond>
-                    <sre:bond>b11</sre:bond>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:sharedBond>
+                <sre:connectingBond>
+                    <sre:bond>b5</sre:bond>
+                    <sre:atom>a1</sre:atom>
+                </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b10</sre:bond>
@@ -595,7 +510,7 @@
                 <sre:atom>a11</sre:atom>
             </sre:subSystem>
             <sre:superSystem>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:superSystem>
             <sre:connectingAtoms>
                 <sre:atom>a4</sre:atom>
@@ -603,7 +518,7 @@
             </sre:connectingAtoms>
         </sre:annotation>
         <sre:annotation>
-            <sre:atomSet>as5</sre:atomSet>
+            <sre:atomSet>as4</sre:atomSet>
             <sre:component>
                 <sre:atom>a1</sre:atom>
                 <sre:atom>a2</sre:atom>
@@ -642,10 +557,10 @@
                 <sre:bond>b1</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
+                <sre:atom>a1</sre:atom>
                 <sre:atomSet>as1</sre:atomSet>
                 <sre:atomSet>as2</sre:atomSet>
                 <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
             </sre:subSystem>
         </sre:annotation>
     </sre:annotations>
@@ -653,11 +568,11 @@
         <sre:annotation sre:speech="Carbon 10 bonded to 3 hydrogens">
             <sre:atom>a1</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Carbon 7">
-                    <sre:atom>a7</sre:atom>
+                <sre:neighbour sre:speech="single bonded to Functional group Secondary amide.">
+                    <sre:atomSet>as3</sre:atomSet>
                     <sre:via>
                         <sre:positions sre:bond="b5" sre:speech="single bond" sre:type="connectingbond">
                             <sre:position>1</sre:position>
@@ -672,7 +587,7 @@
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="double bonded to Carbon 1">
+                <sre:neighbour sre:speech="double bonded to Carbon 3">
                     <sre:atom>a3</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b1" sre:speech="double bond" sre:type="connectingbond">
@@ -680,7 +595,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="single bonded to Carbon 3">
+                <sre:neighbour sre:speech="single bonded to Carbon 1">
                     <sre:atom>a5</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b3" sre:speech="single bond" sre:type="connectingbond">
@@ -690,7 +605,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 1 bonded to 1 hydrogen">
+        <sre:annotation sre:speech="Carbon 3 bonded to 1 hydrogen">
             <sre:atom>a3</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
@@ -704,7 +619,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="single bonded to Carbon 6">
+                <sre:neighbour sre:speech="single bonded to Carbon 4">
                     <sre:atom>a4</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b2" sre:speech="single bond" sre:type="connectingbond">
@@ -714,16 +629,16 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 6 ">
+        <sre:annotation sre:speech="Carbon 4 ">
             <sre:atom>a4</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Carbon 1">
+                <sre:neighbour sre:speech="single bonded to Carbon 3">
                     <sre:atom>a3</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b2" sre:speech="single bond" sre:type="connectingbond">
@@ -739,7 +654,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="single bonded to Nitrogen 9">
+                <sre:neighbour sre:speech="single bonded to Nitrogen 7">
                     <sre:atom>a10</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b9" sre:speech="single bond" sre:type="connectingbond">
@@ -749,7 +664,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 3 ">
+        <sre:annotation sre:speech="Carbon 1 ">
             <sre:atom>a5</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
@@ -766,7 +681,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="double bonded to Carbon 4">
+                <sre:neighbour sre:speech="double bonded to Carbon 6">
                     <sre:atom>a6</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b4" sre:speech="double bond" sre:type="connectingbond">
@@ -784,13 +699,13 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 4 bonded to 1 hydrogen">
+        <sre:annotation sre:speech="Carbon 6 bonded to 1 hydrogen">
             <sre:atom>a6</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="double bonded to Carbon 3">
+                <sre:neighbour sre:speech="double bonded to Carbon 1">
                     <sre:atom>a5</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b4" sre:speech="double bond" sre:type="connectingbond">
@@ -808,16 +723,13 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 7 ">
+        <sre:annotation sre:speech="Carbon 8 ">
             <sre:atom>a7</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Nitrogen 9">
+                <sre:neighbour sre:speech="single bonded to Nitrogen 7">
                     <sre:atom>a10</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b10" sre:speech="single bond" sre:type="connectingbond">
@@ -825,23 +737,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="double bonded to Oxygen 8">
-                    <sre:atom>a11</sre:atom>
-                    <sre:via>
-                        <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="connectingbond">
-                            <sre:position>2</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="single bonded to Carbon 10">
-                    <sre:atom>a1</sre:atom>
-                    <sre:via>
-                        <sre:positions sre:bond="b5" sre:speech="single bond" sre:type="connectingbond">
-                            <sre:position>1</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="double bonded to Oxygen 8">
+                <sre:neighbour sre:speech="double bonded to Oxygen 9">
                     <sre:atom>a11</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="connectingbond">
@@ -857,7 +753,7 @@
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Carbon 4">
+                <sre:neighbour sre:speech="single bonded to Carbon 6">
                     <sre:atom>a6</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b6" sre:speech="single bond" sre:type="connectingbond">
@@ -865,7 +761,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="double bonded to Carbon 6">
+                <sre:neighbour sre:speech="double bonded to Carbon 4">
                     <sre:atom>a4</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b7" sre:speech="double bond" sre:type="connectingbond">
@@ -881,7 +777,7 @@
                 <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Carbon 3">
+                <sre:neighbour sre:speech="single bonded to Carbon 1">
                     <sre:atom>a5</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b8" sre:speech="single bond" sre:type="connectingbond">
@@ -891,13 +787,13 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Nitrogen 9 bonded to 1 hydrogen">
+        <sre:annotation sre:speech="Nitrogen 7 bonded to 1 hydrogen">
             <sre:atom>a10</sre:atom>
             <sre:parents>
-                <sre:atomSet>as4</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Carbon 6">
+                <sre:neighbour sre:speech="single bonded to Carbon 4">
                     <sre:atom>a4</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b9" sre:speech="single bond" sre:type="connectingbond">
@@ -905,7 +801,7 @@
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="single bonded to Carbon 7">
+                <sre:neighbour sre:speech="single bonded to Carbon 8">
                     <sre:atom>a7</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b10" sre:speech="single bond" sre:type="connectingbond">
@@ -915,24 +811,13 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Oxygen 8 ">
+        <sre:annotation sre:speech="Oxygen 9 ">
             <sre:atom>a11</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
-                <sre:atomSet>as3</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:neighbours>
-                <sre:neighbour sre:speech="double bonded to Carbon 7">
-                    <sre:atom>a7</sre:atom>
-                    <sre:via>
-                        <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="connectingbond">
-                            <sre:position>1</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="double bonded to Carbon 7">
+                <sre:neighbour sre:speech="double bonded to Carbon 8">
                     <sre:atom>a7</sre:atom>
                     <sre:via>
                         <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="connectingbond">
@@ -1019,18 +904,18 @@
                 <sre:atom>a11</sre:atom>
             </sre:component>
         </sre:annotation>
-        <sre:annotation sre:speech="Ring with 6 elements. double bond between position 1 and 2. double bond between position 3 and 4. double bond between position 5 and 6. Substitutions at position 3 and 6">
+        <sre:annotation sre:speech="Ring with 6 elements. double bond between position 1 and 6. double bond between position 2 and 3. double bond between position 4 and 5. Substitutions at position 1 and 4">
             <sre:atomSet>as1</sre:atomSet>
             <sre:parents>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:children>
-                <sre:atom>a3</sre:atom>
-                <sre:atom>a2</sre:atom>
                 <sre:atom>a5</sre:atom>
-                <sre:atom>a6</sre:atom>
-                <sre:atom>a8</sre:atom>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
                 <sre:atom>a4</sre:atom>
+                <sre:atom>a8</sre:atom>
+                <sre:atom>a6</sre:atom>
             </sre:children>
             <sre:component>
                 <sre:atom>a2</sre:atom>
@@ -1048,9 +933,9 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="shared Carbon atom with Functional group Secondary amide.">
-                    <sre:atomSet>as4</sre:atomSet>
+                    <sre:atomSet>as3</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a4" sre:speech="Carbon 6 " sre:type="sharedatom">
+                        <sre:positions sre:bond="a4" sre:speech="Carbon 4 " sre:type="sharedatom">
                             <sre:position>1</sre:position>
                         </sre:positions>
                     </sre:via>
@@ -1058,7 +943,7 @@
                 <sre:neighbour sre:speech="shared Carbon atom with Functional group Phenol.">
                     <sre:atomSet>as2</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a5" sre:speech="Carbon 3 " sre:type="sharedatom">
+                        <sre:positions sre:bond="a5" sre:speech="Carbon 1 " sre:type="sharedatom">
                             <sre:position>2</sre:position>
                         </sre:positions>
                     </sre:via>
@@ -1068,7 +953,7 @@
         <sre:annotation sre:speech="Functional group Phenol.">
             <sre:atomSet>as2</sre:atomSet>
             <sre:parents>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:children>
                 <sre:atom>a5</sre:atom>
@@ -1083,67 +968,23 @@
                 <sre:neighbour sre:speech="shared Carbon atom with Ring with 6 elements. ">
                     <sre:atomSet>as1</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a5" sre:speech="Carbon 3 " sre:type="sharedatom">
+                        <sre:positions sre:bond="a5" sre:speech="Carbon 1 " sre:type="sharedatom">
                             <sre:position>1</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-            </sre:neighbours>
-        </sre:annotation>
-        <sre:annotation sre:speech="Functional group Carbonyl with Carbon.">
-            <sre:atomSet>as3</sre:atomSet>
-            <sre:parents>
-                <sre:atomSet>as5</sre:atomSet>
-            </sre:parents>
-            <sre:children>
-                <sre:atom>a7</sre:atom>
-                <sre:atom>a11</sre:atom>
-                <sre:atom>a1</sre:atom>
-            </sre:children>
-            <sre:component>
-                <sre:atom>a1</sre:atom>
-                <sre:atom>a7</sre:atom>
-                <sre:atom>a11</sre:atom>
-                <sre:bond>b5</sre:bond>
-                <sre:bond>b11</sre:bond>
-            </sre:component>
-            <sre:neighbours>
-                <sre:neighbour sre:speech="bridge atom Carbon to Functional group Secondary amide.">
-                    <sre:atomSet>as4</sre:atomSet>
-                    <sre:via>
-                        <sre:positions sre:bond="a7" sre:speech="Carbon 7 " sre:type="bridgeatom">
-                            <sre:position>1</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="bridge atom Oxygen to Functional group Secondary amide.">
-                    <sre:atomSet>as4</sre:atomSet>
-                    <sre:via>
-                        <sre:positions sre:bond="a11" sre:speech="Oxygen 8 " sre:type="bridgeatom">
-                            <sre:position>2</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="">
-                    <sre:atomSet>as4</sre:atomSet>
-                    <sre:via>
-                        <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="sharedbond">
-                            <sre:position>3</sre:position>
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="Functional group Secondary amide.">
-            <sre:atomSet>as4</sre:atomSet>
+            <sre:atomSet>as3</sre:atomSet>
             <sre:parents>
-                <sre:atomSet>as5</sre:atomSet>
+                <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
             <sre:children>
+                <sre:atom>a4</sre:atom>
+                <sre:atom>a10</sre:atom>
                 <sre:atom>a7</sre:atom>
                 <sre:atom>a11</sre:atom>
-                <sre:atom>a10</sre:atom>
-                <sre:atom>a4</sre:atom>
             </sre:children>
             <sre:component>
                 <sre:atom>a4</sre:atom>
@@ -1155,46 +996,30 @@
                 <sre:bond>b11</sre:bond>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="bridge atom Carbon to Functional group Carbonyl with Carbon.">
-                    <sre:atomSet>as3</sre:atomSet>
+                <sre:neighbour sre:speech="shared Carbon atom with Ring with 6 elements. ">
+                    <sre:atomSet>as1</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a7" sre:speech="Carbon 7 " sre:type="bridgeatom">
+                        <sre:positions sre:bond="a4" sre:speech="Carbon 4 " sre:type="sharedatom">
                             <sre:position>1</sre:position>
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="bridge atom Oxygen to Functional group Carbonyl with Carbon.">
-                    <sre:atomSet>as3</sre:atomSet>
+                <sre:neighbour sre:speech="single bonded to Carbon 10">
+                    <sre:atom>a1</sre:atom>
                     <sre:via>
-                        <sre:positions sre:bond="a11" sre:speech="Oxygen 8 " sre:type="bridgeatom">
+                        <sre:positions sre:bond="b5" sre:speech="single bond" sre:type="connectingbond">
                             <sre:position>2</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="shared Carbon atom with Ring with 6 elements. ">
-                    <sre:atomSet>as1</sre:atomSet>
-                    <sre:via>
-                        <sre:positions sre:bond="a4" sre:speech="Carbon 6 " sre:type="sharedatom">
-                            <sre:position>3</sre:position>
-                        </sre:positions>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:speech="">
-                    <sre:atomSet>as3</sre:atomSet>
-                    <sre:via>
-                        <sre:positions sre:bond="b11" sre:speech="double bond" sre:type="sharedbond">
-                            <sre:position>4</sre:position>
                         </sre:positions>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="C8H9NO2">
-            <sre:atomSet>as5</sre:atomSet>
+            <sre:atomSet>as4</sre:atomSet>
             <sre:children>
                 <sre:atomSet>as1</sre:atomSet>
-                <sre:atomSet>as4</sre:atomSet>
                 <sre:atomSet>as3</sre:atomSet>
+                <sre:atom>a1</sre:atom>
                 <sre:atomSet>as2</sre:atomSet>
             </sre:children>
             <sre:component>

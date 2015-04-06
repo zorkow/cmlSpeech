@@ -83,8 +83,7 @@ public class SreSpeech extends SreXML {
         this.atomSet(molecule);
 
         // Describe the first level.
-        for (Integer i = 1; i <= molecule.getPath().size(); i++) {
-            String structure = molecule.getPath().get(i);
+        for (String structure : molecule.getPath()) {
             if (RichStructureHelper.isAtom(structure)) {
                 this.atom(RichStructureHelper.getRichAtom(structure), molecule);
             } else {
@@ -223,6 +222,12 @@ public class SreSpeech extends SreXML {
     }
 
     private void atomSet(RichAtomSet atomSet, RichAtomSet superSystem) {
+        atomSet(atomSet);
+        this.describeConnections(superSystem, atomSet, atomSet.getId());
+    }
+
+
+    private void atomSet(RichAtomSet atomSet, RichMolecule superSystem) {
         atomSet(atomSet);
         this.describeConnections(superSystem, atomSet, atomSet.getId());
     }

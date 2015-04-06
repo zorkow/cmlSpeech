@@ -53,6 +53,8 @@ import java.util.List;
 import java.io.IOException;
 import org.openscience.cdk.exception.CDKException;
 import nu.xom.ParsingException;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -101,6 +103,9 @@ public class CMLEnricher {
         doc.getRootElement().
             addNamespaceDeclaration(SreNamespace.getInstance().prefix,
                                     SreNamespace.getInstance().uri);
+        if (Cli.hasOption("annonly")) {
+            this.removeNonAnnotations();
+        }
         try {
             FileHandler.writeFile(this.doc, fileName, "enr");
         } catch (IOException e) {
@@ -251,6 +256,18 @@ public class CMLEnricher {
                     newcontainer));
             this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
                     newcontainer));
+        }
+    }
+
+
+    private void removeNonAnnotations() {
+        Element root = this.doc.getRootElement();
+        Elements elements = root.getChildElements();
+        for (Integer i = 0; i < elements.size(); i++) {
+            Element element = elements.get(i);
+            if (!element.getLocalName().equals("annotations")) {
+                root.removeChild(element);
+            }
         }
     }
 

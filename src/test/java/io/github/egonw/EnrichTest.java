@@ -70,7 +70,7 @@ public class EnrichTest extends XMLTestCase {
 
     private void compareEnrichedMolecule(String name) {
         System.out.println("Testing " + name + "...");
-        String[] dummy = {"-a", "-r", "-nonih",
+        String[] dummy = {"-ao", "-a", "-r", "-nonih",
                           "src/main/resources/test_files/molecule/" +
                           name + ".mol"};
         try {
@@ -107,35 +107,35 @@ public class EnrichTest extends XMLTestCase {
     @Test
     public void testFunctional()
     {
-        // this.compareEnrichedMolecule("book1-006-03");
+        this.compareEnrichedMolecule("book1-006-03");
     }
 
 
-    // /**
-    //  * Test enrichment of molecule.
-    //  */
-    // public void testRing()
-    // {
-    //     this.compareEnrichedMolecule("book1-012-00");
-    // }
+    /**
+     * Test enrichment of molecule.
+     */
+    public void testRing()
+    {
+        this.compareEnrichedMolecule("book1-012-00");
+    }
 
 
-    // /**
-    //  * Test enrichment of molecule.
-    //  */
-    // public void testRingFunctional()
-    // {
-    //     this.compareEnrichedMolecule("aspirin");
-    // }
+    /**
+     * Test enrichment of molecule.
+     */
+    public void testRingFunctional()
+    {
+        this.compareEnrichedMolecule("aspirin");
+    }
 
 
-    // /**
-    //  * Test enrichment of molecule.
-    //  */
-    // public void testComplex()
-    // {
-    //     this.compareEnrichedMolecule("US06358966-20020319-C00001");
-    // }
+    /**
+     * Test enrichment of molecule.
+     */
+    public void testComplex()
+    {
+        this.compareEnrichedMolecule("US06358966-20020319-C00001");
+    }
 
 
 }
