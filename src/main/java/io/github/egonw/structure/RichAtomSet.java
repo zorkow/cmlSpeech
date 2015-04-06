@@ -140,32 +140,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
     
 
-    protected final List<IAtom> getSinglyConnectedAtoms() {
-        List<IAtom> atoms = new ArrayList<>();
-        for (IAtom atom : this.getStructure().atoms()) {
-            if (this.getConnectedAtomsList(atom).size() <= 1) {
-                atoms.add(atom);
-            }
-        }
-        return atoms;
-    }
-
-
-    protected final List<IAtom> getExternallyConnectedAtoms() {
-        List<IAtom> atoms = new ArrayList<>();
-        for (IAtom atom : this.getStructure().atoms()) {
-            // FG: This is not working yet.
-            // TODO sorge Do we need this? Or are these just the external connections.
-            // It needs to be checked, wrt. external bonds as well.
-            //
-            if (this.connectingAtoms.contains(atom.getID())) {
-                atoms.add(atom);
-            }
-        }
-        return atoms;
-    }
-
-    
     protected final void walkStraight(IAtom atom) {
         this.walkStraight(atom, new ArrayList<IAtom>());
     }

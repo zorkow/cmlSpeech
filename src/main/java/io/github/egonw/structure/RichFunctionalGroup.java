@@ -32,6 +32,14 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 import java.util.List;
+import io.github.egonw.analysis.RichStructureHelper;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import io.github.egonw.analysis.Heuristics;
+import io.github.egonw.connection.Connection;
+import io.github.egonw.connection.ConnectionType;
+import java.util.SortedSet;
 
 /**
  * Atom sets that are rich functional groups.
@@ -46,14 +54,47 @@ public class RichFunctionalGroup extends RichAtomSet {
 
     
     protected final void walk() {
-        List<IAtom> atoms = this.getExternallyConnectedAtoms();
-        if (atoms.size() == 0) {
-            atoms = this.getSinglyConnectedAtoms();
+        RichAtom start = this.getStartAtom();
+        List<RichStructure<?>> atoms = this.getSubSystems().stream().
+            map(RichStructureHelper::getRichStructure).
+            collect(Collectors.toList());
+        Collections.sort(atoms, new Heuristics(""));
+        WalkDepthFirst dfs;
+        if (start == null) {
+            dfs = new WalkDepthFirst(atoms);
+        } else {
+            dfs = new WalkDepthFirst(start, atoms);
         }
-        if (atoms.size() == 0) {
-            throw new SreException("Functional group without start atom!");
-        }
-        this.walkDepthFirst(atoms.get(0));
+        this.componentPositions = dfs.getPositions();
     }
 
+
+    private RichAtom getStartAtom() {
+        SortedSet<Connection> connections = this.getConnections();
+        if (connections.isEmpty()) {
+            return null;
+        }
+        Heuristics comparator = new Heuristics("");
+        Connection maxConnection = connections.first();
+        RichStructure<?> maxConnected = RichStructureHelper.
+            getRichStructure(maxConnection.getConnected());
+        for (Connection connection : connections) {
+            RichStructure<?> connected =  RichStructureHelper.
+                getRichStructure(connection.getConnected());
+            if (comparator.compare(maxConnected, connected) > 0) {
+                maxConnected = connected;
+                maxConnection = connection;
+            };
+        }
+        if (maxConnection.getType() == ConnectionType.CONNECTINGBOND) {
+            SortedSet<String> atoms = RichStructureHelper.
+                getRichBond(maxConnection.getConnector()).getComponents();
+            for (String atom : atoms) {
+                if (this.getSubSystems().contains(atom)) {
+                    return RichStructureHelper.getRichAtom(atom);
+                }
+            }
+        }
+        return RichStructureHelper.getRichAtom(maxConnection.getConnector());
+    }
 }

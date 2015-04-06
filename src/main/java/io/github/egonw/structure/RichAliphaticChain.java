@@ -53,6 +53,17 @@ public class RichAliphaticChain extends RichAtomSet {
     }
     
 
+    protected final List<IAtom> getSinglyConnectedAtoms() {
+        List<IAtom> atoms = new ArrayList<>();
+        for (IAtom atom : this.getStructure().atoms()) {
+            if (this.getConnectedAtomsList(atom).size() <= 1) {
+                atoms.add(atom);
+            }
+        }
+        return atoms;
+    }
+
+
     protected final void walk() {
         List<IAtom> atoms = this.getSinglyConnectedAtoms();
         // Here we assume that the list is only of length 2.

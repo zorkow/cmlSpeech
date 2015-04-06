@@ -219,4 +219,13 @@ public class PositionTest {
         this.comparePaths("molecule/US06358966-20020319-C00001.mol", "as11",
                           new String[]{"as1", "as7", "as9", "as4", "as8", "as10"});
     }
+
+
+    @Test
+    public void functionalGroupTest() {
+        System.out.println("Testing order in functional groups...");
+        this.comparePositions("molecule/aspirin.mol", "as3",
+                              new String[]{"a8", "a13", "a6", "a10", "a1"});
+    }
+
 }

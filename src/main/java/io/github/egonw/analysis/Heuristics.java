@@ -31,6 +31,8 @@ import io.github.egonw.structure.RichChemObject;
 
 import java.util.Comparator;
 import io.github.egonw.structure.RichStructure;
+import io.github.egonw.structure.RichAtom;
+import java.util.Arrays;
 
 /**
  * Combines basic comparators as a single heuristic.
@@ -70,5 +72,12 @@ public class Heuristics extends DefaultComparator {
             }
         }
         return result;
+    }
+
+    public int compare(RichAtom atom1, RichAtom atom2) {
+        if (Arrays.asList(this.heuristics).contains("type")) {
+            return this.weight.compare(atom1, atom2);
+        }
+        return 0;
     }
 }
