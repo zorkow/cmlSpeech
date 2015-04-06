@@ -59,8 +59,14 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
                 this.componentPositions.addNext(structure);
             } else {
                 RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
-                atomSet.computePositions(this.componentPositions.size());
+                atomSet.walk();
                 this.componentPositions.putAll(atomSet.componentPositions);
+                if (atomSet.getType() == RichSetType.FUSED) {
+                    for (String subRing : ((RichFusedRing)atomSet).getPath()) {
+                        RichAtomSet subSet = RichStructureHelper.getRichAtomSet(subRing);
+                        this.componentPositions.putAll(subSet.componentPositions);
+                    }
+                }
             }
         }
     }

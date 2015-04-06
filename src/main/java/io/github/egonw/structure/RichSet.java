@@ -77,20 +77,4 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
      * @return The retrieved position.
      */
     public Integer getPosition(String element);
-
-    /** 
-     * Computes the positions of the elements in this set with respect to a
-     * given integer offset.
-     * 
-     * @param offset The offset that can be added for global element
-     * positioning.
-     */
-    public void computePositions(Integer offset);
-
-    /** 
-     * Appends the positions of elements of another atomset.
-     * 
-     * @param atomSet The set to be appended.
-     */
-   public void appendPositions(RichAtomSet atomSet);
 }

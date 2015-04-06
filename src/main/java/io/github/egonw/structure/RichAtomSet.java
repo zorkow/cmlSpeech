@@ -98,31 +98,9 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
 
 
-    /**
-     * Computes positions of atoms or substructures in the atom set.
-     * We use the following heuristical preferences:
-     * -- Always start with an element that has an external bond.
-     * -- If multiple external elements we prefer one with an atom attached
-     *    (or later with a functional group, as this can be voiced as substitution).
-     * @param offset The position offset.
-     * @param globalPositions Map of already assigned global positions.
-     *
-     */
-    @Override
-    public void computePositions(Integer offset) {
-        this.offset = offset;
-        this.walk();
-    }
-
-
-    @Override
-    public void appendPositions(RichAtomSet atomSet) {
-        this.componentPositions.putAll(atomSet.componentPositions);
-    }
-
-
     /** 
-     * Walks the structure and computes the positions of its elements.
+     * Walks the structure and computes the positions of its elements,
+     * substructures etc.
      */
     protected abstract void walk();
     
