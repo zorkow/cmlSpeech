@@ -36,7 +36,6 @@ import io.github.egonw.connection.SharedBond;
 import io.github.egonw.connection.SpiroAtom;
 import io.github.egonw.graph.StructuralEdge;
 import io.github.egonw.graph.StructuralGraph;
-import io.github.egonw.structure.ComponentsPositions;
 import io.github.egonw.structure.RichAliphaticChain;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
@@ -90,7 +89,6 @@ public class StructuralAnalysis {
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
-    private ComponentsPositions componentPositions = new ComponentsPositions();
 
 
     public RichMolecule top;
@@ -118,6 +116,8 @@ public class StructuralAnalysis {
 
         this.makeTopSet();
         this.makeBottomSet();
+
+        this.top.walk(this.getMajorSystems(), this.getSingletonAtoms());
     }
     
     public IAtomContainer getMolecule() {
@@ -599,40 +599,5 @@ public class StructuralAnalysis {
             return aux;
         }
     }
-
-
-    public void computePositions() {
-        this.top.walk(this.getMajorSystems(), this.getSingletonAtoms());
-        for (String structure : this.top.getPath()) {
-            if (RichStructureHelper.isAtom(structure)) {
-                this.componentPositions.addNext(structure);
-            } else {
-                RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
-                    this.appendPositions(atomSet);
-            }
-        }
-    }
-
-
-    public void appendPositions(RichAtomSet atomSet) {
-        atomSet.computePositions(this.componentPositions.size());
-        this.componentPositions.putAll(atomSet.componentPositions);
-    }
-
-
-    public void printPositions () { 
-        Logger.logging(this.componentPositions.toString());
-        RichStructureHelper.getAtomSets().forEach(RichAtomSet::printPositions);
-    }
-
-
-    public String getAtom(Integer position) {
-        return this.componentPositions.getAtom(position);
-    }
-
-
-    public Integer getPosition(String atom) {
-        return this.componentPositions.getPosition(atom);
-    }
-
+    
 }

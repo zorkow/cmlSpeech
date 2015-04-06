@@ -54,6 +54,15 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
     protected final void walk() {
         this.setPath();
+        for (String structure : this.getPath()) {
+            if (RichStructureHelper.isAtom(structure)) {
+                this.componentPositions.addNext(structure);
+            } else {
+                RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
+                atomSet.computePositions(this.componentPositions.size());
+                this.componentPositions.putAll(atomSet.componentPositions);
+            }
+        }
     }
 
     //TODO (sorge) These parameters should eventually be computed in this class!

@@ -78,7 +78,7 @@ public class SreSpeech extends SreXML {
         // TODO (sorge) This should not be set here, but during positions computations!
         RichMolecule molecule = this.analysis.top;
         // TODO (sorge) Get rid of this!
-        molecule.componentPositions = molecule.getPath();
+        // molecule.componentPositions = molecule.getPath();
         // Describe the molecule.
         this.atomSet(molecule);
 
@@ -124,6 +124,14 @@ public class SreSpeech extends SreXML {
     }
 
 
+    private void atom(RichAtom atom, RichMolecule system) {
+        String id = atom.getId();
+        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM, this.speechAtom(atom));
+        this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
+        this.describeConnections(system, atom, id);
+    }
+
+
     private SreAttribute speechAtom(RichAtom atom) {
         return speechAttribute(describeAtomPosition(atom) + " "
                                + this.describeHydrogenBonds(atom.getStructure()));
@@ -136,7 +144,7 @@ public class SreSpeech extends SreXML {
 
 
     private String describeAtomPosition(RichAtom atom) {
-        Integer position = this.analysis.getPosition(atom.getId());
+        Integer position = this.analysis.top.getPosition(atom.getId());
         if (position == null) { return describeAtom(atom) + " unknown position."; }
         return describeAtom(atom) + " " + position.toString();
     }
@@ -197,6 +205,14 @@ public class SreSpeech extends SreXML {
 
 
     // AtomSet to speech translation.
+    private void atomSet(RichMolecule atomSet) {
+        String id = atomSet.getId();
+        this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
+        // Children are given in the order of their positions!
+        this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getPath());
+        this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
+    }
+
     private void atomSet(RichAtomSet atomSet) {
         String id = atomSet.getId();
         this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET, this.speechAtomSet(atomSet));
@@ -343,28 +359,43 @@ public class SreSpeech extends SreXML {
                 continue;
             }
             count++;
-
-            // Build the XML elements structure.
-            SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-            SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
-
-            // Add type depended attributes.
-            describeConnection(connection, element, positions);
-            
-            if (RichStructureHelper.isAtom(connected)) {
-                element.appendChild(new SreElement(RichStructureHelper.getRichAtom(connected).getStructure()));
-                } else {
-                element.appendChild(new SreElement(RichStructureHelper.getRichAtomSet(connected).getStructure()));
-                }
-
-            // Putting it all together.
-            SreElement position = new SreElement(SreNamespace.Tag.POSITION, count.toString());
-            positions.appendChild(position);
-            SreElement via = new SreElement(SreNamespace.Tag.VIA);
-            via.appendChild(positions);
-            element.appendChild(via);
-            this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
+            this.describeConnection(connection, connected, id, count);
         }
+    }
+
+    private void describeConnections(RichMolecule system, RichChemObject block, String id) {
+        Integer count = 0;
+        for (Connection connection : block.getConnections()) {
+            String connected = connection.getConnected();
+            if (!system.getPath().contains(connected)) {
+                continue;
+            }
+            count++;
+            this.describeConnection(connection, connected, id, count);
+        }
+    }
+
+    private void describeConnection(Connection connection, String connected, String id, Integer count) {
+        // Build the XML elements structure.
+        SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+        SreElement positions = new SreElement(SreNamespace.Tag.POSITIONS);
+        
+        // Add type depended attributes.
+        describeConnection(connection, element, positions);
+        
+        if (RichStructureHelper.isAtom(connected)) {
+            element.appendChild(new SreElement(RichStructureHelper.getRichAtom(connected).getStructure()));
+        } else {
+            element.appendChild(new SreElement(RichStructureHelper.getRichAtomSet(connected).getStructure()));
+        }
+        
+        // Putting it all together.
+        SreElement position = new SreElement(SreNamespace.Tag.POSITION, count.toString());
+        positions.appendChild(position);
+        SreElement via = new SreElement(SreNamespace.Tag.VIA);
+        via.appendChild(positions);
+        element.appendChild(via);
+        this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
     }
 
     

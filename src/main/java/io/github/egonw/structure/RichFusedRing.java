@@ -54,7 +54,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
         this.computeSharedBonds();
         this.computeRim();
         super.walk();
-        richSubSystems.stream().forEach(s -> s.walk());
+        this.richSubSystems.stream().forEach(s -> s.walk());
         this.setPath();
     }
 
@@ -105,7 +105,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
 
     private void computeRichSubSystems() {
-        richSubSystems = this.getSubSystems().stream()
+        this.richSubSystems = this.getSubSystems().stream()
             .map(s -> RichStructureHelper.getRichAtomSet(s))
             .collect(Collectors.toSet());
     }
