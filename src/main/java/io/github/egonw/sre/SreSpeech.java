@@ -27,7 +27,6 @@
 package io.github.egonw.sre;
 
 import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.analysis.StructuralAnalysis;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
@@ -58,28 +57,21 @@ import io.github.egonw.structure.RichMolecule;
 public class SreSpeech extends SreXML {
     
     public Document doc;
-    StructuralAnalysis analysis;
     
-    SreSpeech(StructuralAnalysis analysis) {
+    SreSpeech() {
         super();
-        this.analysis = analysis;
         this.compute();
     }
 
-    public SreSpeech(StructuralAnalysis analysis, Document document) {
+    public SreSpeech(Document document) {
         super();
-        this.analysis = analysis;
         this.doc = document;
         this.compute();
     }
 
     @Override
     public void compute() {
-        // TODO (sorge) This should not be set here, but during positions computations!
-        RichMolecule molecule = this.analysis.top;
-        // TODO (sorge) Get rid of this!
-        // molecule.componentPositions = molecule.getPath();
-        // Describe the molecule.
+        RichMolecule molecule = RichStructureHelper.richMolecule;
         this.atomSet(molecule);
 
         // Describe the first level.
@@ -143,7 +135,7 @@ public class SreSpeech extends SreXML {
 
 
     private String describeAtomPosition(RichAtom atom) {
-        Integer position = this.analysis.top.getPosition(atom.getId());
+        Integer position = RichStructureHelper.richMolecule.getPosition(atom.getId());
         if (position == null) { return describeAtom(atom) + " unknown position."; }
         return describeAtom(atom) + " " + position.toString();
     }

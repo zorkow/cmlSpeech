@@ -4,6 +4,7 @@ import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
+import io.github.egonw.structure.RichMolecule;
 import io.github.egonw.structure.RichStructure;
 
 import org.openscience.cdk.interfaces.IAtom;
@@ -17,6 +18,7 @@ import java.util.TreeMap;
 
 public final class RichStructureHelper {
 	
+    public static RichMolecule richMolecule;
     public static SortedMap<String, RichStructure<?>> richAtoms;
     public static SortedMap<String, RichStructure<?>> richBonds;
     public static SortedMap<String, RichStructure<?>> richAtomSets;
@@ -35,6 +37,7 @@ public final class RichStructureHelper {
 
 
     public static void init() {
+        RichStructureHelper.richMolecule = null;
         RichStructureHelper.richAtoms = new TreeMap<>(new CMLNameComparator());
         RichStructureHelper.richBonds = new TreeMap<>(new CMLNameComparator());
         RichStructureHelper.richAtomSets = new TreeMap<>(new CMLNameComparator());

@@ -85,8 +85,6 @@ public class StructuralAnalysis {
 
     private List<RichAtom> singletonAtoms = new ArrayList<>();
 
-    public RichMolecule top;
-
 
     public StructuralAnalysis(IAtomContainer molecule) {
         RichStructureHelper.init();
@@ -111,8 +109,8 @@ public class StructuralAnalysis {
 
         // Important that the top set is only added here as otherwise the
         // previous two methods will result in an infinite loop.
-        RichStructureHelper.setRichAtomSet(this.top);
-        this.top.computePositions();
+        RichStructureHelper.setRichAtomSet(RichStructureHelper.richMolecule);
+        RichStructureHelper.richMolecule.computePositions();
     }
     
     public List<RichAtom> getSingletonAtoms() {
@@ -148,19 +146,19 @@ public class StructuralAnalysis {
 
     private void makeTopSet() {
         String id = this.getAtomSetId();
-        this.top = new RichMolecule(this.molecule, id);
+        RichStructureHelper.richMolecule = new RichMolecule(this.molecule, id);
         this.setContexts(RichStructureHelper.richAtoms.keySet(), id);
         this.setContexts(RichStructureHelper.richBonds.keySet(), id);
         this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
-        this.top.getContexts().remove(id);
+        RichStructureHelper.richMolecule.getContexts().remove(id);
         for (RichAtomSet system : RichStructureHelper.getAtomSets()) {
             if (system.getType() == RichSetType.SMALLEST) continue;
             system.getSuperSystems().add(id);
-            this.top.getSubSystems().add(system.getId());
+            RichStructureHelper.richMolecule.getSubSystems().add(system.getId());
         }
         for (RichAtom atom : this.getSingletonAtoms()) {
             atom.getSuperSystems().add(id);
-            this.top.getSubSystems().add(atom.getId());
+            RichStructureHelper.richMolecule.getSubSystems().add(atom.getId());
         }
     }
 
@@ -494,17 +492,6 @@ public class StructuralAnalysis {
             if (!atomSetComponents.contains(atom.getId())) {
                 this.singletonAtoms.add(atom);
             }
-        }
-    }
-
-
-    public void visualize() {
-        if (Cli.hasOption("vis_recursive")) {
-            for (RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
-                atomSet.visualize();
-            }
-        } else {
-            this.top.visualize();
         }
     }
 

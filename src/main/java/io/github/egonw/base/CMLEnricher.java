@@ -117,7 +117,13 @@ public class CMLEnricher {
             e.printStackTrace();
         }
         if (Cli.hasOption("vis")) {
-            this.analysis.visualize();
+            if (Cli.hasOption("vis_recursive")) {
+                for (RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
+                    atomSet.visualize();
+                }
+            } else {
+                RichStructureHelper.richMolecule.visualize();
+            }
         }
     }
 
@@ -180,7 +186,7 @@ public class CMLEnricher {
                 appendChild(this.sreOutput.getAnnotations());
             }
         if (Cli.hasOption("descr")) {
-            this.sreSpeech = new SreSpeech(this.analysis, this.doc);
+            this.sreSpeech = new SreSpeech(this.doc);
             this.doc.getRootElement().
                 appendChild(this.sreSpeech.getAnnotations());
         }
