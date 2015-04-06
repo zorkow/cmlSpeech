@@ -52,6 +52,11 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     }
 
 
+    public final void computePositions() {
+        this.walk();
+    }
+    
+
     protected final void walk() {
         this.setPath();
         for (String structure : this.getPath()) {
@@ -71,13 +76,6 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
         }
     }
 
-    //TODO (sorge) These parameters should eventually be computed in this class!
-    public final void walk(List<RichAtomSet> majorSystems, List<RichAtom> singletonAtoms) {
-        this.blocks.addAll(majorSystems);
-        this.blocks.addAll(singletonAtoms);
-        this.walk();
-    }
-
 
     private ComponentsPositions path = new ComponentsPositions();
 
@@ -89,8 +87,11 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     
     @Override
     public void setPath() {
-        Collections.sort(blocks, new Heuristics(""));
-        WalkDepthFirst dfs = new WalkDepthFirst(blocks);
+        this.blocks.addAll(this.getSubSystems().stream().
+                           map(RichStructureHelper::getRichStructure).
+                           collect(Collectors.toList()));
+        Collections.sort(this.blocks, new Heuristics(""));
+        WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
         this.path = dfs.getPositions();
     }
 

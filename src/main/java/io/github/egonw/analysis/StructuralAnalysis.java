@@ -117,14 +117,13 @@ public class StructuralAnalysis {
         this.makeTopSet();
         this.makeBottomSet();
 
-        this.top.walk(this.getMajorSystems(), this.getSingletonAtoms());
+        this.top.computePositions();
     }
     
     public IAtomContainer getMolecule() {
     	return molecule;
     }
 
-    @SuppressWarnings("unchecked")
     public List<RichAtom> getSingletonAtoms() {
         return this.singletonAtoms;
     }
