@@ -507,8 +507,8 @@ public class StructuralAnalysis {
         this.majorSystems = RichStructureHelper.getAtomSets().stream()
             .filter(as -> as.type != RichSetType.SMALLEST)
             .collect(Collectors.toList());
-        this.majorGraph = new StructuralGraph(this.getMajorSystems(),
-                                              this.getSingletonAtoms());
+        // this.majorGraph = new StructuralGraph(this.getMajorSystems(),
+        //                                       this.getSingletonAtoms());
     }
     
 
@@ -527,8 +527,8 @@ public class StructuralAnalysis {
         this.minorSystems = RichStructureHelper.getAtomSets().stream()
             .filter(as -> as.type != RichSetType.FUSED)
             .collect(Collectors.toList());
-        this.minorGraph = new StructuralGraph(this.getMinorSystems(),
-                                              this.getSingletonAtoms());
+        // this.minorGraph = new StructuralGraph(this.getMinorSystems(),
+        //                                       this.getSingletonAtoms());
     }
     
 
@@ -541,41 +541,13 @@ public class StructuralAnalysis {
     }
 
 
-    /** Compute the major systems, i.e., all systems that are not part of a
-     * larger supersystem. */
-    private void recursiveSystems() {
-        List<RichAtomSet> subRings = RichStructureHelper.getAtomSets().stream()
-            .filter(as -> as.getType() == RichSetType.FUSED)
-            .collect(Collectors.toList());
-        for (RichAtomSet ring: subRings) {
-            StructuralGraph ringGraph =
-                new StructuralGraph(ring.getSubSystems().stream().
-                                    map(RichStructureHelper::getRichStructure).
-                                    collect(Collectors.toList()));
-            ringGraph.visualize(ring.getId());
-        }
-        
-        Map<String, StructuralGraph> minorGraphs = new HashMap<String, StructuralGraph>();
-        for (RichAtomSet system: this.getMinorSystems()) {
-            List<RichStructure<?>> atoms = new ArrayList<RichStructure<?>>();
-            for (String id: system.getComponents()) {
-                RichAtom atom = RichStructureHelper.getRichAtom(id);
-                if (atom != null) {
-                    atoms.add((RichStructure<?>)atom);
-                }
-            }
-            StructuralGraph minorGraph = new StructuralGraph(atoms);
-            minorGraphs.put(system.getId(), minorGraph);
-            minorGraph.visualize(system.getId());
-        }
-    }
-
-
     public void visualize() {
-        this.majorGraph.visualize("Major System Abstraction");
-        this.minorGraph.visualize("Minor System Abstraction");
         if (Cli.hasOption("vis_recursive")) {
-            this.recursiveSystems();
+            for (RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
+                atomSet.visualize();
+            }
+        } else {
+            this.top.visualize();
         }
     }
 

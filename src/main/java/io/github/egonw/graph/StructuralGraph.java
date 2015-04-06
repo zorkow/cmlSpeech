@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import io.github.egonw.analysis.RichStructureHelper;
 
 /**
  * The structural graph.
@@ -49,33 +50,21 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     private static final long serialVersionUID = 1L;
 
     private List<RichStructure<?>> structures;
+    private Set<String> names;
 
-    StructuralGraph() {
+
+    public StructuralGraph(Set<String> structures) {
         super(StructuralEdge.class);
-        this.structures = new ArrayList<RichStructure<?>>();
-    }
-
-
-    public StructuralGraph(List<RichAtomSet> atomSets, List<RichAtom> singletonAtoms) {
-        super(StructuralEdge.class);
-        this.structures = new ArrayList<RichStructure<?>>(atomSets);
-        this.structures.addAll(singletonAtoms); 
-       this.init();
-    }
-
-
-    public StructuralGraph(List<RichStructure<?>> structures) {
-        super(StructuralEdge.class);
-        this.structures = structures;
+        this.names = structures;
+        this.structures = this.names.stream()
+            .map(RichStructureHelper::getRichStructure)
+            .collect(Collectors.toList());
         this.init();
     }
-
+    
     
     private void init() {
-        List<String> names = this.structures.stream()
-            .map(RichStructure::getId).collect(Collectors.toList());
-        names.stream().forEach(this::addVertex);
-
+        this.names.stream().forEach(this::addVertex);
         for (RichStructure<?> structure : this.structures) {
             Set<Connection> connections = structure.getConnections();
             if (!connections.isEmpty()) {
@@ -83,9 +72,9 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
             }
         }
     }
-
+    
    
-    private void addSingleEdges(String source, Set<Connection> connections, List<String> systems) {
+    private void addSingleEdges(String source, Set<Connection> connections, Set<String> systems) {
         for (Connection connection : connections) {
             if (systems.contains(connection.getConnected())) {
                 this.addEdge(source, connection.getConnected(),
@@ -101,11 +90,11 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
         return edge;
     }
 
+    
     public void visualize (String name) {
         StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
         vis.init(this, this.structures, name);
     }
-
 
 }
 

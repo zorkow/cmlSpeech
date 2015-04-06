@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
+import io.github.egonw.graph.StructuralGraph;
 
 /**
  * Base class for all atom sets with admin information.
@@ -233,5 +234,10 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
     public boolean isRing() {
         return false;
+    }
+
+    public void visualize() {
+        StructuralGraph graph = new StructuralGraph(this.getSubSystems());
+        graph.visualize(this.getId());
     }
 }

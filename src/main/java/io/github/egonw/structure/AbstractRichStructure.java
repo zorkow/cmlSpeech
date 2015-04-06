@@ -114,4 +114,5 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
                                            .collect(Collectors.toList()));
     }
 
+    public void visualize() {}
 }
