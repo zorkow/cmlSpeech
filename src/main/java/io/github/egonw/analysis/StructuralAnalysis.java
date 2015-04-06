@@ -90,7 +90,6 @@ public class StructuralAnalysis {
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
 
-
     public RichMolecule top;
 
 
@@ -153,7 +152,8 @@ public class StructuralAnalysis {
 
     private void makeTopSet() {
         String id = this.getAtomSetId();
-        this.top = (RichMolecule)RichStructureHelper.setRichAtomSet(new RichMolecule(this.molecule, id));
+        this.top = new RichMolecule(this.molecule, id);
+        RichStructureHelper.setRichAtomSet(this.top);
         this.setContexts(RichStructureHelper.richAtoms.keySet(), id);
         this.setContexts(RichStructureHelper.richBonds.keySet(), id);
         this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
