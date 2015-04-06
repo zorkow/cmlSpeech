@@ -141,7 +141,6 @@ public class CMLEnricher {
     public void analyseMolecule() {
         this.removeExplicitHydrogens();
         this.analysis = new StructuralAnalysis(this.molecule);
-        this.sreOutput = new SreOutput();
         this.analysis.computePositions();
         this.analysis.printPositions();
     }
