@@ -83,12 +83,7 @@ public class StructuralAnalysis {
     private int atomSetCount = 0;
     private final IAtomContainer molecule;
 
-    private List<RichAtomSet> majorSystems;
-    private List<RichAtomSet> minorSystems;
     private List<RichAtom> singletonAtoms = new ArrayList<>();
-
-    private StructuralGraph majorGraph;
-    private StructuralGraph minorGraph;
 
     public RichMolecule top;
 
@@ -110,12 +105,13 @@ public class StructuralAnalysis {
         this.sharedComponents();
 
         this.singletonAtoms();
-        this.majorSystems();
-        this.minorSystems();
 
         this.makeTopSet();
         this.makeBottomSet();
 
+        // Important that the top set is only added here as otherwise the
+        // previous two methods will result in an infinite loop.
+        RichStructureHelper.setRichAtomSet(this.top);
         this.top.computePositions();
     }
     
@@ -153,12 +149,12 @@ public class StructuralAnalysis {
     private void makeTopSet() {
         String id = this.getAtomSetId();
         this.top = new RichMolecule(this.molecule, id);
-        RichStructureHelper.setRichAtomSet(this.top);
         this.setContexts(RichStructureHelper.richAtoms.keySet(), id);
         this.setContexts(RichStructureHelper.richBonds.keySet(), id);
         this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
         this.top.getContexts().remove(id);
-        for (RichAtomSet system : this.majorSystems) {
+        for (RichAtomSet system : RichStructureHelper.getAtomSets()) {
+            if (system.getType() == RichSetType.SMALLEST) continue;
             system.getSuperSystems().add(id);
             this.top.getSubSystems().add(system.getId());
         }
@@ -170,7 +166,8 @@ public class StructuralAnalysis {
 
 
     private void makeBottomSet() {
-        for (RichAtomSet system : this.minorSystems) {
+        for (RichAtomSet system : RichStructureHelper.getAtomSets()) {
+            if (system.getType() == RichSetType.FUSED) continue;
             for (String component : system.getComponents()) {
                 if (RichStructureHelper.isAtom(component)) {
                     RichStructureHelper.getRichAtom(component).getSuperSystems().add(system.getId());
@@ -498,46 +495,6 @@ public class StructuralAnalysis {
                 this.singletonAtoms.add(atom);
             }
         }
-    }
-
-
-    /** Compute the major systems, i.e., all systems that are not part of a
-     * larger supersystem. */
-    private void majorSystems() {
-        this.majorSystems = RichStructureHelper.getAtomSets().stream()
-            .filter(as -> as.type != RichSetType.SMALLEST)
-            .collect(Collectors.toList());
-        // this.majorGraph = new StructuralGraph(this.getMajorSystems(),
-        //                                       this.getSingletonAtoms());
-    }
-    
-
-    /**
-     * Returns the major systems.
-     * @return List of major systems.
-     */
-    public List<RichAtomSet> getMajorSystems() {
-        return this.majorSystems;
-    }
-
-
-    /** Compute the minor systems, i.e., all systems that have no non-atomic
-     * sub-system. */
-    private void minorSystems() {
-        this.minorSystems = RichStructureHelper.getAtomSets().stream()
-            .filter(as -> as.type != RichSetType.FUSED)
-            .collect(Collectors.toList());
-        // this.minorGraph = new StructuralGraph(this.getMinorSystems(),
-        //                                       this.getSingletonAtoms());
-    }
-    
-
-    /**
-     * Returns the minor systems.
-     * @return List of minor systems.
-     */
-    public List<RichAtomSet> getMinorSystems() {
-        return this.minorSystems;
     }
 
 
