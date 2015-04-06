@@ -250,15 +250,16 @@ public class StructuralAnalysis {
      */
     private void functionalGroups() {
         FunctionalGroups fg = new FunctionalGroups(this.molecule);
-        FunctionalGroupsFilter filter = new FunctionalGroupsFilter(RichStructureHelper.getAtomSets(),
-                                                                   fg.getGroups());
+        FunctionalGroupsFilter filter = new FunctionalGroupsFilter
+            (RichStructureHelper.getAtomSets(), fg.getGroups());
         Map<String, IAtomContainer> groups = filter.filter();
         for (String key : groups.keySet()) {
             IAtomContainer container = groups.get(key);
-            RichAtomSet set = RichStructureHelper.setRichAtomSet(new RichFunctionalGroup(groups.get(key), this.getAtomSetId()));
+            RichAtomSet set = RichStructureHelper.setRichAtomSet
+                (new RichFunctionalGroup(groups.get(key), this.getAtomSetId()));
             set.name = key.split("-")[0];
-            Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
-                           + container.getBondCount() + " bonds");
+            Logger.logging(set.name + ": " + container.getAtomCount() +
+                           " atoms " + container.getBondCount() + " bonds");
         }
     }
     
