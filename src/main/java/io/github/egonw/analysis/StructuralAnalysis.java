@@ -120,10 +120,6 @@ public class StructuralAnalysis {
         this.top.computePositions();
     }
     
-    public IAtomContainer getMolecule() {
-    	return molecule;
-    }
-
     public List<RichAtom> getSingletonAtoms() {
         return this.singletonAtoms;
     }
