@@ -85,7 +85,7 @@ public class StructuralAnalysis {
 
     private List<RichAtomSet> majorSystems;
     private List<RichAtomSet> minorSystems;
-    private SortedSet<String> singletonAtoms = new TreeSet<String>(new CMLNameComparator());
+    private List<RichAtom> singletonAtoms = new ArrayList<>();
 
     private StructuralGraph majorGraph;
     private StructuralGraph minorGraph;
@@ -126,8 +126,7 @@ public class StructuralAnalysis {
 
     @SuppressWarnings("unchecked")
     public List<RichAtom> getSingletonAtoms() {
-        return (List<RichAtom>)(List<?>)this.singletonAtoms.stream()
-            .map(RichStructureHelper::getRichAtom).collect(Collectors.toList());
+        return this.singletonAtoms;
     }
 
 
@@ -498,8 +497,8 @@ public class StructuralAnalysis {
         Set<String> atomSetComponents = new HashSet<String>();
         RichStructureHelper.richAtomSets.values().
             forEach(as -> atomSetComponents.addAll(as.getComponents()));
-        for (String atom : RichStructureHelper.richAtoms.keySet()) {
-            if (!atomSetComponents.contains(atom)) {
+        for (RichAtom atom : RichStructureHelper.getAtoms()) {
+            if (!atomSetComponents.contains(atom.getId())) {
                 this.singletonAtoms.add(atom);
             }
         }
