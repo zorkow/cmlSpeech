@@ -91,26 +91,6 @@ public class SreAnnotations extends SreElement {
         node.appendChild(entry);
     }
     
-    public void appendAnnotation(Element annotate, String id, SreNamespace.Tag tag, Element entry) {
-        SreNamespace.Tag elementTag = null;
-        switch (annotate.getLocalName()) {
-        case "atom":
-            elementTag = SreNamespace.Tag.ATOM;
-            break;
-        case "bond":
-            elementTag = SreNamespace.Tag.BOND;
-            break;
-        case "atomSet":
-            elementTag = SreNamespace.Tag.ATOMSET;
-            break;
-        default:
-            //TODO(sorge) what to do here?
-        }
-        Element node = this.getNodeToAnnotate(id, elementTag);
-        this.appendAnnotation(node, tag, entry);
-    }
-
-
     public void addAttribute(String id, SreAttribute attr) {
         Element element = this.getNodeToAnnotate(id);
         if (element == null) {

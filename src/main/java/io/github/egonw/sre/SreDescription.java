@@ -18,7 +18,7 @@
  * @author Volker Sorge <sorge@zorkstone>
  * @date   Fri May 30 00:14:03 2014
  * 
- * @brief  Class for SRE Descriptions.
+ * @brief  Class for SRE Descriptions. This is deprecated.
  * 
  * 
  */
