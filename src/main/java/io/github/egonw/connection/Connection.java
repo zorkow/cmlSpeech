@@ -26,6 +26,11 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.sre.XMLAnnotations;
+import io.github.egonw.sre.SreElement;
+import io.github.egonw.sre.SreNamespace.Tag;
+import io.github.egonw.sre.SreNamespace;
+
 
 /**
  * Connections consist of
@@ -33,7 +38,7 @@ package io.github.egonw.connection;
  * -- the connected structure: name of an atom or an atom set
  */
 
-public abstract class Connection extends ConnectionComparator implements Comparable<Connection> {
+public abstract class Connection extends ConnectionComparator implements Comparable<Connection>, XMLAnnotations {
     
     private String connector = "";
     private String connected = "";
@@ -67,4 +72,8 @@ public abstract class Connection extends ConnectionComparator implements Compara
         return compare(this, con);
     }
 
+    public abstract SreNamespace.Tag tag();
+     
+    public abstract SreElement annotation();
+    
 }

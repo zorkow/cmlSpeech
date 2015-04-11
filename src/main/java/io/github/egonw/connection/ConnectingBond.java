@@ -26,6 +26,10 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.analysis.RichStructureHelper;
+import io.github.egonw.sre.SreNamespace;
+import io.github.egonw.sre.SreElement;
+
 /**
  * Class of connecting bonds.
  */
@@ -40,6 +44,24 @@ public class ConnectingBond extends Connection {
     @Override
     public ConnectionType getType() {
         return ConnectionType.CONNECTINGBOND;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.CONNECTINGBOND;
+    }
+
+    @Override
+    public SreElement annotation() {
+        String connected = this.getConnected();
+        SreElement element;
+        RichStructureHelper.isAtom(connected) ?
+            element = new SreElement(SreNamespace.Tag.ATOM, connected) :
+            element = new SreElement(SreNamespace.Tag.ATOMSET, connected);
+        return new SreElement(this.tag(),
+                              new SreElement(SreNamespace.Tag.BOND, this.getConnector()),
+                              element
+                              );
     }
 
 }
