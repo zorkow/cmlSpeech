@@ -381,9 +381,9 @@ public class SreSpeech extends SreXML {
         describeConnection(connection, element, positions);
         
         if (RichStructureHelper.isAtom(connected)) {
-            element.appendChild(new SreElement(RichStructureHelper.getRichAtom(connected).getStructure()));
+            element.appendChild(new SreElement(SreNamespace.Tag.ATOM, connected));
         } else {
-            element.appendChild(new SreElement(RichStructureHelper.getRichAtomSet(connected).getStructure()));
+            element.appendChild(new SreElement(SreNamespace.Tag.ATOMSET, connected));
         }
         
         // Putting it all together.
