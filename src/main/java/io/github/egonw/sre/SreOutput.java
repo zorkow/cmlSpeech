@@ -68,29 +68,8 @@ public class SreOutput extends SreXML {
         String id = structure.getId();
         Set<Connection> connections = structure.getConnections();
         for (Connection connection : connections) {
-            SreNamespace.Tag tag;
-            switch (connection.getType()) {
-            case SHAREDBOND:
-                tag = SreNamespace.Tag.SHAREDBOND;
-                break;
-            case BRIDGEATOM:
-                tag = SreNamespace.Tag.BRIDGEATOM;
-                break;
-            case SHAREDATOM:
-                tag = SreNamespace.Tag.SHAREDATOM;
-                break;
-            case SPIROATOM:
-                tag = SreNamespace.Tag.SPIROATOM;
-                break;
-            case CONNECTINGBOND:
-            default:
-                tag = SreNamespace.Tag.CONNECTINGBOND;
-                break;
-            }
             this.annotations.appendAnnotation(id, SreNamespace.Tag.CONNECTIONS,
-                                              new SreElement(tag,
-                                                             this.toSreElement(connection.getConnector()), 
-                                                             this.toSreElement(connection.getConnected())));
+                                              connection.annotation());
         }
     }
 
