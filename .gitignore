@@ -1,8 +1,8 @@
-target/
-.settings/
+*.cml
+*.log
+*.svg
+*~
 .classpath
 .project
-*.cml
-*.svg
-*.log
-*~
+.settings/
+target/
