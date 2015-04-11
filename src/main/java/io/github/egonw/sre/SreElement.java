@@ -48,7 +48,7 @@ public class SreElement extends Element {
         super(tag.tag, SreNamespace.getInstance().uri);
     }
 
-    SreElement(SreNamespace.Tag tag, String text) {
+    public SreElement(SreNamespace.Tag tag, String text) {
         super(tag.tag, SreNamespace.getInstance().uri);
         this.appendChild(text);
     }
@@ -68,7 +68,7 @@ public class SreElement extends Element {
         this.appendChild(obj.getID());
     }
 
-    SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
+    public SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
         super(tag.tag, SreNamespace.getInstance().uri);
         this.appendChild(child1);
         this.appendChild(child2);

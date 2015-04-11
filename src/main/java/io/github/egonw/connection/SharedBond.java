@@ -26,6 +26,9 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.sre.SreNamespace;
+import io.github.egonw.sre.SreElement;
+
 /**
  * Class of shared bonds.
  */
@@ -40,6 +43,18 @@ public class SharedBond extends Connection {
     @Override
     public ConnectionType getType() {
         return ConnectionType.SHAREDBOND;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.SHAREDBOND;
+    }
+
+    @Override
+    public SreElement annotation() {
+        return new SreElement(this.tag(),
+                              new SreElement(SreNamespace.Tag.BOND, this.getConnector()),
+                              new SreElement (SreNamespace.Tag.ATOMSET, this.getConnected()));
     }
 
 }

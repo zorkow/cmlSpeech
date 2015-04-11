@@ -26,6 +26,8 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.sre.SreNamespace;
+
 /**
  * Class of shared atoms.
  */
@@ -40,6 +42,11 @@ public class SharedAtom extends Connection {
     @Override
     public ConnectionType getType() {
         return ConnectionType.SHAREDATOM;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.SHAREDATOM;
     }
 
 }

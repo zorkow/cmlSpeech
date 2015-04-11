@@ -28,7 +28,6 @@ package io.github.egonw.connection;
 
 import io.github.egonw.sre.XMLAnnotations;
 import io.github.egonw.sre.SreElement;
-import io.github.egonw.sre.SreNamespace.Tag;
 import io.github.egonw.sre.SreNamespace;
 
 
@@ -68,12 +67,20 @@ public abstract class Connection extends ConnectionComparator implements Compara
             + this.getConnector() + " -> " + this.getConnected();
     }
 
+    @Override
     public int compareTo(Connection con) {
         return compare(this, con);
     }
 
+    @Override
     public abstract SreNamespace.Tag tag();
      
-    public abstract SreElement annotation();
-    
+
+    @Override
+    public SreElement annotation() {
+        return new SreElement(this.tag(),
+                              new SreElement(SreNamespace.Tag.ATOM, this.getConnector()),
+                              new SreElement (SreNamespace.Tag.ATOMSET, this.getConnected()));
+    }
+
 }

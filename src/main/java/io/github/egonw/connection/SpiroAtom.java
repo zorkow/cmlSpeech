@@ -26,6 +26,8 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.sre.SreNamespace;
+
 /**
  * Class of spiro atoms.
  */
@@ -40,6 +42,11 @@ public class SpiroAtom extends Connection {
     @Override
     public ConnectionType getType() {
         return ConnectionType.SPIROATOM;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.SPIROATOM;
     }
 
 }

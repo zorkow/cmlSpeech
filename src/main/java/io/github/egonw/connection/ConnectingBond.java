@@ -54,14 +54,11 @@ public class ConnectingBond extends Connection {
     @Override
     public SreElement annotation() {
         String connected = this.getConnected();
-        SreElement element;
-        RichStructureHelper.isAtom(connected) ?
-            element = new SreElement(SreNamespace.Tag.ATOM, connected) :
-            element = new SreElement(SreNamespace.Tag.ATOMSET, connected);
+        SreNamespace.Tag type = RichStructureHelper.isAtom(connected) ?
+            SreNamespace.Tag.ATOM : SreNamespace.Tag.ATOMSET;
         return new SreElement(this.tag(),
                               new SreElement(SreNamespace.Tag.BOND, this.getConnector()),
-                              element
-                              );
+                              new SreElement(type, connected));
     }
 
 }

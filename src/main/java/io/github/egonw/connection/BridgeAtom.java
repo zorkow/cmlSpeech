@@ -26,6 +26,8 @@
 //
 package io.github.egonw.connection;
 
+import io.github.egonw.sre.SreNamespace;
+
 /**
  * Class of bridge atoms.
  */
@@ -40,6 +42,11 @@ public class BridgeAtom extends Connection {
     @Override
     public ConnectionType getType() {
         return ConnectionType.BRIDGEATOM;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.BRIDGEATOM;
     }
 
 }
