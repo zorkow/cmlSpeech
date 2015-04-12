@@ -29,7 +29,7 @@ package io.github.egonw.connection;
 
 import io.github.egonw.sre.SreElement;
 import io.github.egonw.sre.SreNamespace;
-import io.github.egonw.sre.XMLAnnotations;
+import io.github.egonw.sre.XmlAnnotations;
 
 /**
  * Connections consist of -- the connecting structure: name of either bond or
@@ -37,7 +37,7 @@ import io.github.egonw.sre.XMLAnnotations;
  */
 
 public abstract class Connection extends ConnectionComparator implements
-    Comparable<Connection>, XMLAnnotations {
+    Comparable<Connection>, XmlAnnotations {
 
   private String connector = "";
   private String connected = "";

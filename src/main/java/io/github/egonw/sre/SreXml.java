@@ -36,11 +36,11 @@ import java.util.Set;
  * Abstract class for XML like Sre annotations.
  */
 
-public abstract class SreXML {
+public abstract class SreXml {
 
   SreAnnotations annotations;
 
-  SreXML() {
+  SreXml() {
     this.annotations = new SreAnnotations();
   }
 

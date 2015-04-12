@@ -55,7 +55,7 @@ import java.util.TreeSet;
  * Constructs the Sre speech annotations.
  */
 
-public class SreSpeech extends SreXML {
+public class SreSpeech extends SreXml {
 
   public Document doc;
 

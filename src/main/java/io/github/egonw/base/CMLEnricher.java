@@ -223,7 +223,7 @@ public class CMLEnricher {
   private void appendAtomSets() {
     List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
     for (RichAtomSet richSet : richSets) {
-      CMLAtomSet set = richSet.getCML(this.doc);
+      CMLAtomSet set = richSet.getCml(this.doc);
       // this.atomSets.add(richSet);
       this.doc.getRootElement().appendChild(set);
       set.addAttribute(new SreAttribute("formula", richSet.molecularFormula));

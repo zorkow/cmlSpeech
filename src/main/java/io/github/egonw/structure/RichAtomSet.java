@@ -83,7 +83,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     for (IBond bond : this.getStructure().bonds()) {
       this.getComponents().add(bond.getID());
     }
-    this.makeCML();
+    this.makeCml();
   }
 
   @Override
@@ -205,7 +205,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
         + "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
   }
 
-  private void makeCML() {
+  private void makeCml() {
     this.cml = new CMLAtomSet();
     this.cml.setTitle(this.type.name);
     this.cml.setId(this.getId());
@@ -214,7 +214,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   // This should only ever be called once!
   // Need a better solution!
   @Override
-  public CMLAtomSet getCML(Document doc) {
+  public CMLAtomSet getCml(Document doc) {
     for (IAtom atom : this.getStructure().atoms()) {
       String atomId = atom.getID();
       CMLAtom node = (CMLAtom) SreUtil.getElementById(doc, atomId);

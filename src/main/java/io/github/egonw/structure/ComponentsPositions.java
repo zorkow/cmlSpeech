@@ -84,9 +84,9 @@ public class ComponentsPositions implements Iterable<String> {
     }
   }
 
-  public void addNext(String atomID) {
+  public void addNext(String atomId) {
     this.atomCount++;
-    this.atomPositions.put(this.atomCount, atomID);
+    this.atomPositions.put(this.atomCount, atomId);
   }
 
   public String toString() {

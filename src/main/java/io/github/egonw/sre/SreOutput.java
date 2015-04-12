@@ -33,7 +33,7 @@ import io.github.egonw.analysis.RichStructureHelper;
  * Constructs structural annotations for Sre.
  */
 
-public class SreOutput extends SreXML {
+public class SreOutput extends SreXml {
 
   public SreOutput() {
     super();

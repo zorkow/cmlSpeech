@@ -35,7 +35,7 @@ import io.github.egonw.connection.ConnectionComparator;
 import io.github.egonw.sre.SreElement;
 import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreUtil;
-import io.github.egonw.sre.XMLAnnotations;
+import io.github.egonw.sre.XmlAnnotations;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  */
 
 public abstract class AbstractRichStructure<S> implements RichStructure<S>,
-    XMLAnnotations {
+    XmlAnnotations {
 
   protected final S structure;
 

@@ -32,7 +32,7 @@ package io.github.egonw.sre;
  * The basic XML annotations every enriched object should produce.
  */
 
-public interface XMLAnnotations {
+public interface XmlAnnotations {
 
   public SreNamespace.Tag tag();
 

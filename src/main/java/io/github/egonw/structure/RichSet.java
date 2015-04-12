@@ -56,7 +56,7 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
    * 
    * @return A CML element represengin this atom set.
    */
-  public CMLAtomSet getCML(Document doc);
+  public CMLAtomSet getCml(Document doc);
 
   /**
    * Finds an element in the set by its position.
