@@ -54,7 +54,7 @@ abstract class DefaultComparator implements
       return this.compare((RichAtom) obj1, (RichAtom) obj2);
     }
     return 0;
-  };
+  }
 
   public abstract int compare(RichAtomSet set1, RichAtomSet set2);
 

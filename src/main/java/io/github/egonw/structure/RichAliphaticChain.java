@@ -85,7 +85,7 @@ public class RichAliphaticChain extends RichAtomSet {
    * @param rightAtom
    *          The other end of the chain.
    * 
-   * @return
+   * @return atom with lowest substitution.
    */
   private IAtom findLowestSubstitution(IAtom leftAtom, IAtom rightAtom) {
     IAtomContainer structure = this.getStructure();
@@ -137,7 +137,7 @@ public class RichAliphaticChain extends RichAtomSet {
    * 
    * @param atom
    * 
-   * @return
+   * @return atom that's next to the input atom.
    */
   private IAtom chooseNext(IAtom atom) {
     visited.add(atom);

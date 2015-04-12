@@ -27,6 +27,8 @@
 
 package io.github.egonw.sre;
 
+import com.google.common.base.Joiner;
+
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.structure.RichAtom;
@@ -35,8 +37,6 @@ import io.github.egonw.structure.RichBond;
 import io.github.egonw.structure.RichChemObject;
 import io.github.egonw.structure.RichMolecule;
 import io.github.egonw.structure.RichStructure;
-
-import com.google.common.base.Joiner;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -149,12 +149,12 @@ public class SreSpeech extends SreXML {
   private String describeHydrogens(IAtom atom) {
     Integer count = atom.getImplicitHydrogenCount();
     switch (count) {
-    case 0:
-      return "";
-    case 1:
-      return count.toString() + " hydrogen";
-    default:
-      return count.toString() + " hydrogens";
+      case 0:
+        return "";
+      case 1:
+        return count.toString() + " hydrogen";
+      default:
+        return count.toString() + " hydrogens";
     }
   }
 
@@ -222,35 +222,35 @@ public class SreSpeech extends SreXML {
   private SreAttribute speechAtomSet(RichAtomSet atomSet) {
     String result = describeAtomSet(atomSet);
     switch (atomSet.type) {
-    case MOLECULE:
-      break;
-    case ALIPHATIC:
-    case ISOLATED:
-      result += " " + this.describeMultiBonds(atomSet);
-      result += " " + this.describeSubstitutions(atomSet);
-      break;
-    case FUSED:
-    case FUNCGROUP:
-    case SMALLEST:
-      break;
+      case MOLECULE:
+        break;
+      case ALIPHATIC:
+      case ISOLATED:
+        result += " " + this.describeMultiBonds(atomSet);
+        result += " " + this.describeSubstitutions(atomSet);
+        break;
+      case FUSED:
+      case FUNCGROUP:
+      case SMALLEST:
+        break;
     }
     return speechAttribute(result);
   }
 
   private String describeAtomSet(RichAtomSet atomSet) {
     switch (atomSet.type) {
-    case MOLECULE:
-      return describeMolecule(atomSet);
-    case FUSED:
-      return describeFusedRing(atomSet);
-    case ALIPHATIC:
-      return describeAliphaticChain(atomSet);
-    case ISOLATED:
-      return describeIsolatedRing(atomSet);
-    case FUNCGROUP:
-      return describeFunctionalGroup(atomSet);
-    default:
-      return "";
+      case MOLECULE:
+        return describeMolecule(atomSet);
+      case FUSED:
+        return describeFusedRing(atomSet);
+      case ALIPHATIC:
+        return describeAliphaticChain(atomSet);
+      case ISOLATED:
+        return describeIsolatedRing(atomSet);
+      case FUNCGROUP:
+        return describeFunctionalGroup(atomSet);
+      default:
+        return "";
     }
   }
 
@@ -304,13 +304,13 @@ public class SreSpeech extends SreXML {
       subst.add(system.getPosition(atom));
     }
     switch (subst.size()) {
-    case 0:
-      return "";
-    case 1:
-      return "Substitution at position " + subst.iterator().next();
-    default:
-      Joiner joiner = Joiner.on(" and ");
-      return "Substitutions at position " + joiner.join(subst);
+      case 0:
+        return "";
+      case 1:
+        return "Substitution at position " + subst.iterator().next();
+      default:
+        Joiner joiner = Joiner.on(" and ");
+        return "Substitutions at position " + joiner.join(subst);
     }
   }
 
@@ -398,33 +398,38 @@ public class SreSpeech extends SreXML {
     SreAttribute connSpeech;
     SreNamespace.Attribute connAttr;
     switch (connection.getType()) {
-    case CONNECTINGBOND:
-      elementSpeech = describeConnectingBond(connector, connected);
-      connAttr = SreNamespace.Attribute.BOND;
-      connSpeech = this.speechBond(RichStructureHelper.getRichBond(connector));
-      break;
-    case BRIDGEATOM:
-      elementSpeech = describeBridgeAtom(connector, connected);
-      connAttr = SreNamespace.Attribute.ATOM;
-      connSpeech = this.speechAtom(RichStructureHelper.getRichAtom(connector));
-      break;
-    case SHAREDATOM:
-      elementSpeech = describeSharedAtom(connector, connected);
-      connAttr = SreNamespace.Attribute.ATOM;
-      connSpeech = this.speechAtom(RichStructureHelper.getRichAtom(connector));
-      break;
-    case SPIROATOM:
-      elementSpeech = describeSpiroAtom(connector, connected);
-      connAttr = SreNamespace.Attribute.ATOM;
-      connSpeech = this.speechAtom(RichStructureHelper.getRichAtom(connector));
-      break;
-    case SHAREDBOND:
-      // elementSpeech = ???
-      connAttr = SreNamespace.Attribute.BOND;
-      connSpeech = this.speechBond(RichStructureHelper.getRichBond(connector));
-      break;
-    default:
-      throw (new SreException("Unknown connection type in structure."));
+      case CONNECTINGBOND:
+        elementSpeech = describeConnectingBond(connector, connected);
+        connAttr = SreNamespace.Attribute.BOND;
+        connSpeech = this
+            .speechBond(RichStructureHelper.getRichBond(connector));
+        break;
+      case BRIDGEATOM:
+        elementSpeech = describeBridgeAtom(connector, connected);
+        connAttr = SreNamespace.Attribute.ATOM;
+        connSpeech = this
+            .speechAtom(RichStructureHelper.getRichAtom(connector));
+        break;
+      case SHAREDATOM:
+        elementSpeech = describeSharedAtom(connector, connected);
+        connAttr = SreNamespace.Attribute.ATOM;
+        connSpeech = this
+            .speechAtom(RichStructureHelper.getRichAtom(connector));
+        break;
+      case SPIROATOM:
+        elementSpeech = describeSpiroAtom(connector, connected);
+        connAttr = SreNamespace.Attribute.ATOM;
+        connSpeech = this
+            .speechAtom(RichStructureHelper.getRichAtom(connector));
+        break;
+      case SHAREDBOND:
+        // elementSpeech = ???
+        connAttr = SreNamespace.Attribute.BOND;
+        connSpeech = this
+            .speechBond(RichStructureHelper.getRichBond(connector));
+        break;
+      default:
+        throw (new SreException("Unknown connection type in structure."));
     }
     element.addAttribute(this.speechAttribute(elementSpeech));
     position.addAttribute(new SreAttribute(connAttr, connector));

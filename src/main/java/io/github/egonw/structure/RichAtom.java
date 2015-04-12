@@ -39,7 +39,7 @@ public class RichAtom extends RichChemObject {
 
   public RichAtom(IAtom structure) {
     super(structure);
-  };
+  }
 
   @Override
   public IAtom getStructure() {

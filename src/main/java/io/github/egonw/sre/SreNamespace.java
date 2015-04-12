@@ -59,27 +59,46 @@ public class SreNamespace {
    * Connecting atoms -- Atoms that are shared with another structure.
    */
   public enum Tag {
-    ANNOTATIONS("annotations"), ANNOTATION("annotation"),
+    ANNOTATIONS("annotations"),
+    ANNOTATION("annotation"),
 
-    CONTEXT("context"), COMPONENT("component"),
+    CONTEXT("context"),
+    COMPONENT("component"),
 
-    SUBSYSTEM("subSystem"), SUPERSYSTEM("superSystem"),
+    SUBSYSTEM("subSystem"),
+    SUPERSYSTEM("superSystem"),
 
-    INTERNALBONDS("internalBonds"), EXTERNALBONDS("externalBonds"), CONNECTINGBONDS(
-        "connectingBonds"), CONNECTINGATOMS("connectingAtoms"),
+    INTERNALBONDS("internalBonds"),
+    EXTERNALBONDS("externalBonds"),
+    CONNECTINGBONDS("connectingBonds"),
+    CONNECTINGATOMS("connectingAtoms"),
 
-    ATOM("atom"), ATOMSET("atomSet"), BOND("bond"), UNKNOWN("unknown"),
+    ATOM("atom"),
+    ATOMSET("atomSet"),
+    BOND("bond"),
+    UNKNOWN("unknown"),
 
-    CONNECTIONS("connections"), SHAREDBOND("sharedBond"), BRIDGEATOM(
-        "bridgeAtom"), SHAREDATOM("sharedAtom"), SPIROATOM("spiroAtom"), CONNECTINGBOND(
-        "connectingBond"),
+    CONNECTIONS("connections"),
+    SHAREDBOND("sharedBond"),
+    BRIDGEATOM("bridgeAtom"),
+    SHAREDATOM("sharedAtom"),
+    SPIROATOM("spiroAtom"),
+    CONNECTINGBOND("connectingBond"),
 
-    DESCRIPTIONS("descriptions"), DESC("desc"), SUBDESC("subdesc"), CONTENT(
-        "content"),
+    DESCRIPTIONS("descriptions"),
+    DESC("desc"),
+    SUBDESC("subdesc"),
+    CONTENT("content"),
 
-    PARENTS("parents"), PARENT("parent"), CHILDREN("children"), CHILD("child"), NEIGHBOURS(
-        "neighbours"), NEIGHBOUR("neighbour"), POSITIONS("positions"), POSITION(
-        "position"), VIA("via"),
+    PARENTS("parents"),
+    PARENT("parent"),
+    CHILDREN("children"),
+    CHILD("child"),
+    NEIGHBOURS("neighbours"),
+    NEIGHBOUR("neighbour"),
+    POSITIONS("positions"),
+    POSITION("position"),
+    VIA("via"),
 
     ;
 
@@ -92,9 +111,14 @@ public class SreNamespace {
   }
 
   public enum Attribute {
-    LEVEL("level"), ELEMENTS("elements"),
+    LEVEL("level"),
+    ELEMENTS("elements"),
 
-    SPEECH("speech"), ORDER("order"), ATOM("bond"), BOND("bond"), TYPE("type"), ;
+    SPEECH("speech"),
+    ORDER("order"),
+    ATOM("bond"),
+    BOND("bond"),
+    TYPE("type"), ;
 
     public final String attribute;
 

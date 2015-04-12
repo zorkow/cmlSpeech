@@ -1,6 +1,7 @@
 /**
  * @file   WalkDepthFirst.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Apr  5 21:13:34 2015
  * 
  * @brief  A helper class for depth first traversal.

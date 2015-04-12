@@ -27,6 +27,8 @@
 
 package io.github.egonw.structure;
 
+import com.google.common.base.Joiner;
+
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Logger;
@@ -34,8 +36,6 @@ import io.github.egonw.graph.StructuralGraph;
 import io.github.egonw.sre.SreElement;
 import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreUtil;
-
-import com.google.common.base.Joiner;
 
 import nu.xom.Document;
 
@@ -113,7 +113,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    * 
    * @param atom
    * 
-   * @return
+   * @return List of connected atoms.
    */
   protected List<IAtom> getConnectedAtomsList(IAtom atom) {
     return this.getStructure().getConnectedAtomsList(atom);
@@ -186,8 +186,9 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       return null;
     }
     List<String> result = new ArrayList<>();
-    while (result.size() < this.getStructure().getAtomCount())
+    while (result.size() < this.getStructure().getAtomCount()) {
       result.add("");
+    }
     for (IAtom atom : this.getStructure().atoms()) {
       String id = atom.getID();
       result.set(this.getPosition(id) - 1, atom.getSymbol());

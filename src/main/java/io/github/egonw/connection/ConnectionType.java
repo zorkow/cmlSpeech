@@ -33,8 +33,11 @@ package io.github.egonw.connection;
 
 public enum ConnectionType {
 
-  BRIDGEATOM("bridgeAtom"), CONNECTINGBOND("connectingBond"), SHAREDBOND(
-      "sharedBond"), SHAREDATOM("sharedAtom"), SPIROATOM("spiroAtom"), ;
+  BRIDGEATOM("bridgeAtom"),
+  CONNECTINGBOND("connectingBond"),
+  SHAREDBOND("sharedBond"),
+  SHAREDATOM("sharedAtom"),
+  SPIROATOM("spiroAtom"), ;
 
   public final String type;
 

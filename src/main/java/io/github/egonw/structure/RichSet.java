@@ -35,7 +35,7 @@ import org.xmlcml.cml.element.CMLAtomSet;
 import java.util.SortedSet;
 
 /**
- *
+ * Interface for all rich sets, i.e. molecules, rings, chains and groups.
  */
 
 public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {

@@ -33,8 +33,12 @@ package io.github.egonw.structure;
 
 public enum RichSetType {
 
-  ALIPHATIC("Aliphatic chain"), FUSED("Fused ring"), ISOLATED("Isolated ring"), SMALLEST(
-      "Subring"), MOLECULE("Molecule"), FUNCGROUP("Functional Group"), ;
+  ALIPHATIC("Aliphatic chain"),
+  FUSED("Fused ring"),
+  ISOLATED("Isolated ring"),
+  SMALLEST("Subring"),
+  MOLECULE("Molecule"),
+  FUNCGROUP("Functional Group"), ;
 
   public final String name;
 

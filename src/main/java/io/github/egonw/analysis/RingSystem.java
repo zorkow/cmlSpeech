@@ -27,10 +27,10 @@
 
 package io.github.egonw.analysis;
 
+import com.google.common.collect.Lists;
+
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
-
-import com.google.common.collect.Lists;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
@@ -102,9 +102,9 @@ public class RingSystem {
    * Predicate that tests if a particular ring has no other ring as proper
    * subset.
    * 
-   * This does NOT produce the list of essential rings! It retains rings that
+   * <p>This does NOT produce the list of essential rings! It retains rings that
    * are rims of ring compositions of three of more rings. Example is
-   * 1H-indeno[7,1-bc]azepine.
+   * 1H-indeno[7,1-bc]azepine.</p>
    * 
    * @param ring
    *          The ring to be tested.
@@ -129,7 +129,7 @@ public class RingSystem {
       ;
     }
     return true;
-  };
+  }
 
   /**
    * Method to compute smallest rings via subset coverage.
@@ -155,7 +155,7 @@ public class RingSystem {
       }
     }
     return subRings;
-  };
+  }
 
   protected class AtomComparator implements Comparator<IAtom> {
     public int compare(IAtom atom1, IAtom atom2) {
@@ -175,8 +175,9 @@ public class RingSystem {
       Iterator<IAtom> iterator2 = atoms2.iterator();
       while (iterator1.hasNext() && iterator2.hasNext()) {
         int result = comparator.compare(iterator1.next(), iterator2.next());
-        if (result != 0)
+        if (result != 0) {
           return result;
+        }
       }
       return 0;
     }

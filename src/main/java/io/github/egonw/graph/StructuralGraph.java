@@ -19,7 +19,7 @@
  * @date   Wed May 28 22:56:58 2014
  * 
  * @brief A lightweight graph to represent the top level structure of molecules.
- * !!! This uses Jgrapht v0.9 !!!
+ *        !!! This uses Jgrapht v0.9 !!!
  * 
  */
 

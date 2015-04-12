@@ -27,12 +27,12 @@
 
 package io.github.egonw.analysis;
 
+import com.google.common.collect.Sets;
+
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichFunctionalGroup;
 import io.github.egonw.structure.RichSetType;
 import io.github.egonw.structure.RichStructure;
-
-import com.google.common.collect.Sets;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -60,8 +60,8 @@ public class FunctionalGroupsFilter {
   // The set that is reduced to distil the interesting functional groups.
   private List<RichFunctionalGroup> workingSets = new ArrayList<RichFunctionalGroup>();
 
-  static private Integer minimalSize = 2;
-  static private Integer minimalOverlap = 1;
+  private Integer minimalSize = 2;
+  private Integer minimalOverlap = 1;
 
   FunctionalGroupsFilter(List<RichAtomSet> existing,
       Map<String, IAtomContainer> groups) {
@@ -112,9 +112,9 @@ public class FunctionalGroupsFilter {
     Integer count = 0;
     while (workingSets.size() > count) {
       RichFunctionalGroup outer = workingSets.get(count++);
-      Integer i = workingSets.size() - 1;
-      while (i >= count) {
-        RichFunctionalGroup inner = workingSets.get(i--);
+      Integer steps = workingSets.size() - 1;
+      while (steps >= count) {
+        RichFunctionalGroup inner = workingSets.get(steps--);
         if (Sets.difference(inner.getComponents(), outer.getComponents())
             .isEmpty()) {
           workingSets.remove(inner);

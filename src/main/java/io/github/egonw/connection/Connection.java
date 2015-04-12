@@ -33,7 +33,7 @@ import io.github.egonw.sre.XMLAnnotations;
 
 /**
  * Connections consist of -- the connecting structure: name of either bond or
- * atom -- the connected structure: name of an atom or an atom set
+ * atom -- the connected structure: name of an atom or an atom set.
  */
 
 public abstract class Connection extends ConnectionComparator implements

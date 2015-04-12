@@ -112,8 +112,9 @@ public class ComponentsPositions implements Iterable<String> {
 
     @Override
     public String next() {
-      if (!hasNext())
+      if (!hasNext()) {
         throw new NoSuchElementException();
+      }
       return atomPositions.get(++this.current);
     }
 
@@ -125,6 +126,6 @@ public class ComponentsPositions implements Iterable<String> {
 
   public void forEach(Consumer<? super String> action) {
     this.atomPositions.values().forEach(action);
-  };
+  }
 
 }

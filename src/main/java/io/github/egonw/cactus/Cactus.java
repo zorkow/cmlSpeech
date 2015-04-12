@@ -49,11 +49,12 @@ import java.util.stream.Collectors;
  */
 public class Cactus {
 
-  /** Enum type for different translations via Cactus */
+  /** Enum type for different translations via Cactus. */
   public enum Type {
-    IUPAC("iupac", Cactus::getIUPAC), NAME("name", Cactus::getName), FORMULA(
-        "formula", Cactus::getFormula);
-
+    IUPAC("iupac", Cactus::getIupac),
+    NAME("name", Cactus::getName),
+    FORMULA("formula", Cactus::getFormula);
+    
     public final String tag;
     public final Function<IAtomContainer, String> caller;
 
@@ -80,7 +81,7 @@ public class Cactus {
    *          Output format.
    * @return Result if any.
    */
-  private final static List<String> getCactus(String input, String output)
+  private static List<String> getCactus(String input, String output)
       throws CactusException {
     URL url = null;
     BufferedReader br = null;
@@ -110,7 +111,7 @@ public class Cactus {
    *          The input molecule.
    * @return String containing molecule in Inchi format.
    */
-  private final static String translate(IAtomContainer molecule)
+  private static String translate(IAtomContainer molecule)
       throws CactusException {
     try {
       InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
@@ -128,10 +129,10 @@ public class Cactus {
    *          Input molecule.
    * @return The IUPAC name if it exists.
    */
-  public final static String getIUPAC(IAtomContainer molecule)
+  public static String getIupac(IAtomContainer molecule)
       throws CactusException {
-    String inchi = translate(molecule);
-    return getCactus(inchi, "IUPAC_Name").get(0);
+    String inchi = Cactus.translate(molecule);
+    return Cactus.getCactus(inchi, "IUPAC_Name").get(0);
   }
 
   /**
@@ -141,10 +142,10 @@ public class Cactus {
    *          Input molecule.
    * @return The chemical formula.
    */
-  public final static String getFormula(IAtomContainer molecule)
+  public static String getFormula(IAtomContainer molecule)
       throws CactusException {
-    String inchi = translate(molecule);
-    return getCactus(inchi, "formula").get(0);
+    String inchi = Cactus.translate(molecule);
+    return Cactus.getCactus(inchi, "formula").get(0);
   }
 
   /**
@@ -154,10 +155,10 @@ public class Cactus {
    *          Input molecule.
    * @return Common name if it exists.
    */
-  public final static String getName(IAtomContainer molecule)
+  public static String getName(IAtomContainer molecule)
       throws CactusException {
-    String inchi = translate(molecule);
-    List<String> names = getCactus(inchi, "Names");
+    String inchi = Cactus.translate(molecule);
+    List<String> names = Cactus.getCactus(inchi, "Names");
     List<String> alpha = names.stream()
         .filter(line -> line.matches("^[a-zA-Z- ]+$"))
         .collect(Collectors.toList());

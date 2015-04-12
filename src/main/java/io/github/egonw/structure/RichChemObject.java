@@ -37,7 +37,7 @@ public abstract class RichChemObject extends AbstractRichStructure<IChemObject> 
 
   RichChemObject(IChemObject structure) {
     super(structure);
-  };
+  }
 
   @Override
   public String getId() {

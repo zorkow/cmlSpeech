@@ -27,13 +27,13 @@
 
 package io.github.egonw.structure;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.analysis.WeightComparator;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectionType;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -230,7 +230,7 @@ public abstract class RichRing extends RichAtomSet {
    * 
    * @param atom
    * 
-   * @return
+   * @return atom that's next to the input atom.
    */
   private IAtom chooseNext(List<IAtom> visited, IAtom atom) {
     visited.add(atom);

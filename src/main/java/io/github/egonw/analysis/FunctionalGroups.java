@@ -60,8 +60,6 @@ public class FunctionalGroups {
   /**
    * Goes through the file of smarts patterns and checks each pattern against
    * the atom container.
-   * 
-   * @param molecule
    */
   private void compute() {
     for (Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
@@ -75,7 +73,7 @@ public class FunctionalGroups {
   }
 
   /**
-   * Checks a pattern against a molecule and puts them in atom sets
+   * Checks a pattern against a molecule and puts them in atom sets.
    * 
    * @param pattern
    *          the pattern to check against the molecule

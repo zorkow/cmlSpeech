@@ -79,13 +79,13 @@ public class StructuralGraphVisualizer {
   private boolean colour = true;
 
   class NamedPoint {
-    private int x;
-    private int y;
+    private int pointX;
+    private int pointY;
     private String name;
 
-    NamedPoint(String name, int x, int y) {
-      this.x = x;
-      this.y = y;
+    NamedPoint(String name, int pointX, int pointY) {
+      this.pointX = pointX;
+      this.pointY = pointY;
       this.name = name;
     }
 
@@ -94,16 +94,16 @@ public class StructuralGraphVisualizer {
     }
 
     public int getX() {
-      return this.x;
+      return this.pointX;
     }
 
     public int getY() {
-      return this.y;
+      return this.pointY;
     }
   }
 
   //
-  private JGraphModelAdapter<?, ?> m_jgAdapter;
+  private JGraphModelAdapter<?, ?> mjgAdapter;
 
   /**
    * @see java.applet.Applet#init().
@@ -111,10 +111,10 @@ public class StructuralGraphVisualizer {
   public void init(SimpleGraph<?, ?> sg, List<RichStructure<?>> structures,
       String name) {
     this.colour = !Cli.hasOption("vis_bw");
-    ListenableGraph<?, ?> g = new ListenableUndirectedGraph<>(sg);
-    m_jgAdapter = new JGraphModelAdapter<>(g);
+    ListenableGraph<?, ?> graph = new ListenableUndirectedGraph<>(sg);
+    mjgAdapter = new JGraphModelAdapter<>(graph);
 
-    JGraph jgraph = new JGraph(m_jgAdapter);
+    JGraph jgraph = new JGraph(mjgAdapter);
 
     if (this.colour) {
       jgraph.setBackground(DEFAULT_BG_COLOR);
@@ -122,9 +122,6 @@ public class StructuralGraphVisualizer {
       jgraph.setBackground(WHITE);
       jgraph.setForeground(BLACK);
     }
-
-    JScrollPane scroller = new JScrollPane(jgraph);
-    JFrame frame = new JFrame(name);
 
     List<NamedPoint> points = new ArrayList<NamedPoint>();
     for (RichStructure<?> structure : structures) {
@@ -135,6 +132,9 @@ public class StructuralGraphVisualizer {
       }
     }
     positionPoints(points);
+
+    JScrollPane scroller = new JScrollPane(jgraph);
+    JFrame frame = new JFrame(name);
 
     frame.setBounds(this.minX, this.minY, this.maxX - this.minX + this.padding,
         this.maxY - this.minY + this.padding);
@@ -152,17 +152,17 @@ public class StructuralGraphVisualizer {
   }
 
   private NamedPoint computeCentroid(RichAtomSet set) {
-    double x = 0;
-    double y = 0;
-    int n = 0;
+    double pointX = 0;
+    double pointY = 0;
+    int steps = 0;
     for (IAtom atom : set.getStructure().atoms()) {
       Point2d x2d = atom.getPoint2d();
-      x += (x2d.x * scale);
-      y += (x2d.y * scale);
-      n++;
+      pointX += (x2d.x * scale);
+      pointY += (x2d.y * scale);
+      steps++;
     }
-    NamedPoint point = new NamedPoint(set.getId(), (int) x / n, -1 * (int) y
-        / n);
+    NamedPoint point = new NamedPoint(set.getId(), (int) pointX / steps,
+                                      -1 * (int) pointY / steps);
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
     this.maxX = Math.max(this.maxX, point.getX());
@@ -182,20 +182,21 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-  private void positionVertexAt(String vertex, int x, int y) {
-    DefaultGraphCell cell = m_jgAdapter.getVertexCell(vertex);
+  private void positionVertexAt(String vertex, int pointX, int pointY) {
+    DefaultGraphCell cell = mjgAdapter.getVertexCell(vertex);
     AttributeMap attr = cell.getAttributes();
-    Rectangle2D b = GraphConstants.getBounds(attr);
+    Rectangle2D bounds = GraphConstants.getBounds(attr);
 
     if (!this.colour) {
       attr.applyValue("foregroundColor", BLACK);
       attr.applyValue("backgroundColor", GRAY);
     }
 
-    GraphConstants.setBounds(attr, new Rectangle(x, y, (int) b.getWidth(),
-        (int) b.getHeight()));
+    GraphConstants.setBounds(attr, new Rectangle(pointX, pointY,
+                                                 (int) bounds.getWidth(),
+                                                 (int) bounds.getHeight()));
     Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
     cellAttr.put(cell, attr);
-    m_jgAdapter.edit(cellAttr, null, null, null);
+    mjgAdapter.edit(cellAttr, null, null, null);
   }
 }

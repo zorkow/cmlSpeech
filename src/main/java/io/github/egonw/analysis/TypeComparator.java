@@ -38,6 +38,7 @@ import io.github.egonw.structure.RichSetType;
 
 public class TypeComparator extends DefaultComparator {
 
+  @Override
   public int compare(RichAtomSet set1, RichAtomSet set2) {
     RichSetType typeA = set1.getType();
     RichSetType typeB = set2.getType();
@@ -47,7 +48,8 @@ public class TypeComparator extends DefaultComparator {
       return 1;
     }
     if (typeA == RichSetType.ALIPHATIC
-        && (typeB == RichSetType.FUSED || typeB == RichSetType.ISOLATED || typeB == RichSetType.SMALLEST)) {
+        && (typeB == RichSetType.FUSED || typeB == RichSetType.ISOLATED
+            || typeB == RichSetType.SMALLEST)) {
       return 1;
     }
     if (typeB == RichSetType.FUNCGROUP
@@ -56,7 +58,8 @@ public class TypeComparator extends DefaultComparator {
       return -1;
     }
     if (typeB == RichSetType.ALIPHATIC
-        && (typeA == RichSetType.FUSED || typeA == RichSetType.ISOLATED || typeA == RichSetType.SMALLEST)) {
+        && (typeA == RichSetType.FUSED || typeA == RichSetType.ISOLATED
+            || typeA == RichSetType.SMALLEST)) {
       return -1;
     }
     return 0;

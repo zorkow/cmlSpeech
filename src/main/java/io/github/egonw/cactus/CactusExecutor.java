@@ -26,12 +26,12 @@
 
 package io.github.egonw.cactus;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import io.github.egonw.base.Logger;
 import io.github.egonw.sre.SreAttribute;
 import io.github.egonw.sre.SreUtil;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 import nu.xom.Document;
 import nu.xom.Element;

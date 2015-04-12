@@ -27,6 +27,11 @@
 
 package io.github.egonw.analysis;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.collect.TreeMultimap;
+
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
 import io.github.egonw.base.Logger;
@@ -45,11 +50,6 @@ import io.github.egonw.structure.RichMolecule;
 import io.github.egonw.structure.RichSetType;
 import io.github.egonw.structure.RichStructure;
 import io.github.egonw.structure.RichSubRing;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.common.collect.TreeMultimap;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;

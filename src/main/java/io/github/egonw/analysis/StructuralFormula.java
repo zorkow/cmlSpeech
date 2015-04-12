@@ -116,7 +116,7 @@ public class StructuralFormula {
         // If the atom does have a connecting atom then we print
         // the atom and we also print its connecting atoms
         appendAtom(currentAtom);
-        addSubSctructure(currentAtom, currentRichAtom, connectingAtoms);
+        addSubStructure(currentAtom, currentRichAtom, connectingAtoms);
       }
     }
   }
@@ -128,7 +128,7 @@ public class StructuralFormula {
    * @param currentRichAtom
    * @param connectingAtoms
    */
-  private void addSubSctructure(String currentAtom, RichAtom currentRichAtom,
+  private void addSubStructure(String currentAtom, RichAtom currentRichAtom,
       Set<String> connectingAtoms) {
     // This is where the subStructure is printed
     // We get every connecting atom to the current atom
@@ -158,7 +158,7 @@ public class StructuralFormula {
 
   /**
    * Method to print atoms which are in a subStructure and not part of a atom
-   * set or connected to an atom set
+   * set or connected to an atom set.
    * 
    * @param atomID
    *          The atom in the subStructure
@@ -185,9 +185,9 @@ public class StructuralFormula {
   }
 
   /**
-   * Adds the atom and its Hydrogens to the structuralFormula
+   * Adds the atom and its Hydrogens to the structuralFormula.
    * 
-   * @param atomID
+   * @param atomID Name of the atom to append.
    */
   private void appendAtom(String atomID) {
     if (this.appendedAtoms.contains(atomID)) {
@@ -210,10 +210,10 @@ public class StructuralFormula {
   }
 
   /**
-   * Returns the computed string of Structural Formula
+   * Returns the computed string of Structural Formula.
    * 
-   * @param b
-   * @return
+   * @param subScripts flag.
+   * @return string with structural formula.
    */
   public String getStructuralFormula(boolean subScripts) {
     this.useSubScripts = subScripts;
@@ -222,7 +222,7 @@ public class StructuralFormula {
   }
 
   /**
-   * Gets the subscript for the inserted number
+   * Gets the subscript for the inserted number.
    * 
    * @param number
    *          The number to be translated
