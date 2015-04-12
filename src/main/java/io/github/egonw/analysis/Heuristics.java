@@ -45,7 +45,7 @@ public class Heuristics extends DefaultComparator {
   private Comparator<RichStructure<?>> type = new TypeComparator();
   private Comparator<RichStructure<?>> size = new SizeComparator();
 
-  /** 
+  /**
    * Constructor of heuristic comparison.
    * 
    * @param heuristic

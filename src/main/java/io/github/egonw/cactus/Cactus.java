@@ -54,7 +54,7 @@ public class Cactus {
     IUPAC("iupac", Cactus::getIupac),
     NAME("name", Cactus::getName),
     FORMULA("formula", Cactus::getFormula);
-    
+
     public final String tag;
     public final Function<IAtomContainer, String> caller;
 

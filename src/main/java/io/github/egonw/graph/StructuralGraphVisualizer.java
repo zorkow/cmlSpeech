@@ -162,7 +162,7 @@ public class StructuralGraphVisualizer {
       steps++;
     }
     NamedPoint point = new NamedPoint(set.getId(), (int) pointX / steps,
-                                      -1 * (int) pointY / steps);
+        -1 * (int) pointY / steps);
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
     this.maxX = Math.max(this.maxX, point.getX());
@@ -193,8 +193,8 @@ public class StructuralGraphVisualizer {
     }
 
     GraphConstants.setBounds(attr, new Rectangle(pointX, pointY,
-                                                 (int) bounds.getWidth(),
-                                                 (int) bounds.getHeight()));
+        (int) bounds.getWidth(),
+        (int) bounds.getHeight()));
     Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
     cellAttr.put(cell, attr);
     mjgAdapter.edit(cellAttr, null, null, null);

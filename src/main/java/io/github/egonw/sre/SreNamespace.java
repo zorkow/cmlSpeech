@@ -50,13 +50,19 @@ public class SreNamespace {
   /**
    * Different Tags for the SRE speech annotations. Some notes;
    * 
-   * <p>External bonds -- Bonds that are attached to a substructure but not part of
-   * it.</p>
+   * <p>
+   * External bonds -- Bonds that are attached to a substructure but not part of
+   * it.
+   * </p>
    * 
-   * <p>Connecting bonds -- Bonds that are external, but not internal to any other
-   * structures, i.e. the truely connect it to another structure or atom.</p>
+   * <p>
+   * Connecting bonds -- Bonds that are external, but not internal to any other
+   * structures, i.e. the truely connect it to another structure or atom.
+   * </p>
    * 
-   * <p>Connecting atoms -- Atoms that are shared with another structure.</p>
+   * <p>
+   * Connecting atoms -- Atoms that are shared with another structure.
+   * </p>
    */
   public enum Tag {
     ANNOTATIONS("annotations"),

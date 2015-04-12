@@ -102,9 +102,11 @@ public class RingSystem {
    * Predicate that tests if a particular ring has no other ring as proper
    * subset.
    * 
-   * <p>This does NOT produce the list of essential rings! It retains rings that
+   * <p>
+   * This does NOT produce the list of essential rings! It retains rings that
    * are rims of ring compositions of three of more rings. Example is
-   * 1H-indeno[7,1-bc]azepine.</p>
+   * 1H-indeno[7,1-bc]azepine.
+   * </p>
    * 
    * @param ring
    *          The ring to be tested.

@@ -91,14 +91,16 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    * Returns a <code>Map</code> which specifies which descriptor is implemented
    * by this class.
    *
-   * <p>These fields are used in the map:
+   * <p>
+   * These fields are used in the map:
    * <ul>
    * <li>Specification-Reference: refers to an entry in a unique dictionary
    * <li>Implementation-Title: anything
    * <li>Implementation-Identifier: a unique identifier for this version of this
    * class
    * <li>Implementation-Vendor: CDK, JOELib, or anything else
-   * </ul></p>
+   * </ul>
+   * </p>
    *
    * @return An object containing the descriptor specification
    */
@@ -113,8 +115,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    * Sets the parameters attribute of the LongestAliphaticChainDescriptor
    * object.
    *
-   * <p>This descriptor takes one parameter, which should be Boolean to indicate
-   * whether aromaticity has been checked (TRUE) or not (FALSE).</p>
+   * <p>
+   * This descriptor takes one parameter, which should be Boolean to indicate
+   * whether aromaticity has been checked (TRUE) or not (FALSE).
+   * </p>
    * 
    * @param params
    *          The new parameters value
@@ -165,8 +169,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    * Calculate the count of atoms of the longest aliphatic chain in the supplied
    * {@link IAtomContainer}.
    * 
-   * <p>The method require one parameter: if checkRingSyste is true the
-   * CDKConstant.ISINRING will be set</p>
+   * <p>
+   * The method require one parameter: if checkRingSyste is true the
+   * CDKConstant.ISINRING will be set
+   * </p>
    *
    * @param atomContainer
    *          The {@link IAtomContainer} for which this descriptor is to be

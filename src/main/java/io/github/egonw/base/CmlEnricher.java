@@ -130,7 +130,8 @@ public class CmlEnricher {
   /**
    * Loads a molecule and initiates the CML document.
    *
-   * @param fileName The input filename.
+   * @param fileName
+   *          The input filename.
    */
   public void loadMolecule(String fileName) {
     try {

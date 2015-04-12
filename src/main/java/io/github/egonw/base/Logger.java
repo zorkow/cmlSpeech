@@ -35,8 +35,10 @@ import java.util.function.Consumer;
 /**
  * Logger facilities:
  *
- * <p>Error logging is either to file or stderr. Message logging is either to file
- * or stdout.</p>
+ * <p>
+ * Error logging is either to file or stderr. Message logging is either to file
+ * or stdout.
+ * </p>
  * 
  */
 public class Logger {

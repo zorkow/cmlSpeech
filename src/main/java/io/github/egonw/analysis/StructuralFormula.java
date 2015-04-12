@@ -185,7 +185,8 @@ public class StructuralFormula {
   /**
    * Adds the atom and its Hydrogens to the structuralFormula.
    * 
-   * @param atomId Name of the atom to append.
+   * @param atomId
+   *          Name of the atom to append.
    */
   private void appendAtom(String atomId) {
     if (this.appendedAtoms.contains(atomId)) {
@@ -210,7 +211,8 @@ public class StructuralFormula {
   /**
    * Returns the computed string of Structural Formula.
    * 
-   * @param subScripts flag.
+   * @param subScripts
+   *          flag.
    * @return string with structural formula.
    */
   public String getStructuralFormula(boolean subScripts) {

@@ -120,9 +120,12 @@ public class FileHandler {
   /**
    * Writes a document to a CML file.
    * 
-   * @param doc The output document.
-   * @param fileName The base filename.
-   * @param extension The additional extension.
+   * @param doc
+   *          The output document.
+   * @param fileName
+   *          The base filename.
+   * @param extension
+   *          The additional extension.
    *
    * @throws IOException
    *           Problems with opening output file.
