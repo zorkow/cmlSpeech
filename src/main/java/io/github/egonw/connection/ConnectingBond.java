@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   ConnectingBond.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,11 +23,12 @@
  */
 
 //
+
 package io.github.egonw.connection;
 
 import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreElement;
+import io.github.egonw.sre.SreNamespace;
 
 /**
  * Class of connecting bonds.
@@ -36,29 +36,27 @@ import io.github.egonw.sre.SreElement;
 
 public class ConnectingBond extends Connection {
 
-    public ConnectingBond(String connector, String connected) {
-        super(connector, connected);
-    }
+  public ConnectingBond(String connector, String connected) {
+    super(connector, connected);
+  }
 
+  @Override
+  public ConnectionType getType() {
+    return ConnectionType.CONNECTINGBOND;
+  }
 
-    @Override
-    public ConnectionType getType() {
-        return ConnectionType.CONNECTINGBOND;
-    }
+  @Override
+  public SreNamespace.Tag tag() {
+    return SreNamespace.Tag.CONNECTINGBOND;
+  }
 
-    @Override
-    public SreNamespace.Tag tag() {
-        return SreNamespace.Tag.CONNECTINGBOND;
-    }
-
-    @Override
-    public SreElement annotation() {
-        String connected = this.getConnected();
-        SreNamespace.Tag type = RichStructureHelper.isAtom(connected) ?
-            SreNamespace.Tag.ATOM : SreNamespace.Tag.ATOMSET;
-        return new SreElement(this.tag(),
-                              new SreElement(SreNamespace.Tag.BOND, this.getConnector()),
-                              new SreElement(type, connected));
-    }
+  @Override
+  public SreElement annotation() {
+    String connected = this.getConnected();
+    SreNamespace.Tag type = RichStructureHelper.isAtom(connected) ? SreNamespace.Tag.ATOM
+        : SreNamespace.Tag.ATOMSET;
+    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
+        this.getConnector()), new SreElement(type, connected));
+  }
 
 }

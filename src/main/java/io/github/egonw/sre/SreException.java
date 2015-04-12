@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SreException.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,8 +23,8 @@
  */
 
 //
-package io.github.egonw.sre;
 
+package io.github.egonw.sre;
 
 /**
  * Exception for the Sre classes.
@@ -33,15 +32,14 @@ package io.github.egonw.sre;
 
 public class SreException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public SreException(String message) {
-	super(message);
-    }
+  public SreException(String message) {
+    super(message);
+  }
 
-    public SreException(String message, Throwable throwable) {
-	super(message, throwable);
-    }
+  public SreException(String message, Throwable throwable) {
+    super(message, throwable);
+  }
 
 }
-

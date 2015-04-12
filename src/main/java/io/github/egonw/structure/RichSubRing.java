@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichSubRing.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -34,8 +34,8 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class RichSubRing extends RichRing {
 
-    public RichSubRing(IAtomContainer container, String id) {
-        super(container, id, RichSetType.SMALLEST);
-    }
+  public RichSubRing(IAtomContainer container, String id) {
+    super(container, id, RichSetType.SMALLEST);
+  }
 
 }

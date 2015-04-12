@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichStructure.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import io.github.egonw.connection.Connection;
@@ -35,55 +35,49 @@ import java.util.SortedSet;
  */
 
 public interface RichStructure<S> {
- 
-    
-    /**
-     * @return The list of components of this structure.
-     */
-    SortedSet<String> getComponents();
 
+  /**
+   * @return The list of components of this structure.
+   */
+  SortedSet<String> getComponents();
 
-    /**
-     * @return The list of contexts of this structure.
-     */
-    SortedSet<String> getContexts();
+  /**
+   * @return The list of contexts of this structure.
+   */
+  SortedSet<String> getContexts();
 
+  /**
+   * @return The list of external bonds of this structure.
+   */
+  SortedSet<String> getExternalBonds();
 
-    /**
-     * @return The list of external bonds of this structure.
-     */
-    SortedSet<String> getExternalBonds();
+  /**
+   * @return The list of connections of this structure.
+   */
+  SortedSet<Connection> getConnections();
 
+  /**
+   * @return The list of direct Super-Systems.
+   */
+  SortedSet<String> getSuperSystems();
 
-    /**
-     * @return The list of connections of this structure.
-     */
-    SortedSet<Connection> getConnections();
+  /**
+   * @return The list of direct Sub-Systems. These can also be atoms.
+   */
+  SortedSet<String> getSubSystems();
 
+  /**
+   * Returns the ID of the structure.
+   * 
+   * @return ID string.
+   */
+  String getId();
 
-    /**
-     * @return The list of direct Super-Systems.
-     */
-    SortedSet<String> getSuperSystems();
-
-
-    /**
-     * @return The list of direct Sub-Systems. These can also be atoms.
-     */
-    SortedSet<String> getSubSystems();
-
-
-    /**
-     * Returns the ID of the structure.
-     * @return ID string.
-     */
-    String getId();
-
-    
-    /**
-     * The structure embedded in this enriched object.
-     * @return Un-enriched structure.
-     */
-    S getStructure();
+  /**
+   * The structure embedded in this enriched object.
+   * 
+   * @return Un-enriched structure.
+   */
+  S getStructure();
 
 }

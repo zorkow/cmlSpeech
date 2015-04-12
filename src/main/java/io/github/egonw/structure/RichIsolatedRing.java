@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichIsolatedRing.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,25 +23,10 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.tools.AtomicProperties;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.connection.Connection;
-import io.github.egonw.connection.ConnectionType;
-import org.openscience.cdk.interfaces.IBond;
-import com.google.common.collect.Lists;
-import java.util.SortedSet;
-
 
 /**
  * Atom sets that are rich isolated rings.
@@ -50,8 +34,8 @@ import java.util.SortedSet;
 
 public class RichIsolatedRing extends RichRing {
 
-    public RichIsolatedRing(IAtomContainer container, String id) {
-        super(container, id, RichSetType.ISOLATED);
-    }
+  public RichIsolatedRing(IAtomContainer container, String id) {
+    super(container, id, RichSetType.ISOLATED);
+  }
 
 }

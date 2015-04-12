@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichChemObject.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import org.openscience.cdk.interfaces.IChemObject;
@@ -33,16 +33,14 @@ import org.openscience.cdk.interfaces.IChemObject;
  */
 
 public abstract class RichChemObject extends AbstractRichStructure<IChemObject> {
-    
 
-    RichChemObject(IChemObject structure) {
-        super(structure);
-    };
+  RichChemObject(IChemObject structure) {
+    super(structure);
+  };
 
+  @Override
+  public String getId() {
+    return this.structure.getID();
+  }
 
-    @Override
-    public String getId() {
-        return this.structure.getID();
-    }
-    
 }

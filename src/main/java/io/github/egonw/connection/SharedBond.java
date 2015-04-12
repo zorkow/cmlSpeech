@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SharedBond.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,10 +23,11 @@
  */
 
 //
+
 package io.github.egonw.connection;
 
-import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreElement;
+import io.github.egonw.sre.SreNamespace;
 
 /**
  * Class of shared bonds.
@@ -35,26 +35,25 @@ import io.github.egonw.sre.SreElement;
 
 public class SharedBond extends Connection {
 
-    public SharedBond(String connector, String connected) {
-        super(connector, connected);
-    }
+  public SharedBond(String connector, String connected) {
+    super(connector, connected);
+  }
 
+  @Override
+  public ConnectionType getType() {
+    return ConnectionType.SHAREDBOND;
+  }
 
-    @Override
-    public ConnectionType getType() {
-        return ConnectionType.SHAREDBOND;
-    }
+  @Override
+  public SreNamespace.Tag tag() {
+    return SreNamespace.Tag.SHAREDBOND;
+  }
 
-    @Override
-    public SreNamespace.Tag tag() {
-        return SreNamespace.Tag.SHAREDBOND;
-    }
-
-    @Override
-    public SreElement annotation() {
-        return new SreElement(this.tag(),
-                              new SreElement(SreNamespace.Tag.BOND, this.getConnector()),
-                              new SreElement (SreNamespace.Tag.ATOMSET, this.getConnected()));
-    }
+  @Override
+  public SreElement annotation() {
+    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
+        this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
+        this.getConnected()));
+  }
 
 }

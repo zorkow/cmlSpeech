@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   FunctionalGroups.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import io.github.egonw.base.Logger;
@@ -42,125 +42,121 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 /**
- * Computes functions groups using smarts patterns. 
+ * Computes functions groups using smarts patterns.
  */
 public class FunctionalGroups {
 
-    private Map<String, IAtomContainer> groups = new HashMap<>();
-    private Integer groupCounter = 1;
+  private Map<String, IAtomContainer> groups = new HashMap<>();
+  private Integer groupCounter = 1;
 
-    private IAtomContainer molecule;
-    
-    public FunctionalGroups(IAtomContainer molecule) {
-        this.molecule = molecule;
-        this.compute();
+  private IAtomContainer molecule;
+
+  public FunctionalGroups(IAtomContainer molecule) {
+    this.molecule = molecule;
+    this.compute();
+  }
+
+  /**
+   * Goes through the file of smarts patterns and checks each pattern against
+   * the atom container.
+   * 
+   * @param molecule
+   */
+  private void compute() {
+    for (Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
+      try {
+        this.checkMolecule(smarts.getValue(), smarts.getKey(),
+            this.molecule.clone());
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+      }
     }
+  }
 
+  /**
+   * Checks a pattern against a molecule and puts them in atom sets
+   * 
+   * @param pattern
+   *          the pattern to check against the molecule
+   * @param name
+   *          The name of the functional group
+   * @param mol
+   *          The molecule being checked against
+   */
+  private void checkMolecule(String pattern, String name, IAtomContainer mol) {
+    // deals with illegal smarts strings
+    try {
+      SMARTSQueryTool query = new SMARTSQueryTool(pattern,
+          DefaultChemObjectBuilder.getInstance());
+      boolean matchesFound = false;
+      matchesFound = query.matches(mol);
+      // If there are matches, uses the getMatchingAtoms method to process
+      // the matches
+      if (matchesFound) {
+        List<List<Integer>> mappings = query.getMatchingAtoms();
+        this.getMappedAtoms(mappings, name);
+      }
+    } catch (IllegalArgumentException e) {
+      // Shows which (if any) functional groups have illegal smarts
+      // patterns in the file
+      Logger.error("SMARTS Error: " + name);
+    } catch (CDKException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
-    /**
-     * Goes through the file of smarts patterns and checks each pattern against
-     * the atom container.
-     * 
-     * @param molecule
-     */
-    private void compute() {
-        for (Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
-            try {
-                this.checkMolecule(smarts.getValue(), smarts.getKey(),
-                              this.molecule.clone());
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+  /**
+   * Retrieves matched atoms from the molecule container by position and adds
+   * them to the functional group container.
+   * 
+   * @param mappings
+   *          A list of the list of matched atom positions for each separate
+   *          match
+   * @param name
+   *          The name of the functional group
+   */
+  private void getMappedAtoms(List<List<Integer>> mappings, String name) {
+    // Goes through each match for the pattern
+    for (List<Integer> mappingList : mappings) {
+      IAtomContainer funcGroup = new AtomContainer();
+      // Adds the matched molecule to the atomcontainer
+      for (Integer i : mappingList) {
+        funcGroup.addAtom(this.molecule.getAtom(i));
+      }
+      getMappedBonds(funcGroup);
+      groups.put(name + "-" + groupCounter++, funcGroup);
+    }
+  }
+
+  /**
+   * Retrieves the necessary bonds for a functional group from the molecule
+   * container and adds them to the functional group container.
+   * 
+   * @param fg
+   *          Functonal group container.
+   */
+  private void getMappedBonds(IAtomContainer fg) {
+    for (IAtom atom : fg.atoms()) {
+      for (IBond bond : this.molecule.getConnectedBondsList(atom)) {
+        if (!fg.contains(bond)
+            && StreamSupport.stream(bond.atoms().spliterator(), false)
+                .allMatch(a -> fg.contains(a))) {
+          fg.addBond(bond);
         }
+      }
     }
+  }
 
-
-    /**
-     * Checks a pattern against a molecule and puts them in atom sets
-     * 
-     * @param pattern
-     *            the pattern to check against the molecule
-     * @param name
-     *            The name of the functional group
-     * @param mol
-     *            The molecule being checked against
-     */
-    private void checkMolecule(String pattern, String name,
-                                      IAtomContainer mol) {
-        // deals with illegal smarts strings
-        try {
-            SMARTSQueryTool query = new SMARTSQueryTool(pattern,
-                                                        DefaultChemObjectBuilder.getInstance());
-            boolean matchesFound = false;
-            matchesFound = query.matches(mol);
-            // If there are matches, uses the getMatchingAtoms method to process
-            // the matches
-            if (matchesFound) {
-                List<List<Integer>> mappings = query.getMatchingAtoms();
-                this.getMappedAtoms(mappings, name);
-            }
-        } catch (IllegalArgumentException e) {
-            // Shows which (if any) functional groups have illegal smarts
-            // patterns in the file
-            Logger.error("SMARTS Error: " + name);
-        } catch (CDKException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+  public void logGroups() {
+    for (Map.Entry<String, IAtomContainer> entry : groups.entrySet()) {
+      Logger.logging(entry.getKey() + ": ");
+      entry.getValue().atoms().forEach(a -> Logger.logging(a.getID() + " "));
+      Logger.logging("\n");
     }
+  }
 
-    /**
-     * Retrieves matched atoms from the molecule container by position and adds
-     * them to the functional group container.
-     * 
-     * @param mappings
-     *            A list of the list of matched atom positions for each separate
-     *            match
-     * @param name
-     *            The name of the functional group
-     */
-    private void getMappedAtoms(List<List<Integer>> mappings, String name) {
-        // Goes through each match for the pattern
-        for (List<Integer> mappingList : mappings) {
-            IAtomContainer funcGroup = new AtomContainer();
-            // Adds the matched molecule to the atomcontainer
-            for (Integer i : mappingList) {
-                funcGroup.addAtom(this.molecule.getAtom(i));
-            }
-            getMappedBonds(funcGroup);
-            groups.put(name + "-" + groupCounter++, funcGroup);
-        }
-    }
-
-
-    /**
-     * Retrieves the necessary bonds for a functional group from the molecule
-     * container and adds them to the functional group container.
-     * 
-     * @param fg
-     *            Functonal group container.
-     */
-    private void getMappedBonds(IAtomContainer fg) {
-        for (IAtom atom : fg.atoms()) {
-            for (IBond bond : this.molecule.getConnectedBondsList(atom)) {
-                if (!fg.contains(bond) &&
-                    StreamSupport.stream(bond.atoms().spliterator(), false).
-                    allMatch(a -> fg.contains(a))) {
-                    fg.addBond(bond);
-                }
-            }
-        }
-    }
-
-    public void logGroups() {
-        for (Map.Entry<String, IAtomContainer> entry : groups.entrySet()) {
-            Logger.logging(entry.getKey() + ": ");
-            entry.getValue().atoms().forEach(a -> Logger.logging(a.getID() + " "));
-            Logger.logging("\n");
-        }
-    }
-
-    public Map<String, IAtomContainer> getGroups() {
-        return groups;
-    }
+  public Map<String, IAtomContainer> getGroups() {
+    return groups;
+  }
 }

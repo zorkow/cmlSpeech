@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SizeComparator.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -23,6 +22,7 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
@@ -32,10 +32,11 @@ import io.github.egonw.structure.RichAtomSet;
  */
 
 public class SizeComparator extends DefaultComparator {
-    
-    public int compare(RichAtomSet set1, RichAtomSet set2) {
-        return -1 * Integer.compare(set1.getStructure().getAtomCount(), 
-                                    set2.getStructure().getAtomCount());
-    }
+
+  public int compare(RichAtomSet set1, RichAtomSet set2) {
+    return -1
+        * Integer.compare(set1.getStructure().getAtomCount(), set2
+            .getStructure().getAtomCount());
+  }
 
 }

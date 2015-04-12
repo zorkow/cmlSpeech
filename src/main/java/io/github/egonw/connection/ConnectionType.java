@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   ConnectionType.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.connection;
 
 /**
@@ -32,17 +32,13 @@ package io.github.egonw.connection;
 
 public enum ConnectionType {
 
-    BRIDGEATOM ("bridgeAtom"),
-    CONNECTINGBOND ("connectingBond"),
-    SHAREDBOND ("sharedBond"),
-    SHAREDATOM ("sharedAtom"),
-    SPIROATOM ("spiroAtom"),
-    ;
+  BRIDGEATOM("bridgeAtom"), CONNECTINGBOND("connectingBond"), SHAREDBOND(
+      "sharedBond"), SHAREDATOM("sharedAtom"), SPIROATOM("spiroAtom"), ;
 
-    public final String type;
-    
-    private ConnectionType (String type) {
-            this.type = type;
-    }
+  public final String type;
+
+  private ConnectionType(String type) {
+    this.type = type;
+  }
 
 }

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   Logger.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -23,8 +22,8 @@
  * 
  */
 
-
 //
+
 package io.github.egonw.base;
 
 import java.io.File;
@@ -35,53 +34,58 @@ import java.util.function.Consumer;
 /**
  * Logger facilities:
  *
- * Error logging is either to file or stderr.
- * Message logging is either to file or stdout.
+ * Error logging is either to file or stderr. Message logging is either to file
+ * or stdout.
  * 
  */
 public class Logger {
-    private static Boolean debug = false;
-    private static Boolean verbose = false;
-    private static PrintWriter logFile = new PrintWriter(System.out);
-    private static PrintWriter errFile = new PrintWriter(System.err);
-    
-    protected Logger() { }
+  private static Boolean debug = false;
+  private static Boolean verbose = false;
+  private static PrintWriter logFile = new PrintWriter(System.out);
+  private static PrintWriter errFile = new PrintWriter(System.err);
 
-    public static void start() {
-        debug = Cli.hasOption("d");
-        verbose = Cli.hasOption("v");
-        openLogfile("l", (PrintWriter stream) -> {logFile = stream;});
-        openLogfile("x", (PrintWriter stream) -> {errFile = stream;});
-    }
+  protected Logger() {
+  }
 
-     private static void openLogfile (String optionName, Consumer<PrintWriter> logFile) {
-        if (!Cli.hasOption(optionName)) {
-            return;                
-            }
-        String fileName = Cli.getOptionValue(optionName);
-        File file = new File(fileName);
-        try {
-	    logFile.accept(new PrintWriter(file));
-	}
-	catch (IOException e) {
-	    System.err.println("Error: Can't open logfile' " + fileName);
-	}
-    }
+  public static void start() {
+    debug = Cli.hasOption("d");
+    verbose = Cli.hasOption("v");
+    openLogfile("l", (PrintWriter stream) -> {
+      logFile = stream;
+    });
+    openLogfile("x", (PrintWriter stream) -> {
+      errFile = stream;
+    });
+  }
 
-    public static void error (Object str) {
-        if (debug) {
-            Logger.errFile.print(str);
-        }
+  private static void openLogfile(String optionName,
+      Consumer<PrintWriter> logFile) {
+    if (!Cli.hasOption(optionName)) {
+      return;
     }
+    String fileName = Cli.getOptionValue(optionName);
+    File file = new File(fileName);
+    try {
+      logFile.accept(new PrintWriter(file));
+    } catch (IOException e) {
+      System.err.println("Error: Can't open logfile' " + fileName);
+    }
+  }
 
-    public static void logging (Object str) {
-        if (verbose) {
-            Logger.logFile.print(str);
-        }
+  public static void error(Object str) {
+    if (debug) {
+      Logger.errFile.print(str);
     }
+  }
 
-    public static void end () {
-        Logger.errFile.close();
-	Logger.logFile.close();
+  public static void logging(Object str) {
+    if (verbose) {
+      Logger.logFile.print(str);
     }
+  }
+
+  public static void end() {
+    Logger.errFile.close();
+    Logger.logFile.close();
+  }
 }

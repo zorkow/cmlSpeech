@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SreUtil.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,7 +23,10 @@
  */
 
 //
+
 package io.github.egonw.sre;
+
+import io.github.egonw.analysis.RichStructureHelper;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -32,14 +34,9 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 import nu.xom.XPathContext;
 
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import org.xmlcml.cml.element.CMLAtomSet;
-
 import java.util.ArrayList;
-import java.util.List;
-import io.github.egonw.analysis.RichStructureHelper;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Utility functions for the Sre annotations.
@@ -47,68 +44,67 @@ import java.util.Collection;
 
 public class SreUtil {
 
-    public static Element getElementById(Document doc, String id) {
-        String query = "//*[@id='" + id + "']";
-        Nodes nodes = doc.query(query);
-        return (Element)nodes.get(0);
+  public static Element getElementById(Document doc, String id) {
+    String query = "//*[@id='" + id + "']";
+    Nodes nodes = doc.query(query);
+    return (Element) nodes.get(0);
+  }
+
+  public static Nodes xpathQuery(Element element, String query) {
+    XPathContext xc = XPathContext.makeNamespaceContext(element);
+    xc.addNamespace(SreNamespace.getInstance().prefix,
+        SreNamespace.getInstance().uri);
+    xc.addNamespace("cml", "http://www.xml-cml.org/schema");
+    return element.query(query, xc);
+  }
+
+  public static Node xpathQueryElement(Element element, String query) {
+    Node node;
+    try {
+      node = xpathQuery(element, query).get(0);
+    } catch (IndexOutOfBoundsException e) {
+      throw new SreException("Incorrect Xpath result!");
     }
+    return node;
+  }
 
-
-    public static Nodes xpathQuery(Element element, String query) {
-        XPathContext xc = XPathContext.makeNamespaceContext(element);
-        xc.addNamespace(SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
-        xc.addNamespace("cml", "http://www.xml-cml.org/schema");
-        return element.query(query, xc);
+  public static String xpathValue(Element element, String query) {
+    Nodes names = SreUtil.xpathQuery(element, query);
+    if (names.size() != 0) {
+      return names.get(0).getValue();
     }
+    return "";
+  }
 
-
-    public static Node xpathQueryElement(Element element, String query) {
-        Node node;
-        try {
-            node = xpathQuery(element, query).get(0);
-        } catch (IndexOutOfBoundsException e) {
-            throw new SreException("Incorrect Xpath result!");
-        }
-        return node;
+  public static List<String> xpathValueList(Element element, String query) {
+    Nodes nodes = SreUtil.xpathQuery(element, query);
+    List<String> result = new ArrayList<String>();
+    for (int i = 0; i < nodes.size(); i++) {
+      result.add(nodes.get(i).getValue());
     }
+    return result;
+  }
 
+  public static SreElement sreSet(SreNamespace.Tag tag,
+      Collection<String> elements) {
+    if (elements.isEmpty()) {
+      return null;
+    }
+    SreElement element = new SreElement(tag);
+    elements.stream().forEach(e -> element.appendChild(SreUtil.sreElement(e)));
+    return element;
+  }
 
-    public static String xpathValue(Element element, String query) {
-        Nodes names = SreUtil.xpathQuery(element, query);
-        if (names.size() != 0) {
-            return names.get(0).getValue();
-        }
-        return "";
+  public static SreElement sreElement(String name) {
+    if (RichStructureHelper.isAtom(name)) {
+      return new SreElement(SreNamespace.Tag.ATOM, name);
     }
-
-    public static List<String> xpathValueList(Element element, String query) {
-        Nodes nodes = SreUtil.xpathQuery(element, query);
-        List<String> result = new ArrayList<String>();
-        for (int i = 0; i < nodes.size(); i++) {
-            result.add(nodes.get(i).getValue());
-        }
-        return result;
+    if (RichStructureHelper.isBond(name)) {
+      return new SreElement(SreNamespace.Tag.BOND, name);
     }
-
-    public static SreElement sreSet (SreNamespace.Tag tag, Collection<String> elements) {
-        if (elements.isEmpty()) {
-            return null;
-        }
-        SreElement element = new SreElement(tag);
-        elements.stream().forEach(e -> element.appendChild(SreUtil.sreElement(e)));
-        return element;
+    if (RichStructureHelper.isAtomSet(name)) {
+      return new SreElement(SreNamespace.Tag.ATOMSET, name);
     }
-    
-    public static SreElement sreElement(String name) {
-        if (RichStructureHelper.isAtom(name)) {
-            return new SreElement(SreNamespace.Tag.ATOM, name);
-        }
-        if (RichStructureHelper.isBond(name)) {
-            return new SreElement(SreNamespace.Tag.BOND, name);
-        }
-        if (RichStructureHelper.isAtomSet(name)) {
-            return new SreElement(SreNamespace.Tag.ATOMSET, name);
-        }
-        return new SreElement(SreNamespace.Tag.UNKNOWN, name);
-    }
+    return new SreElement(SreNamespace.Tag.UNKNOWN, name);
+  }
 }

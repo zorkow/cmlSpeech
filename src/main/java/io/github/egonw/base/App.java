@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   App.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -23,20 +22,19 @@
  * 
  */
 
-
 //
+
 package io.github.egonw.base;
 
 public class App {
 
-    public static void main(String[] args) throws Exception {
-	Cli.init(args);
-	Logger.start();
-        for (String file : Cli.getFiles()) {
-	    CMLEnricher cmle = new CMLEnricher();
-	    cmle.enrichFile(file);
-	}
-	Logger.end();
+  public static void main(String[] args) throws Exception {
+    Cli.init(args);
+    Logger.start();
+    for (String file : Cli.getFiles()) {
+      CMLEnricher cmle = new CMLEnricher();
+      cmle.enrichFile(file);
     }
+    Logger.end();
+  }
 }
-

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   StructuralGraph.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,78 +23,70 @@
  */
 
 //
+
 package io.github.egonw.graph;
 
-
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.connection.Connection;
-import io.github.egonw.structure.RichAtom;
-import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichStructure;
 
 import org.jgrapht.graph.SimpleGraph;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import io.github.egonw.analysis.RichStructureHelper;
 
 /**
  * The structural graph.
+ * 
  * @extends SimpleGraph
  */
 
 public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
-    
-    private static final long serialVersionUID = 1L;
 
-    private List<RichStructure<?>> structures;
-    private Set<String> names;
+  private static final long serialVersionUID = 1L;
 
+  private List<RichStructure<?>> structures;
+  private Set<String> names;
 
-    public StructuralGraph(Set<String> structures) {
-        super(StructuralEdge.class);
-        this.names = structures;
-        this.structures = this.names.stream()
-            .map(RichStructureHelper::getRichStructure)
-            .collect(Collectors.toList());
-        this.init();
+  public StructuralGraph(Set<String> structures) {
+    super(StructuralEdge.class);
+    this.names = structures;
+    this.structures = this.names.stream()
+        .map(RichStructureHelper::getRichStructure)
+        .collect(Collectors.toList());
+    this.init();
+  }
+
+  private void init() {
+    this.names.stream().forEach(this::addVertex);
+    for (RichStructure<?> structure : this.structures) {
+      Set<Connection> connections = structure.getConnections();
+      if (!connections.isEmpty()) {
+        this.addSingleEdges(structure.getId(), connections, names);
+      }
     }
-    
-    
-    private void init() {
-        this.names.stream().forEach(this::addVertex);
-        for (RichStructure<?> structure : this.structures) {
-            Set<Connection> connections = structure.getConnections();
-            if (!connections.isEmpty()) {
-                this.addSingleEdges(structure.getId(), connections, names);
-            }
-        }
-    }
-    
-   
-    private void addSingleEdges(String source, Set<Connection> connections, Set<String> systems) {
-        for (Connection connection : connections) {
-            if (systems.contains(connection.getConnected())) {
-                this.addEdge(source, connection.getConnected(),
-                                       connection.getConnector());
-            }
-        }
-    }
+  }
 
-
-    public StructuralEdge addEdge(String source, String target, String label) {
-        StructuralEdge edge = new StructuralEdge(label);
-        this.addEdge(source, target, edge);
-        return edge;
+  private void addSingleEdges(String source, Set<Connection> connections,
+      Set<String> systems) {
+    for (Connection connection : connections) {
+      if (systems.contains(connection.getConnected())) {
+        this.addEdge(source, connection.getConnected(),
+            connection.getConnector());
+      }
     }
+  }
 
-    
-    public void visualize (String name) {
-        StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
-        vis.init(this, this.structures, name);
-    }
+  public StructuralEdge addEdge(String source, String target, String label) {
+    StructuralEdge edge = new StructuralEdge(label);
+    this.addEdge(source, target, edge);
+    return edge;
+  }
+
+  public void visualize(String name) {
+    StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
+    vis.init(this, this.structures, name);
+  }
 
 }
-
-

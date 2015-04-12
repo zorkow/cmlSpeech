@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   DefaultComparator.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,51 +23,50 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
-import io.github.egonw.structure.RichChemObject;
-import io.github.egonw.structure.RichStructureComparator;
 import io.github.egonw.structure.RichStructure;
+import io.github.egonw.structure.RichStructureComparator;
 
-/**   
- * The base compare method redistributes wrt to object sub classes.
- * It should not be overwritten!
+/**
+ * The base compare method redistributes wrt to object sub classes. It should
+ * not be overwritten!
  */
 
-abstract class DefaultComparator implements RichStructureComparator<RichStructure<?>> {
+abstract class DefaultComparator implements
+    RichStructureComparator<RichStructure<?>> {
 
-
-    public int compare(RichStructure<?> obj1, RichStructure<?> obj2) {
-        if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtomSet) {
-            return this.compare((RichAtomSet)obj1, (RichAtomSet)obj2);
-        }
-        if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtom) {
-            return this.compare((RichAtomSet)obj1, (RichAtom)obj2);
-        }
-        if (obj1 instanceof RichAtom && obj2 instanceof RichAtomSet) {
-            return this.compare((RichAtom)obj1, (RichAtomSet)obj2);
-        }
-        if (obj1 instanceof RichAtom && obj2 instanceof RichAtom) {
-            return this.compare((RichAtom)obj1, (RichAtom)obj2);
-        }
-        return 0;
-    };
-
-
-    public abstract int compare(RichAtomSet set1, RichAtomSet set2);
-
-    public int compare(RichAtomSet set1, RichAtom atom2) {
-        return -1;
+  public int compare(RichStructure<?> obj1, RichStructure<?> obj2) {
+    if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtomSet) {
+      return this.compare((RichAtomSet) obj1, (RichAtomSet) obj2);
     }
-
-    public int compare(RichAtom atom1, RichAtomSet set2) {
-        return 1;
+    if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtom) {
+      return this.compare((RichAtomSet) obj1, (RichAtom) obj2);
     }
-
-    public int compare(RichAtom atom1, RichAtom atom2) {
-        return 0;
+    if (obj1 instanceof RichAtom && obj2 instanceof RichAtomSet) {
+      return this.compare((RichAtom) obj1, (RichAtomSet) obj2);
     }
+    if (obj1 instanceof RichAtom && obj2 instanceof RichAtom) {
+      return this.compare((RichAtom) obj1, (RichAtom) obj2);
+    }
+    return 0;
+  };
+
+  public abstract int compare(RichAtomSet set1, RichAtomSet set2);
+
+  public int compare(RichAtomSet set1, RichAtom atom2) {
+    return -1;
+  }
+
+  public int compare(RichAtom atom1, RichAtomSet set2) {
+    return 1;
+  }
+
+  public int compare(RichAtom atom1, RichAtom atom2) {
+    return 0;
+  }
 
 }

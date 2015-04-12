@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   CactusException.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,24 +23,24 @@
  */
 
 //
+
 package io.github.egonw.cactus;
 
-
 /**
- * Exception for the Cactus classes.
- * To allow passing through closures it is unchecked!
+ * Exception for the Cactus classes. To allow passing through closures it is
+ * unchecked!
  */
 
 public class CactusException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public CactusException(String message) {
-	super(message);
-    }
+  public CactusException(String message) {
+    super(message);
+  }
 
-    public CactusException(String message, Throwable throwable) {
-	super(message, throwable);
-    }
+  public CactusException(String message, Throwable throwable) {
+    super(message, throwable);
+  }
 
 }

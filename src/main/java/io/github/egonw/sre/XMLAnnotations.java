@@ -9,6 +9,7 @@
  */
 
 //
+
 package io.github.egonw.sre;
 
 /**
@@ -17,8 +18,8 @@ package io.github.egonw.sre;
 
 public interface XMLAnnotations {
 
-    public SreNamespace.Tag tag ();
+  public SreNamespace.Tag tag();
 
-    public SreElement annotation ();
+  public SreElement annotation();
 
 }

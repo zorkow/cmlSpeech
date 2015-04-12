@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichBond.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -23,8 +22,8 @@
  * 
  */
 
-
 //
+
 package io.github.egonw.structure;
 
 import io.github.egonw.sre.SreNamespace;
@@ -38,23 +37,23 @@ import org.openscience.cdk.interfaces.IBond;
 
 public class RichBond extends RichChemObject {
 
-    public RichBond(IBond structure) {
-        super(structure);
+  public RichBond(IBond structure) {
+    super(structure);
 
-        for (IAtom atom : structure.atoms()) {
-            this.getComponents().add(atom.getID());
-        }
-
-    };
-
-    @Override
-    public IBond getStructure() {
-        return (IBond)this.structure;
+    for (IAtom atom : structure.atoms()) {
+      this.getComponents().add(atom.getID());
     }
 
-    @Override
-    public SreNamespace.Tag tag() {
-        return SreNamespace.Tag.BOND;
-    }
+  };
+
+  @Override
+  public IBond getStructure() {
+    return (IBond) this.structure;
+  }
+
+  @Override
+  public SreNamespace.Tag tag() {
+    return SreNamespace.Tag.BOND;
+  }
 
 }

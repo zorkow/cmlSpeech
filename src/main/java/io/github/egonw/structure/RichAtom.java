@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichAtom.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import io.github.egonw.sre.SreNamespace;
@@ -36,22 +36,22 @@ import org.openscience.cdk.interfaces.IAtom;
 
 public class RichAtom extends RichChemObject {
 
-    public RichAtom(IAtom structure) {
-        super(structure);
-    };
+  public RichAtom(IAtom structure) {
+    super(structure);
+  };
 
-    @Override
-    public IAtom getStructure() {
-        return (IAtom)this.structure;
-    }
+  @Override
+  public IAtom getStructure() {
+    return (IAtom) this.structure;
+  }
 
-    public Boolean isCarbon() {
-        return this.getStructure().getSymbol().equals("C");
-    }
-    
-    @Override
-    public SreNamespace.Tag tag() {
-        return SreNamespace.Tag.ATOM;
-    }
+  public Boolean isCarbon() {
+    return this.getStructure().getSymbol().equals("C");
+  }
+
+  @Override
+  public SreNamespace.Tag tag() {
+    return SreNamespace.Tag.ATOM;
+  }
 
 }

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichStructureComparator.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -25,6 +24,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import java.util.Comparator;
@@ -36,14 +36,15 @@ import java.util.Comparator;
  * less than the smaller structure!
  */
 
-public interface RichStructureComparator<T> extends Comparator<RichStructure<?>> {
-    
-    public int compare(RichAtomSet set1, RichAtomSet set2);
+public interface RichStructureComparator<T> extends
+    Comparator<RichStructure<?>> {
 
-    public int compare(RichAtomSet set1, RichAtom atom2);
+  public int compare(RichAtomSet set1, RichAtomSet set2);
 
-    public int compare(RichAtom atom1, RichAtomSet set2);
+  public int compare(RichAtomSet set1, RichAtom atom2);
 
-    public int compare(RichAtom atom1, RichAtom atom2);
+  public int compare(RichAtom atom1, RichAtomSet set2);
+
+  public int compare(RichAtom atom1, RichAtom atom2);
 
 }

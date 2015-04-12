@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichSetType.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 /**
@@ -32,21 +32,12 @@ package io.github.egonw.structure;
 
 public enum RichSetType {
 
-    ALIPHATIC ("Aliphatic chain"),
-    FUSED ("Fused ring"),
-    ISOLATED ("Isolated ring"),
-    SMALLEST ("Subring"),
-    MOLECULE ("Molecule"),
-    FUNCGROUP ("Functional Group"),
-    ;
+  ALIPHATIC("Aliphatic chain"), FUSED("Fused ring"), ISOLATED("Isolated ring"), SMALLEST(
+      "Subring"), MOLECULE("Molecule"), FUNCGROUP("Functional Group"), ;
 
-    public final String name;
+  public final String name;
 
-    private RichSetType (String type) {
-        this.name = type;
-    }
+  private RichSetType(String type) {
+    this.name = type;
+  }
 }
-
-
-
-

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   Heuristics.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,15 +23,15 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
-import io.github.egonw.structure.RichAtomSet;
-import io.github.egonw.structure.RichChemObject;
-
-import java.util.Comparator;
-import io.github.egonw.structure.RichStructure;
 import io.github.egonw.structure.RichAtom;
+import io.github.egonw.structure.RichAtomSet;
+import io.github.egonw.structure.RichStructure;
+
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Combines basic comparators as a single heuristic.
@@ -40,44 +39,44 @@ import java.util.Arrays;
 
 public class Heuristics extends DefaultComparator {
 
-    private String[] heuristics;
-    private Comparator<RichStructure<?>> weight = new WeightComparator();
-    private Comparator<RichStructure<?>> type = new TypeComparator();
-    private Comparator<RichStructure<?>> size = new SizeComparator();
+  private String[] heuristics;
+  private Comparator<RichStructure<?>> weight = new WeightComparator();
+  private Comparator<RichStructure<?>> type = new TypeComparator();
+  private Comparator<RichStructure<?>> size = new SizeComparator();
 
-    public Heuristics(String heuristic) {
-        // TODO (sorge) Do something with non-existent heuristics.
-        this.heuristics = heuristic == "" ?
-            new String[] {"type", "weight", "size"} : heuristic.split(",");
-    }
-    
-    public int compare(RichAtomSet set1, RichAtomSet set2) {
-        Integer result = 0;
-        for (String heuristic : this.heuristics) {
-            switch (heuristic) {
-            case "size":
-                result = this.size.compare(set1, set2);
-                break;
-            case "type":
-                result = this.type.compare(set1, set2);
-                break;
-            case "weight":
-                result = this.weight.compare(set1, set2);
-                break;
-            default:
-                break;
-            }
-            if (result != 0) {
-                break;
-            }
-        }
-        return result;
-    }
+  public Heuristics(String heuristic) {
+    // TODO (sorge) Do something with non-existent heuristics.
+    this.heuristics = heuristic == "" ? new String[] { "type", "weight", "size" }
+        : heuristic.split(",");
+  }
 
-    public int compare(RichAtom atom1, RichAtom atom2) {
-        if (Arrays.asList(this.heuristics).contains("type")) {
-            return this.weight.compare(atom1, atom2);
-        }
-        return 0;
+  public int compare(RichAtomSet set1, RichAtomSet set2) {
+    Integer result = 0;
+    for (String heuristic : this.heuristics) {
+      switch (heuristic) {
+      case "size":
+        result = this.size.compare(set1, set2);
+        break;
+      case "type":
+        result = this.type.compare(set1, set2);
+        break;
+      case "weight":
+        result = this.weight.compare(set1, set2);
+        break;
+      default:
+        break;
+      }
+      if (result != 0) {
+        break;
+      }
     }
+    return result;
+  }
+
+  public int compare(RichAtom atom1, RichAtom atom2) {
+    if (Arrays.asList(this.heuristics).contains("type")) {
+      return this.weight.compare(atom1, atom2);
+    }
+    return 0;
+  }
 }

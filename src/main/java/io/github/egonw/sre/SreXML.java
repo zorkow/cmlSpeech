@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SreXML.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.sre;
 
 import io.github.egonw.analysis.RichStructureHelper;
@@ -37,47 +37,49 @@ import java.util.Set;
 
 public abstract class SreXML {
 
-    SreAnnotations annotations;
-    
-    SreXML() {
-        this.annotations = new SreAnnotations(); 
+  SreAnnotations annotations;
+
+  SreXML() {
+    this.annotations = new SreAnnotations();
+  }
+
+  public SreAnnotations getAnnotations() {
+    this.finalize();
+    return this.annotations;
+  }
+
+  abstract void compute();
+
+  public void finalize() {
+    this.annotations.finalize();
+  };
+
+  public void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
+    for (String element : set) {
+      this.annotations.appendAnnotation(annotate, tag,
+          this.toSreElement(element));
     }
+  }
 
-    public SreAnnotations getAnnotations() {
-        this.finalize();
-        return this.annotations;
+  public void toSreSet(String annotate, SreNamespace.Tag tag,
+      ComponentsPositions positions) {
+    for (String element : positions) {
+      this.annotations.appendAnnotation(annotate, tag,
+          this.toSreElement(element));
     }
+  }
 
-    abstract void compute();
-
-    public void finalize() {
-        this.annotations.finalize();
-    };
-
-    public void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
-        for (String element : set) {
-            this.annotations.appendAnnotation(annotate, tag, this.toSreElement(element));
-        }
+  public SreElement toSreElement(String name) {
+    if (RichStructureHelper.isAtom(name)) {
+      return new SreElement(SreNamespace.Tag.ATOM, name);
     }
-
-    public void toSreSet(String annotate, SreNamespace.Tag tag, ComponentsPositions positions) {
-        for (String element : positions) {
-            this.annotations.appendAnnotation(annotate, tag, this.toSreElement(element));
-        }
+    if (RichStructureHelper.isBond(name)) {
+      return new SreElement(SreNamespace.Tag.BOND, name);
     }
-
-    public SreElement toSreElement(String name) {
-        if (RichStructureHelper.isAtom(name)) {
-            return new SreElement(SreNamespace.Tag.ATOM, name);
-        }
-        if (RichStructureHelper.isBond(name)) {
-            return new SreElement(SreNamespace.Tag.BOND, name);
-        }
-        if (RichStructureHelper.isAtomSet(name)) {
-            return new SreElement(SreNamespace.Tag.ATOMSET, name);
-        }
-        return new SreElement(SreNamespace.Tag.UNKNOWN, name);
+    if (RichStructureHelper.isAtomSet(name)) {
+      return new SreElement(SreNamespace.Tag.ATOMSET, name);
     }
+    return new SreElement(SreNamespace.Tag.UNKNOWN, name);
+  }
 
 }
-

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   CactusExector.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -22,8 +21,8 @@
  * 
  */
 
-
 //
+
 package io.github.egonw.cactus;
 
 import io.github.egonw.base.Logger;
@@ -43,59 +42,63 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-
 /**
  * Executes Cactus calls and collects their results.
  */
 
 public class CactusExecutor {
-    
-    /** Pool of callables for Cactus. */
-    private List<CactusCallable> pool = new ArrayList<>();
-    /** Registry for futures expecting results from Cactus calls. */
-    private Multimap<String, Future<SreAttribute>> registry = HashMultimap.create();
-    private ExecutorService executor;
-        
-    /**
-     * Register callables for cactus in the pool.
-     * @param callable A callable to register.
-     */
-    public void register(CactusCallable callable) {
-        pool.add(callable);
-    }
 
-    /** Execute all callables currently in the pool. */
-    public void execute() {
-        this.executor = Executors.newFixedThreadPool(pool.size());
-        for (CactusCallable callable : pool) {
-            Future<SreAttribute> future = executor.submit(callable);
-            this.registry.put(callable.id, future);
-        }
-    }
+  /** Pool of callables for Cactus. */
+  private List<CactusCallable> pool = new ArrayList<>();
+  /** Registry for futures expecting results from Cactus calls. */
+  private Multimap<String, Future<SreAttribute>> registry = HashMultimap
+      .create();
+  private ExecutorService executor;
 
-    /**
-     * Adds attributes from returned by all current Cactus futures to a document.
-     * @param doc The current document.
-     */
-    public void addResults(Document doc) {
-        for (Map.Entry<String, Future<SreAttribute>> entry : this.registry.entries()) {
-            String id = entry.getKey();
-            Future<SreAttribute> future = entry.getValue();
-            try {
-                Element element = SreUtil.getElementById(doc, id);
-                SreAttribute result = future.get();
-                element.addAttribute(result);
-            }
-            catch (Throwable e) {
-                Logger.error("Cactus Error: " + e.getMessage() + "\n");
-                continue;
-            }
-        }
-    }
+  /**
+   * Register callables for cactus in the pool.
+   * 
+   * @param callable
+   *          A callable to register.
+   */
+  public void register(CactusCallable callable) {
+    pool.add(callable);
+  }
 
-    /** Shut down the Cactus executor. */
-    public void shutdown() {
-        this.executor.shutdown();
+  /** Execute all callables currently in the pool. */
+  public void execute() {
+    this.executor = Executors.newFixedThreadPool(pool.size());
+    for (CactusCallable callable : pool) {
+      Future<SreAttribute> future = executor.submit(callable);
+      this.registry.put(callable.id, future);
     }
+  }
+
+  /**
+   * Adds attributes from returned by all current Cactus futures to a document.
+   * 
+   * @param doc
+   *          The current document.
+   */
+  public void addResults(Document doc) {
+    for (Map.Entry<String, Future<SreAttribute>> entry : this.registry
+        .entries()) {
+      String id = entry.getKey();
+      Future<SreAttribute> future = entry.getValue();
+      try {
+        Element element = SreUtil.getElementById(doc, id);
+        SreAttribute result = future.get();
+        element.addAttribute(result);
+      } catch (Throwable e) {
+        Logger.error("Cactus Error: " + e.getMessage() + "\n");
+        continue;
+      }
+    }
+  }
+
+  /** Shut down the Cactus executor. */
+  public void shutdown() {
+    this.executor.shutdown();
+  }
 
 }

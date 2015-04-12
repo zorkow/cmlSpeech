@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SpiroAtom.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.connection;
 
 import io.github.egonw.sre.SreNamespace;
@@ -34,19 +34,18 @@ import io.github.egonw.sre.SreNamespace;
 
 public class SpiroAtom extends Connection {
 
-    public SpiroAtom(String connector, String connected) {
-        super(connector, connected);
-    }
+  public SpiroAtom(String connector, String connected) {
+    super(connector, connected);
+  }
 
+  @Override
+  public ConnectionType getType() {
+    return ConnectionType.SPIROATOM;
+  }
 
-    @Override
-    public ConnectionType getType() {
-        return ConnectionType.SPIROATOM;
-    }
-
-    @Override
-    public SreNamespace.Tag tag() {
-        return SreNamespace.Tag.SPIROATOM;
-    }
+  @Override
+  public SreNamespace.Tag tag() {
+    return SreNamespace.Tag.SPIROATOM;
+  }
 
 }

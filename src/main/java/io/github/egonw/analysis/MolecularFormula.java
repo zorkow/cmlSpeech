@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   MolecularFormula.java
  * @author Volker Sorge <sorge@zorkstomp>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtomSet;
@@ -39,19 +39,18 @@ import java.util.List;
 
 public class MolecularFormula {
 
-    public static String compute(RichAtomSet system) {
-        IMolecularFormula form = MolecularFormulaManipulator.
-            getMolecularFormula(system.getStructure());
-        return MolecularFormulaManipulator.getString(form);
-    }
+  public static String compute(RichAtomSet system) {
+    IMolecularFormula form = MolecularFormulaManipulator
+        .getMolecularFormula(system.getStructure());
+    return MolecularFormulaManipulator.getString(form);
+  }
 
+  public static void set(RichAtomSet system) {
+    system.molecularFormula = MolecularFormula.compute(system);
+  }
 
-    public static void set(RichAtomSet system) {
-        system.molecularFormula = MolecularFormula.compute(system);
-    }
-    
-    public static void set(List<RichAtomSet> systems) {
-        systems.stream().forEach(MolecularFormula::set);
-    }
-    
+  public static void set(List<RichAtomSet> systems) {
+    systems.stream().forEach(MolecularFormula::set);
+  }
+
 }

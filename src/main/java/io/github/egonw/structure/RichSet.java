@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichSet.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
 import nu.xom.Document;
@@ -39,42 +39,41 @@ import java.util.SortedSet;
 
 public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
 
-    
-    /**
-     * @return The type of this rich atom set.
-     */
-    public RichSetType getType();
+  /**
+   * @return The type of this rich atom set.
+   */
+  public RichSetType getType();
 
+  /**
+   * @return The sorted set of connecting atoms.
+   */
+  public SortedSet<String> getConnectingAtoms();
 
-    /**
-     * @return The sorted set of connecting atoms.
-     */
-    public SortedSet<String> getConnectingAtoms();
+  /**
+   * @param doc
+   *          The CML document structure.
+   * 
+   * @return A CML element represengin this atom set.
+   */
+  public CMLAtomSet getCML(Document doc);
 
-    /** 
-     * @param doc The CML document structure.
-     * 
-     * @return A CML element represengin this atom set.
-     */
-    public CMLAtomSet getCML(Document doc);
+  /**
+   * Finds an element in the set by its position.
+   * 
+   * @param position
+   *          The position of the element to retrieve.
+   * 
+   * @return The name of the retrieved element.
+   */
+  public String getAtom(Integer position);
 
-
-    /**
-     * Finds an element in the set by its position.
-     * 
-     * @param position The position of the element to retrieve.
-     * 
-     * @return The name of the retrieved element.
-     */
-    public String getAtom(Integer position);
-
-
-    /**
-     * Retrieves the position of an element in the set.
-     * 
-     * @param element The name of the element.
-     * 
-     * @return The retrieved position.
-     */
-    public Integer getPosition(String element);
+  /**
+   * Retrieves the position of an element in the set.
+   * 
+   * @param element
+   *          The name of the element.
+   * 
+   * @return The retrieved position.
+   */
+  public Integer getPosition(String element);
 }

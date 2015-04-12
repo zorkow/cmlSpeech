@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SreOutput.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,17 +23,10 @@
  */
 
 //
+
 package io.github.egonw.sre;
 
 import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.connection.Connection;
-import io.github.egonw.structure.RichAtom;
-import io.github.egonw.structure.RichAtomSet;
-import io.github.egonw.structure.RichBond;
-import io.github.egonw.structure.RichStructure;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Constructs structural annotations for Sre.
@@ -42,20 +34,28 @@ import java.util.stream.Collectors;
 
 public class SreOutput extends SreXML {
 
-    public SreOutput() {
-        super();
-        compute();
-    }
+  public SreOutput() {
+    super();
+    compute();
+  }
 
-    @Override
-    public void compute() {
-        RichStructureHelper.getAtoms().stream()
-            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
-        RichStructureHelper.getBonds().stream()
-            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
-        RichStructureHelper.getAtomSets().stream()
-            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
-    }
+  @Override
+  public void compute() {
+    RichStructureHelper
+        .getAtoms()
+        .stream()
+        .forEach(
+            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+    RichStructureHelper
+        .getBonds()
+        .stream()
+        .forEach(
+            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+    RichStructureHelper
+        .getAtomSets()
+        .stream()
+        .forEach(
+            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+  }
 
 }
-

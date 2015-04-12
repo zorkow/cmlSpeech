@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SreElement.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,41 +23,43 @@
  */
 
 //
+
 package io.github.egonw.sre;
 
 import nu.xom.Element;
 
 /**
  * Basic elements for Sre annotations.
+ * 
  * @extends Element
  */
 
 public class SreElement extends Element {
 
-    SreElement(String tag) {
-        super(SreNamespace.getInstance().prefix + ":" + tag,
-              SreNamespace.getInstance().uri);
-    }
+  SreElement(String tag) {
+    super(SreNamespace.getInstance().prefix + ":" + tag, SreNamespace
+        .getInstance().uri);
+  }
 
-    public SreElement(SreNamespace.Tag tag) {
-        super(tag.tag, SreNamespace.getInstance().uri);
-    }
+  public SreElement(SreNamespace.Tag tag) {
+    super(tag.tag, SreNamespace.getInstance().uri);
+  }
 
-    public SreElement(SreNamespace.Tag tag, String text) {
-        super(tag.tag, SreNamespace.getInstance().uri);
-        this.appendChild(text);
-    }
+  public SreElement(SreNamespace.Tag tag, String text) {
+    super(tag.tag, SreNamespace.getInstance().uri);
+    this.appendChild(text);
+  }
 
-    public SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
-        super(tag.tag, SreNamespace.getInstance().uri);
-        this.appendChild(child1);
-        this.appendChild(child2);
-    }
+  public SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
+    super(tag.tag, SreNamespace.getInstance().uri);
+    this.appendChild(child1);
+    this.appendChild(child2);
+  }
 
-    public void appendChild(SreElement element) {
-        if (element != null) {
-            super.appendChild(element);
-        }
+  public void appendChild(SreElement element) {
+    if (element != null) {
+      super.appendChild(element);
     }
+  }
 
 }

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   SmartsPatterns.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import java.io.BufferedReader;
@@ -35,70 +35,64 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
- * Singleton class to hold smart patterns. These patterns are currently
- * loaded from files given in hard coded pathnames.
+ * Singleton class to hold smart patterns. These patterns are currently loaded
+ * from files given in hard coded pathnames.
  */
 public class SmartsPatterns {
 
-    private static volatile SmartsPatterns instance = null;
-    private final static String[] smartsFiles = {
-        "src/main/resources/smarts/daylight-pattern.txt",
-        "src/main/resources/smarts/smarts-pattern.txt"
-    };
-    private static Map<String, String> smartsPatterns = new HashMap<String, String>();
-    private static boolean loaded = false;
+  private static volatile SmartsPatterns instance = null;
+  private final static String[] smartsFiles = {
+      "src/main/resources/smarts/daylight-pattern.txt",
+      "src/main/resources/smarts/smarts-pattern.txt" };
+  private static Map<String, String> smartsPatterns = new HashMap<String, String>();
+  private static boolean loaded = false;
 
-    
-    protected SmartsPatterns() {
-        if (!loaded) {
-            SmartsPatterns.loadSmartsFiles();
-            loaded = true;
+  protected SmartsPatterns() {
+    if (!loaded) {
+      SmartsPatterns.loadSmartsFiles();
+      loaded = true;
+    }
+  }
+
+  private static SmartsPatterns getInstance() {
+    if (instance == null) {
+      instance = new SmartsPatterns();
+    }
+    return instance;
+  }
+
+  public static Set<Map.Entry<String, String>> getPatterns() {
+    getInstance();
+    return smartsPatterns.entrySet();
+  }
+
+  private static void loadSmartsFiles() {
+    for (String file : smartsFiles) {
+      loadSmartsFile(file);
+    }
+  }
+
+  private static void loadSmartsFile(String file) {
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(new File(file)));
+      String line;
+      while ((line = br.readLine()) != null) {
+        int colonIndex = line.indexOf(":");
+        // Checks that the line has a colon in it and if it is one of
+        // the patterns to be skipped (notated by a '#' before the name
+        // in the file
+        if (colonIndex != -1 && line.charAt(0) != '#') {
+          smartsPatterns.put(line.substring(0, colonIndex),
+              line.substring(colonIndex + 2));
         }
+      }
+      br.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    
-    private static SmartsPatterns getInstance() {
-        if (instance == null) {
-            instance = new SmartsPatterns();
-        }
-        return instance;
-    }
-
-    
-    public static Set<Map.Entry<String, String>> getPatterns() {
-        getInstance();
-        return smartsPatterns.entrySet();
-    }
-        
-
-    private static void loadSmartsFiles() {
-        for (String file : smartsFiles) {
-            loadSmartsFile(file);
-        }
-    }
-
-    private static void loadSmartsFile(String file) {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(file)));
-            String line;
-            while ((line = br.readLine()) != null) {
-                int colonIndex = line.indexOf(":");
-                // Checks that the line has a colon in it and if it is one of
-                // the patterns to be skipped (notated by a '#' before the name
-                // in the file
-                if (colonIndex != -1 && line.charAt(0) != '#') {
-                    smartsPatterns.put(line.substring(0, colonIndex),
-                            line.substring(colonIndex + 2));
-                }
-            }
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  }
 
 }

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   StructuralEdge.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,6 +23,7 @@
  */
 
 //
+
 package io.github.egonw.graph;
 
 import io.github.egonw.base.Cli;
@@ -32,27 +32,28 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Edges for the structural graph.
+ * 
  * @extends DefaultEdge
  */
 
 public class StructuralEdge extends DefaultEdge {
-    
-    private static final long serialVersionUID = 1L;
 
-    private String label;
-    private boolean shortBonds = false;
+  private static final long serialVersionUID = 1L;
 
-    public StructuralEdge(String label) {
-        super();
-        this.label = label;
-        this.shortBonds = Cli.hasOption("vis_short");
+  private String label;
+  private boolean shortBonds = false;
+
+  public StructuralEdge(String label) {
+    super();
+    this.label = label;
+    this.shortBonds = Cli.hasOption("vis_short");
+  }
+
+  public String toString() {
+    if (this.shortBonds) {
+      return this.label;
     }
-
-    public String toString() {
-        if (this.shortBonds) {
-            return this.label;
-        }
-        return "(" + this.getSource().toString() + " : " + 
-            this.label + " : " + this.getTarget().toString() + ")";
-    }
+    return "(" + this.getSource().toString() + " : " + this.label + " : "
+        + this.getTarget().toString() + ")";
+  }
 }

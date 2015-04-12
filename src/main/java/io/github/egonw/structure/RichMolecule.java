@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   RichMolecule.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,19 +23,17 @@
  */
 
 //
+
 package io.github.egonw.structure;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import io.github.egonw.analysis.WeightComparator;
 import io.github.egonw.analysis.Heuristics;
+import io.github.egonw.analysis.RichStructureHelper;
+
+import org.openscience.cdk.interfaces.IAtomContainer;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
-import io.github.egonw.analysis.RichStructureHelper;
-import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -45,54 +42,50 @@ import java.util.stream.Collectors;
 
 public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
-    private List<RichStructure<?>> blocks = new ArrayList<>();
+  private List<RichStructure<?>> blocks = new ArrayList<>();
 
-    public RichMolecule(IAtomContainer container, String id) {
-        super(container, id, RichSetType.MOLECULE);
-    }
+  public RichMolecule(IAtomContainer container, String id) {
+    super(container, id, RichSetType.MOLECULE);
+  }
 
+  public final void computePositions() {
+    this.walk();
+  }
 
-    public final void computePositions() {
-        this.walk();
-    }
-    
-
-    protected final void walk() {
-        this.setPath();
-        for (String structure : this.getPath()) {
-            if (RichStructureHelper.isAtom(structure)) {
-                this.componentPositions.addNext(structure);
-            } else {
-                RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
-                atomSet.walk();
-                this.componentPositions.putAll(atomSet.componentPositions);
-                if (atomSet.getType() == RichSetType.FUSED) {
-                    for (String subRing : ((RichFusedRing)atomSet).getPath()) {
-                        RichAtomSet subSet = RichStructureHelper.getRichAtomSet(subRing);
-                        this.componentPositions.putAll(subSet.componentPositions);
-                    }
-                }
-            }
+  protected final void walk() {
+    this.setPath();
+    for (String structure : this.getPath()) {
+      if (RichStructureHelper.isAtom(structure)) {
+        this.componentPositions.addNext(structure);
+      } else {
+        RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
+        atomSet.walk();
+        this.componentPositions.putAll(atomSet.componentPositions);
+        if (atomSet.getType() == RichSetType.FUSED) {
+          for (String subRing : ((RichFusedRing) atomSet).getPath()) {
+            RichAtomSet subSet = RichStructureHelper.getRichAtomSet(subRing);
+            this.componentPositions.putAll(subSet.componentPositions);
+          }
         }
+      }
     }
+  }
 
+  private ComponentsPositions path = new ComponentsPositions();
 
-    private ComponentsPositions path = new ComponentsPositions();
+  @Override
+  public ComponentsPositions getPath() {
+    return path;
+  }
 
-
-    @Override
-    public ComponentsPositions getPath() {
-        return path;
-    }
-    
-    @Override
-    public void setPath() {
-        this.blocks.addAll(this.getSubSystems().stream().
-                           map(RichStructureHelper::getRichStructure).
-                           collect(Collectors.toList()));
-        Collections.sort(this.blocks, new Heuristics(""));
-        WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
-        this.path = dfs.getPositions();
-    }
+  @Override
+  public void setPath() {
+    this.blocks.addAll(this.getSubSystems().stream()
+        .map(RichStructureHelper::getRichStructure)
+        .collect(Collectors.toList()));
+    Collections.sort(this.blocks, new Heuristics(""));
+    WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
+    this.path = dfs.getPositions();
+  }
 
 }

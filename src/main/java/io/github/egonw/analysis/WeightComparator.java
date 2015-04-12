@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   TypeComparator.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -23,6 +22,7 @@
  */
 
 //
+
 package io.github.egonw.analysis;
 
 import io.github.egonw.structure.RichAtom;
@@ -39,25 +39,26 @@ import java.io.IOException;
  */
 
 public class WeightComparator extends DefaultComparator {
-    
-    public int compare(RichAtomSet set1, RichAtomSet set2) {
-        IAtomContainer container1 = set1.getStructure();
-        IAtomContainer container2 = set2.getStructure();
-        double weightA = AtomContainerManipulator.getNaturalExactMass(container1);
-        double weightB = AtomContainerManipulator.getNaturalExactMass(container2);
 
-        return (int)Math.signum(weightB - weightA);
+  public int compare(RichAtomSet set1, RichAtomSet set2) {
+    IAtomContainer container1 = set1.getStructure();
+    IAtomContainer container2 = set2.getStructure();
+    double weightA = AtomContainerManipulator.getNaturalExactMass(container1);
+    double weightB = AtomContainerManipulator.getNaturalExactMass(container2);
+
+    return (int) Math.signum(weightB - weightA);
+  }
+
+  public int compare(RichAtom atom1, RichAtom atom2) {
+    try {
+      double weightA = AtomicProperties.getInstance().getMass(
+          atom1.getStructure().getSymbol());
+      double weightB = AtomicProperties.getInstance().getMass(
+          atom2.getStructure().getSymbol());
+
+      return (int) Math.signum(weightB - weightA);
+    } catch (IOException e) {
+      return 0;
     }
-
-    public int compare(RichAtom atom1, RichAtom atom2) {
-        try {
-            double weightA = AtomicProperties.getInstance().getMass(atom1.getStructure().getSymbol());
-            double weightB = AtomicProperties.getInstance().getMass(atom2.getStructure().getSymbol());
-
-            return (int)Math.signum(weightB - weightA);
-        }
-        catch (IOException e) {
-            return 0;
-        }
-    }
+  }
 }

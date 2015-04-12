@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 /**
  * @file   Connection.java
  * @author Volker Sorge <sorge@zorkstone>
@@ -24,63 +23,62 @@
  */
 
 //
+
 package io.github.egonw.connection;
 
-import io.github.egonw.sre.XMLAnnotations;
 import io.github.egonw.sre.SreElement;
 import io.github.egonw.sre.SreNamespace;
-
+import io.github.egonw.sre.XMLAnnotations;
 
 /**
- * Connections consist of
- * -- the connecting structure: name of either bond or atom
- * -- the connected structure: name of an atom or an atom set
+ * Connections consist of -- the connecting structure: name of either bond or
+ * atom -- the connected structure: name of an atom or an atom set
  */
 
-public abstract class Connection extends ConnectionComparator implements Comparable<Connection>, XMLAnnotations {
-    
-    private String connector = "";
-    private String connected = "";
+public abstract class Connection extends ConnectionComparator implements
+    Comparable<Connection>, XMLAnnotations {
 
-    public Connection(String connector, String connected) {
-        this.connector = connector;
-        this.connected = connected;
-    }
+  private String connector = "";
+  private String connected = "";
 
-    public String getConnector() {
-        return this.connector;
-    }
-    
-    public String getConnected() {
-        return this.connected;
-    }
-    
-    public abstract ConnectionType getType();
-     
-    public boolean hasType(ConnectionType type) {
-        return type.equals(this.getType());
-    }
+  public Connection(String connector, String connected) {
+    this.connector = connector;
+    this.connected = connected;
+  }
 
-    @Override
-    public String toString() {
-        return "\n" + getType() + ": "
-            + this.getConnector() + " -> " + this.getConnected();
-    }
+  public String getConnector() {
+    return this.connector;
+  }
 
-    @Override
-    public int compareTo(Connection con) {
-        return compare(this, con);
-    }
+  public String getConnected() {
+    return this.connected;
+  }
 
-    @Override
-    public abstract SreNamespace.Tag tag();
-     
+  public abstract ConnectionType getType();
 
-    @Override
-    public SreElement annotation() {
-        return new SreElement(this.tag(),
-                              new SreElement(SreNamespace.Tag.ATOM, this.getConnector()),
-                              new SreElement (SreNamespace.Tag.ATOMSET, this.getConnected()));
-    }
+  public boolean hasType(ConnectionType type) {
+    return type.equals(this.getType());
+  }
+
+  @Override
+  public String toString() {
+    return "\n" + getType() + ": " + this.getConnector() + " -> "
+        + this.getConnected();
+  }
+
+  @Override
+  public int compareTo(Connection con) {
+    return compare(this, con);
+  }
+
+  @Override
+  public abstract SreNamespace.Tag tag();
+
+  @Override
+  public SreElement annotation() {
+    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.ATOM,
+        this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
+        this.getConnected()));
+  }
 
 }
