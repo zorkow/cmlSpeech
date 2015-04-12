@@ -60,7 +60,7 @@ import java.util.List;
  * The basic loop for semantically enriching chemical diagrams.
  */
 
-public class CMLEnricher {
+public class CmlEnricher {
   public StructuralAnalysis analysis;
 
   private Document doc;
@@ -75,7 +75,7 @@ public class CMLEnricher {
    * 
    * @return The newly created object.
    */
-  public CMLEnricher() {
+  public CmlEnricher() {
   }
 
   /**
@@ -130,12 +130,12 @@ public class CMLEnricher {
   /**
    * Loads a molecule and initiates the CML document.
    *
-   * @param fileName
+   * @param fileName The input filename.
    */
   public void loadMolecule(String fileName) {
     try {
       this.molecule = FileHandler.readFile(fileName);
-      this.doc = FileHandler.buildXOM(this.molecule);
+      this.doc = FileHandler.buildXom(this.molecule);
     } catch (IOException | CDKException | ParsingException e) {
       Logger.error("IO error: " + e.getMessage() + " Can't load file "
           + fileName + "\n");
@@ -169,6 +169,26 @@ public class CMLEnricher {
       String structuralFormula = this.formula.getStructuralFormula(Cli
           .hasOption("sub"));
       System.out.println(structuralFormula);
+    }
+  }
+
+  /**
+   * Computes some names for a molecule by registering calls to Cactus.
+   *
+   * @param id
+   *          The id of the atom set.
+   * @param container
+   *          The molecule to be named.
+   */
+  private void nameMolecule(String id, IAtomContainer container) {
+    // TODO (sorge) catch the right exception.
+    Logger.logging("Registering calls for " + id + "\n");
+    IAtomContainer newcontainer = checkedClone(container);
+    if (newcontainer != null) {
+      this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
+          newcontainer));
+      this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
+          newcontainer));
     }
   }
 
@@ -232,26 +252,6 @@ public class CMLEnricher {
       } else {
         nameMolecule(richSet.getId(), richSet.getStructure());
       }
-    }
-  }
-
-  /**
-   * Computes some names for a molecule by registering calls to Cactus.
-   *
-   * @param id
-   *          The id of the atom set.
-   * @param container
-   *          The molecule to be named.
-   */
-  private void nameMolecule(String id, IAtomContainer container) {
-    // TODO (sorge) catch the right exception.
-    Logger.logging("Registering calls for " + id + "\n");
-    IAtomContainer newcontainer = checkedClone(container);
-    if (newcontainer != null) {
-      this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
-          newcontainer));
-      this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
-          newcontainer));
     }
   }
 

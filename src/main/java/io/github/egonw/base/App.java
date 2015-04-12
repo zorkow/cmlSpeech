@@ -33,7 +33,7 @@ public class App {
     Cli.init(args);
     Logger.start();
     for (String file : Cli.getFiles()) {
-      CMLEnricher cmle = new CMLEnricher();
+      CmlEnricher cmle = new CmlEnricher();
       cmle.enrichFile(file);
     }
     Logger.end();

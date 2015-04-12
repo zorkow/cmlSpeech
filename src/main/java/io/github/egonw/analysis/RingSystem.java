@@ -29,8 +29,8 @@ package io.github.egonw.analysis;
 
 import com.google.common.collect.Lists;
 
-import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
+import io.github.egonw.base.CmlNameComparator;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
@@ -159,7 +159,7 @@ public class RingSystem {
 
   protected class AtomComparator implements Comparator<IAtom> {
     public int compare(IAtom atom1, IAtom atom2) {
-      CMLNameComparator comparator = new CMLNameComparator();
+      CmlNameComparator comparator = new CmlNameComparator();
       return comparator.compare(atom1.getID(), atom2.getID());
     }
   }

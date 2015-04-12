@@ -85,20 +85,20 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
   // The longest chain container.
   public List<IAtomContainer> extract() {
     return chain;
-  };
+  }
 
   /**
    * Returns a <code>Map</code> which specifies which descriptor is implemented
    * by this class.
    *
-   * These fields are used in the map:
+   * <p>These fields are used in the map:
    * <ul>
    * <li>Specification-Reference: refers to an entry in a unique dictionary
    * <li>Implementation-Title: anything
    * <li>Implementation-Identifier: a unique identifier for this version of this
    * class
    * <li>Implementation-Vendor: CDK, JOELib, or anything else
-   * </ul>
+   * </ul></p>
    *
    * @return An object containing the descriptor specification
    */
@@ -113,8 +113,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    * Sets the parameters attribute of the LongestAliphaticChainDescriptor
    * object.
    *
-   * This descriptor takes one parameter, which should be Boolean to indicate
-   * whether aromaticity has been checked (TRUE) or not (FALSE).
+   * <p>This descriptor takes one parameter, which should be Boolean to indicate
+   * whether aromaticity has been checked (TRUE) or not (FALSE).</p>
    * 
    * @param params
    *          The new parameters value
@@ -155,18 +155,18 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     return names;
   }
 
-  private DescriptorValue getDummyDescriptorValue(Exception e) {
+  private DescriptorValue getDummyDescriptorValue(Exception exception) {
     return new DescriptorValue(getSpecification(), getParameterNames(),
         getParameters(), new IntegerResult((int) Double.NaN),
-        getDescriptorNames(), e);
+        getDescriptorNames(), exception);
   }
 
   /**
    * Calculate the count of atoms of the longest aliphatic chain in the supplied
    * {@link IAtomContainer}.
    * 
-   * The method require one parameter: if checkRingSyste is true the
-   * CDKConstant.ISINRING will be set
+   * <p>The method require one parameter: if checkRingSyste is true the
+   * CDKConstant.ISINRING will be set</p>
    *
    * @param atomContainer
    *          The {@link IAtomContainer} for which this descriptor is to be
@@ -204,8 +204,9 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
 
     for (int i = 0; i < container.getAtomCount(); i++) {
       IAtom atomi = container.getAtom(i);
-      if (atomi.getSymbol().equals("H"))
+      if (atomi.getSymbol().equals("H")) {
         continue;
+      }
 
       if (!atomi.getFlag(CDKConstants.ISAROMATIC)
           && !atomi.getFlag(CDKConstants.ISINRING)
@@ -225,8 +226,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         if (aliphaticChain.getAtomCount() >= this.minLength) {
           double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
           Integer[][] pathMatrix = new Integer[conMat.length][conMat.length];
-          int[][] apsp = computeFloydAPSP(conMat, pathMatrix);
-          int pathCoordinates[] = new int[] { 0, 0 };
+          int[][] apsp = computeFloydApsp(conMat, pathMatrix);
+          int[] pathCoordinates = new int[] { 0, 0 };
           tmpLongestChainAtomCount = getLongestChainPath(apsp, pathCoordinates);
           IAtomContainer longestAliphaticChain = createAtomContainerFromPath(
               aliphaticChain,
@@ -246,7 +247,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         getDescriptorNames());
   }
 
-  public List<IAtom> longestPath(Integer pathMatrix[][], int pathStart,
+  public List<IAtom> longestPath(Integer[][] pathMatrix, int pathStart,
       int pathEnd, IAtomContainer chain) {
     List<IAtom> path = new ArrayList<>();
     if (pathMatrix[pathStart][pathEnd] == null) {
@@ -261,13 +262,12 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     return path;
   }
 
-  public int[][] computeFloydAPSP(double costMatrix[][], Integer pathMatrix[][]) {
-    int i, j, k;
+  public int[][] computeFloydApsp(double[][] costMatrix, Integer[][] pathMatrix) {
     int nrow = costMatrix.length;
     int[][] distMatrix = new int[nrow][nrow];
     // logger.debug("Matrix size: " + n);
-    for (i = 0; i < nrow; i++) {
-      for (j = 0; j < nrow; j++) {
+    for (int i = 0; i < nrow; i++) {
+      for (int j = 0; j < nrow; j++) {
         if (costMatrix[i][j] == 0) {
           distMatrix[i][j] = 999999999;
           pathMatrix[i][j] = null;
@@ -277,12 +277,12 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         }
       }
     }
-    for (i = 0; i < nrow; i++) {
+    for (int i = 0; i < nrow; i++) {
       distMatrix[i][i] = 0;
     }
-    for (k = 0; k < nrow; k++) {
-      for (i = 0; i < nrow; i++) {
-        for (j = 0; j < nrow; j++) {
+    for (int k = 0; k < nrow; k++) {
+      for (int i = 0; i < nrow; i++) {
+        for (int j = 0; j < nrow; j++) {
           if (distMatrix[i][k] + distMatrix[k][j] < distMatrix[i][j]) {
             distMatrix[i][j] = distMatrix[i][k] + distMatrix[k][j];
             pathMatrix[i][j] = pathMatrix[i][k];
@@ -348,10 +348,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
   }
 
   private void printAtomList(List<IAtom> atoms) {
-    int i = 0;
+    int count = 0;
     for (IAtom atom : atoms) {
-      System.out.println("Atom " + i + ": " + atom.getID());
-      i++;
+      System.out.println("Atom " + count + ": " + atom.getID());
+      count++;
     }
   }
 
@@ -374,16 +374,16 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     IAtomContainer aliphaticChain = container.getBuilder().newInstance(
         IAtomContainer.class);
     for (int i = 0; i < path.size() - 1; i++) {
-      IAtom iAtom = path.get(i);
-      if (!aliphaticChain.contains(iAtom)) {
-        aliphaticChain.addAtom(iAtom);
+      IAtom firstAtom = path.get(i);
+      if (!aliphaticChain.contains(firstAtom)) {
+        aliphaticChain.addAtom(firstAtom);
       }
       for (int j = 1; j < path.size(); j++) {
-        IAtom jAtom = path.get(j);
-        IBond bond = container.getBond(iAtom, jAtom);
+        IAtom secondAtom = path.get(j);
+        IBond bond = container.getBond(firstAtom, secondAtom);
         if (bond != null) {
-          if (!aliphaticChain.contains(jAtom)) {
-            aliphaticChain.addAtom(jAtom);
+          if (!aliphaticChain.contains(secondAtom)) {
+            aliphaticChain.addAtom(secondAtom);
           }
           if (!aliphaticChain.contains(bond)) {
             aliphaticChain.addBond(bond);

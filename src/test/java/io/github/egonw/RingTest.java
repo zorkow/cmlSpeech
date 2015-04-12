@@ -32,18 +32,18 @@ import static org.junit.Assert.assertArrayEquals;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import io.github.egonw.base.CMLEnricher;
+import io.github.egonw.base.CmlEnricher;
 import java.nio.file.Paths;
 import io.github.egonw.structure.RichRing;
 import io.github.egonw.analysis.RichStructureHelper;
 import java.util.stream.Collectors;
 
-import io.github.egonw.base.CMLEnricher;
+import io.github.egonw.base.CmlEnricher;
 
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.Before;
@@ -64,8 +64,8 @@ public class RingTest {
     }
 
     public void compareSets(List<String> actual, String[] expected) {
-        SortedSet<String> actualSet = new TreeSet<>(new CMLNameComparator());
-        SortedSet<String> expectedSet = new TreeSet<>(new CMLNameComparator());
+        SortedSet<String> actualSet = new TreeSet<>(new CmlNameComparator());
+        SortedSet<String> expectedSet = new TreeSet<>(new CmlNameComparator());
         actualSet.addAll(actual);
         expectedSet.addAll(Arrays.asList(expected));
         System.out.println(actualSet);
@@ -77,7 +77,7 @@ public class RingTest {
 
 
     private void loadMolecule(String input) {
-        CMLEnricher enricher = new CMLEnricher();
+        CmlEnricher enricher = new CmlEnricher();
         enricher.loadMolecule
             (Paths.get(RingTest.testSources, input).toString());
         enricher.analyseMolecule();

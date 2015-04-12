@@ -43,7 +43,7 @@ import java.util.Set;
 public class SmartsPatterns {
 
   private static volatile SmartsPatterns instance = null;
-  private final static String[] smartsFiles = {
+  private static String[] smartsFiles = {
       "src/main/resources/smarts/daylight-pattern.txt",
       "src/main/resources/smarts/smarts-pattern.txt" };
   private static Map<String, String> smartsPatterns = new HashMap<String, String>();
@@ -69,7 +69,7 @@ public class SmartsPatterns {
   }
 
   private static void loadSmartsFiles() {
-    for (String file : smartsFiles) {
+    for (String file : SmartsPatterns.smartsFiles) {
       loadSmartsFile(file);
     }
   }

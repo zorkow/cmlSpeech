@@ -27,7 +27,7 @@
 
 package io.github.egonw.connection;
 
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 
 import java.util.Comparator;
 
@@ -37,9 +37,10 @@ import java.util.Comparator;
 
 public class ConnectionComparator implements Comparator<Connection> {
 
+  @Override
   public int compare(Connection con1, Connection con2) {
     if (con1.getType().equals(con2.getType())) {
-      Comparator<String> comp = new CMLNameComparator();
+      Comparator<String> comp = new CmlNameComparator();
       Integer comparison = comp.compare(con1.getConnector(),
           con2.getConnector());
       if (comparison == 0) {

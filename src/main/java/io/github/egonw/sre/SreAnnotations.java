@@ -27,7 +27,7 @@
 
 package io.github.egonw.sre;
 
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 
 import nu.xom.Element;
 import nu.xom.Nodes;
@@ -50,7 +50,7 @@ public class SreAnnotations extends SreElement {
 
   SreAnnotations() {
     super(SreNamespace.Tag.ANNOTATIONS);
-    this.annotationNodes = new TreeMap<>(new CMLNameComparator());
+    this.annotationNodes = new TreeMap<>(new CmlNameComparator());
   }
 
   SreAnnotations(IAtomContainer molecule) {
@@ -66,17 +66,17 @@ public class SreAnnotations extends SreElement {
   // Careful, this sets directly!
   public void registerAnnotation(String id, SreElement element) {
     this.annotationNodes.put(id, element);
-  };
+  }
 
   public void registerAnnotation(String id, SreNamespace.Tag tag) {
     this.getNodeToAnnotate(id, tag);
-  };
+  }
 
   public void registerAnnotation(String id, SreNamespace.Tag tag,
       SreAttribute attr) {
     Element element = this.getNodeToAnnotate(id, tag);
     element.addAttribute(attr);
-  };
+  }
 
   public void appendAnnotation(String annotate, SreNamespace.Tag tag,
       Element entry) {
@@ -130,7 +130,7 @@ public class SreAnnotations extends SreElement {
     return (SreElement) SreUtil.xpathQuery(element, "//" + tag.tag).get(0);
   }
 
-  public void finalize() {
+  public void complete() {
     for (String key : this.annotationNodes.keySet()) {
       this.appendChild(this.annotationNodes.get(key));
     }

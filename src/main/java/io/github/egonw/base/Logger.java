@@ -35,8 +35,8 @@ import java.util.function.Consumer;
 /**
  * Logger facilities:
  *
- * Error logging is either to file or stderr. Message logging is either to file
- * or stdout.
+ * <p>Error logging is either to file or stderr. Message logging is either to file
+ * or stdout.</p>
  * 
  */
 public class Logger {
@@ -51,12 +51,8 @@ public class Logger {
   public static void start() {
     debug = Cli.hasOption("d");
     verbose = Cli.hasOption("v");
-    openLogfile("l", (PrintWriter stream) -> {
-      logFile = stream;
-    });
-    openLogfile("x", (PrintWriter stream) -> {
-      errFile = stream;
-    });
+    openLogfile("l", (PrintWriter stream) -> { logFile = stream; });
+    openLogfile("x", (PrintWriter stream) -> { errFile = stream; });
   }
 
   private static void openLogfile(String optionName,

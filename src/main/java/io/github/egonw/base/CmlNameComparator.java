@@ -33,8 +33,9 @@ import java.util.Comparator;
  * Compares CML names, promoting atoms over bonds over atomsets.
  */
 
-public class CMLNameComparator implements Comparator<String> {
+public class CmlNameComparator implements Comparator<String> {
 
+  @Override
   public int compare(String name1, String name2) {
     String reg1 = "[0-9]*";
     String alpha1 = name1.replaceAll(reg1, "");

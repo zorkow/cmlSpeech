@@ -41,6 +41,7 @@ import java.io.IOException;
 
 public class WeightComparator extends DefaultComparator {
 
+  @Override
   public int compare(RichAtomSet set1, RichAtomSet set2) {
     IAtomContainer container1 = set1.getStructure();
     IAtomContainer container2 = set2.getStructure();
@@ -50,6 +51,7 @@ public class WeightComparator extends DefaultComparator {
     return (int) Math.signum(weightB - weightA);
   }
 
+  @Override
   public int compare(RichAtom atom1, RichAtom atom2) {
     try {
       double weightA = AtomicProperties.getInstance().getMass(

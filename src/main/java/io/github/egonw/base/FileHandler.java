@@ -65,22 +65,22 @@ public class FileHandler {
    * @param fileName
    *          File to load.
    * 
+   * @return The molecule loaded.
+   * 
    * @throws IOException
    *           Problems with loading file.
    * @throws CDKException
    *           Problems with input file format.
-   *
-   * @return The molecule loaded.
    */
   public static IAtomContainer readFile(String fileName) throws IOException,
       CDKException {
     InputStream file = new BufferedInputStream(new FileInputStream(fileName));
     ISimpleChemObjectReader reader = new ReaderFactory().createReader(file);
-    IChemFile cFile = null;
-    cFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(
+    IChemFile cmlFile = null;
+    cmlFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(
         IChemFile.class));
     reader.close();
-    IAtomContainer molecule = ChemFileManipulator.getAllAtomContainers(cFile)
+    IAtomContainer molecule = ChemFileManipulator.getAllAtomContainers(cmlFile)
         .get(0);
     Logger.logging(molecule);
     return molecule;
@@ -92,16 +92,16 @@ public class FileHandler {
    * @param molecule
    *          The molecule to rewritten.
    * 
+   * @return The CML document.
+   * 
    * @throws IOException
    *           Problems with StringWriter
    * @throws CDKException
    *           Problems with CMLWriter
    * @throws ParsingException
    *           Problems with building CML XOM.
-   * 
-   * @return The CML document.
    */
-  public static Document buildXOM(IAtomContainer molecule) throws IOException,
+  public static Document buildXom(IAtomContainer molecule) throws IOException,
       CDKException, ParsingException {
     StringWriter outStr = new StringWriter();
     CMLWriter cmlwriter = new CMLWriter(outStr);
@@ -120,9 +120,9 @@ public class FileHandler {
   /**
    * Writes a document to a CML file.
    * 
-   * @param document
-   * @param fileName
-   * @param extension
+   * @param doc The output document.
+   * @param fileName The base filename.
+   * @param extension The additional extension.
    *
    * @throws IOException
    *           Problems with opening output file.

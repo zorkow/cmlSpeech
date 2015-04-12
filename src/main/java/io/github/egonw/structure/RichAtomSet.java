@@ -30,7 +30,7 @@ package io.github.egonw.structure;
 import com.google.common.base.Joiner;
 
 import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 import io.github.egonw.base.Logger;
 import io.github.egonw.graph.StructuralGraph;
 import io.github.egonw.sre.SreElement;
@@ -68,7 +68,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   public String structuralFormula = "";
 
   private SortedSet<String> connectingAtoms = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   public ComponentsPositions componentPositions = new ComponentsPositions();
   public Integer offset = 0;

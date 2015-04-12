@@ -29,7 +29,7 @@ package io.github.egonw.structure;
 
 import com.google.common.base.Joiner;
 
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectionComparator;
 import io.github.egonw.sre.SreElement;
@@ -60,7 +60,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   }
 
   private SortedSet<String> components = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   @Override
   public SortedSet<String> getComponents() {
@@ -68,7 +68,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   }
 
   private SortedSet<String> contexts = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   @Override
   public SortedSet<String> getContexts() {
@@ -76,7 +76,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   }
 
   private SortedSet<String> externalBonds = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   @Override
   public SortedSet<String> getExternalBonds() {
@@ -92,7 +92,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   }
 
   private SortedSet<String> superSystems = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   @Override
   public SortedSet<String> getSuperSystems() {
@@ -100,7 +100,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   }
 
   private SortedSet<String> subSystems = new TreeSet<String>(
-      new CMLNameComparator());
+      new CmlNameComparator());
 
   @Override
   public SortedSet<String> getSubSystems() {

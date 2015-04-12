@@ -56,10 +56,7 @@ public class StructuralFormula {
   private ArrayList<String> allConnectingAtoms = new ArrayList<String>();
 
   /**
-   * Computes a structural formula using a Structural Analysis
-   * 
-   * @param saImported
-   *          The StructuralAnalysis to be used
+   * Computes a structural formula using a Structural Analysis.
    */
   public void computeAnalysis() {
     List<RichAtomSet> atomSets = RichStructureHelper.getAtomSets();
@@ -77,17 +74,17 @@ public class StructuralFormula {
     }
     // Computes the structural formula for each RichAtomSet
     for (RichAtomSet richAtomSet : atomSets) {
-      computeRAS(richAtomSet);
+      computeRichAtomSet(richAtomSet);
     }
   }
 
   /**
-   * Computes the structural formula for a RichAtomSet
+   * Computes the structural formula for a RichAtomSet.
    * 
    * @param richAtomSet
    *          The RichAtomSet to be computed
    */
-  public void computeRAS(RichAtomSet richAtomSet) {
+  public void computeRichAtomSet(RichAtomSet richAtomSet) {
     // Set of atoms in the richAtomSet which connect to a
     // subStructures or superStructures
     Set<String> connectingAtoms = richAtomSet.getConnectingAtoms();
@@ -116,19 +113,20 @@ public class StructuralFormula {
         // If the atom does have a connecting atom then we print
         // the atom and we also print its connecting atoms
         appendAtom(currentAtom);
-        addSubStructure(currentAtom, currentRichAtom, connectingAtoms);
+        addSubStructure(currentRichAtom, connectingAtoms);
       }
     }
   }
 
   /**
-   * Adds a substructure to the structuralFormula to be printed
+   * Adds a substructure to the structuralFormula to be printed.
    * 
-   * @param currentAtom
    * @param currentRichAtom
+   *          The currently considered atom.
    * @param connectingAtoms
+   *          A set of connecting atoms.
    */
-  private void addSubStructure(String currentAtom, RichAtom currentRichAtom,
+  private void addSubStructure(RichAtom currentRichAtom,
       Set<String> connectingAtoms) {
     // This is where the subStructure is printed
     // We get every connecting atom to the current atom
@@ -160,14 +158,14 @@ public class StructuralFormula {
    * Method to print atoms which are in a subStructure and not part of a atom
    * set or connected to an atom set.
    * 
-   * @param atomID
+   * @param atomId
    *          The atom in the subStructure
    * @param connectingAtoms
    *          Set of connectingAtoms in the richAtomSet
    */
-  private void addNeighbours(String atomID, Set<String> connectingAtoms) {
+  private void addNeighbours(String atomId, Set<String> connectingAtoms) {
 
-    RichAtom currentRichSubAtom = RichStructureHelper.getRichAtom(atomID);
+    RichAtom currentRichSubAtom = RichStructureHelper.getRichAtom(atomId);
     RichStructureHelper.getAtoms();
 
     for (Connection connection : currentRichSubAtom.getConnections()) {
@@ -187,15 +185,15 @@ public class StructuralFormula {
   /**
    * Adds the atom and its Hydrogens to the structuralFormula.
    * 
-   * @param atomID Name of the atom to append.
+   * @param atomId Name of the atom to append.
    */
-  private void appendAtom(String atomID) {
-    if (this.appendedAtoms.contains(atomID)) {
+  private void appendAtom(String atomId) {
+    if (this.appendedAtoms.contains(atomId)) {
       return;
     } else {
-      this.appendedAtoms.add(atomID);
+      this.appendedAtoms.add(atomId);
     }
-    IAtom atom = RichStructureHelper.getRichAtom(atomID).getStructure();
+    IAtom atom = RichStructureHelper.getRichAtom(atomId).getStructure();
     this.structuralFormula += atom.getSymbol();
     int hydrogens = atom.getImplicitHydrogenCount();
     if (hydrogens > 0) {

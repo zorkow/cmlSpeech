@@ -1,7 +1,7 @@
 
 package io.github.egonw.analysis;
 
-import io.github.egonw.base.CMLNameComparator;
+import io.github.egonw.base.CmlNameComparator;
 import io.github.egonw.structure.RichAtom;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichBond;
@@ -37,9 +37,9 @@ public final class RichStructureHelper {
 
   public static void init() {
     RichStructureHelper.richMolecule = null;
-    RichStructureHelper.richAtoms = new TreeMap<>(new CMLNameComparator());
-    RichStructureHelper.richBonds = new TreeMap<>(new CMLNameComparator());
-    RichStructureHelper.richAtomSets = new TreeMap<>(new CMLNameComparator());
+    RichStructureHelper.richAtoms = new TreeMap<>(new CmlNameComparator());
+    RichStructureHelper.richBonds = new TreeMap<>(new CmlNameComparator());
+    RichStructureHelper.richAtomSets = new TreeMap<>(new CmlNameComparator());
   }
 
   public static RichAtom getRichAtom(String id) {

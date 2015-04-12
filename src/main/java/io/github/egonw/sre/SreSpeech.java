@@ -232,6 +232,7 @@ public class SreSpeech extends SreXml {
       case FUSED:
       case FUNCGROUP:
       case SMALLEST:
+      default:
         break;
     }
     return speechAttribute(result);

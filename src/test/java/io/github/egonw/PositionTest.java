@@ -29,7 +29,7 @@ package io.github.egonw;
 import static org.junit.Assert.assertArrayEquals;
 
 import io.github.egonw.analysis.RichStructureHelper;
-import io.github.egonw.base.CMLEnricher;
+import io.github.egonw.base.CmlEnricher;
 import io.github.egonw.structure.RichAtomSet;
 import io.github.egonw.structure.RichSuperSet;
 
@@ -57,7 +57,7 @@ public class PositionTest {
     }
 
     private void loadMolecule(String input) {
-        CMLEnricher enricher = new CMLEnricher();
+        CmlEnricher enricher = new CmlEnricher();
         enricher.loadMolecule
             (Paths.get(PositionTest.testSources, input).toString());
         enricher.analyseMolecule();

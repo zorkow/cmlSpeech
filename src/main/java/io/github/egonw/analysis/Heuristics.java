@@ -45,27 +45,34 @@ public class Heuristics extends DefaultComparator {
   private Comparator<RichStructure<?>> type = new TypeComparator();
   private Comparator<RichStructure<?>> size = new SizeComparator();
 
+  /** 
+   * Constructor of heuristic comparison.
+   * 
+   * @param heuristic
+   *          A string representing a list of heuristics.
+   */
   public Heuristics(String heuristic) {
     // TODO (sorge) Do something with non-existent heuristics.
     this.heuristics = heuristic == "" ? new String[] { "type", "weight", "size" }
         : heuristic.split(",");
   }
 
+  @Override
   public int compare(RichAtomSet set1, RichAtomSet set2) {
     Integer result = 0;
     for (String heuristic : this.heuristics) {
       switch (heuristic) {
-      case "size":
-        result = this.size.compare(set1, set2);
-        break;
-      case "type":
-        result = this.type.compare(set1, set2);
-        break;
-      case "weight":
-        result = this.weight.compare(set1, set2);
-        break;
-      default:
-        break;
+        case "size":
+          result = this.size.compare(set1, set2);
+          break;
+        case "type":
+          result = this.type.compare(set1, set2);
+          break;
+        case "weight":
+          result = this.weight.compare(set1, set2);
+          break;
+        default:
+          break;
       }
       if (result != 0) {
         break;
@@ -74,6 +81,7 @@ public class Heuristics extends DefaultComparator {
     return result;
   }
 
+  @Override
   public int compare(RichAtom atom1, RichAtom atom2) {
     if (Arrays.asList(this.heuristics).contains("type")) {
       return this.weight.compare(atom1, atom2);

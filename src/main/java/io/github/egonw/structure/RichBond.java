@@ -44,8 +44,7 @@ public class RichBond extends RichChemObject {
     for (IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
-
-  };
+  }
 
   @Override
   public IBond getStructure() {

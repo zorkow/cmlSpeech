@@ -42,6 +42,7 @@ public class AtomTable {
 
   private static volatile AtomTable instance = null;
   private static final Map<String, String> atomMap;
+
   static {
     atomMap = new HashMap<String, String>();
     atomMap.put("Ac", "Actinium");

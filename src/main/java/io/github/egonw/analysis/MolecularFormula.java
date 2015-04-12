@@ -14,7 +14,8 @@
 
 /**
  * @file   MolecularFormula.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jan 30 01:41:35 2015
  * 
  * @brief  Utility class for molecular formula computation.

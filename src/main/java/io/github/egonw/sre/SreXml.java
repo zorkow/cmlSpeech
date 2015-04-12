@@ -45,15 +45,15 @@ public abstract class SreXml {
   }
 
   public SreAnnotations getAnnotations() {
-    this.finalize();
+    this.complete();
     return this.annotations;
   }
 
   abstract void compute();
 
-  public void finalize() {
-    this.annotations.finalize();
-  };
+  public void complete() {
+    this.annotations.complete();
+  }
 
   public void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
     for (String element : set) {

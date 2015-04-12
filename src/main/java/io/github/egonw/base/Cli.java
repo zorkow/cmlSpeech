@@ -110,8 +110,8 @@ public final class Cli {
 
     for (int i = 0; i < Cli.cl.getArgList().size(); i++) {
       String fileName = Cli.cl.getArgList().get(i).toString();
-      File f = new File(fileName);
-      if (f.exists() && !f.isDirectory()) {
+      File file = new File(fileName);
+      if (file.exists() && !file.isDirectory()) {
         Cli.files.add(fileName);
       } else {
         Cli.warning(fileName);

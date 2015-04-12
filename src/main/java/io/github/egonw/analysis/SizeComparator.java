@@ -34,6 +34,7 @@ import io.github.egonw.structure.RichAtomSet;
 
 public class SizeComparator extends DefaultComparator {
 
+  @Override
   public int compare(RichAtomSet set1, RichAtomSet set2) {
     return -1
         * Integer.compare(set1.getStructure().getAtomCount(), set2

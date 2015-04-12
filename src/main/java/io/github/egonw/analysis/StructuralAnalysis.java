@@ -32,8 +32,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultimap;
 
-import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Cli;
+import io.github.egonw.base.CmlNameComparator;
 import io.github.egonw.base.Logger;
 import io.github.egonw.connection.BridgeAtom;
 import io.github.egonw.connection.ConnectingBond;
@@ -145,8 +145,9 @@ public class StructuralAnalysis {
     this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
     RichStructureHelper.richMolecule.getContexts().remove(id);
     for (RichAtomSet system : RichStructureHelper.getAtomSets()) {
-      if (system.getType() == RichSetType.SMALLEST)
+      if (system.getType() == RichSetType.SMALLEST) {
         continue;
+      }
       system.getSuperSystems().add(id);
       RichStructureHelper.richMolecule.getSubSystems().add(system.getId());
     }
@@ -158,8 +159,9 @@ public class StructuralAnalysis {
 
   private void makeBottomSet() {
     for (RichAtomSet system : RichStructureHelper.getAtomSets()) {
-      if (system.getType() == RichSetType.FUSED)
+      if (system.getType() == RichSetType.FUSED) {
         continue;
+      }
       for (String component : system.getComponents()) {
         if (RichStructureHelper.isAtom(component)) {
           RichStructureHelper.getRichAtom(component).getSuperSystems()
@@ -401,7 +403,7 @@ public class StructuralAnalysis {
   private void sharedComponents() {
     for (String atomSet : RichStructureHelper.richAtomSets.keySet()) {
       TreeMultimap<String, String> connectionsSet = TreeMultimap.create(
-          new CMLNameComparator(), new CMLNameComparator());
+          new CmlNameComparator(), new CmlNameComparator());
       RichAtomSet richAtomSet = RichStructureHelper.getRichAtomSet(atomSet);
       for (String component : richAtomSet.getComponents()) {
         RichStructure<?> richComponent = RichStructureHelper
@@ -426,7 +428,7 @@ public class StructuralAnalysis {
     for (String key : connectionsSet.keySet()) {
       NavigableSet<String> allConnections = connectionsSet.get(key);
       SortedSet<String> sharedAtoms = new TreeSet<String>(
-          new CMLNameComparator());
+          new CmlNameComparator());
       for (String bond : allConnections.descendingSet()) {
         if (!RichStructureHelper.isBond(bond)) {
           break;
@@ -461,7 +463,7 @@ public class StructuralAnalysis {
    *          The given atom set.
    * @return A list of siblings.
    */
-  public Set<String> siblingsNEW(RichAtomSet atomSet) {
+  public Set<String> siblingsNew(RichAtomSet atomSet) {
     Set<String> result = new HashSet<String>();
     if (atomSet.getType() == RichSetType.SMALLEST) {
       for (String superSystem : atomSet.getSuperSystems()) {
