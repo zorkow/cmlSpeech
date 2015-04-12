@@ -117,3 +117,16 @@ c c c o c    O is 1 but at position 4.
 *** cml to annotated cml for cmlSpeech
 ** Some of the internet images:
 *** Rings: 7.tif
+
+* Naming
+** Naming is done via IUPAC or Name
+*** If no name, take IUPAC.
+*** If neither, use short description.
+** Eventually implement simple nameing for
+*** Aliphatic chains:
+**** Prefix (meth, eth, prop, but, pent, hex, etc.) Maybe up to 20.
+**** Postfix an, en, yne, diene for single, double, triple bonds, two-double, etc.
+*** Rings:
+**** There's the problem cyclic aliphatic chains vs. aromatic cycles
+**** We should at least be able to do some simple cyclic rings:
+***** Benzene, Cyclo-X-ane, Pyridine
