@@ -32,7 +32,7 @@ import org.openscience.cdk.interfaces.IChemObject;
  * Chemical objects with admin information.
  */
 
-public class RichChemObject extends AbstractRichStructure<IChemObject> {
+public abstract class RichChemObject extends AbstractRichStructure<IChemObject> {
     
 
     RichChemObject(IChemObject structure) {

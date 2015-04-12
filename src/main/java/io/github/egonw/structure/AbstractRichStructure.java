@@ -29,6 +29,10 @@ package io.github.egonw.structure;
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.connection.Connection;
 import io.github.egonw.connection.ConnectionComparator;
+import io.github.egonw.sre.SreElement;
+import io.github.egonw.sre.SreNamespace;
+import io.github.egonw.sre.SreUtil;
+import io.github.egonw.sre.XMLAnnotations;
 
 import com.google.common.base.Joiner;
 
@@ -41,7 +45,7 @@ import java.util.stream.Collectors;
  * Implements basic functionality for Rich Structures.
  */
 
-public abstract class AbstractRichStructure<S> implements RichStructure<S> {
+public abstract class AbstractRichStructure<S> implements RichStructure<S>, XMLAnnotations {
     
     protected final S structure;
 
@@ -50,14 +54,14 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     }
 
     @Override 
-    public S getStructure() {
+        public S getStructure() {
         return this.structure;
     }
 
     private SortedSet<String> components = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public SortedSet<String> getComponents() {
+        public SortedSet<String> getComponents() {
         return this.components;
     };
 
@@ -65,7 +69,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> contexts = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public SortedSet<String> getContexts() {
+        public SortedSet<String> getContexts() {
         return this.contexts;
     };
 
@@ -73,7 +77,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> externalBonds = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public SortedSet<String> getExternalBonds() {
+        public SortedSet<String> getExternalBonds() {
         return this.externalBonds;
     };
 
@@ -81,7 +85,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<Connection> connections = new TreeSet<Connection>(new ConnectionComparator());
 
     @Override
-    public SortedSet<Connection> getConnections() {
+        public SortedSet<Connection> getConnections() {
         return this.connections;
     };
 
@@ -89,7 +93,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> superSystems = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public SortedSet<String> getSuperSystems() {
+        public SortedSet<String> getSuperSystems() {
         return this.superSystems;
     };
 
@@ -97,13 +101,13 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     private SortedSet<String> subSystems = new TreeSet<String>(new CMLNameComparator());
 
     @Override
-    public SortedSet<String> getSubSystems() {
+        public SortedSet<String> getSubSystems() {
         return this.subSystems;
     }
 
 
     @Override
-    public String toString() {
+        public String toString() {
         Joiner joiner = Joiner.on(" ");
         return this.getId() + ":" +
             "\nComponents:" + joiner.join(this.getComponents()) +
@@ -115,4 +119,33 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S> {
     }
 
     public void visualize() {}
+    
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.UNKNOWN;
+    }
+     
+
+    @Override
+    public SreElement annotation() {
+        SreElement element = new SreElement(SreNamespace.Tag.ANNOTATION);
+        element.appendChild(new SreElement(this.tag(), this.getId()));
+        // System.out.println("here1");
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONTEXT, this.getContexts()));
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT, this.getComponents()));
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.EXTERNALBONDS, this.getExternalBonds()));
+        element.appendChild(this.connectionsAnnotations());
+        // System.out.println(element.toXML());
+        return element;
+    }
+
+
+    private SreElement connectionsAnnotations() {
+        if (this.getConnections().isEmpty()) {
+            return null;
+        }
+        SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
+        this.getConnections().stream().forEach(c -> element.appendChild(c.annotation()));
+        return element;
+    }
 }

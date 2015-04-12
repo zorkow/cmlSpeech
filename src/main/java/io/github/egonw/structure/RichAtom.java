@@ -26,6 +26,8 @@
 //
 package io.github.egonw.structure;
 
+import io.github.egonw.sre.SreNamespace;
+
 import org.openscience.cdk.interfaces.IAtom;
 
 /**
@@ -47,4 +49,9 @@ public class RichAtom extends RichChemObject {
         return this.getStructure().getSymbol().equals("C");
     }
     
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.ATOM;
+    }
+
 }

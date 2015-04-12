@@ -44,54 +44,17 @@ public class SreOutput extends SreXML {
 
     public SreOutput() {
         super();
-        this.compute();
+        compute();
     }
 
     @Override
     public void compute() {
-        for (RichAtom structure : RichStructureHelper.getAtoms()) {
-            this.annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.ATOM);
-            this.toSreStructure(structure);
-        }
-        for (RichBond structure : RichStructureHelper.getBonds()) {
-            annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.BOND);
-            this.toSreStructure(structure);
-        }
-        for (RichAtomSet structure : RichStructureHelper.getAtomSets()) {
-            annotations.registerAnnotation(structure.getId(), SreNamespace.Tag.ATOMSET);
-            this.toSreStructure(structure);
-        }
-    }
-
-
-    private void toSreConnections(RichStructure<?> structure) {
-        String id = structure.getId();
-        Set<Connection> connections = structure.getConnections();
-        for (Connection connection : connections) {
-            this.annotations.appendAnnotation(id, SreNamespace.Tag.CONNECTIONS,
-                                              connection.annotation());
-        }
-    }
-
-    private void toSreStructure(RichStructure<?> structure) {
-        String id = structure.getId();
-        this.toSreSet(id, SreNamespace.Tag.CONTEXT, structure.getContexts());
-        this.toSreSet(id, SreNamespace.Tag.COMPONENT, structure.getComponents());
-        this.toSreSet(id, SreNamespace.Tag.EXTERNALBONDS, structure.getExternalBonds());
-        this.toSreConnections(structure);
-    }
-
-
-    private void toSreStructure(RichAtomSet structure) {
-        String id = structure.getId();
-        this.toSreStructure((RichStructure<?>)structure);
-        this.toSreSet(id, SreNamespace.Tag.INTERNALBONDS, 
-                      structure.getComponents().stream()
-                      .filter(RichStructureHelper::isBond)
-                      .collect(Collectors.toSet()));
-        this.toSreSet(id, SreNamespace.Tag.SUBSYSTEM, structure.getSubSystems());
-        this.toSreSet(id, SreNamespace.Tag.SUPERSYSTEM, structure.getSuperSystems());
-        this.toSreSet(id, SreNamespace.Tag.CONNECTINGATOMS, structure.getConnectingAtoms());
+        RichStructureHelper.getAtoms().stream()
+            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+        RichStructureHelper.getBonds().stream()
+            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+        RichStructureHelper.getAtomSets().stream()
+            .forEach(a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
     }
 
 }

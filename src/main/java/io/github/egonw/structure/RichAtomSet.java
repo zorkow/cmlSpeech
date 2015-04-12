@@ -26,8 +26,11 @@
 //
 package io.github.egonw.structure;
 
+import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.base.CMLNameComparator;
 import io.github.egonw.base.Logger;
+import io.github.egonw.sre.SreElement;
+import io.github.egonw.sre.SreNamespace;
 import io.github.egonw.sre.SreUtil;
 
 import com.google.common.base.Joiner;
@@ -47,6 +50,7 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 import io.github.egonw.graph.StructuralGraph;
+import java.util.stream.Collectors;
 
 /**
  * Base class for all atom sets with admin information.
@@ -240,4 +244,24 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
         StructuralGraph graph = new StructuralGraph(this.getSubSystems());
         graph.visualize(this.getId());
     }
+
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.ATOMSET;
+    }
+
+    @Override
+    public SreElement annotation() {
+        SreElement element = super.annotation();
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.INTERNALBONDS, 
+                                           this.getComponents().stream()
+                                           .filter(RichStructureHelper::isBond)
+                                           .collect(Collectors.toSet())));
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUBSYSTEM, this.getSubSystems()));
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUPERSYSTEM, this.getSuperSystems()));
+        element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONNECTINGATOMS, this.getConnectingAtoms()));
+        return element;
+    }
+    
 }

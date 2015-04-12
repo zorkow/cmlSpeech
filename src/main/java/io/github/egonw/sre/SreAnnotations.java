@@ -63,6 +63,12 @@ public class SreAnnotations extends SreElement {
         }
     }
 
+    // Careful, this sets directly!
+    public void registerAnnotation(String id, SreElement element) {
+        this.annotationNodes.put(id, element);
+    };
+        
+
     public void registerAnnotation(String id, SreNamespace.Tag tag) {
         this.getNodeToAnnotate(id, tag);
     };

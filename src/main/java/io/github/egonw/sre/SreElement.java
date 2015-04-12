@@ -40,7 +40,7 @@ public class SreElement extends Element {
               SreNamespace.getInstance().uri);
     }
 
-    SreElement(SreNamespace.Tag tag) {
+    public SreElement(SreNamespace.Tag tag) {
         super(tag.tag, SreNamespace.getInstance().uri);
     }
 
@@ -53,6 +53,12 @@ public class SreElement extends Element {
         super(tag.tag, SreNamespace.getInstance().uri);
         this.appendChild(child1);
         this.appendChild(child2);
+    }
+
+    public void appendChild(SreElement element) {
+        if (element != null) {
+            super.appendChild(element);
+        }
     }
 
 }

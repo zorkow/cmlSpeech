@@ -27,6 +27,8 @@
 //
 package io.github.egonw.structure;
 
+import io.github.egonw.sre.SreNamespace;
+
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 
@@ -48,6 +50,11 @@ public class RichBond extends RichChemObject {
     @Override
     public IBond getStructure() {
         return (IBond)this.structure;
+    }
+
+    @Override
+    public SreNamespace.Tag tag() {
+        return SreNamespace.Tag.BOND;
     }
 
 }

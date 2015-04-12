@@ -38,6 +38,8 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import io.github.egonw.analysis.RichStructureHelper;
+import java.util.Collection;
 
 /**
  * Utility functions for the Sre annotations.
@@ -88,5 +90,25 @@ public class SreUtil {
         return result;
     }
 
+    public static SreElement sreSet (SreNamespace.Tag tag, Collection<String> elements) {
+        if (elements.isEmpty()) {
+            return null;
+        }
+        SreElement element = new SreElement(tag);
+        elements.stream().forEach(e -> element.appendChild(SreUtil.sreElement(e)));
+        return element;
+    }
     
+    public static SreElement sreElement(String name) {
+        if (RichStructureHelper.isAtom(name)) {
+            return new SreElement(SreNamespace.Tag.ATOM, name);
+        }
+        if (RichStructureHelper.isBond(name)) {
+            return new SreElement(SreNamespace.Tag.BOND, name);
+        }
+        if (RichStructureHelper.isAtomSet(name)) {
+            return new SreElement(SreNamespace.Tag.ATOMSET, name);
+        }
+        return new SreElement(SreNamespace.Tag.UNKNOWN, name);
+    }
 }
