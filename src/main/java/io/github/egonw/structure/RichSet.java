@@ -14,7 +14,8 @@
 
 /**
  * @file   RichSet.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 14:26:35 2015
  * 
  * @brief  Interface for enriched atom sets.

@@ -14,7 +14,8 @@
 
 /**
  * @file   SreXML.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jun 19 16:34:40 2014
  * 
  * @brief  Abstract class to handle SRE annotations.

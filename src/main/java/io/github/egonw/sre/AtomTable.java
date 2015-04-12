@@ -14,7 +14,8 @@
 
 /**
  * @file   AtomTable.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jun 20 02:00:25 2014
  * 
  * @brief  Singleton class to translate atom names.

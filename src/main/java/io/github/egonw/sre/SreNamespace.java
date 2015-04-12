@@ -14,7 +14,8 @@
 
 /**
  * @file   SreNamespace.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:31:44 2015
  * 
  * @brief  Namespace definitions for Sre.

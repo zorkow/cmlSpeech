@@ -14,7 +14,8 @@
 
 /**
  * @file   CMLEnricher.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Apr 28 01:41:35 2014
  *
  * @brief  Main class to enrich CML files.

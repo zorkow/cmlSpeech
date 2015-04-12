@@ -15,7 +15,8 @@
 
 /**
  * @file   XMLAnnotations.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Apr  9 12:23:40 2015
  * 
  * @brief  Interface for XML annotations output.

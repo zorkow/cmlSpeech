@@ -14,7 +14,8 @@
 
 /**
  * @file   SmartsPatterns.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 00:55:58 2015
  * 
  * @brief  Loads and tests Smarts patterns.

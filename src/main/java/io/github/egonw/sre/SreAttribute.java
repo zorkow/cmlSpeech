@@ -14,7 +14,8 @@
 
 /**
  * @file   SreAttribute.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:29:44 2015
  * 
  * @brief  Attributes for speech annotations.

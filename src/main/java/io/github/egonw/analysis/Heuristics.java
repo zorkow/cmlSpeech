@@ -14,7 +14,8 @@
 
 /**
  * @file   Heuristics.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Jan 17 18:24:15 2015
  * 
  * @brief  Combines basic comparators via a heuristic.

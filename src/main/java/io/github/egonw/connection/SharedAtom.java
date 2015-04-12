@@ -14,7 +14,8 @@
 
 /**
  * @file   SharedAtom.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:27:03 2015
  * 
  * @brief  Class of shared atoms.

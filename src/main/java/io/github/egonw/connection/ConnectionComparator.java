@@ -14,7 +14,8 @@
 
 /**
  * @file   ConnectionComparator.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 10 17:54:24 2015
  * 
  * @brief  A comparator for connections.

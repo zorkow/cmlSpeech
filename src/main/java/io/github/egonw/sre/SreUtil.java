@@ -14,7 +14,8 @@
 
 /**
  * @file   SreUtil.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:33:43 2015
  * 
  * @brief  Utility class for Sre output.

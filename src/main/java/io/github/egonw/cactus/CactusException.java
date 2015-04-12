@@ -14,7 +14,8 @@
 
 /**
  * @file   CactusException.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 14:48:23 2014
  * 
  * @brief  Exception for Cactus Utility class.

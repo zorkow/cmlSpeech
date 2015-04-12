@@ -14,7 +14,8 @@
 
 /**
  * @file   StructuralGraphVisualizer.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:36:33 2015
  * 
  * @brief  A basic visualiser for molecule graphs.

@@ -14,7 +14,8 @@
 
 /**
  * @file   Cli.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:06:05 2015
  * 
  * @brief  Command line interface.

@@ -14,7 +14,8 @@
 
 /**
  * @file   RichStructure.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 10 21:37:18 2014
  * 
  * @brief  Interface specification for enriched structures.

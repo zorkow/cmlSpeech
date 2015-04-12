@@ -14,7 +14,8 @@
 
 /**
  * @file   Cactus.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 13:22:37 2014
  * 
  * @brief  Callable class for Cactus Futures.

@@ -14,7 +14,8 @@
 
 /**
  * @file   StructuralFormula.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 13:04:20 2015
  * 
  * @brief  Computation of structural formulas.

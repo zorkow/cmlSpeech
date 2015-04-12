@@ -14,7 +14,8 @@
 
 /**
  * @file   RichAtomSet.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:19:38 2015
  * 
  * @brief  Rich atom set structures.

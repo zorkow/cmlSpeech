@@ -14,7 +14,8 @@
 
 /**
  * @file   CMLNameComparator.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 12:19:41 2014
  * 
  * @brief  A comparator for CML naming conventions.

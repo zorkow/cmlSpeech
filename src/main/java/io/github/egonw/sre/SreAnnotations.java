@@ -14,7 +14,8 @@
 
 /**
  * @file   SreAnnotations.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:21:38 2015
  * 
  * @brief  XML annotations structures.

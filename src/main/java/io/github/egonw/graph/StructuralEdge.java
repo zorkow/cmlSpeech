@@ -14,7 +14,8 @@
 
 /**
  * @file   StructuralEdge.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:34:38 2015
  * 
  * @brief  Edges for the structural graph.

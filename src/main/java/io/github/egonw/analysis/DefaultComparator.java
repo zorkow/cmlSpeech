@@ -14,7 +14,8 @@
 
 /**
  * @file   DefaultComparator.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:40:18 2014
  * 
  * @brief  Abstract superclass for all comparators on Rich Structures.

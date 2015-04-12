@@ -14,7 +14,8 @@
 
 /**
  * @file   ConnectionType.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:08:08 2015
  * 
  * @brief  Enumerator for different connection types.

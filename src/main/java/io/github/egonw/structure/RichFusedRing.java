@@ -14,7 +14,8 @@
 
 /**
  * @file   RichFusedRing.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
  * 
  * @brief  Implementation of rich fused ring.

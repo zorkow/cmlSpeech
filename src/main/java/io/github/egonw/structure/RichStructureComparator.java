@@ -14,7 +14,8 @@
 
 /**
  * @file   RichStructureComparator.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:42:18 2014
  * 
  * @brief Interface for RichStructure comparators. It ensures that we can

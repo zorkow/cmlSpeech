@@ -14,7 +14,8 @@
 
 /**
  * @file   FunctionalGroupsFilter.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jan 20 01:12:31 2015
  * 
  * @brief Filters for functional groups by interestingness.

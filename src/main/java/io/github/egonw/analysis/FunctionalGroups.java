@@ -14,7 +14,8 @@
 
 /**
  * @file   FunctionalGroups.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:58:54 2015
  * 
  * @brief  Computation of Functional Groups using smarts.

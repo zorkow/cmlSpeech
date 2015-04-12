@@ -14,7 +14,8 @@
 
 /**
  * @file   StructuralGraph.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed May 28 22:56:58 2014
  * 
  * @brief A lightweight graph to represent the top level structure of molecules.

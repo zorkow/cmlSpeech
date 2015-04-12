@@ -14,7 +14,8 @@
 
 /**
  * @file   Connection.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 12:18:00 2014
  * 
  * @brief  Class of connection structures. These are effectively triples of strings.

@@ -14,7 +14,8 @@
 
 /**
  * @file   App.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:05:04 2015
  * 
  * @brief  Basic application file for project.

@@ -14,7 +14,8 @@
 
 /**
  * @file   TypeComparator.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:39:56 2014
  * 
  * @brief Rich Structure comparison methods wrt. types of atom sets. It

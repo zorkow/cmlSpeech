@@ -14,7 +14,8 @@
 
 /**
  * @file   RingSystem.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Aug  2 01:56:57 2014
  * 
  * @brief  Computing information on ring systems.

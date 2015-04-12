@@ -14,7 +14,8 @@
 
 /**
  * @file   FileHandler.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Feb 26 19:06:25 2015
  * 
  * @brief  File handler utility functions.

@@ -14,7 +14,8 @@
 
 /**
  * @file   AbstractRichStructure.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 10 22:25:05 2014
  * 
  * @brief  Abstract class for rich structures.

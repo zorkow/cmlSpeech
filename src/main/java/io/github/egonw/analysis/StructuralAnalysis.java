@@ -14,7 +14,8 @@
 
 /**
  * @file   StructuralAnalysis.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 21:42:42 2014
  * 
  * @brief  Main routines for structural analysis.

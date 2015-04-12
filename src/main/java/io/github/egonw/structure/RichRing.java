@@ -14,7 +14,8 @@
 
 /**
  * @file   RichRing.java
- * @author Volker Sorge <sorge@zorkstone>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Mar 20 21:57:45 2015
  * 
  * @brief  An abstract class for ring structures.
@@ -26,27 +27,27 @@
 
 package io.github.egonw.structure;
 
-import java.io.IOException;
-
-import org.openscience.cdk.tools.AtomicProperties;
-
-import com.google.common.collect.Sets;
-import java.util.Set;
-import java.util.Comparator;
 import io.github.egonw.analysis.RichStructureHelper;
 import io.github.egonw.analysis.WeightComparator;
 import io.github.egonw.connection.Connection;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IAtom;
-import java.util.SortedSet;
-import com.google.common.collect.Lists;
-import java.util.Queue;
-import java.util.PriorityQueue;
-import java.util.List;
-import java.util.ArrayList;
 import io.github.egonw.connection.ConnectionType;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
-import java.util.stream.Collectors;
+import org.openscience.cdk.tools.AtomicProperties;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Abstract class for ring structures.
