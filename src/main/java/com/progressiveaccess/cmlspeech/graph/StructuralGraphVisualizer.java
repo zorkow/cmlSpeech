@@ -79,27 +79,16 @@ public class StructuralGraphVisualizer {
 
   private boolean colour = true;
 
-  class NamedPoint {
-    private final double pointX;
-    private final double pointY;
+  class NamedPoint extends Point2d {
     private final String name;
 
     NamedPoint(final String name, final double pointX, final double pointY) {
-      this.pointX = pointX;
-      this.pointY = pointY;
+      super(pointX, pointY);
       this.name = name;
     }
 
     public String getName() {
       return this.name;
-    }
-
-    public double getX() {
-      return this.pointX;
-    }
-
-    public double getY() {
-      return this.pointY;
     }
   }
 
