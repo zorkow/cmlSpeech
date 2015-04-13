@@ -37,10 +37,21 @@ import java.util.concurrent.Callable;
  */
 public class CactusCallable implements Callable<SreAttribute> {
 
-  public String id = "";
+  private String id = "";
   private final Cactus.Type type;
   private IAtomContainer container = null;
 
+
+  /**
+   * Constructs a thread for calls to Cactus web service.
+   *
+   * @param id
+   *          Name of the thread.
+   * @param type
+   *          Type of expected result.
+   * @param container
+   *          Atom container for query.
+   */
   public CactusCallable(final String id, final Cactus.Type type,
       final IAtomContainer container) {
     super();
@@ -49,10 +60,19 @@ public class CactusCallable implements Callable<SreAttribute> {
     this.container = container;
   }
 
+
+  /**
+   * @return The id of the callable thread.
+   */
+  public String getId() {
+    return this.id;
+  }
+
+
   @Override
   public SreAttribute call() throws CactusException {
-    final String result = this.type.caller.apply(this.container);
-    return new SreAttribute(this.type.tag, result);
+    final String result = this.type.getCaller().apply(this.container);
+    return new SreAttribute(this.type.getTag(), result);
   }
 
 }

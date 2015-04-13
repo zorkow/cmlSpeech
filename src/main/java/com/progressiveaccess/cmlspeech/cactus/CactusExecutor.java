@@ -54,7 +54,9 @@ public class CactusExecutor {
   /** Registry for futures expecting results from Cactus calls. */
   private final Multimap<String, Future<SreAttribute>> registry = HashMultimap
       .create();
+  /** The executor service that runs the callables. */
   private ExecutorService executor;
+
 
   /**
    * Register callables for cactus in the pool.
@@ -66,14 +68,16 @@ public class CactusExecutor {
     this.pool.add(callable);
   }
 
+
   /** Execute all callables currently in the pool. */
   public void execute() {
     this.executor = Executors.newFixedThreadPool(this.pool.size());
     for (final CactusCallable callable : this.pool) {
       final Future<SreAttribute> future = this.executor.submit(callable);
-      this.registry.put(callable.id, future);
+      this.registry.put(callable.getId(), future);
     }
   }
+
 
   /**
    * Adds attributes from returned by all current Cactus futures to a document.
@@ -96,6 +100,7 @@ public class CactusExecutor {
       }
     }
   }
+
 
   /** Shut down the Cactus executor. */
   public void shutdown() {

@@ -57,7 +57,7 @@ import java.io.StringWriter;
  * Utility class for handling CML files and other chem file formats.
  */
 
-final class FileHandler {
+public final class FileHandler {
 
   /** Dummy constructor. */
   private FileHandler() {

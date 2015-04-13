@@ -47,7 +47,12 @@ import java.util.stream.Collectors;
  * Utility functions to call the NIH Cactus chemical structure identifier
  * service.
  */
-public class Cactus {
+public final class Cactus {
+
+  /** Dummy constructor. */
+  private Cactus() {
+    throw new AssertionError("Instantiating utility class...");
+  }
 
   /** Enum type for different translations via Cactus. */
   public enum Type {
@@ -55,8 +60,9 @@ public class Cactus {
     NAME("name", Cactus::getName),
     FORMULA("formula", Cactus::getFormula);
 
-    public final String tag;
-    public final Function<IAtomContainer, String> caller;
+    private final String tag;
+    private final Function<IAtomContainer, String> caller;
+
 
     /**
      * Enum type for different translations via Cactus with two parameters.
@@ -66,11 +72,29 @@ public class Cactus {
      * @param caller
      *          Closure with call to Cactus for that tag.
      */
-    private Type(final String tag, final Function<IAtomContainer, String> caller) {
+    private Type(final String tag, final Function<IAtomContainer,
+                 String> caller) {
       this.caller = caller;
       this.tag = tag;
     }
+
+
+    /**
+     * @return The tag of the type.
+     */
+    public String getTag() {
+      return this.tag;
+    }
+
+
+    /**
+     * @return The caller function associated with the type.
+     */
+    public Function<IAtomContainer, String> getCaller() {
+      return this.caller;
+    }
   }
+
 
   /**
    * Send a call to the Cactus web service.
@@ -79,7 +103,11 @@ public class Cactus {
    *          String with input structure.
    * @param output
    *          Output format.
+   *
    * @return Result if any.
+   *
+   * @throws CactusException
+   *          If error in Cactus call occurs.
    */
   private static List<String> getCactus(final String input, final String output)
       throws CactusException {
@@ -110,6 +138,9 @@ public class Cactus {
    * @param molecule
    *          The input molecule.
    * @return String containing molecule in Inchi format.
+   *
+   * @throws CactusException
+   *          If error in Cactus call occurs.
    */
   private static String translate(final IAtomContainer molecule)
       throws CactusException {
@@ -128,6 +159,9 @@ public class Cactus {
    * @param molecule
    *          Input molecule.
    * @return The IUPAC name if it exists.
+   *
+   * @throws CactusException
+   *          If error in Cactus call occurs.
    */
   public static String getIupac(final IAtomContainer molecule)
       throws CactusException {
@@ -141,6 +175,9 @@ public class Cactus {
    * @param molecule
    *          Input molecule.
    * @return The chemical formula.
+   *
+   * @throws CactusException
+   *          If error in Cactus call occurs.
    */
   public static String getFormula(final IAtomContainer molecule)
       throws CactusException {
@@ -154,6 +191,9 @@ public class Cactus {
    * @param molecule
    *          Input molecule.
    * @return Common name if it exists.
+   *
+   * @throws CactusException
+   *          If error in Cactus call occurs.
    */
   public static String getName(final IAtomContainer molecule)
       throws CactusException {

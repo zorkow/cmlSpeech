@@ -31,17 +31,18 @@ package com.progressiveaccess.cmlspeech.cactus;
  * Exception for the Cactus classes. To allow passing through closures it is
  * unchecked!
  */
-
 public class CactusException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Exception in Cactus call threads.
+   *
+   * @param message
+   *          The error message.
+   */
   public CactusException(final String message) {
     super(message);
-  }
-
-  public CactusException(final String message, final Throwable throwable) {
-    super(message, throwable);
   }
 
 }
