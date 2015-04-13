@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:31:09 2015
- * 
+ *
  * @brief  Sre Elements
- * 
- * 
+ *
+ *
  */
 
 //
@@ -31,33 +31,34 @@ import nu.xom.Element;
 
 /**
  * Basic elements for Sre annotations.
- * 
+ *
  * @extends Element
  */
 
 public class SreElement extends Element {
 
-  SreElement(String tag) {
+  SreElement(final String tag) {
     super(SreNamespace.getInstance().prefix + ":" + tag, SreNamespace
         .getInstance().uri);
   }
 
-  public SreElement(SreNamespace.Tag tag) {
+  public SreElement(final SreNamespace.Tag tag) {
     super(tag.tag, SreNamespace.getInstance().uri);
   }
 
-  public SreElement(SreNamespace.Tag tag, String text) {
+  public SreElement(final SreNamespace.Tag tag, final String text) {
     super(tag.tag, SreNamespace.getInstance().uri);
     this.appendChild(text);
   }
 
-  public SreElement(SreNamespace.Tag tag, Element child1, Element child2) {
+  public SreElement(final SreNamespace.Tag tag, final Element child1,
+      final Element child2) {
     super(tag.tag, SreNamespace.getInstance().uri);
     this.appendChild(child1);
     this.appendChild(child2);
   }
 
-  public void appendChild(SreElement element) {
+  public void appendChild(final SreElement element) {
     if (element != null) {
       super.appendChild(element);
     }

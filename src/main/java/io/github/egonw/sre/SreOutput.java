@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jun 19 16:34:40 2014
- * 
+ *
  * @brief  Class to handle SRE annotations.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -37,26 +37,17 @@ public class SreOutput extends SreXml {
 
   public SreOutput() {
     super();
-    compute();
+    this.compute();
   }
 
   @Override
   public void compute() {
-    RichStructureHelper
-        .getAtoms()
-        .stream()
-        .forEach(
-            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
-    RichStructureHelper
-        .getBonds()
-        .stream()
-        .forEach(
-            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
-    RichStructureHelper
-        .getAtomSets()
-        .stream()
-        .forEach(
-            a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+    RichStructureHelper.getAtoms().stream().forEach(
+         a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+    RichStructureHelper.getBonds().stream().forEach(
+         a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
+    RichStructureHelper .getAtomSets().stream().forEach(
+         a -> this.annotations.registerAnnotation(a.getId(), a.annotation()));
   }
 
 }

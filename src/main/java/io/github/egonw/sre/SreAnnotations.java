@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:21:38 2015
- * 
+ *
  * @brief  XML annotations structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -53,40 +53,42 @@ public class SreAnnotations extends SreElement {
     this.annotationNodes = new TreeMap<>(new CmlNameComparator());
   }
 
-  SreAnnotations(IAtomContainer molecule) {
+  SreAnnotations(final IAtomContainer molecule) {
     super(SreNamespace.Tag.ANNOTATIONS);
-    for (IAtom atom : molecule.atoms()) {
+    for (final IAtom atom : molecule.atoms()) {
       this.getNodeToAnnotate(atom.getID(), SreNamespace.Tag.ATOM);
     }
-    for (IBond bond : molecule.bonds()) {
+    for (final IBond bond : molecule.bonds()) {
       this.getNodeToAnnotate(bond.getID(), SreNamespace.Tag.BOND);
     }
   }
 
   // Careful, this sets directly!
-  public void registerAnnotation(String id, SreElement element) {
+  public void registerAnnotation(final String id, final SreElement element) {
     this.annotationNodes.put(id, element);
   }
 
-  public void registerAnnotation(String id, SreNamespace.Tag tag) {
+  public void registerAnnotation(final String id, final SreNamespace.Tag tag) {
     this.getNodeToAnnotate(id, tag);
   }
 
-  public void registerAnnotation(String id, SreNamespace.Tag tag,
-      SreAttribute attr) {
-    Element element = this.getNodeToAnnotate(id, tag);
+  public void registerAnnotation(final String id, final SreNamespace.Tag tag,
+      final SreAttribute attr) {
+    final Element element = this.getNodeToAnnotate(id, tag);
     element.addAttribute(attr);
   }
 
-  public void appendAnnotation(String annotate, SreNamespace.Tag tag,
-      Element entry) {
+  public void appendAnnotation(final String annotate,
+      final SreNamespace.Tag tag,
+      final Element entry) {
     this.appendAnnotation(
         this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), tag, entry);
   }
 
-  public void appendAnnotation(Element annotate, SreNamespace.Tag tag,
-      Element entry) {
-    Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.tag);
+  public void appendAnnotation(final Element annotate,
+      final SreNamespace.Tag tag,
+      final Element entry) {
+    final Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.tag);
     Element node = null;
     if (nodes.size() == 0) {
       node = new SreElement(tag);
@@ -97,8 +99,8 @@ public class SreAnnotations extends SreElement {
     node.appendChild(entry);
   }
 
-  public void addAttribute(String id, SreAttribute attr) {
-    Element element = this.getNodeToAnnotate(id);
+  public void addAttribute(final String id, final SreAttribute attr) {
+    final Element element = this.getNodeToAnnotate(id);
     if (element == null) {
       throw new SreException("Annotation element " + id
           + " does not exist. Attribute cannot be added!");
@@ -106,24 +108,25 @@ public class SreAnnotations extends SreElement {
     element.addAttribute(attr);
   }
 
-  private Element getNodeToAnnotate(String id) {
+  private Element getNodeToAnnotate(final String id) {
     return this.annotationNodes.get(id);
   }
 
-  private Element getNodeToAnnotate(String id, SreNamespace.Tag tag) {
-    Element element = this.getNodeToAnnotate(id);
+  private Element getNodeToAnnotate(final String id, final SreNamespace.Tag tag) {
+    final Element element = this.getNodeToAnnotate(id);
     if (element != null) {
       return element;
     }
-    Element annotation = new SreElement(SreNamespace.Tag.ANNOTATION);
-    Element node = new SreElement(tag, id);
+    final Element annotation = new SreElement(SreNamespace.Tag.ANNOTATION);
+    final Element node = new SreElement(tag, id);
     annotation.appendChild(node);
     this.annotationNodes.put(id, annotation);
     return annotation;
   }
 
-  public SreElement retrieveAnnotation(String id, SreNamespace.Tag tag) {
-    Element element = this.annotationNodes.get(id);
+  public SreElement retrieveAnnotation(final String id,
+      final SreNamespace.Tag tag) {
+    final Element element = this.annotationNodes.get(id);
     if (element == null) {
       return null;
     }
@@ -131,14 +134,15 @@ public class SreAnnotations extends SreElement {
   }
 
   public void complete() {
-    for (String key : this.annotationNodes.keySet()) {
+    for (final String key : this.annotationNodes.keySet()) {
       this.appendChild(this.annotationNodes.get(key));
     }
   }
 
+  @Override
   public String toString() {
     String result = "";
-    for (String key : this.annotationNodes.keySet()) {
+    for (final String key : this.annotationNodes.keySet()) {
       result += key + ": " + this.annotationNodes.get(key).toXML() + "\n";
     }
     return result;

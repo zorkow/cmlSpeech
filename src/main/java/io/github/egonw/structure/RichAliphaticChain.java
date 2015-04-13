@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich aliphatic chain.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -42,7 +42,7 @@ import java.util.List;
 
 public class RichAliphaticChain extends RichAtomSet {
 
-  public RichAliphaticChain(IAtomContainer container, String id) {
+  public RichAliphaticChain(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.ALIPHATIC);
   }
 
@@ -52,8 +52,8 @@ public class RichAliphaticChain extends RichAtomSet {
   }
 
   protected final List<IAtom> getSinglyConnectedAtoms() {
-    List<IAtom> atoms = new ArrayList<>();
-    for (IAtom atom : this.getStructure().atoms()) {
+    final List<IAtom> atoms = new ArrayList<>();
+    for (final IAtom atom : this.getStructure().atoms()) {
       if (this.getConnectedAtomsList(atom).size() <= 1) {
         atoms.add(atom);
       }
@@ -61,40 +61,43 @@ public class RichAliphaticChain extends RichAtomSet {
     return atoms;
   }
 
+  @Override
   protected final void walk() {
-    List<IAtom> atoms = this.getSinglyConnectedAtoms();
+    final List<IAtom> atoms = this.getSinglyConnectedAtoms();
     // Here we assume that the list is only of length 2.
     // Otherwise something very peculiar is wrong!
     if (atoms.size() != 2) {
       throw new SreException("Aliphatic chain without two ends!");
     }
-    IAtom startAtom = this.findLowestSubstitution(atoms.get(0), atoms.get(1));
+    final IAtom startAtom = this.findLowestSubstitution(atoms.get(0),
+        atoms.get(1));
     this.walkStraight(startAtom);
   }
 
-  private List<IAtom> visited = new ArrayList<>();
+  private final List<IAtom> visited = new ArrayList<>();
 
   /**
    * Finds the lowest external or internal substitution. Walks chain from either
    * side, returns the start atom for the lowest external substitution if
    * possible. If this is in the middle or does not exist, prefers the lowest
    * internal substitution.
-   * 
+   *
    * @param leftAtom
    *          One end of the chain.
    * @param rightAtom
    *          The other end of the chain.
-   * 
+   *
    * @return atom with lowest substitution.
    */
-  private IAtom findLowestSubstitution(IAtom leftAtom, IAtom rightAtom) {
-    IAtomContainer structure = this.getStructure();
+  private IAtom findLowestSubstitution(final IAtom leftAtom,
+      final IAtom rightAtom) {
+    final IAtomContainer structure = this.getStructure();
     IAtom currentLeft = leftAtom;
     IAtom currentRight = rightAtom;
     Integer internal = 0;
     Integer external = 0;
     Integer pointer = 0;
-    Integer middle = (int) Math.ceil(structure.getAtomCount() / 2d);
+    final Integer middle = (int) Math.ceil(structure.getAtomCount() / 2d);
     while (pointer < middle && external == 0) {
       pointer++;
       if (this.getConnectingAtoms().contains(currentLeft.getID())) {
@@ -105,14 +108,16 @@ public class RichAliphaticChain extends RichAtomSet {
         external = pointer;
         break;
       }
-      IAtom nextLeft = chooseNext(currentLeft);
-      IAtom nextRight = chooseNext(currentRight);
+      final IAtom nextLeft = this.chooseNext(currentLeft);
+      final IAtom nextRight = this.chooseNext(currentRight);
       // TODO sorge Add stereo chemistry here!
       if (internal == 0) {
-        if (structure.getBond(currentLeft, nextLeft).getOrder() != IBond.Order.SINGLE) {
+        if (structure.getBond(currentLeft, nextLeft).getOrder()
+            != IBond.Order.SINGLE) {
           internal = -1 * pointer;
         }
-        if (structure.getBond(currentRight, nextRight).getOrder() != IBond.Order.SINGLE) {
+        if (structure.getBond(currentRight, nextRight).getOrder()
+            != IBond.Order.SINGLE) {
           internal = pointer;
         }
       }
@@ -120,7 +125,8 @@ public class RichAliphaticChain extends RichAtomSet {
       currentRight = nextRight;
     }
     if (external == 0
-        || (structure.getAtomCount() % 2 == 1 && Math.abs(external) == middle)) {
+        || (structure.getAtomCount() % 2 == 1 && Math.abs(external)
+            == middle)) {
       if (internal > 0) {
         return rightAtom;
       }
@@ -134,18 +140,19 @@ public class RichAliphaticChain extends RichAtomSet {
 
   /**
    * Finds the next atom in the chain that has not yet been visited.
-   * 
+   *
    * @param atom
-   * 
+   *
    * @return atom that's next to the input atom.
    */
-  private IAtom chooseNext(IAtom atom) {
-    visited.add(atom);
-    List<IAtom> connected = this.getStructure().getConnectedAtomsList(atom);
-    if (!visited.contains(connected.get(0))) {
+  private IAtom chooseNext(final IAtom atom) {
+    this.visited.add(atom);
+    final List<IAtom> connected = this.getStructure().getConnectedAtomsList(
+        atom);
+    if (!this.visited.contains(connected.get(0))) {
       return connected.get(0);
     }
-    if (visited.size() > 1 && !visited.contains(connected.get(1))) {
+    if (this.visited.size() > 1 && !this.visited.contains(connected.get(1))) {
       return connected.get(1);
     }
     return null;

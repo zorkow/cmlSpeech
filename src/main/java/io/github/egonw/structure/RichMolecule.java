@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich molecule.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -43,9 +43,9 @@ import java.util.stream.Collectors;
 
 public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
-  private List<RichStructure<?>> blocks = new ArrayList<>();
+  private final List<RichStructure<?>> blocks = new ArrayList<>();
 
-  public RichMolecule(IAtomContainer container, String id) {
+  public RichMolecule(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.MOLECULE);
   }
 
@@ -53,18 +53,21 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     this.walk();
   }
 
+  @Override
   protected final void walk() {
     this.setPath();
-    for (String structure : this.getPath()) {
+    for (final String structure : this.getPath()) {
       if (RichStructureHelper.isAtom(structure)) {
         this.componentPositions.addNext(structure);
       } else {
-        RichAtomSet atomSet = RichStructureHelper.getRichAtomSet(structure);
+        final RichAtomSet atomSet = RichStructureHelper
+            .getRichAtomSet(structure);
         atomSet.walk();
         this.componentPositions.putAll(atomSet.componentPositions);
         if (atomSet.getType() == RichSetType.FUSED) {
-          for (String subRing : ((RichFusedRing) atomSet).getPath()) {
-            RichAtomSet subSet = RichStructureHelper.getRichAtomSet(subRing);
+          for (final String subRing : ((RichFusedRing) atomSet).getPath()) {
+            final RichAtomSet subSet = RichStructureHelper
+                .getRichAtomSet(subRing);
             this.componentPositions.putAll(subSet.componentPositions);
           }
         }
@@ -76,7 +79,7 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
   @Override
   public ComponentsPositions getPath() {
-    return path;
+    return this.path;
   }
 
   @Override
@@ -85,7 +88,7 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
         .map(RichStructureHelper::getRichStructure)
         .collect(Collectors.toList()));
     Collections.sort(this.blocks, new Heuristics(""));
-    WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
+    final WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
     this.path = dfs.getPositions();
   }
 

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 15:14:55 2014
- * 
+ *
  * @brief  Annotated ChemObject structure.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -35,7 +35,7 @@ import org.openscience.cdk.interfaces.IChemObject;
 
 public abstract class RichChemObject extends AbstractRichStructure<IChemObject> {
 
-  RichChemObject(IChemObject structure) {
+  RichChemObject(final IChemObject structure) {
     super(structure);
   }
 

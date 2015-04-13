@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:31:44 2015
- * 
+ *
  * @brief  Namespace definitions for Sre.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -49,17 +49,17 @@ public class SreNamespace {
 
   /**
    * Different Tags for the SRE speech annotations. Some notes;
-   * 
+   *
    * <p>
    * External bonds -- Bonds that are attached to a substructure but not part of
    * it.
    * </p>
-   * 
+   *
    * <p>
    * Connecting bonds -- Bonds that are external, but not internal to any other
    * structures, i.e. the truely connect it to another structure or atom.
    * </p>
-   * 
+   *
    * <p>
    * Connecting atoms -- Atoms that are shared with another structure.
    * </p>
@@ -110,7 +110,7 @@ public class SreNamespace {
 
     public final String tag;
 
-    private Tag(String tag) {
+    private Tag(final String tag) {
       this.tag = "sre:" + tag;
     }
 
@@ -128,7 +128,7 @@ public class SreNamespace {
 
     public final String attribute;
 
-    private Attribute(String attribute) {
+    private Attribute(final String attribute) {
       this.attribute = attribute;
     }
 

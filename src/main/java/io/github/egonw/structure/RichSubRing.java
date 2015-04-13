@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich sub ring.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -35,7 +35,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class RichSubRing extends RichRing {
 
-  public RichSubRing(IAtomContainer container, String id) {
+  public RichSubRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.SMALLEST);
   }
 

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 10 17:54:24 2015
- * 
+ *
  * @brief  A comparator for connections.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -38,10 +38,10 @@ import java.util.Comparator;
 public class ConnectionComparator implements Comparator<Connection> {
 
   @Override
-  public int compare(Connection con1, Connection con2) {
+  public int compare(final Connection con1, final Connection con2) {
     if (con1.getType().equals(con2.getType())) {
-      Comparator<String> comp = new CmlNameComparator();
-      Integer comparison = comp.compare(con1.getConnector(),
+      final Comparator<String> comp = new CmlNameComparator();
+      final Integer comparison = comp.compare(con1.getConnector(),
           con2.getConnector());
       if (comparison == 0) {
         return comp.compare(con1.getConnected(), con2.getConnected());
@@ -51,13 +51,13 @@ public class ConnectionComparator implements Comparator<Connection> {
     if (con1.getType().equals(ConnectionType.SPIROATOM)
         || (con1.getType().equals(ConnectionType.BRIDGEATOM) && !con2.getType()
             .equals(ConnectionType.SPIROATOM))
-        || (con1.getType().equals(ConnectionType.SHAREDATOM)
-            && !con2.getType().equals(ConnectionType.BRIDGEATOM) && !con2
-            .getType().equals(ConnectionType.SPIROATOM))
-        || (con1.getType().equals(ConnectionType.SHAREDBOND)
-            && !con2.getType().equals(ConnectionType.BRIDGEATOM)
-            && !con2.getType().equals(ConnectionType.SHAREDATOM) && !con2
-            .getType().equals(ConnectionType.SPIROATOM))) {
+            || (con1.getType().equals(ConnectionType.SHAREDATOM)
+                && !con2.getType().equals(ConnectionType.BRIDGEATOM) && !con2
+                .getType().equals(ConnectionType.SPIROATOM))
+                || (con1.getType().equals(ConnectionType.SHAREDBOND)
+                    && !con2.getType().equals(ConnectionType.BRIDGEATOM)
+                    && !con2.getType().equals(ConnectionType.SHAREDATOM)
+                    && !con2.getType().equals(ConnectionType.SPIROATOM))) {
       return -1;
     }
     return 1;

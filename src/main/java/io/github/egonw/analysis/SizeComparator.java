@@ -17,9 +17,9 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:39:56 2014
- * 
+ *
  * @brief Rich Structure comparison methods wrt. size of atom sets.
- * 
+ *
  */
 
 //
@@ -35,7 +35,7 @@ import io.github.egonw.structure.RichAtomSet;
 public class SizeComparator extends DefaultComparator {
 
   @Override
-  public int compare(RichAtomSet set1, RichAtomSet set2) {
+  public int compare(final RichAtomSet set1, final RichAtomSet set2) {
     return -1
         * Integer.compare(set1.getStructure().getAtomCount(), set2
             .getStructure().getAtomCount());

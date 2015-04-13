@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Feb 26 19:06:25 2015
- * 
+ *
  * @brief  File handler utility functions.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -61,26 +61,30 @@ public class FileHandler {
 
   /**
    * Loads current file into the molecule IAtomContainer.
-   * 
+   *
    * @param fileName
    *          File to load.
-   * 
+   *
    * @return The molecule loaded.
-   * 
+   *
    * @throws IOException
    *           Problems with loading file.
    * @throws CDKException
    *           Problems with input file format.
    */
-  public static IAtomContainer readFile(String fileName) throws IOException,
-      CDKException {
-    InputStream file = new BufferedInputStream(new FileInputStream(fileName));
-    ISimpleChemObjectReader reader = new ReaderFactory().createReader(file);
+  public static IAtomContainer readFile(final String fileName)
+      throws IOException,
+  CDKException {
+    final InputStream file = new BufferedInputStream(new FileInputStream(
+        fileName));
+    final ISimpleChemObjectReader reader = new ReaderFactory()
+        .createReader(file);
     IChemFile cmlFile = null;
     cmlFile = reader.read(SilentChemObjectBuilder.getInstance().newInstance(
         IChemFile.class));
     reader.close();
-    IAtomContainer molecule = ChemFileManipulator.getAllAtomContainers(cmlFile)
+    final IAtomContainer molecule = ChemFileManipulator.getAllAtomContainers(
+        cmlFile)
         .get(0);
     Logger.logging(molecule);
     return molecule;
@@ -88,12 +92,12 @@ public class FileHandler {
 
   /**
    * Builds the CML XOM element.
-   * 
+   *
    * @param molecule
    *          The molecule to rewritten.
-   * 
+   *
    * @return The CML document.
-   * 
+   *
    * @throws IOException
    *           Problems with StringWriter
    * @throws CDKException
@@ -101,25 +105,26 @@ public class FileHandler {
    * @throws ParsingException
    *           Problems with building CML XOM.
    */
-  public static Document buildXom(IAtomContainer molecule) throws IOException,
-      CDKException, ParsingException {
-    StringWriter outStr = new StringWriter();
-    CMLWriter cmlwriter = new CMLWriter(outStr);
+  public static Document buildXom(final IAtomContainer molecule)
+      throws IOException,
+  CDKException, ParsingException {
+    final StringWriter outStr = new StringWriter();
+    final CMLWriter cmlwriter = new CMLWriter(outStr);
     cmlwriter.write(molecule);
     cmlwriter.close();
-    String cmlcode = outStr.toString();
+    final String cmlcode = outStr.toString();
 
-    Builder builder = new CMLBuilder();
+    final Builder builder = new CMLBuilder();
     // this.doc.getRootElement().addNamespaceDeclaration
     // ("cml", "http://www.xml-cml.org/schema");
-    Document doc = builder.build(cmlcode, "");
+    final Document doc = builder.build(cmlcode, "");
     Logger.logging(doc.toXML());
     return doc;
   }
 
   /**
    * Writes a document to a CML file.
-   * 
+   *
    * @param doc
    *          The output document.
    * @param fileName
@@ -132,12 +137,13 @@ public class FileHandler {
    * @throws CDKException
    *           Problems with writing the CML XOM.
    */
-  public static void writeFile(Document doc, String fileName, String extension)
+  public static void writeFile(final Document doc, final String fileName,
+      final String extension)
       throws IOException, CDKException {
-    String basename = FilenameUtils.getBaseName(fileName);
-    OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
+    final String basename = FilenameUtils.getBaseName(fileName);
+    final OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
         basename + "-" + extension + ".cml"));
-    PrintWriter output = new PrintWriter(outFile);
+    final PrintWriter output = new PrintWriter(outFile);
     output.write(XOMUtil.toPrettyXML(doc));
     output.flush();
     output.close();

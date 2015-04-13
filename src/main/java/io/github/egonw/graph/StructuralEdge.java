@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:34:38 2015
- * 
+ *
  * @brief  Edges for the structural graph.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -33,7 +33,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Edges for the structural graph.
- * 
+ *
  * @extends DefaultEdge
  */
 
@@ -41,20 +41,21 @@ public class StructuralEdge extends DefaultEdge {
 
   private static final long serialVersionUID = 1L;
 
-  private String label;
+  private final String label;
   private boolean shortBonds = false;
 
-  public StructuralEdge(String label) {
+  public StructuralEdge(final String label) {
     super();
     this.label = label;
     this.shortBonds = Cli.hasOption("vis_short");
   }
 
+  @Override
   public String toString() {
     if (this.shortBonds) {
       return this.label;
     }
     return "(" + this.getSource().toString() + " : " + this.label + " : "
-        + this.getTarget().toString() + ")";
+      + this.getTarget().toString() + ")";
   }
 }

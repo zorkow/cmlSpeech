@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:06:05 2015
- * 
+ *
  * @brief  Command line interface.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -51,12 +51,12 @@ public final class Cli {
   protected Cli() {
   }
 
-  public static void init(String[] args) {
+  public static void init(final String[] args) {
     Cli.parse(args);
   }
 
-  private static void parse(String[] args) {
-    Options options = new Options();
+  private static void parse(final String[] args) {
+    final Options options = new Options();
     // Basic Options
     options.addOption("help", false, "Print this message");
     options.addOption("d", "debug", false, "Debug mode");
@@ -91,17 +91,17 @@ public final class Cli {
     options.addOption("sub", "subscript", false,
         "Use subscripts with structural formula");
     options
-        .addOption(
-            "m",
-            "molcom",
-            true,
-            "Comparison heuristics for molecules given as a comma"
-                + "separated list. Currently available heuristics: type, weight, size");
+    .addOption(
+        "m",
+        "molcom",
+        true,
+        "Comparison heuristics for molecules given as a comma"
+            + "separated list. Currently available heuristics: type, weight, size");
 
-    CommandLineParser parser = new BasicParser();
+    final CommandLineParser parser = new BasicParser();
     try {
       Cli.cl = parser.parse(options, args);
-    } catch (ParseException e) {
+    } catch (final ParseException e) {
       usage(options, 1);
     }
     if (Cli.cl.hasOption("help")) {
@@ -109,8 +109,8 @@ public final class Cli {
     }
 
     for (int i = 0; i < Cli.cl.getArgList().size(); i++) {
-      String fileName = Cli.cl.getArgList().get(i).toString();
-      File file = new File(fileName);
+      final String fileName = Cli.cl.getArgList().get(i).toString();
+      final File file = new File(fileName);
       if (file.exists() && !file.isDirectory()) {
         Cli.files.add(fileName);
       } else {
@@ -120,23 +120,23 @@ public final class Cli {
 
   }
 
-  private static void usage(Options options, int exitValue) {
+  private static void usage(final Options options, final int exitValue) {
 
-    HelpFormatter formatter = new HelpFormatter();
+    final HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("enrich.sh", options);
     System.exit(exitValue);
   }
 
-  private static void warning(String fileName) {
+  private static void warning(final String fileName) {
     System.err.println("Warning: File " + fileName
         + " does not exist. Ignored!");
   }
 
-  public static boolean hasOption(String option) {
+  public static boolean hasOption(final String option) {
     return Cli.cl.hasOption(option);
   }
 
-  public static String getOptionValue(String option) {
+  public static String getOptionValue(final String option) {
     return Cli.cl.getOptionValue(option);
   }
 

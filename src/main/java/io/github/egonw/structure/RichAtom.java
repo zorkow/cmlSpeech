@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 15:14:55 2014
- * 
+ *
  * @brief  Annotated Atom structure.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -37,7 +37,7 @@ import org.openscience.cdk.interfaces.IAtom;
 
 public class RichAtom extends RichChemObject {
 
-  public RichAtom(IAtom structure) {
+  public RichAtom(final IAtom structure) {
     super(structure);
   }
 

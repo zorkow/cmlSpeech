@@ -17,9 +17,9 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:39:56 2014
- * 
+ *
  * @brief Rich Structure comparison methods wrt. molecular weight of atom sets.
- * 
+ *
  */
 
 //
@@ -42,25 +42,27 @@ import java.io.IOException;
 public class WeightComparator extends DefaultComparator {
 
   @Override
-  public int compare(RichAtomSet set1, RichAtomSet set2) {
-    IAtomContainer container1 = set1.getStructure();
-    IAtomContainer container2 = set2.getStructure();
-    double weightA = AtomContainerManipulator.getNaturalExactMass(container1);
-    double weightB = AtomContainerManipulator.getNaturalExactMass(container2);
+  public int compare(final RichAtomSet set1, final RichAtomSet set2) {
+    final IAtomContainer container1 = set1.getStructure();
+    final IAtomContainer container2 = set2.getStructure();
+    final double weightA = AtomContainerManipulator
+        .getNaturalExactMass(container1);
+    final double weightB = AtomContainerManipulator
+        .getNaturalExactMass(container2);
 
     return (int) Math.signum(weightB - weightA);
   }
 
   @Override
-  public int compare(RichAtom atom1, RichAtom atom2) {
+  public int compare(final RichAtom atom1, final RichAtom atom2) {
     try {
-      double weightA = AtomicProperties.getInstance().getMass(
+      final double weightA = AtomicProperties.getInstance().getMass(
           atom1.getStructure().getSymbol());
-      double weightB = AtomicProperties.getInstance().getMass(
+      final double weightB = AtomicProperties.getInstance().getMass(
           atom2.getStructure().getSymbol());
 
       return (int) Math.signum(weightB - weightA);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       return 0;
     }
   }

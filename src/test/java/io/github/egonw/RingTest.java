@@ -87,7 +87,8 @@ public class RingTest {
     public void compareRim(String input, String set, String[] actual) {
         this.loadMolecule(input);
         RichRing atomSet = (RichRing)RichStructureHelper.getRichAtomSet(set);
-        compareSets(atomSet.getRim().stream().map(a -> a.getID()).collect(Collectors.toList()),
+        compareSets(atomSet.getRim().stream().map(a -> a.getID()).
+                    collect(Collectors.toList()),
                     actual);
     }
 

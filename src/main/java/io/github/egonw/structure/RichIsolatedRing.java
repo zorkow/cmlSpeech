@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich isolated ring.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -35,7 +35,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class RichIsolatedRing extends RichRing {
 
-  public RichIsolatedRing(IAtomContainer container, String id) {
+  public RichIsolatedRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.ISOLATED);
   }
 

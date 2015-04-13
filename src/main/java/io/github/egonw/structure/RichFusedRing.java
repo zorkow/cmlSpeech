@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich fused ring.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -46,12 +46,13 @@ import java.util.stream.Collectors;
 
 public class RichFusedRing extends RichRing implements RichSuperSet {
 
-  public RichFusedRing(IAtomContainer container, String id) {
+  public RichFusedRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUSED);
   }
 
-  private Set<String> sharedBonds = new HashSet<>();
+  private final Set<String> sharedBonds = new HashSet<>();
 
+  @Override
   protected final void walk() {
     this.computeRichSubSystems();
     this.computeSharedBonds();
@@ -62,7 +63,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
   }
 
   private void computeSharedBonds() {
-    for (RichAtomSet subRing : this.richSubSystems) {
+    for (final RichAtomSet subRing : this.richSubSystems) {
       this.sharedBonds.addAll(subRing.getConnections().stream()
           .filter(c -> c.getType().equals(ConnectionType.SHAREDBOND))
           .map(c -> c.getConnector()).collect(Collectors.toSet()));
@@ -70,11 +71,11 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
   }
 
   private void computeRim() {
-    IAtomContainer container = this.getStructure();
+    final IAtomContainer container = this.getStructure();
     this.rim = new HashSet<>();
-    for (IBond bond : container.bonds()) {
-      if (!sharedBonds.contains(bond.getID())) {
-        for (IAtom atom : bond.atoms()) {
+    for (final IBond bond : container.bonds()) {
+      if (!this.sharedBonds.contains(bond.getID())) {
+        for (final IAtom atom : bond.atoms()) {
           this.rim.add(atom);
         }
       }
@@ -82,13 +83,14 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
   }
 
   @Override
-  protected List<IAtom> getConnectedAtomsList(IAtom atom) {
-    List<IBond> rimBonds = this.getStructure().getConnectedBondsList(atom)
+  protected List<IAtom> getConnectedAtomsList(final IAtom atom) {
+    final List<IBond> rimBonds = this.getStructure()
+        .getConnectedBondsList(atom)
         .stream().filter(b -> !this.sharedBonds.contains(b.getID()))
         .collect(Collectors.toList());
-    List<IAtom> rimAtoms = new ArrayList<>();
-    for (IBond bond : rimBonds) {
-      for (IAtom batom : bond.atoms()) {
+    final List<IAtom> rimAtoms = new ArrayList<>();
+    for (final IBond bond : rimBonds) {
+      for (final IAtom batom : bond.atoms()) {
         if (atom != batom) {
           rimAtoms.add(batom);
         }
@@ -97,7 +99,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     return rimAtoms;
   }
 
-  private ComponentsPositions path = new ComponentsPositions();
+  private final ComponentsPositions path = new ComponentsPositions();
   private Set<RichAtomSet> richSubSystems = null;
 
   private void computeRichSubSystems() {
@@ -108,11 +110,11 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
   @Override
   public ComponentsPositions getPath() {
-    return path;
+    return this.path;
   }
 
-  private RichAtomSet findAtom(List<RichAtomSet> sets, RichAtom atom) {
-    for (RichAtomSet set : sets) {
+  private RichAtomSet findAtom(final List<RichAtomSet> sets, final RichAtom atom) {
+    for (final RichAtomSet set : sets) {
       if (set.getStructure().contains(atom.getStructure())) {
         return set;
       }
@@ -122,11 +124,11 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
   @Override
   public void setPath() {
-    List<RichAtomSet> newSystem = new ArrayList<>(richSubSystems);
+    final List<RichAtomSet> newSystem = new ArrayList<>(this.richSubSystems);
     RichAtomSet lastSystem = null;
-    for (String atomName : this) {
-      RichAtom atom = RichStructureHelper.getRichAtom(atomName);
-      RichAtomSet container = this.findAtom(newSystem, atom);
+    for (final String atomName : this) {
+      final RichAtom atom = RichStructureHelper.getRichAtom(atomName);
+      final RichAtomSet container = this.findAtom(newSystem, atom);
       if (container != null) {
         lastSystem = container;
         newSystem.remove(container);
@@ -134,9 +136,9 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
       }
     }
     while (newSystem.size() > 0) {
-      for (String atomName : lastSystem) {
-        RichAtom atom = RichStructureHelper.getRichAtom(atomName);
-        RichAtomSet container = this.findAtom(newSystem, atom);
+      for (final String atomName : lastSystem) {
+        final RichAtom atom = RichStructureHelper.getRichAtom(atomName);
+        final RichAtomSet container = this.findAtom(newSystem, atom);
         if (container != null) {
           lastSystem = container;
           newSystem.remove(container);

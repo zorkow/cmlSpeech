@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 10 22:25:05 2014
- * 
+ *
  * @brief  Abstract class for rich structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -50,7 +50,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
   protected final S structure;
 
-  AbstractRichStructure(S structure) {
+  AbstractRichStructure(final S structure) {
     this.structure = structure;
   }
 
@@ -59,7 +59,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.structure;
   }
 
-  private SortedSet<String> components = new TreeSet<String>(
+  private final SortedSet<String> components = new TreeSet<String>(
       new CmlNameComparator());
 
   @Override
@@ -67,7 +67,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.components;
   }
 
-  private SortedSet<String> contexts = new TreeSet<String>(
+  private final SortedSet<String> contexts = new TreeSet<String>(
       new CmlNameComparator());
 
   @Override
@@ -75,7 +75,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.contexts;
   }
 
-  private SortedSet<String> externalBonds = new TreeSet<String>(
+  private final SortedSet<String> externalBonds = new TreeSet<String>(
       new CmlNameComparator());
 
   @Override
@@ -83,7 +83,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.externalBonds;
   }
 
-  private SortedSet<Connection> connections = new TreeSet<Connection>(
+  private final SortedSet<Connection> connections = new TreeSet<Connection>(
       new ConnectionComparator());
 
   @Override
@@ -91,7 +91,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.connections;
   }
 
-  private SortedSet<String> superSystems = new TreeSet<String>(
+  private final SortedSet<String> superSystems = new TreeSet<String>(
       new CmlNameComparator());
 
   @Override
@@ -99,7 +99,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.superSystems;
   }
 
-  private SortedSet<String> subSystems = new TreeSet<String>(
+  private final SortedSet<String> subSystems = new TreeSet<String>(
       new CmlNameComparator());
 
   @Override
@@ -109,7 +109,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
   @Override
   public String toString() {
-    Joiner joiner = Joiner.on(" ");
+    final Joiner joiner = Joiner.on(" ");
     return this.getId()
         + ":"
         + "\nComponents:"
@@ -133,7 +133,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
   @Override
   public SreElement annotation() {
-    SreElement element = new SreElement(SreNamespace.Tag.ANNOTATION);
+    final SreElement element = new SreElement(SreNamespace.Tag.ANNOTATION);
     element.appendChild(new SreElement(this.tag(), this.getId()));
     // System.out.println("here1");
     element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONTEXT,
@@ -151,7 +151,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     if (this.getConnections().isEmpty()) {
       return null;
     }
-    SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
+    final SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
     this.getConnections().stream()
         .forEach(c -> element.appendChild(c.annotation()));
     return element;

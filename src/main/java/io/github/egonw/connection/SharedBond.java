@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:27:03 2015
- * 
+ *
  * @brief  Class of shared bonds.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -36,7 +36,7 @@ import io.github.egonw.sre.SreNamespace;
 
 public class SharedBond extends Connection {
 
-  public SharedBond(String connector, String connected) {
+  public SharedBond(final String connector, final String connected) {
     super(connector, connected);
   }
 
@@ -54,7 +54,7 @@ public class SharedBond extends Connection {
   public SreElement annotation() {
     return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
         this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
-        this.getConnected()));
+            this.getConnected()));
   }
 
 }

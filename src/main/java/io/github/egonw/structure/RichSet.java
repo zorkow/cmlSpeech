@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 14:26:35 2015
- * 
+ *
  * @brief  Interface for enriched atom sets.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -53,27 +53,27 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
   /**
    * @param doc
    *          The CML document structure.
-   * 
+   *
    * @return A CML element represengin this atom set.
    */
   public CMLAtomSet getCml(Document doc);
 
   /**
    * Finds an element in the set by its position.
-   * 
+   *
    * @param position
    *          The position of the element to retrieve.
-   * 
+   *
    * @return The name of the retrieved element.
    */
   public String getAtom(Integer position);
 
   /**
    * Retrieves the position of an element in the set.
-   * 
+   *
    * @param element
    *          The name of the element.
-   * 
+   *
    * @return The retrieved position.
    */
   public Integer getPosition(String element);

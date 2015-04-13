@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 13:22:37 2014
- * 
+ *
  * @brief  Utility class to communicate with Cactus.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -60,13 +60,13 @@ public class Cactus {
 
     /**
      * Enum type for different translations via Cactus with two parameters.
-     * 
+     *
      * @param tag
      *          String for tag.
      * @param caller
      *          Closure with call to Cactus for that tag.
      */
-    private Type(String tag, Function<IAtomContainer, String> caller) {
+    private Type(final String tag, final Function<IAtomContainer, String> caller) {
       this.caller = caller;
       this.tag = tag;
     }
@@ -74,18 +74,18 @@ public class Cactus {
 
   /**
    * Send a call to the Cactus web service.
-   * 
+   *
    * @param input
    *          String with input structure.
    * @param output
    *          Output format.
    * @return Result if any.
    */
-  private static List<String> getCactus(String input, String output)
+  private static List<String> getCactus(final String input, final String output)
       throws CactusException {
     URL url = null;
     BufferedReader br = null;
-    List<String> lines = new ArrayList<>();
+    final List<String> lines = new ArrayList<>();
     try {
       url = new URL("http://cactus.nci.nih.gov/chemical/structure/" + input
           + "/" + output);
@@ -93,12 +93,12 @@ public class Cactus {
       while (br.ready()) {
         lines.add(br.readLine());
       }
-    } catch (FileNotFoundException e) {
+    } catch (final FileNotFoundException e) {
       throw new CactusException("No result for " + url);
-    } catch (MalformedURLException e) {
+    } catch (final MalformedURLException e) {
       throw new CactusException("Can't make URL from input " + input + " "
           + output);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       throw new CactusException("IO exception when translating " + url);
     }
     return lines;
@@ -106,60 +106,60 @@ public class Cactus {
 
   /**
    * Translates a molecule to Inchi format.
-   * 
+   *
    * @param molecule
    *          The input molecule.
    * @return String containing molecule in Inchi format.
    */
-  private static String translate(IAtomContainer molecule)
+  private static String translate(final IAtomContainer molecule)
       throws CactusException {
     try {
-      InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
-      InChIGenerator gen = factory.getInChIGenerator(molecule);
+      final InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
+      final InChIGenerator gen = factory.getInChIGenerator(molecule);
       return (gen.getInchi());
-    } catch (CDKException e) {
+    } catch (final CDKException e) {
       throw new CactusException("Problems loading CDK Factory.");
     }
   }
 
   /**
    * Compute IUPAC name for molecule.
-   * 
+   *
    * @param molecule
    *          Input molecule.
    * @return The IUPAC name if it exists.
    */
-  public static String getIupac(IAtomContainer molecule)
+  public static String getIupac(final IAtomContainer molecule)
       throws CactusException {
-    String inchi = Cactus.translate(molecule);
+    final String inchi = Cactus.translate(molecule);
     return Cactus.getCactus(inchi, "IUPAC_Name").get(0);
   }
 
   /**
    * Compute chemical formula for molecule.
-   * 
+   *
    * @param molecule
    *          Input molecule.
    * @return The chemical formula.
    */
-  public static String getFormula(IAtomContainer molecule)
+  public static String getFormula(final IAtomContainer molecule)
       throws CactusException {
-    String inchi = Cactus.translate(molecule);
+    final String inchi = Cactus.translate(molecule);
     return Cactus.getCactus(inchi, "formula").get(0);
   }
 
   /**
    * Compute common name for molecule.
-   * 
+   *
    * @param molecule
    *          Input molecule.
    * @return Common name if it exists.
    */
-  public static String getName(IAtomContainer molecule)
+  public static String getName(final IAtomContainer molecule)
       throws CactusException {
-    String inchi = Cactus.translate(molecule);
-    List<String> names = Cactus.getCactus(inchi, "Names");
-    List<String> alpha = names.stream()
+    final String inchi = Cactus.translate(molecule);
+    final List<String> names = Cactus.getCactus(inchi, "Names");
+    final List<String> alpha = names.stream()
         .filter(line -> line.matches("^[a-zA-Z- ]+$"))
         .collect(Collectors.toList());
     if (alpha.isEmpty()) {

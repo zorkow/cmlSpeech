@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:08:08 2015
- * 
+ *
  * @brief  Enumerator for different richSet types.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -42,7 +42,7 @@ public enum RichSetType {
 
   public final String name;
 
-  private RichSetType(String type) {
+  private RichSetType(final String type) {
     this.name = type;
   }
 }

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 15:14:55 2014
- * 
+ *
  * @brief  Annotated Bond structure.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -38,10 +38,10 @@ import org.openscience.cdk.interfaces.IBond;
 
 public class RichBond extends RichChemObject {
 
-  public RichBond(IBond structure) {
+  public RichBond(final IBond structure) {
     super(structure);
 
-    for (IAtom atom : structure.atoms()) {
+    for (final IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
   }

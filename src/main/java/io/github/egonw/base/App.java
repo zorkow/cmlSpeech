@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:05:04 2015
- * 
+ *
  * @brief  Basic application file for project.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -29,11 +29,11 @@ package io.github.egonw.base;
 
 public class App {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(final String[] args) throws Exception {
     Cli.init(args);
     Logger.start();
-    for (String file : Cli.getFiles()) {
-      CmlEnricher cmle = new CmlEnricher();
+    for (final String file : Cli.getFiles()) {
+      final CmlEnricher cmle = new CmlEnricher();
       cmle.enrichFile(file);
     }
     Logger.end();

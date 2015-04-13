@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:08:08 2015
- * 
+ *
  * @brief  Enumerator for different connection types.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -41,7 +41,7 @@ public enum ConnectionType {
 
   public final String type;
 
-  private ConnectionType(String type) {
+  private ConnectionType(final String type) {
     this.type = type;
   }
 

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Mar 20 21:57:45 2015
- * 
+ *
  * @brief  An abstract class for ring structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -56,7 +56,8 @@ public abstract class RichRing extends RichAtomSet {
 
   protected Set<IAtom> rim = null;
 
-  public RichRing(IAtomContainer container, String id, RichSetType type) {
+  public RichRing(final IAtomContainer container, final String id,
+      final RichSetType type) {
     super(container, id, type);
     this.rim = Sets.newHashSet(container.atoms());
   }
@@ -71,9 +72,10 @@ public abstract class RichRing extends RichAtomSet {
   }
 
   protected class InternalSubstComparator implements Comparator<IAtom> {
-    public int compare(IAtom atom1, IAtom atom2) {
-      String symbol1 = atom1.getSymbol();
-      String symbol2 = atom2.getSymbol();
+    @Override
+    public int compare(final IAtom atom1, final IAtom atom2) {
+      final String symbol1 = atom1.getSymbol();
+      final String symbol2 = atom2.getSymbol();
       if (symbol1 == "O") {
         return -1;
       }
@@ -81,10 +83,10 @@ public abstract class RichRing extends RichAtomSet {
         return 1;
       }
       try {
-        double weightA = AtomicProperties.getInstance().getMass(symbol1);
-        double weightB = AtomicProperties.getInstance().getMass(symbol2);
+        final double weightA = AtomicProperties.getInstance().getMass(symbol1);
+        final double weightB = AtomicProperties.getInstance().getMass(symbol2);
         return (int) Math.signum(weightB - weightA);
-      } catch (IOException e) {
+      } catch (final IOException e) {
         return 0;
       }
     }
@@ -93,27 +95,30 @@ public abstract class RichRing extends RichAtomSet {
   // TODO (sorge) This comparator contains a lot of redundancy. This could be
   // simplified.
   protected class ExternalSubstComparator implements Comparator<Connection> {
-    private WeightComparator weightCompare = new WeightComparator();
+    private final WeightComparator weightCompare = new WeightComparator();
 
-    public int compare(Connection con1, Connection con2) {
-      RichStructure<?> connected1 = RichStructureHelper.getRichStructure(con1
-          .getConnected());
-      RichStructure<?> connected2 = RichStructureHelper.getRichStructure(con2
-          .getConnected());
+    @Override
+    public int compare(final Connection con1, final Connection con2) {
+      final RichStructure<?> connected1 = RichStructureHelper
+          .getRichStructure(con1
+              .getConnected());
+      final RichStructure<?> connected2 = RichStructureHelper
+          .getRichStructure(con2
+              .getConnected());
       if (this.isHydroxylGroup(connected1)) {
         return -1;
       }
       if (this.isHydroxylGroup(connected2)) {
         return 1;
       }
-      return weightCompare.compare(connected1, connected2);
+      return this.weightCompare.compare(connected1, connected2);
     }
 
-    private boolean isHydroxylGroup(RichStructure<?> structure) {
+    private boolean isHydroxylGroup(final RichStructure<?> structure) {
       if (!RichStructureHelper.isAtomSet(structure.getId())) {
         return false;
       }
-      IAtomContainer container = ((RichAtomSet) structure).getStructure();
+      final IAtomContainer container = ((RichAtomSet) structure).getStructure();
       if (container.getAtomCount() == 1) {
         return this.isHydroxyl(container.getAtom(0));
       }
@@ -131,13 +136,14 @@ public abstract class RichRing extends RichAtomSet {
       return false;
     }
 
-    private boolean isHydroxyl(IAtom atom) {
+    private boolean isHydroxyl(final IAtom atom) {
       return atom.getSymbol() == "O" && atom.getImplicitHydrogenCount() == 1;
     }
   }
 
+  @Override
   protected void walk() {
-    List<IAtom> internalSubst = this.getInternalSubsts();
+    final List<IAtom> internalSubst = this.getInternalSubsts();
     if (internalSubst.size() > 1) {
       this.walkOnSubst(internalSubst.get(0), internalSubst);
       return;
@@ -151,7 +157,7 @@ public abstract class RichRing extends RichAtomSet {
       this.walkTrivial();
       return;
     }
-    List<IAtom> externalSubst = this.getExternalSubsts();
+    final List<IAtom> externalSubst = this.getExternalSubsts();
     if (internalSubst.size() == 0) {
       if (externalSubst.size() == 1) {
         this.walkStraight(externalSubst.get(0));
@@ -169,14 +175,15 @@ public abstract class RichRing extends RichAtomSet {
    */
   private void walkTrivial() {
     // Choose lexicographically smallest start atom.
-    SortedSet<String> components = this.getComponents();
-    String smallestName = components.first();
-    IAtom startAtom = Lists.newArrayList(this.getStructure().atoms()).stream()
+    final SortedSet<String> components = this.getComponents();
+    final String smallestName = components.first();
+    final IAtom startAtom = Lists.newArrayList(this.getStructure().atoms())
+        .stream()
         .filter(x -> x.getID().equals(smallestName)).findFirst().get();
-    List<IAtom> connected = this.getConnectedAtomsList(startAtom);
-    IAtom nextLeft = connected.get(0);
-    IAtom nextRight = connected.get(1);
-    List<IAtom> path = new ArrayList<IAtom>();
+    final List<IAtom> connected = this.getConnectedAtomsList(startAtom);
+    final IAtom nextLeft = connected.get(0);
+    final IAtom nextRight = connected.get(1);
+    final List<IAtom> path = new ArrayList<IAtom>();
     path.add(startAtom);
     if (components.headSet(nextLeft.getID()).size() <= components.headSet(
         nextRight.getID()).size()) {
@@ -186,17 +193,17 @@ public abstract class RichRing extends RichAtomSet {
     }
   }
 
-  private void walkOnSubst(IAtom startAtom, List<IAtom> reference) {
-    List<IAtom> queueLeft = new ArrayList<>();
-    List<IAtom> queueRight = new ArrayList<>();
+  private void walkOnSubst(final IAtom startAtom, final List<IAtom> reference) {
+    final List<IAtom> queueLeft = new ArrayList<>();
+    final List<IAtom> queueRight = new ArrayList<>();
     queueLeft.add(startAtom);
     queueRight.add(startAtom);
-    List<IAtom> connected = this.getConnectedAtomsList(startAtom);
+    final List<IAtom> connected = this.getConnectedAtomsList(startAtom);
     IAtom nextLeft = connected.get(0);
     IAtom nextRight = connected.get(1);
     while (nextLeft != null && nextRight != null) {
-      boolean containsLeft = reference.contains(nextLeft);
-      boolean containsRight = reference.contains(nextRight);
+      final boolean containsLeft = reference.contains(nextLeft);
+      final boolean containsRight = reference.contains(nextRight);
       if (containsLeft && containsRight) {
         if (reference.indexOf(nextLeft) <= reference.indexOf(nextRight)) {
           this.walkFinalise(nextLeft, queueLeft);
@@ -213,13 +220,13 @@ public abstract class RichRing extends RichAtomSet {
         this.walkFinalise(nextRight, queueRight);
         return;
       }
-      nextLeft = chooseNext(queueLeft, nextLeft);
-      nextRight = chooseNext(queueRight, nextRight);
+      nextLeft = this.chooseNext(queueLeft, nextLeft);
+      nextRight = this.chooseNext(queueRight, nextRight);
     }
   }
 
-  private void walkFinalise(IAtom endAtom, List<IAtom> path) {
-    for (IAtom atom : path) {
+  private void walkFinalise(final IAtom endAtom, final List<IAtom> path) {
+    for (final IAtom atom : path) {
       this.componentPositions.addNext(atom.getID());
     }
     this.walkStraight(endAtom, path);
@@ -227,14 +234,14 @@ public abstract class RichRing extends RichAtomSet {
 
   /**
    * Finds the next atom in the ring that has not yet been visited.
-   * 
+   *
    * @param atom
-   * 
+   *
    * @return atom that's next to the input atom.
    */
-  private IAtom chooseNext(List<IAtom> visited, IAtom atom) {
+  private IAtom chooseNext(final List<IAtom> visited, final IAtom atom) {
     visited.add(atom);
-    List<IAtom> connected = this.getConnectedAtomsList(atom);
+    final List<IAtom> connected = this.getConnectedAtomsList(atom);
     if (!visited.contains(connected.get(0))) {
       return connected.get(0);
     }
@@ -244,31 +251,32 @@ public abstract class RichRing extends RichAtomSet {
     return null;
   }
 
-  private static Boolean isCarbon(IAtom atom) {
+  private static Boolean isCarbon(final IAtom atom) {
     return atom.getSymbol().equals("C");
   }
 
   // TODO (sorge) Eventually this needs to be rewritten to work with the rim.
   private List<IAtom> getInternalSubsts() {
-    Queue<IAtom> substs = new PriorityQueue<>(new InternalSubstComparator());
-    for (IAtom atom : this.getStructure().atoms()) {
+    final Queue<IAtom> substs = new PriorityQueue<>(
+        new InternalSubstComparator());
+    for (final IAtom atom : this.getStructure().atoms()) {
       if (!RichRing.isCarbon(atom)) {
         substs.add(atom);
       }
     }
-    List<IAtom> result = new ArrayList<>();
+    final List<IAtom> result = new ArrayList<>();
     while (substs.peek() != null) {
       result.add(substs.poll());
     }
     return result;
   }
 
-  private Queue<Connection> externalConnections = new PriorityQueue<>(
+  private final Queue<Connection> externalConnections = new PriorityQueue<>(
       new ExternalSubstComparator());
 
   private void getExternalConnections() {
-    for (Connection connection : this.getConnections()) {
-      ConnectionType type = connection.getType();
+    for (final Connection connection : this.getConnections()) {
+      final ConnectionType type = connection.getType();
       if (type == ConnectionType.SPIROATOM || type == ConnectionType.SHAREDATOM
           || type == ConnectionType.CONNECTINGBOND) {
         this.externalConnections.add(connection);
@@ -278,16 +286,17 @@ public abstract class RichRing extends RichAtomSet {
   }
 
   private List<IAtom> getExternalSubsts() {
-    List<IAtom> result = new ArrayList<>();
+    final List<IAtom> result = new ArrayList<>();
     while (this.externalConnections.peek() != null) {
-      Connection connection = this.externalConnections.poll();
-      ConnectionType type = connection.getType();
+      final Connection connection = this.externalConnections.poll();
+      final ConnectionType type = connection.getType();
       if (type == ConnectionType.SPIROATOM || type == ConnectionType.SHAREDATOM) {
         result.add(RichStructureHelper.getRichAtom(connection.getConnector())
             .getStructure());
       }
       if (type == ConnectionType.CONNECTINGBOND) {
-        IBond bond = RichStructureHelper.getRichBond(connection.getConnector())
+        final IBond bond = RichStructureHelper.getRichBond(
+            connection.getConnector())
             .getStructure();
         if (this.getComponents().contains(bond.getAtom(0).getID())) {
           result.add(bond.getAtom(0));

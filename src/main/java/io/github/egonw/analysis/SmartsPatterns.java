@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 00:55:58 2015
- * 
+ *
  * @brief  Loads and tests Smarts patterns.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -44,8 +44,8 @@ public class SmartsPatterns {
 
   private static volatile SmartsPatterns instance = null;
   private static String[] smartsFiles = {
-      "src/main/resources/smarts/daylight-pattern.txt",
-      "src/main/resources/smarts/smarts-pattern.txt" };
+    "src/main/resources/smarts/daylight-pattern.txt",
+  "src/main/resources/smarts/smarts-pattern.txt" };
   private static Map<String, String> smartsPatterns = new HashMap<String, String>();
   private static boolean loaded = false;
 
@@ -69,17 +69,18 @@ public class SmartsPatterns {
   }
 
   private static void loadSmartsFiles() {
-    for (String file : SmartsPatterns.smartsFiles) {
+    for (final String file : SmartsPatterns.smartsFiles) {
       loadSmartsFile(file);
     }
   }
 
-  private static void loadSmartsFile(String file) {
+  private static void loadSmartsFile(final String file) {
     try {
-      BufferedReader br = new BufferedReader(new FileReader(new File(file)));
+      final BufferedReader br = new BufferedReader(new FileReader(
+          new File(file)));
       String line;
       while ((line = br.readLine()) != null) {
-        int colonIndex = line.indexOf(":");
+        final int colonIndex = line.indexOf(":");
         // Checks that the line has a colon in it and if it is one of
         // the patterns to be skipped (notated by a '#' before the name
         // in the file
@@ -89,9 +90,9 @@ public class SmartsPatterns {
         }
       }
       br.close();
-    } catch (FileNotFoundException e) {
+    } catch (final FileNotFoundException e) {
       e.printStackTrace();
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
     }
   }

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed May 28 22:56:58 2014
- * 
+ *
  * @brief A lightweight graph to represent the top level structure of molecules.
  *        !!! This uses Jgrapht v0.9 !!!
- * 
+ *
  */
 
 //
@@ -39,18 +39,16 @@ import java.util.stream.Collectors;
 
 /**
  * The structural graph.
- * 
- * @extends SimpleGraph
  */
 
 public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
 
   private static final long serialVersionUID = 1L;
 
-  private List<RichStructure<?>> structures;
-  private Set<String> names;
+  private final List<RichStructure<?>> structures;
+  private final Set<String> names;
 
-  public StructuralGraph(Set<String> structures) {
+  public StructuralGraph(final Set<String> structures) {
     super(StructuralEdge.class);
     this.names = structures;
     this.structures = this.names.stream()
@@ -61,17 +59,18 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
 
   private void init() {
     this.names.stream().forEach(this::addVertex);
-    for (RichStructure<?> structure : this.structures) {
-      Set<Connection> connections = structure.getConnections();
+    for (final RichStructure<?> structure : this.structures) {
+      final Set<Connection> connections = structure.getConnections();
       if (!connections.isEmpty()) {
-        this.addSingleEdges(structure.getId(), connections, names);
+        this.addSingleEdges(structure.getId(), connections, this.names);
       }
     }
   }
 
-  private void addSingleEdges(String source, Set<Connection> connections,
-      Set<String> systems) {
-    for (Connection connection : connections) {
+  private void addSingleEdges(final String source,
+      final Set<Connection> connections,
+      final Set<String> systems) {
+    for (final Connection connection : connections) {
       if (systems.contains(connection.getConnected())) {
         this.addEdge(source, connection.getConnected(),
             connection.getConnector());
@@ -79,14 +78,15 @@ public class StructuralGraph extends SimpleGraph<String, StructuralEdge> {
     }
   }
 
-  public StructuralEdge addEdge(String source, String target, String label) {
-    StructuralEdge edge = new StructuralEdge(label);
+  public StructuralEdge addEdge(final String source, final String target,
+      final String label) {
+    final StructuralEdge edge = new StructuralEdge(label);
     this.addEdge(source, target, edge);
     return edge;
   }
 
-  public void visualize(String name) {
-    StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
+  public void visualize(final String name) {
+    final StructuralGraphVisualizer vis = new StructuralGraphVisualizer();
     vis.init(this, this.structures, name);
   }
 

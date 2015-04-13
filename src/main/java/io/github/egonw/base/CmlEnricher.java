@@ -67,12 +67,12 @@ public class CmlEnricher {
   private IAtomContainer molecule;
   private SreOutput sreOutput;
   private SreSpeech sreSpeech;
-  private CactusExecutor executor = new CactusExecutor();
-  private StructuralFormula formula = new StructuralFormula();
+  private final CactusExecutor executor = new CactusExecutor();
+  private final StructuralFormula formula = new StructuralFormula();
 
   /**
    * Constructor
-   * 
+   *
    * @return The newly created object.
    */
   public CmlEnricher() {
@@ -84,15 +84,15 @@ public class CmlEnricher {
    * @param fileName
    *          File to enrich.
    */
-  public void enrichFile(String fileName) {
+  public void enrichFile(final String fileName) {
     this.loadMolecule(fileName);
     if (Cli.hasOption("c")) {
       try {
         FileHandler.writeFile(this.doc, fileName, "simple");
-      } catch (IOException e) {
+      } catch (final IOException e) {
         Logger.error("IO error: Can't write " + fileName + "\n");
         e.printStackTrace();
-      } catch (CDKException e) {
+      } catch (final CDKException e) {
         Logger.error("Not a valid CDK structure to write: " + e.getMessage()
             + "\n");
         e.printStackTrace();
@@ -101,24 +101,24 @@ public class CmlEnricher {
     this.analyseMolecule();
     this.nameMolecule();
     this.annotateMolecule();
-    doc.getRootElement().addNamespaceDeclaration(
+    this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }
     try {
       FileHandler.writeFile(this.doc, fileName, "enr");
-    } catch (IOException e) {
+    } catch (final IOException e) {
       Logger.error("IO error: Can't write enriched file " + fileName + "\n");
       e.printStackTrace();
-    } catch (CDKException e) {
+    } catch (final CDKException e) {
       Logger.error("Not a valid CDK structure to write: " + e.getMessage()
           + "\n");
       e.printStackTrace();
     }
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
-        for (RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
+        for (final RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
           atomSet.visualize();
         }
       } else {
@@ -133,7 +133,7 @@ public class CmlEnricher {
    * @param fileName
    *          The input filename.
    */
-  public void loadMolecule(String fileName) {
+  public void loadMolecule(final String fileName) {
     try {
       this.molecule = FileHandler.readFile(fileName);
       this.doc = FileHandler.buildXom(this.molecule);
@@ -162,12 +162,12 @@ public class CmlEnricher {
     MolecularFormula.set(RichStructureHelper.getAtomSets());
     this.appendAtomSets();
     if (!Cli.hasOption("nonih")) {
-      executor.execute();
-      executor.addResults(this.doc);
-      executor.shutdown();
+      this.executor.execute();
+      this.executor.addResults(this.doc);
+      this.executor.shutdown();
     }
     if (Cli.hasOption("sf")) {
-      String structuralFormula = this.formula.getStructuralFormula(Cli
+      final String structuralFormula = this.formula.getStructuralFormula(Cli
           .hasOption("sub"));
       System.out.println(structuralFormula);
     }
@@ -181,10 +181,10 @@ public class CmlEnricher {
    * @param container
    *          The molecule to be named.
    */
-  private void nameMolecule(String id, IAtomContainer container) {
+  private void nameMolecule(final String id, final IAtomContainer container) {
     // TODO (sorge) catch the right exception.
     Logger.logging("Registering calls for " + id + "\n");
-    IAtomContainer newcontainer = checkedClone(container);
+    final IAtomContainer newcontainer = this.checkedClone(container);
     if (newcontainer != null) {
       this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
           newcontainer));
@@ -222,17 +222,17 @@ public class CmlEnricher {
    *          The container to be cloned.
    * @return The cloned container. Possibly null if cloning failed!
    */
-  private IAtomContainer checkedClone(IAtomContainer container) {
+  private IAtomContainer checkedClone(final IAtomContainer container) {
     IAtomContainer newcontainer = null;
     try {
       newcontainer = container.clone();
       AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
       CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance())
-          .addImplicitHydrogens(newcontainer);
-    } catch (CloneNotSupportedException e) {
+      .addImplicitHydrogens(newcontainer);
+    } catch (final CloneNotSupportedException e) {
       Logger.error("Something went wrong cloning atom container: "
           + e.getMessage());
-    } catch (Throwable e) {
+    } catch (final Throwable e) {
       Logger.error("Error " + e.getMessage());
     }
     return newcontainer;
@@ -242,25 +242,25 @@ public class CmlEnricher {
    * Append the Atom Sets from the structural analysis to the CML documents.
    */
   private void appendAtomSets() {
-    List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
-    for (RichAtomSet richSet : richSets) {
-      CMLAtomSet set = richSet.getCml(this.doc);
+    final List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
+    for (final RichAtomSet richSet : richSets) {
+      final CMLAtomSet set = richSet.getCml(this.doc);
       // this.atomSets.add(richSet);
       this.doc.getRootElement().appendChild(set);
       set.addAttribute(new SreAttribute("formula", richSet.molecularFormula));
       if (richSet.getType() == RichSetType.FUNCGROUP) {
         set.addAttribute(new SreAttribute("name", richSet.name));
       } else {
-        nameMolecule(richSet.getId(), richSet.getStructure());
+        this.nameMolecule(richSet.getId(), richSet.getStructure());
       }
     }
   }
 
   private void removeNonAnnotations() {
-    Element root = this.doc.getRootElement();
-    Elements elements = root.getChildElements();
+    final Element root = this.doc.getRootElement();
+    final Elements elements = root.getChildElements();
     for (Integer i = 0; i < elements.size(); i++) {
-      Element element = elements.get(i);
+      final Element element = elements.get(i);
       if (!element.getLocalName().equals("annotations")) {
         root.removeChild(element);
       }

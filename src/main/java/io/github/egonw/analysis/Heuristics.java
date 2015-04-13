@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Jan 17 18:24:15 2015
- * 
+ *
  * @brief  Combines basic comparators via a heuristic.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -40,27 +40,27 @@ import java.util.Comparator;
 
 public class Heuristics extends DefaultComparator {
 
-  private String[] heuristics;
-  private Comparator<RichStructure<?>> weight = new WeightComparator();
-  private Comparator<RichStructure<?>> type = new TypeComparator();
-  private Comparator<RichStructure<?>> size = new SizeComparator();
+  private final String[] heuristics;
+  private final Comparator<RichStructure<?>> weight = new WeightComparator();
+  private final Comparator<RichStructure<?>> type = new TypeComparator();
+  private final Comparator<RichStructure<?>> size = new SizeComparator();
 
   /**
    * Constructor of heuristic comparison.
-   * 
+   *
    * @param heuristic
    *          A string representing a list of heuristics.
    */
-  public Heuristics(String heuristic) {
+  public Heuristics(final String heuristic) {
     // TODO (sorge) Do something with non-existent heuristics.
-    this.heuristics = heuristic == "" ? new String[] { "type", "weight", "size" }
-        : heuristic.split(",");
+    this.heuristics = heuristic == "" ? new String[] {"type", "weight", "size"}
+    : heuristic.split(",");
   }
 
   @Override
-  public int compare(RichAtomSet set1, RichAtomSet set2) {
+  public int compare(final RichAtomSet set1, final RichAtomSet set2) {
     Integer result = 0;
-    for (String heuristic : this.heuristics) {
+    for (final String heuristic : this.heuristics) {
       switch (heuristic) {
         case "size":
           result = this.size.compare(set1, set2);
@@ -82,7 +82,7 @@ public class Heuristics extends DefaultComparator {
   }
 
   @Override
-  public int compare(RichAtom atom1, RichAtom atom2) {
+  public int compare(final RichAtom atom1, final RichAtom atom2) {
     if (Arrays.asList(this.heuristics).contains("type")) {
       return this.weight.compare(atom1, atom2);
     }

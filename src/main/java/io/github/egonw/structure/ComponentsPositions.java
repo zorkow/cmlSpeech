@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:17:23 2015
- * 
+ *
  * @brief  Data structure for positions in rich structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -40,26 +40,26 @@ import java.util.function.Consumer;
 
 public class ComponentsPositions implements Iterable<String> {
 
-  private BiMap<Integer, String> atomPositions = HashBiMap.create();
+  private final BiMap<Integer, String> atomPositions = HashBiMap.create();
   private int atomCount = 0;
 
-  public boolean contains(String value) {
+  public boolean contains(final String value) {
     return this.atomPositions.containsValue(value);
   }
 
-  public boolean contains(Integer value) {
+  public boolean contains(final Integer value) {
     return this.atomPositions.containsKey(value);
   }
 
-  public String get(Integer key) {
+  public String get(final Integer key) {
     return this.atomPositions.get(key);
   }
 
-  public String getAtom(Integer key) {
+  public String getAtom(final Integer key) {
     return this.atomPositions.get(key);
   }
 
-  public Integer getPosition(String atom) {
+  public Integer getPosition(final String atom) {
     return this.atomPositions.inverse().get(atom);
   }
 
@@ -71,27 +71,28 @@ public class ComponentsPositions implements Iterable<String> {
     return this.atomPositions.isEmpty();
   }
 
-  public void putAll(ComponentsPositions componentPositions) {
+  public void putAll(final ComponentsPositions componentPositions) {
     if (this.atomPositions.isEmpty()) {
       this.atomPositions.putAll(componentPositions.atomPositions);
       this.atomCount = componentPositions.size();
       return;
     }
-    for (String atom : componentPositions) {
+    for (final String atom : componentPositions) {
       if (!this.contains(atom)) {
         this.addNext(atom);
       }
     }
   }
 
-  public void addNext(String atomId) {
+  public void addNext(final String atomId) {
     this.atomCount++;
     this.atomPositions.put(this.atomCount, atomId);
   }
 
+  @Override
   public String toString() {
     String result = "";
-    for (String key : this) {
+    for (final String key : this) {
       result += String.format("%d:\t%s\n", this.getPosition(key), key);
     }
     return result;
@@ -107,24 +108,26 @@ public class ComponentsPositions implements Iterable<String> {
 
     @Override
     public boolean hasNext() {
-      return this.current < atomPositions.size();
+      return this.current < ComponentsPositions.this.atomPositions.size();
     }
 
     @Override
     public String next() {
-      if (!hasNext()) {
+      if (!this.hasNext()) {
         throw new NoSuchElementException();
       }
-      return atomPositions.get(++this.current);
+      return ComponentsPositions.this.atomPositions.get(++this.current);
     }
 
   }
 
+  @Override
   public Iterator<String> iterator() {
     return new AtomIterator();
   }
 
-  public void forEach(Consumer<? super String> action) {
+  @Override
+  public void forEach(final Consumer<? super String> action) {
     this.atomPositions.values().forEach(action);
   }
 

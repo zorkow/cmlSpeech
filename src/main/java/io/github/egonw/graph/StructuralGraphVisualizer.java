@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:36:33 2015
- * 
+ *
  * @brief  A basic visualiser for molecule graphs.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -52,6 +52,7 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.vecmath.Point2d;
 
 /**
@@ -79,11 +80,11 @@ public class StructuralGraphVisualizer {
   private boolean colour = true;
 
   class NamedPoint {
-    private int pointX;
-    private int pointY;
-    private String name;
+    private final int pointX;
+    private final int pointY;
+    private final String name;
 
-    NamedPoint(String name, int pointX, int pointY) {
+    NamedPoint(final String name, final int pointX, final int pointY) {
       this.pointX = pointX;
       this.pointY = pointY;
       this.name = name;
@@ -108,13 +109,14 @@ public class StructuralGraphVisualizer {
   /**
    * @see java.applet.Applet#init().
    */
-  public void init(SimpleGraph<?, ?> sg, List<RichStructure<?>> structures,
-      String name) {
+  public void init(final SimpleGraph<?, ?> sg,
+      final List<RichStructure<?>> structures,
+      final String name) {
     this.colour = !Cli.hasOption("vis_bw");
-    ListenableGraph<?, ?> graph = new ListenableUndirectedGraph<>(sg);
-    mjgAdapter = new JGraphModelAdapter<>(graph);
+    final ListenableGraph<?, ?> graph = new ListenableUndirectedGraph<>(sg);
+    this.mjgAdapter = new JGraphModelAdapter<>(graph);
 
-    JGraph jgraph = new JGraph(mjgAdapter);
+    final JGraph jgraph = new JGraph(this.mjgAdapter);
 
     if (this.colour) {
       jgraph.setBackground(DEFAULT_BG_COLOR);
@@ -123,45 +125,46 @@ public class StructuralGraphVisualizer {
       jgraph.setForeground(BLACK);
     }
 
-    List<NamedPoint> points = new ArrayList<NamedPoint>();
-    for (RichStructure<?> structure : structures) {
+    final List<NamedPoint> points = new ArrayList<NamedPoint>();
+    for (final RichStructure<?> structure : structures) {
       if (structure instanceof RichAtomSet) {
-        points.add(computeCentroid((RichAtomSet) structure));
+        points.add(this.computeCentroid((RichAtomSet) structure));
       } else {
-        points.add(computeAtom((RichAtom) structure));
+        points.add(this.computeAtom((RichAtom) structure));
       }
     }
-    positionPoints(points);
+    this.positionPoints(points);
 
-    JScrollPane scroller = new JScrollPane(jgraph);
-    JFrame frame = new JFrame(name);
+    final JScrollPane scroller = new JScrollPane(jgraph);
+    final JFrame frame = new JFrame(name);
 
     frame.setBounds(this.minX, this.minY, this.maxX - this.minX + this.padding,
         this.maxY - this.minY + this.padding);
     frame.add(scroller);
     frame.setVisible(true);
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jgraph.getGraphLayoutCache().reload();
     jgraph.repaint();
   }
 
-  private void positionPoints(List<NamedPoint> points) {
+  private void positionPoints(final List<NamedPoint> points) {
     points.stream().forEach(
-        p -> positionVertexAt(p.getName(), p.getX() - this.minX + this.offset,
+        p -> this.positionVertexAt(p.getName(), p.getX() - this.minX
+            + this.offset,
             p.getY() - this.minY + this.offset));
   }
 
-  private NamedPoint computeCentroid(RichAtomSet set) {
+  private NamedPoint computeCentroid(final RichAtomSet set) {
     double pointX = 0;
     double pointY = 0;
     int steps = 0;
-    for (IAtom atom : set.getStructure().atoms()) {
-      Point2d x2d = atom.getPoint2d();
-      pointX += (x2d.x * scale);
-      pointY += (x2d.y * scale);
+    for (final IAtom atom : set.getStructure().atoms()) {
+      final Point2d x2d = atom.getPoint2d();
+      pointX += (x2d.x * this.scale);
+      pointY += (x2d.y * this.scale);
       steps++;
     }
-    NamedPoint point = new NamedPoint(set.getId(), (int) pointX / steps,
+    final NamedPoint point = new NamedPoint(set.getId(), (int) pointX / steps,
         -1 * (int) pointY / steps);
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
@@ -170,11 +173,12 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-  private NamedPoint computeAtom(RichAtom richAtom) {
-    IAtom atom = richAtom.getStructure();
-    Point2d x2d = atom.getPoint2d();
-    NamedPoint point = new NamedPoint(atom.getID(), (int) (x2d.x * scale),
-        (int) (-1 * x2d.y * scale));
+  private NamedPoint computeAtom(final RichAtom richAtom) {
+    final IAtom atom = richAtom.getStructure();
+    final Point2d x2d = atom.getPoint2d();
+    final NamedPoint point = new NamedPoint(atom.getID(),
+        (int) (x2d.x * this.scale),
+        (int) (-1 * x2d.y * this.scale));
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
     this.maxX = Math.max(this.maxX, point.getX());
@@ -182,10 +186,11 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-  private void positionVertexAt(String vertex, int pointX, int pointY) {
-    DefaultGraphCell cell = mjgAdapter.getVertexCell(vertex);
-    AttributeMap attr = cell.getAttributes();
-    Rectangle2D bounds = GraphConstants.getBounds(attr);
+  private void positionVertexAt(final String vertex, final int pointX,
+      final int pointY) {
+    final DefaultGraphCell cell = this.mjgAdapter.getVertexCell(vertex);
+    final AttributeMap attr = cell.getAttributes();
+    final Rectangle2D bounds = GraphConstants.getBounds(attr);
 
     if (!this.colour) {
       attr.applyValue("foregroundColor", BLACK);
@@ -195,8 +200,8 @@ public class StructuralGraphVisualizer {
     GraphConstants.setBounds(attr, new Rectangle(pointX, pointY,
         (int) bounds.getWidth(),
         (int) bounds.getHeight()));
-    Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
+    final Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
     cellAttr.put(cell, attr);
-    mjgAdapter.edit(cellAttr, null, null, null);
+    this.mjgAdapter.edit(cellAttr, null, null, null);
   }
 }

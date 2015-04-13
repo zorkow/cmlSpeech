@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 12:19:41 2014
- * 
+ *
  * @brief  A comparator for CML naming conventions.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -36,14 +36,14 @@ import java.util.Comparator;
 public class CmlNameComparator implements Comparator<String> {
 
   @Override
-  public int compare(String name1, String name2) {
-    String reg1 = "[0-9]*";
-    String alpha1 = name1.replaceAll(reg1, "");
-    String alpha2 = name2.replaceAll(reg1, "");
+  public int compare(final String name1, final String name2) {
+    final String reg1 = "[0-9]*";
+    final String alpha1 = name1.replaceAll(reg1, "");
+    final String alpha2 = name2.replaceAll(reg1, "");
     if (alpha1.equals(alpha2)) {
-      String reg2 = "[a-z]*";
-      Integer numer1 = Integer.parseInt(name1.replaceAll(reg2, ""));
-      Integer numer2 = Integer.parseInt(name2.replaceAll(reg2, ""));
+      final String reg2 = "[a-z]*";
+      final Integer numer1 = Integer.parseInt(name1.replaceAll(reg2, ""));
+      final Integer numer2 = Integer.parseInt(name2.replaceAll(reg2, ""));
       if (numer1 == numer2) {
         return 0;
       }

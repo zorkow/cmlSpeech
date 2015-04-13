@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jun 20 02:00:25 2014
- * 
+ *
  * @brief  Singleton class to translate atom names.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -175,19 +175,19 @@ public class AtomTable {
     return instance;
   }
 
-  public static String lookup(String name) {
-    String result = atomMap.get(name);
+  public static String lookup(final String name) {
+    final String result = atomMap.get(name);
     if (result == null) {
       return "";
     }
     return result;
   }
 
-  public static String lookup(IAtom atom) {
+  public static String lookup(final IAtom atom) {
     return lookup(atom.getSymbol());
   }
 
-  public static String lookup(RichAtom atom) {
+  public static String lookup(final RichAtom atom) {
     return lookup(atom.getStructure());
   }
 

@@ -17,11 +17,11 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:39:56 2014
- * 
+ *
  * @brief Rich Structure comparison methods wrt. types of atom sets. It
  *        basically promotes rings.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -39,27 +39,27 @@ import io.github.egonw.structure.RichSetType;
 public class TypeComparator extends DefaultComparator {
 
   @Override
-  public int compare(RichAtomSet set1, RichAtomSet set2) {
-    RichSetType typeA = set1.getType();
-    RichSetType typeB = set2.getType();
+  public int compare(final RichAtomSet set1, final RichAtomSet set2) {
+    final RichSetType typeA = set1.getType();
+    final RichSetType typeB = set2.getType();
     if (typeA == RichSetType.FUNCGROUP
         && (typeB == RichSetType.ALIPHATIC || typeB == RichSetType.FUSED
-            || typeB == RichSetType.ISOLATED || typeB == RichSetType.SMALLEST)) {
+        || typeB == RichSetType.ISOLATED || typeB == RichSetType.SMALLEST)) {
       return 1;
     }
     if (typeA == RichSetType.ALIPHATIC
         && (typeB == RichSetType.FUSED || typeB == RichSetType.ISOLATED
-            || typeB == RichSetType.SMALLEST)) {
+        || typeB == RichSetType.SMALLEST)) {
       return 1;
     }
     if (typeB == RichSetType.FUNCGROUP
         && (typeA == RichSetType.ALIPHATIC || typeA == RichSetType.FUSED
-            || typeA == RichSetType.ISOLATED || typeA == RichSetType.SMALLEST)) {
+        || typeA == RichSetType.ISOLATED || typeA == RichSetType.SMALLEST)) {
       return -1;
     }
     if (typeB == RichSetType.ALIPHATIC
         && (typeA == RichSetType.FUSED || typeA == RichSetType.ISOLATED
-            || typeA == RichSetType.SMALLEST)) {
+        || typeA == RichSetType.SMALLEST)) {
       return -1;
     }
     return 0;

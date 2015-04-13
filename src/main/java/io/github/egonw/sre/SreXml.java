@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jun 19 16:34:40 2014
- * 
+ *
  * @brief  Abstract class to handle SRE annotations.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -55,22 +55,23 @@ public abstract class SreXml {
     this.annotations.complete();
   }
 
-  public void toSreSet(String annotate, SreNamespace.Tag tag, Set<String> set) {
-    for (String element : set) {
+  public void toSreSet(final String annotate, final SreNamespace.Tag tag,
+      final Set<String> set) {
+    for (final String element : set) {
       this.annotations.appendAnnotation(annotate, tag,
           this.toSreElement(element));
     }
   }
 
-  public void toSreSet(String annotate, SreNamespace.Tag tag,
-      ComponentsPositions positions) {
-    for (String element : positions) {
+  public void toSreSet(final String annotate, final SreNamespace.Tag tag,
+      final ComponentsPositions positions) {
+    for (final String element : positions) {
       this.annotations.appendAnnotation(annotate, tag,
           this.toSreElement(element));
     }
   }
 
-  public SreElement toSreElement(String name) {
+  public SreElement toSreElement(final String name) {
     if (RichStructureHelper.isAtom(name)) {
       return new SreElement(SreNamespace.Tag.ATOM, name);
     }

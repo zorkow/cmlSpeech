@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Aug  4 19:40:18 2014
- * 
+ *
  * @brief  Abstract superclass for all comparators on Rich Structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -38,9 +38,10 @@ import io.github.egonw.structure.RichStructureComparator;
  */
 
 abstract class DefaultComparator implements
-    RichStructureComparator<RichStructure<?>> {
+RichStructureComparator<RichStructure<?>> {
 
-  public int compare(RichStructure<?> obj1, RichStructure<?> obj2) {
+  @Override
+  public int compare(final RichStructure<?> obj1, final RichStructure<?> obj2) {
     if (obj1 instanceof RichAtomSet && obj2 instanceof RichAtomSet) {
       return this.compare((RichAtomSet) obj1, (RichAtomSet) obj2);
     }
@@ -56,17 +57,21 @@ abstract class DefaultComparator implements
     return 0;
   }
 
+  @Override
   public abstract int compare(RichAtomSet set1, RichAtomSet set2);
 
-  public int compare(RichAtomSet set1, RichAtom atom2) {
+  @Override
+  public int compare(final RichAtomSet set1, final RichAtom atom2) {
     return -1;
   }
 
-  public int compare(RichAtom atom1, RichAtomSet set2) {
+  @Override
+  public int compare(final RichAtom atom1, final RichAtomSet set2) {
     return 1;
   }
 
-  public int compare(RichAtom atom1, RichAtom atom2) {
+  @Override
+  public int compare(final RichAtom atom1, final RichAtom atom2) {
     return 0;
   }
 

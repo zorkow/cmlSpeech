@@ -17,9 +17,9 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 13:22:37 2014
- * 
+ *
  * @brief  Callable class for Cactus Futures.
- * 
+ *
  */
 
 //
@@ -38,10 +38,11 @@ import java.util.concurrent.Callable;
 public class CactusCallable implements Callable<SreAttribute> {
 
   public String id = "";
-  private Cactus.Type type;
+  private final Cactus.Type type;
   private IAtomContainer container = null;
 
-  public CactusCallable(String id, Cactus.Type type, IAtomContainer container) {
+  public CactusCallable(final String id, final Cactus.Type type,
+      final IAtomContainer container) {
     super();
     this.id = id;
     this.type = type;
@@ -50,7 +51,7 @@ public class CactusCallable implements Callable<SreAttribute> {
 
   @Override
   public SreAttribute call() throws CactusException {
-    String result = this.type.caller.apply(this.container);
+    final String result = this.type.caller.apply(this.container);
     return new SreAttribute(this.type.tag, result);
   }
 

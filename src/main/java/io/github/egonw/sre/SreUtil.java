@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:33:43 2015
- * 
+ *
  * @brief  Utility class for Sre output.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -45,58 +45,59 @@ import java.util.List;
 
 public class SreUtil {
 
-  public static Element getElementById(Document doc, String id) {
-    String query = "//*[@id='" + id + "']";
-    Nodes nodes = doc.query(query);
+  public static Element getElementById(final Document doc, final String id) {
+    final String query = "//*[@id='" + id + "']";
+    final Nodes nodes = doc.query(query);
     return (Element) nodes.get(0);
   }
 
-  public static Nodes xpathQuery(Element element, String query) {
-    XPathContext xc = XPathContext.makeNamespaceContext(element);
+  public static Nodes xpathQuery(final Element element, final String query) {
+    final XPathContext xc = XPathContext.makeNamespaceContext(element);
     xc.addNamespace(SreNamespace.getInstance().prefix,
         SreNamespace.getInstance().uri);
     xc.addNamespace("cml", "http://www.xml-cml.org/schema");
     return element.query(query, xc);
   }
 
-  public static Node xpathQueryElement(Element element, String query) {
+  public static Node xpathQueryElement(final Element element, final String query) {
     Node node;
     try {
       node = xpathQuery(element, query).get(0);
-    } catch (IndexOutOfBoundsException e) {
+    } catch (final IndexOutOfBoundsException e) {
       throw new SreException("Incorrect Xpath result!");
     }
     return node;
   }
 
-  public static String xpathValue(Element element, String query) {
-    Nodes names = SreUtil.xpathQuery(element, query);
+  public static String xpathValue(final Element element, final String query) {
+    final Nodes names = SreUtil.xpathQuery(element, query);
     if (names.size() != 0) {
       return names.get(0).getValue();
     }
     return "";
   }
 
-  public static List<String> xpathValueList(Element element, String query) {
-    Nodes nodes = SreUtil.xpathQuery(element, query);
-    List<String> result = new ArrayList<String>();
+  public static List<String> xpathValueList(final Element element,
+      final String query) {
+    final Nodes nodes = SreUtil.xpathQuery(element, query);
+    final List<String> result = new ArrayList<String>();
     for (int i = 0; i < nodes.size(); i++) {
       result.add(nodes.get(i).getValue());
     }
     return result;
   }
 
-  public static SreElement sreSet(SreNamespace.Tag tag,
-      Collection<String> elements) {
+  public static SreElement sreSet(final SreNamespace.Tag tag,
+      final Collection<String> elements) {
     if (elements.isEmpty()) {
       return null;
     }
-    SreElement element = new SreElement(tag);
+    final SreElement element = new SreElement(tag);
     elements.stream().forEach(e -> element.appendChild(SreUtil.sreElement(e)));
     return element;
   }
 
-  public static SreElement sreElement(String name) {
+  public static SreElement sreElement(final String name) {
     if (RichStructureHelper.isAtom(name)) {
       return new SreElement(SreNamespace.Tag.ATOM, name);
     }

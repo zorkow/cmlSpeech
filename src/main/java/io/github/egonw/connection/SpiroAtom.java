@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Feb 11 00:27:03 2015
- * 
+ *
  * @brief  Class of spiro atoms.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -35,7 +35,7 @@ import io.github.egonw.sre.SreNamespace;
 
 public class SpiroAtom extends Connection {
 
-  public SpiroAtom(String connector, String connected) {
+  public SpiroAtom(final String connector, final String connected) {
     super(connector, connected);
   }
 

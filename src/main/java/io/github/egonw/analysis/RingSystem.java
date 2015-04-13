@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Aug  2 01:56:57 2014
- * 
+ *
  * @brief  Computing information on ring systems.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -56,7 +56,7 @@ public class RingSystem {
 
   RingSearch ringSearch = null;
 
-  public RingSystem(IAtomContainer container) {
+  public RingSystem(final IAtomContainer container) {
     this.ringSearch = new RingSearch(container);
   }
 
@@ -76,55 +76,55 @@ public class RingSystem {
 
   /**
    * Computes fused rings and their subsystems.
-   * 
+   *
    * @param fusedRing
    *          A fused ring system.
    */
-  public List<IAtomContainer> subRings(IAtomContainer fusedRing) {
+  public List<IAtomContainer> subRings(final IAtomContainer fusedRing) {
     return this.subRings(fusedRing,
         Cli.hasOption("sssr") ? this::smallestSubRings : this::sssrSubRings);
   }
 
   /**
    * Computes fused rings and their subsystems.
-   * 
+   *
    * @param fusedRing
    *          A fused ring system.
    * @param subRingMethod
    *          Method to compute subrings.
    */
-  public List<IAtomContainer> subRings(IAtomContainer fusedRing,
-      Function<IAtomContainer, List<IAtomContainer>> subRingMethod) {
+  public List<IAtomContainer> subRings(final IAtomContainer fusedRing,
+      final Function<IAtomContainer, List<IAtomContainer>> subRingMethod) {
     return subRingMethod.apply(fusedRing);
   }
 
   /**
    * Predicate that tests if a particular ring has no other ring as proper
    * subset.
-   * 
+   *
    * <p>
    * This does NOT produce the list of essential rings! It retains rings that
    * are rims of ring compositions of three of more rings. Example is
    * 1H-indeno[7,1-bc]azepine.
    * </p>
-   * 
+   *
    * @param ring
    *          The ring to be tested.
    * @param restRings
    *          The other rings (possibly including the first ring).
-   * 
+   *
    * @return True if ring has smallest coverage.
    */
   // This is quadratic and should be done better!
   // All the iterator to list operations should be done exactly once!
-  private static boolean isSmallest(IAtomContainer ring,
-      List<IAtomContainer> restRings) {
-    List<IAtom> ringAtoms = Lists.newArrayList(ring.atoms());
-    for (IAtomContainer restRing : restRings) {
+  private static boolean isSmallest(final IAtomContainer ring,
+      final List<IAtomContainer> restRings) {
+    final List<IAtom> ringAtoms = Lists.newArrayList(ring.atoms());
+    for (final IAtomContainer restRing : restRings) {
       if (ring == restRing) {
         continue;
       }
-      List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
+      final List<IAtom> restRingAtoms = Lists.newArrayList(restRing.atoms());
       if (ringAtoms.containsAll(restRingAtoms)) {
         return false;
       }
@@ -135,23 +135,24 @@ public class RingSystem {
 
   /**
    * Method to compute smallest rings via subset coverage.
-   * 
+   *
    * @param ring
    *          Fused ring to be broken up.
-   * 
+   *
    * @return Subrings as atom containers.
    */
-  private List<IAtomContainer> smallestSubRings(IAtomContainer ring) {
-    AllRingsFinder arf = new AllRingsFinder();
-    List<IAtomContainer> subRings = new ArrayList<IAtomContainer>();
+  private List<IAtomContainer> smallestSubRings(final IAtomContainer ring) {
+    final AllRingsFinder arf = new AllRingsFinder();
+    final List<IAtomContainer> subRings = new ArrayList<IAtomContainer>();
     IRingSet rs;
     try {
       rs = arf.findAllRings(ring);
-    } catch (CDKException e) {
+    } catch (final CDKException e) {
       return subRings;
     }
-    List<IAtomContainer> allRings = Lists.newArrayList(rs.atomContainers());
-    for (IAtomContainer subRing : allRings) {
+    final List<IAtomContainer> allRings = Lists.newArrayList(rs
+        .atomContainers());
+    for (final IAtomContainer subRing : allRings) {
       if (isSmallest(subRing, allRings)) {
         subRings.add(subRing);
       }
@@ -160,23 +161,27 @@ public class RingSystem {
   }
 
   protected class AtomComparator implements Comparator<IAtom> {
-    public int compare(IAtom atom1, IAtom atom2) {
-      CmlNameComparator comparator = new CmlNameComparator();
+    @Override
+    public int compare(final IAtom atom1, final IAtom atom2) {
+      final CmlNameComparator comparator = new CmlNameComparator();
       return comparator.compare(atom1.getID(), atom2.getID());
     }
   }
 
   protected class RingComparator implements Comparator<IAtomContainer> {
-    public int compare(IAtomContainer container1, IAtomContainer container2) {
-      AtomComparator comparator = new AtomComparator();
-      SortedSet<IAtom> atoms1 = new TreeSet<>(comparator);
-      SortedSet<IAtom> atoms2 = new TreeSet<>(comparator);
+    @Override
+    public int compare(final IAtomContainer container1,
+        final IAtomContainer container2) {
+      final AtomComparator comparator = new AtomComparator();
+      final SortedSet<IAtom> atoms1 = new TreeSet<>(comparator);
+      final SortedSet<IAtom> atoms2 = new TreeSet<>(comparator);
       container1.atoms().forEach(x -> atoms1.add(x));
       container2.atoms().forEach(x -> atoms2.add(x));
-      Iterator<IAtom> iterator1 = atoms1.iterator();
-      Iterator<IAtom> iterator2 = atoms2.iterator();
+      final Iterator<IAtom> iterator1 = atoms1.iterator();
+      final Iterator<IAtom> iterator2 = atoms2.iterator();
       while (iterator1.hasNext() && iterator2.hasNext()) {
-        int result = comparator.compare(iterator1.next(), iterator2.next());
+        final int result = comparator.compare(iterator1.next(),
+            iterator2.next());
         if (result != 0) {
           return result;
         }
@@ -187,19 +192,20 @@ public class RingSystem {
 
   /**
    * Method to compute smallest rings via SSSR finder.
-   * 
+   *
    * @param ring
    *          Fused ring to be broken up.
-   * 
+   *
    * @return Subrings as atom containers.
    */
-  private List<IAtomContainer> sssrSubRings(IAtomContainer ring) {
-    SSSRFinder sssr = new SSSRFinder(ring);
-    IRingSet essentialRings = sssr.findSSSR();
+  private List<IAtomContainer> sssrSubRings(final IAtomContainer ring) {
+    final SSSRFinder sssr = new SSSRFinder(ring);
+    final IRingSet essentialRings = sssr.findSSSR();
     // We need to sort the subrings as essential ring finding is not
     // necessarily deterministic.
-    SortedSet<IAtomContainer> subRings = new TreeSet<>(new RingComparator());
-    for (IAtomContainer subRing : essentialRings.atomContainers()) {
+    final SortedSet<IAtomContainer> subRings = new TreeSet<>(
+        new RingComparator());
+    for (final IAtomContainer subRing : essentialRings.atomContainers()) {
       subRings.add(subRing);
     }
     return Lists.newArrayList(subRings);

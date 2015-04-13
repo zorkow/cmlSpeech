@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 14:48:23 2014
- * 
+ *
  * @brief  Exception for Cactus Utility class.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -36,11 +36,11 @@ public class CactusException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
-  public CactusException(String message) {
+  public CactusException(final String message) {
     super(message);
   }
 
-  public CactusException(String message, Throwable throwable) {
+  public CactusException(final String message, final Throwable throwable) {
     super(message, throwable);
   }
 

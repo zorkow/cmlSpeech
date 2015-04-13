@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jan 30 01:41:35 2015
- * 
+ *
  * @brief  Utility class for molecular formula computation.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -40,17 +40,17 @@ import java.util.List;
 
 public class MolecularFormula {
 
-  public static String compute(RichAtomSet system) {
-    IMolecularFormula form = MolecularFormulaManipulator
+  public static String compute(final RichAtomSet system) {
+    final IMolecularFormula form = MolecularFormulaManipulator
         .getMolecularFormula(system.getStructure());
     return MolecularFormulaManipulator.getString(form);
   }
 
-  public static void set(RichAtomSet system) {
+  public static void set(final RichAtomSet system) {
     system.molecularFormula = MolecularFormula.compute(system);
   }
 
-  public static void set(List<RichAtomSet> systems) {
+  public static void set(final List<RichAtomSet> systems) {
     systems.stream().forEach(MolecularFormula::set);
   }
 

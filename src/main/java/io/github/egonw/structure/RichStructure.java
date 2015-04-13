@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 10 21:37:18 2014
- * 
+ *
  * @brief  Interface specification for enriched structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -69,14 +69,14 @@ public interface RichStructure<S> {
 
   /**
    * Returns the ID of the structure.
-   * 
+   *
    * @return ID string.
    */
   String getId();
 
   /**
    * The structure embedded in this enriched object.
-   * 
+   *
    * @return Un-enriched structure.
    */
   S getStructure();

@@ -3,10 +3,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Apr  5 21:13:34 2015
- * 
+ *
  * @brief  A helper class for depth first traversal.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -29,61 +29,63 @@ import java.util.stream.Collectors;
 public class WalkDepthFirst {
 
   private class OrderComparator<T> implements Comparator<T> {
-    private List<T> order;
+    private final List<T> order;
 
-    public OrderComparator(List<T> order) {
+    public OrderComparator(final List<T> order) {
       this.order = order;
     }
 
-    public int compare(T object1, T object2) {
-      Integer index1 = this.order.indexOf(object1);
-      Integer index2 = this.order.indexOf(object2);
+    @Override
+    public int compare(final T object1, final T object2) {
+      final Integer index1 = this.order.indexOf(object1);
+      final Integer index2 = this.order.indexOf(object2);
       return -1 * Integer.compare(index1, index2);
     }
   }
 
-  private ComponentsPositions positions = new ComponentsPositions();
+  private final ComponentsPositions positions = new ComponentsPositions();
   private List<RichStructure<?>> order = null;
   private RichStructure<?> start = null;
 
-  public WalkDepthFirst(List<RichStructure<?>> order) {
+  public WalkDepthFirst(final List<RichStructure<?>> order) {
     this.order = order;
     this.start();
-    walkDepthFirst();
+    this.walkDepthFirst();
   }
 
-  public WalkDepthFirst(RichStructure<?> start, List<RichStructure<?>> order) {
+  public WalkDepthFirst(final RichStructure<?> start,
+      final List<RichStructure<?>> order) {
     this.start = start;
     this.order = order;
-    walkDepthFirst();
+    this.walkDepthFirst();
   }
 
   private final void start() {
     if (this.order.isEmpty()) {
       return;
     }
-    this.start = order.get(0);
+    this.start = this.order.get(0);
   }
 
   /**
    * Depth first traversal of structure.
    */
   protected final void walkDepthFirst() {
-    OrderComparator<RichStructure<?>> comparator = new OrderComparator<>(
+    final OrderComparator<RichStructure<?>> comparator = new OrderComparator<>(
         this.order);
-    List<RichStructure<?>> visited = new ArrayList<RichStructure<?>>();
-    Stack<RichStructure<?>> frontier = new Stack<RichStructure<?>>();
+    final List<RichStructure<?>> visited = new ArrayList<RichStructure<?>>();
+    final Stack<RichStructure<?>> frontier = new Stack<RichStructure<?>>();
     frontier.push(this.start);
     while (!frontier.empty()) {
-      RichStructure<?> current = frontier.pop();
+      final RichStructure<?> current = frontier.pop();
       if (visited.contains(current)) {
         continue;
       }
       visited.add(current);
       this.positions.addNext(current.getId());
-      List<RichStructure<?>> elements = current.getConnections().stream()
+      final List<RichStructure<?>> elements = current.getConnections().stream()
           .map(con -> RichStructureHelper.getRichStructure(con.getConnected()))
-          .filter(order::contains).collect(Collectors.toList());
+          .filter(this.order::contains).collect(Collectors.toList());
       Collections.sort(elements, comparator);
       elements.stream().forEach(frontier::push);
     }

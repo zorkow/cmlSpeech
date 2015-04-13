@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:06:23 2015
- * 
+ *
  * @brief  Logger facilities for logging and error output.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -39,7 +39,7 @@ import java.util.function.Consumer;
  * Error logging is either to file or stderr. Message logging is either to file
  * or stdout.
  * </p>
- * 
+ *
  */
 public class Logger {
   private static Boolean debug = false;
@@ -53,31 +53,35 @@ public class Logger {
   public static void start() {
     debug = Cli.hasOption("d");
     verbose = Cli.hasOption("v");
-    openLogfile("l", (PrintWriter stream) -> { logFile = stream; });
-    openLogfile("x", (PrintWriter stream) -> { errFile = stream; });
+    openLogfile("l", (final PrintWriter stream) -> {
+      logFile = stream;
+    });
+    openLogfile("x", (final PrintWriter stream) -> {
+      errFile = stream;
+    });
   }
 
-  private static void openLogfile(String optionName,
-      Consumer<PrintWriter> logFile) {
+  private static void openLogfile(final String optionName,
+      final Consumer<PrintWriter> logFile) {
     if (!Cli.hasOption(optionName)) {
       return;
     }
-    String fileName = Cli.getOptionValue(optionName);
-    File file = new File(fileName);
+    final String fileName = Cli.getOptionValue(optionName);
+    final File file = new File(fileName);
     try {
       logFile.accept(new PrintWriter(file));
-    } catch (IOException e) {
+    } catch (final IOException e) {
       System.err.println("Error: Can't open logfile' " + fileName);
     }
   }
 
-  public static void error(Object str) {
+  public static void error(final Object str) {
     if (debug) {
       Logger.errFile.print(str);
     }
   }
 
-  public static void logging(Object str) {
+  public static void logging(final Object str) {
     if (verbose) {
       Logger.logFile.print(str);
     }

@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:29:44 2015
- * 
+ *
  * @brief  Attributes for speech annotations.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -32,39 +32,39 @@ import nu.xom.Element;
 
 /**
  * Attribute structure.
- * 
+ *
  * @extends Attribute
  */
 
 public class SreAttribute extends Attribute {
 
-  public SreAttribute(String localName, String value) {
+  public SreAttribute(final String localName, final String value) {
     super(SreNamespace.getInstance().prefix + ":" + localName, SreNamespace
         .getInstance().uri, value);
   }
 
-  public SreAttribute(SreNamespace.Attribute attr, String value) {
+  public SreAttribute(final SreNamespace.Attribute attr, final String value) {
     super(SreNamespace.getInstance().prefix + ":" + attr.attribute,
         SreNamespace.getInstance().uri, value);
   }
 
-  public void addValue(String value) {
-    if (getValue() == "") {
-      setValue(value);
+  public void addValue(final String value) {
+    if (this.getValue() == "") {
+      this.setValue(value);
     } else {
-      setValue(getValue() + " " + value);
+      this.setValue(this.getValue() + " " + value);
     }
   }
 
-  public void addValue(Element node) {
-    String localName = getLocalName();
-    String namespace = getNamespaceURI();
-    SreAttribute oldAttr = (SreAttribute) node.getAttribute(localName,
+  public void addValue(final Element node) {
+    final String localName = this.getLocalName();
+    final String namespace = this.getNamespaceURI();
+    final SreAttribute oldAttr = (SreAttribute) node.getAttribute(localName,
         namespace);
     if (oldAttr == null) {
       node.addAttribute(this);
     } else {
-      oldAttr.setValue(oldAttr.getValue() + " " + getValue());
+      oldAttr.setValue(oldAttr.getValue() + " " + this.getValue());
     }
   }
 

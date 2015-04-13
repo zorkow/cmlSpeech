@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Feb 14 12:19:38 2015
- * 
+ *
  * @brief  Rich atom set structures.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -67,20 +67,21 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   public String molecularFormula = "";
   public String structuralFormula = "";
 
-  private SortedSet<String> connectingAtoms = new TreeSet<String>(
+  private final SortedSet<String> connectingAtoms = new TreeSet<String>(
       new CmlNameComparator());
 
   public ComponentsPositions componentPositions = new ComponentsPositions();
   public Integer offset = 0;
 
-  public RichAtomSet(IAtomContainer container, String id, RichSetType type) {
+  public RichAtomSet(final IAtomContainer container, final String id,
+      final RichSetType type) {
     super(container);
     this.type = type;
     this.getStructure().setID(id);
-    for (IAtom atom : this.getStructure().atoms()) {
+    for (final IAtom atom : this.getStructure().atoms()) {
       this.getComponents().add(atom.getID());
     }
-    for (IBond bond : this.getStructure().bonds()) {
+    for (final IBond bond : this.getStructure().bonds()) {
       this.getComponents().add(bond.getID());
     }
     this.makeCml();
@@ -110,28 +111,29 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   /**
    * Returns a list with two elements that are the connected atoms that lie on
    * the rim of the ring.
-   * 
+   *
    * @param atom
-   * 
+   *
    * @return List of connected atoms.
    */
-  protected List<IAtom> getConnectedAtomsList(IAtom atom) {
+  protected List<IAtom> getConnectedAtomsList(final IAtom atom) {
     return this.getStructure().getConnectedAtomsList(atom);
   }
 
-  protected final void walkStraight(IAtom atom) {
+  protected final void walkStraight(final IAtom atom) {
     this.walkStraight(atom, new ArrayList<IAtom>());
   }
 
-  protected final void walkStraight(IAtom atom, List<IAtom> visited) {
+  protected final void walkStraight(final IAtom atom,
+                                    final List<IAtom> visited) {
     if (visited.contains(atom)) {
       return;
     }
     this.componentPositions.addNext(atom.getID());
     visited.add(atom);
-    for (IAtom connected : this.getConnectedAtomsList(atom)) {
+    for (final IAtom connected : this.getConnectedAtomsList(atom)) {
       if (!visited.contains(connected)) {
-        walkStraight(connected, visited);
+        this.walkStraight(connected, visited);
         return;
       }
     }
@@ -139,19 +141,19 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   /**
    * Depth first traversal of structure.
-   * 
+   *
    * @param atom
    *          The start atom.
    */
-  protected final void walkDepthFirst(IAtom atom) {
+  protected final void walkDepthFirst(final IAtom atom) {
     if (atom == null) {
       return;
     }
-    List<IAtom> visited = new ArrayList<IAtom>();
-    Stack<IAtom> frontier = new Stack<IAtom>();
+    final List<IAtom> visited = new ArrayList<IAtom>();
+    final Stack<IAtom> frontier = new Stack<IAtom>();
     frontier.push(atom);
     while (!frontier.empty()) {
-      IAtom current = frontier.pop();
+      final IAtom current = frontier.pop();
       if (visited.contains(current)) {
         continue;
       }
@@ -163,34 +165,34 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
   @Override
-  public String getAtom(Integer position) {
+  public String getAtom(final Integer position) {
     return this.componentPositions.getAtom(position);
   }
 
   @Override
-  public Integer getPosition(String atom) {
+  public Integer getPosition(final String atom) {
     return this.componentPositions.getPosition(atom);
   }
 
   @Override
   public Iterator<String> iterator() {
-    return componentPositions.iterator();
+    return this.componentPositions.iterator();
   }
 
   public void printPositions() {
-    Logger.logging(this.getId() + "\n" + componentPositions.toString());
+    Logger.logging(this.getId() + "\n" + this.componentPositions.toString());
   }
 
   public final List<String> orderedAtomNames() {
     if (this.componentPositions.size() == 0) {
       return null;
     }
-    List<String> result = new ArrayList<>();
+    final List<String> result = new ArrayList<>();
     while (result.size() < this.getStructure().getAtomCount()) {
       result.add("");
     }
-    for (IAtom atom : this.getStructure().atoms()) {
-      String id = atom.getID();
+    for (final IAtom atom : this.getStructure().atoms()) {
+      final String id = atom.getID();
       result.set(this.getPosition(id) - 1, atom.getSymbol());
     }
     return result;
@@ -198,8 +200,8 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   @Override
   public String toString() {
-    String structure = super.toString();
-    Joiner joiner = Joiner.on(" ");
+    final String structure = super.toString();
+    final Joiner joiner = Joiner.on(" ");
     return structure + "\nSuper Systems:" + joiner.join(this.getSuperSystems())
         + "\nSub Systems:" + joiner.join(this.getSubSystems())
         + "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
@@ -214,10 +216,10 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   // This should only ever be called once!
   // Need a better solution!
   @Override
-  public CMLAtomSet getCml(Document doc) {
-    for (IAtom atom : this.getStructure().atoms()) {
-      String atomId = atom.getID();
-      CMLAtom node = (CMLAtom) SreUtil.getElementById(doc, atomId);
+  public CMLAtomSet getCml(final Document doc) {
+    for (final IAtom atom : this.getStructure().atoms()) {
+      final String atomId = atom.getID();
+      final CMLAtom node = (CMLAtom) SreUtil.getElementById(doc, atomId);
       this.cml.addAtom(node);
     }
     return this.cml;
@@ -227,8 +229,9 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     return false;
   }
 
+  @Override
   public void visualize() {
-    StructuralGraph graph = new StructuralGraph(this.getSubSystems());
+    final StructuralGraph graph = new StructuralGraph(this.getSubSystems());
     graph.visualize(this.getId());
   }
 
@@ -239,7 +242,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   @Override
   public SreElement annotation() {
-    SreElement element = super.annotation();
+    final SreElement element = super.annotation();
     element.appendChild(SreUtil.sreSet(SreNamespace.Tag.INTERNALBONDS,
         this.getComponents().stream().filter(RichStructureHelper::isBond)
             .collect(Collectors.toSet())));

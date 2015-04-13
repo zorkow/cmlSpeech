@@ -17,10 +17,11 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jun 11 12:18:00 2014
- * 
- * @brief  Class of connection structures. These are effectively triples of strings.
- * 
- * 
+ *
+ * @brief Class of connection structures. These are effectively triples of
+ *     strings.
+ *
+ *
  */
 
 //
@@ -37,12 +38,12 @@ import io.github.egonw.sre.XmlAnnotations;
  */
 
 public abstract class Connection extends ConnectionComparator implements
-    Comparable<Connection>, XmlAnnotations {
+Comparable<Connection>, XmlAnnotations {
 
   private String connector = "";
   private String connected = "";
 
-  public Connection(String connector, String connected) {
+  public Connection(final String connector, final String connected) {
     this.connector = connector;
     this.connected = connected;
   }
@@ -57,19 +58,19 @@ public abstract class Connection extends ConnectionComparator implements
 
   public abstract ConnectionType getType();
 
-  public boolean hasType(ConnectionType type) {
+  public boolean hasType(final ConnectionType type) {
     return type.equals(this.getType());
   }
 
   @Override
   public String toString() {
-    return "\n" + getType() + ": " + this.getConnector() + " -> "
+    return "\n" + this.getType() + ": " + this.getConnector() + " -> "
         + this.getConnected();
   }
 
   @Override
-  public int compareTo(Connection con) {
-    return compare(this, con);
+  public int compareTo(final Connection con) {
+    return this.compare(this, con);
   }
 
   @Override
@@ -79,7 +80,7 @@ public abstract class Connection extends ConnectionComparator implements
   public SreElement annotation() {
     return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.ATOM,
         this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
-        this.getConnected()));
+            this.getConnected()));
   }
 
 }

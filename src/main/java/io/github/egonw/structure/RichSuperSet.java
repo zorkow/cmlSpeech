@@ -3,10 +3,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Mar 22 02:54:39 2015
- * 
+ *
  * @brief  Superset interface.
- * 
- * 
+ *
+ *
  */
 
 //

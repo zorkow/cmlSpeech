@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Feb 24 17:13:29 2015
- * 
+ *
  * @brief  Implementation of rich functional groups.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -45,13 +45,14 @@ import java.util.stream.Collectors;
 
 public class RichFunctionalGroup extends RichAtomSet {
 
-  public RichFunctionalGroup(IAtomContainer container, String id) {
+  public RichFunctionalGroup(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUNCGROUP);
   }
 
+  @Override
   protected final void walk() {
-    RichAtom start = this.getStartAtom();
-    List<RichStructure<?>> atoms = this.getSubSystems().stream()
+    final RichAtom start = this.getStartAtom();
+    final List<RichStructure<?>> atoms = this.getSubSystems().stream()
         .map(RichStructureHelper::getRichStructure)
         .collect(Collectors.toList());
     Collections.sort(atoms, new Heuristics(""));
@@ -65,16 +66,16 @@ public class RichFunctionalGroup extends RichAtomSet {
   }
 
   private RichAtom getStartAtom() {
-    SortedSet<Connection> connections = this.getConnections();
+    final SortedSet<Connection> connections = this.getConnections();
     if (connections.isEmpty()) {
       return null;
     }
-    Heuristics comparator = new Heuristics("");
+    final Heuristics comparator = new Heuristics("");
     Connection maxConnection = connections.first();
     RichStructure<?> maxConnected = RichStructureHelper
         .getRichStructure(maxConnection.getConnected());
-    for (Connection connection : connections) {
-      RichStructure<?> connected = RichStructureHelper
+    for (final Connection connection : connections) {
+      final RichStructure<?> connected = RichStructureHelper
           .getRichStructure(connection.getConnected());
       if (comparator.compare(maxConnected, connected) > 0) {
         maxConnected = connected;
@@ -83,9 +84,9 @@ public class RichFunctionalGroup extends RichAtomSet {
       ;
     }
     if (maxConnection.getType() == ConnectionType.CONNECTINGBOND) {
-      SortedSet<String> atoms = RichStructureHelper.getRichBond(
+      final SortedSet<String> atoms = RichStructureHelper.getRichBond(
           maxConnection.getConnector()).getComponents();
-      for (String atom : atoms) {
+      for (final String atom : atoms) {
         if (this.getSubSystems().contains(atom)) {
           return RichStructureHelper.getRichAtom(atom);
         }

@@ -17,9 +17,9 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Mon Apr 28 01:41:35 2014
- * 
+ *
  * @brief  Class for multi-threaded Cactus call.
- * 
+ *
  */
 
 //
@@ -50,47 +50,47 @@ import java.util.concurrent.Future;
 public class CactusExecutor {
 
   /** Pool of callables for Cactus. */
-  private List<CactusCallable> pool = new ArrayList<>();
+  private final List<CactusCallable> pool = new ArrayList<>();
   /** Registry for futures expecting results from Cactus calls. */
-  private Multimap<String, Future<SreAttribute>> registry = HashMultimap
+  private final Multimap<String, Future<SreAttribute>> registry = HashMultimap
       .create();
   private ExecutorService executor;
 
   /**
    * Register callables for cactus in the pool.
-   * 
+   *
    * @param callable
    *          A callable to register.
    */
-  public void register(CactusCallable callable) {
-    pool.add(callable);
+  public void register(final CactusCallable callable) {
+    this.pool.add(callable);
   }
 
   /** Execute all callables currently in the pool. */
   public void execute() {
-    this.executor = Executors.newFixedThreadPool(pool.size());
-    for (CactusCallable callable : pool) {
-      Future<SreAttribute> future = executor.submit(callable);
+    this.executor = Executors.newFixedThreadPool(this.pool.size());
+    for (final CactusCallable callable : this.pool) {
+      final Future<SreAttribute> future = this.executor.submit(callable);
       this.registry.put(callable.id, future);
     }
   }
 
   /**
    * Adds attributes from returned by all current Cactus futures to a document.
-   * 
+   *
    * @param doc
    *          The current document.
    */
-  public void addResults(Document doc) {
-    for (Map.Entry<String, Future<SreAttribute>> entry : this.registry
+  public void addResults(final Document doc) {
+    for (final Map.Entry<String, Future<SreAttribute>> entry : this.registry
         .entries()) {
-      String id = entry.getKey();
-      Future<SreAttribute> future = entry.getValue();
+      final String id = entry.getKey();
+      final Future<SreAttribute> future = entry.getValue();
       try {
-        Element element = SreUtil.getElementById(doc, id);
-        SreAttribute result = future.get();
+        final Element element = SreUtil.getElementById(doc, id);
+        final SreAttribute result = future.get();
         element.addAttribute(result);
-      } catch (Throwable e) {
+      } catch (final Throwable e) {
         Logger.error("Cactus Error: " + e.getMessage() + "\n");
         continue;
       }
