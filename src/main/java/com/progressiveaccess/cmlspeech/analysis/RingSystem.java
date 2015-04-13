@@ -54,36 +54,53 @@ import java.util.function.Function;
 
 public class RingSystem {
 
-  RingSearch ringSearch = null;
+  private RingSearch ringSearch = null;
 
+
+  /**
+   * Computes the interesting ring systems in an atom container.
+   *
+   * @param container
+   *          The atom container to use.
+   */
   public RingSystem(final IAtomContainer container) {
     this.ringSearch = new RingSearch(container);
   }
 
+
   /**
    * Computes Isolated rings.
+   *
+   * @return List of all isolated rings.
    */
   public List<IAtomContainer> isolatedRings() {
     return this.ringSearch.isolatedRingFragments();
   }
 
+
   /**
    * Computes fused rings without subsystems.
+   *
+   * @return List of all fused rings.
    */
   public List<IAtomContainer> fusedRings() {
     return this.ringSearch.fusedRingFragments();
   }
+
 
   /**
    * Computes fused rings and their subsystems.
    *
    * @param fusedRing
    *          A fused ring system.
+   *
+   * @return List of all subrings.
    */
   public List<IAtomContainer> subRings(final IAtomContainer fusedRing) {
     return this.subRings(fusedRing,
         Cli.hasOption("sssr") ? this::smallestSubRings : this::sssrSubRings);
   }
+
 
   /**
    * Computes fused rings and their subsystems.
@@ -92,11 +109,14 @@ public class RingSystem {
    *          A fused ring system.
    * @param subRingMethod
    *          Method to compute subrings.
+   *
+   * @return List of all subrings.
    */
   public List<IAtomContainer> subRings(final IAtomContainer fusedRing,
       final Function<IAtomContainer, List<IAtomContainer>> subRingMethod) {
     return subRingMethod.apply(fusedRing);
   }
+
 
   /**
    * Predicate that tests if a particular ring has no other ring as proper
@@ -128,10 +148,10 @@ public class RingSystem {
       if (ringAtoms.containsAll(restRingAtoms)) {
         return false;
       }
-      ;
     }
     return true;
   }
+
 
   /**
    * Method to compute smallest rings via subset coverage.
@@ -160,6 +180,10 @@ public class RingSystem {
     return subRings;
   }
 
+
+  /**
+   * Compares two atoms with respect to their id.
+   */
   protected class AtomComparator implements Comparator<IAtom> {
     @Override
     public int compare(final IAtom atom1, final IAtom atom2) {
@@ -168,6 +192,11 @@ public class RingSystem {
     }
   }
 
+
+  /**
+   * Compares two rings with respect to the ids of their contained atoms.
+   * Prefers the ring that has the atom with the lexographically lowest id.
+   */
   protected class RingComparator implements Comparator<IAtomContainer> {
     @Override
     public int compare(final IAtomContainer container1,
@@ -189,6 +218,7 @@ public class RingSystem {
       return 0;
     }
   }
+
 
   /**
    * Method to compute smallest rings via SSSR finder.

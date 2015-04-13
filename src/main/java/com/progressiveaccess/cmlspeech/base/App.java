@@ -27,7 +27,13 @@
 
 package com.progressiveaccess.cmlspeech.base;
 
-public class App {
+public final class App {
+
+  /** Dummy constructor. */
+  private App() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
 
   public static void main(final String[] args) throws Exception {
     Cli.init(args);

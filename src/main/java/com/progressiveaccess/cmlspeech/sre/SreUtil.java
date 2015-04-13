@@ -42,8 +42,13 @@ import java.util.List;
 /**
  * Utility functions for the Sre annotations.
  */
+public final class SreUtil {
 
-public class SreUtil {
+  /** Dummy constructor. */
+  private SreUtil() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
 
   public static Element getElementById(final Document doc, final String id) {
     final String query = "//*[@id='" + id + "']";

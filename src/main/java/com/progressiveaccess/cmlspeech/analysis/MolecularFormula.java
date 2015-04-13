@@ -37,8 +37,13 @@ import java.util.List;
 /**
  * Utility class for molecular formula computation.
  */
-
 public class MolecularFormula {
+
+  /** Dummy constructor. */
+  private MolecularFormula() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
 
   public static String compute(final RichAtomSet system) {
     final IMolecularFormula form = MolecularFormulaManipulator

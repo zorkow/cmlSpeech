@@ -127,7 +127,8 @@ public class FunctionalGroupsFilter {
 
   private class SizeAndNameComparator extends DefaultComparator {
 
-    private final Comparator<RichStructure<?>> sizeComparator = new SizeComparator();
+    private final Comparator<RichStructure<?>> sizeComparator =
+        new SizeComparator();
 
     @Override
     public int compare(final RichAtomSet as1, final RichAtomSet as2) {

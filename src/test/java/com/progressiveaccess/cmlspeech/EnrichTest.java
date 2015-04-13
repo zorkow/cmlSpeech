@@ -75,7 +75,6 @@ public class EnrichTest extends XMLTestCase {
                           "src/main/resources/test_files/molecule/" +
                           name + ".mol"};
         try {
-            new App();
             App.main(dummy);
         }
         catch (Exception e) {

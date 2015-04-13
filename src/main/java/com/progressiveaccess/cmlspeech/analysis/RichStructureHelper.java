@@ -16,7 +16,14 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/** Utility class that holds useful mappings for rich chemical objects. */
 public final class RichStructureHelper {
+
+  /** Dummy constructor. */
+  private RichStructureHelper() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
 
   public static RichMolecule richMolecule;
   public static SortedMap<String, RichStructure<?>> richAtoms;
