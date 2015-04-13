@@ -54,7 +54,7 @@ public class Heuristics extends DefaultComparator {
   public Heuristics(final String heuristic) {
     // TODO (sorge) Do something with non-existent heuristics.
     this.heuristics = heuristic == "" ? new String[] {"type", "weight", "size"}
-    : heuristic.split(",");
+      : heuristic.split(",");
   }
 
   @Override

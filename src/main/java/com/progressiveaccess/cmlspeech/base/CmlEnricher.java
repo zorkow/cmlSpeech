@@ -228,7 +228,7 @@ public class CmlEnricher {
       newcontainer = container.clone();
       AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
       CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance())
-      .addImplicitHydrogens(newcontainer);
+        .addImplicitHydrogens(newcontainer);
     } catch (final CloneNotSupportedException e) {
       Logger.error("Something went wrong cloning atom container: "
           + e.getMessage());

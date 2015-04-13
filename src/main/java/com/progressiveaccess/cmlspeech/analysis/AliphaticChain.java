@@ -61,7 +61,7 @@ import java.util.List;
  */
 // TODO (sorge): Refactor this to return the chains rather than a descriptor.
 public class AliphaticChain extends AbstractMolecularDescriptor implements
-IMolecularDescriptor {
+    IMolecularDescriptor {
 
   private boolean checkRingSystem = true;
 

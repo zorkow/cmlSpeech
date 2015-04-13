@@ -38,7 +38,7 @@ import com.progressiveaccess.cmlspeech.structure.RichStructureComparator;
  */
 
 abstract class DefaultComparator implements
-RichStructureComparator<RichStructure<?>> {
+    RichStructureComparator<RichStructure<?>> {
 
   @Override
   public int compare(final RichStructure<?> obj1, final RichStructure<?> obj2) {

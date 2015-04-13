@@ -45,7 +45,7 @@ public class SmartsPatterns {
   private static volatile SmartsPatterns instance = null;
   private static String[] smartsFiles = {
     "src/main/resources/smarts/daylight-pattern.txt",
-  "src/main/resources/smarts/smarts-pattern.txt" };
+    "src/main/resources/smarts/smarts-pattern.txt" };
   private static Map<String, String> smartsPatterns = new HashMap<String, String>();
   private static boolean loaded = false;
 

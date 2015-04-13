@@ -56,9 +56,11 @@ public class FunctionalGroupsFilter {
 
   private final List<RichAtomSet> existingSets;
   private final Map<String, IAtomContainer> newSets;
-  private final Map<String, IAtomContainer> resultSets = new HashMap<String, IAtomContainer>();
-  // The set that is reduced to distil the interesting functional groups.
-  private final List<RichFunctionalGroup> workingSets = new ArrayList<RichFunctionalGroup>();
+  private final Map<String, IAtomContainer> resultSets =
+      new HashMap<String, IAtomContainer>();
+  // The set that is reduced to distill the interesting functional groups.
+  private final List<RichFunctionalGroup> workingSets =
+      new ArrayList<RichFunctionalGroup>();
 
   private final Integer minimalSize = 2;
   private final Integer minimalOverlap = 1;
