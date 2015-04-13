@@ -35,6 +35,12 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 
 public class SpiroAtom extends Connection {
 
+  /**
+   * Constructs a spiro atom.
+   *
+   * @param connector Name of connecting structure.
+   * @param connected Name of connected structure.
+   */
   public SpiroAtom(final String connector, final String connected) {
     super(connector, connected);
   }

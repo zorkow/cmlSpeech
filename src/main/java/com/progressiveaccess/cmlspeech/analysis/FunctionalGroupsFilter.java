@@ -27,12 +27,12 @@
 
 package com.progressiveaccess.cmlspeech.analysis;
 
-import com.google.common.collect.Sets;
-
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
+
+import com.google.common.collect.Sets;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;

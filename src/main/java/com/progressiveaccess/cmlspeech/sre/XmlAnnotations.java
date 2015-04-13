@@ -33,8 +33,8 @@ package com.progressiveaccess.cmlspeech.sre;
 
 public interface XmlAnnotations {
 
-  public SreNamespace.Tag tag();
+  SreNamespace.Tag tag();
 
-  public SreElement annotation();
+  SreElement annotation();
 
 }

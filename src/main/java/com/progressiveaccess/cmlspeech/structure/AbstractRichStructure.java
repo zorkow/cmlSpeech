@@ -27,8 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.google.common.base.Joiner;
-
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
@@ -36,6 +34,8 @@ import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
+
+import com.google.common.base.Joiner;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

@@ -76,7 +76,6 @@ public class StructuralGraphVisualizer {
   private double maxY = Double.NEGATIVE_INFINITY;
   private boolean colour = true;
 
-
   /** A class of points with names. */
   class NamedPoint extends Point2d {
 
@@ -84,13 +83,15 @@ public class StructuralGraphVisualizer {
 
     private final String name;
 
-
     /**
      * Constructor for named points.
      *
-     * @param name The name of point.
-     * @param pointX X coordinate.
-     * @param pointY Y coordinate.
+     * @param name
+     *          The name of point.
+     * @param pointX
+     *          X coordinate.
+     * @param pointY
+     *          Y coordinate.
      */
     NamedPoint(final String name, final double pointX, final double pointY) {
       super(pointX, pointY);
@@ -113,9 +114,12 @@ public class StructuralGraphVisualizer {
   /**
    * Initialises the graph visualiser.
    *
-   * @param sg The graph.
-   * @param structures A list of rich chemical objects.
-   * @param name The name of the graph to display as frame title.
+   * @param sg
+   *          The graph.
+   * @param structures
+   *          A list of rich chemical objects.
+   * @param name
+   *          The name of the graph to display as frame title.
    * @see java.applet.Applet#init().
    */
   public void init(final SimpleGraph<?, ?> sg,
@@ -148,8 +152,8 @@ public class StructuralGraphVisualizer {
     final JFrame frame = new JFrame(name);
 
     frame.setBounds((int) this.minX, (int) this.minY,
-                    (int) (this.maxX - this.minX + this.padding),
-                    (int) (this.maxY - this.minY + this.padding));
+        (int) (this.maxX - this.minX + this.padding),
+        (int) (this.maxY - this.minY + this.padding));
     frame.add(scroller);
     frame.setVisible(true);
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -157,11 +161,11 @@ public class StructuralGraphVisualizer {
     jgraph.repaint();
   }
 
-
   /**
    * Computes the correct positions for points in the display frame.
    *
-   * @param points A list of named points.
+   * @param points
+   *          A list of named points.
    */
   private void positionPoints(final List<NamedPoint> points) {
     points.stream().forEach(
@@ -170,14 +174,14 @@ public class StructuralGraphVisualizer {
             p.getY() - this.minY + this.offset));
   }
 
-
   /**
    * Compute the centroid for a rich atom set.
    *
-   * @param set The rich atom set.
+   * @param set
+   *          The rich atom set.
    *
    * @return The named point corresponding to the centroid, named with the set
-   *     id.
+   *         id.
    */
   private NamedPoint computeCentroid(final RichAtomSet set) {
     double pointX = 0;
@@ -198,11 +202,11 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-
   /**
    * Get a named point for a rich atom at the right position in the frame.
    *
-   * @param richAtom The rich atom.
+   * @param richAtom
+   *          The rich atom.
    *
    * @return The named point.
    */
@@ -219,13 +223,15 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-
   /**
    * Poisitions a vertex at a given point in the graph.
    *
-   * @param vertex The vertex.
-   * @param pointX X coordinate.
-   * @param pointY Y coordinate.
+   * @param vertex
+   *          The vertex.
+   * @param pointX
+   *          X coordinate.
+   * @param pointY
+   *          Y coordinate.
    */
   private void positionVertexAt(final String vertex, final double pointX,
       final double pointY) {

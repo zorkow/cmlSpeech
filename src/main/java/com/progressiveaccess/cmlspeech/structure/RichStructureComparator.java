@@ -35,17 +35,35 @@ import java.util.Comparator;
  * "interestingness" of structures. The more interesting structure is therefore
  * less than the less interesting one. Or, for example, the larger structure is
  * less than the smaller structure!
+ *
+ * @param <T>
+ *          The type of the internal chemical structure.
  */
-
 public interface RichStructureComparator<T> extends
     Comparator<RichStructure<?>> {
 
-  public int compare(RichAtomSet set1, RichAtomSet set2);
+  /**
+   * Comparison between atom sets.
+   * {@inheritDoc}
+   */
+  int compare(RichAtomSet set1, RichAtomSet set2);
 
-  public int compare(RichAtomSet set1, RichAtom atom2);
+  /**
+   * Comparison between atom set and atom.
+   * {@inheritDoc}
+   */
+  int compare(RichAtomSet set1, RichAtom atom2);
 
-  public int compare(RichAtom atom1, RichAtomSet set2);
+  /**
+   * Comparison between atom and atom set.
+   * {@inheritDoc}
+   */
+  int compare(RichAtom atom1, RichAtomSet set2);
 
-  public int compare(RichAtom atom1, RichAtom atom2);
+  /**
+   * Comparison between atoms.
+   * {@inheritDoc}
+   */
+  int compare(RichAtom atom1, RichAtom atom2);
 
 }

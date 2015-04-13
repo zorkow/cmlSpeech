@@ -27,11 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.analysis;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.common.collect.TreeMultimap;
-
 import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
@@ -50,6 +45,11 @@ import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.collect.TreeMultimap;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;

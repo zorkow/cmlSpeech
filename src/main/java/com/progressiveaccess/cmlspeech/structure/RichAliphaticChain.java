@@ -142,8 +142,9 @@ public class RichAliphaticChain extends RichAtomSet {
    * Finds the next atom in the chain that has not yet been visited.
    *
    * @param atom
+   *          The source atom.
    *
-   * @return atom that's next to the input atom.
+   * @return atom that is next to the input atom.
    */
   private IAtom chooseNext(final IAtom atom) {
     this.visited.add(atom);

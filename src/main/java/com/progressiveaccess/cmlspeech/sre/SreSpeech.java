@@ -27,8 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.sre;
 
-import com.google.common.base.Joiner;
-
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
@@ -37,6 +35,8 @@ import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
+
+import com.google.common.base.Joiner;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -479,9 +479,9 @@ public class SreSpeech extends SreXml {
     final String bond = this.describeBond(
         RichStructureHelper.getRichBond(connector),
         false);
-    final String structure = RichStructureHelper.isAtom(connected) ? this
-        .describeAtomPosition(RichStructureHelper.getRichAtom(connected))
+    final String structure = RichStructureHelper.isAtom(connected) ?
+        this.describeAtomPosition(RichStructureHelper.getRichAtom(connected))
         : this.describeAtomSet(RichStructureHelper.getRichAtomSet(connected));
-        return bond + " bonded to " + structure;
+    return bond + " bonded to " + structure;
   }
 }

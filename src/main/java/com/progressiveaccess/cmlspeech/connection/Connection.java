@@ -38,29 +38,57 @@ import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
  */
 
 public abstract class Connection extends ConnectionComparator implements
-Comparable<Connection>, XmlAnnotations {
+    Comparable<Connection>, XmlAnnotations {
 
   private String connector = "";
   private String connected = "";
 
+
+  /**
+   * Constructs a connection.
+   *
+   * @param connector Name of connecting structure.
+   * @param connected Name of connected structure.
+   */
   public Connection(final String connector, final String connected) {
     this.connector = connector;
     this.connected = connected;
   }
 
+
+  /**
+   * @return The connecting structure.
+   */
   public String getConnector() {
     return this.connector;
   }
 
+
+  /**
+   * @return The connected structure.
+   */
   public String getConnected() {
     return this.connected;
   }
 
+
+  /**
+   * @return The connection type.
+   */
   public abstract ConnectionType getType();
 
+
+  /**
+   * Predicate to check the type of a connection.
+   *
+   * @param type
+   *          The input type.
+   * @return True if the connection has indeed in the input type.
+   */
   public boolean hasType(final ConnectionType type) {
     return type.equals(this.getType());
   }
+
 
   @Override
   public String toString() {
@@ -68,13 +96,16 @@ Comparable<Connection>, XmlAnnotations {
         + this.getConnected();
   }
 
+
   @Override
   public int compareTo(final Connection con) {
     return this.compare(this, con);
   }
 
+
   @Override
   public abstract SreNamespace.Tag tag();
+
 
   @Override
   public SreElement annotation() {

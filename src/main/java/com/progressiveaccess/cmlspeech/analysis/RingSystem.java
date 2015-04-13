@@ -27,10 +27,10 @@
 
 package com.progressiveaccess.cmlspeech.analysis;
 
-import com.google.common.collect.Lists;
-
 import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
+
+import com.google.common.collect.Lists;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;

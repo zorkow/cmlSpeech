@@ -90,11 +90,7 @@ public final class Cli {
         "Print the structural formula");
     options.addOption("sub", "subscript", false,
         "Use subscripts with structural formula");
-    options
-    .addOption(
-        "m",
-        "molcom",
-        true,
+    options.addOption("m", "molcom", true,
         "Comparison heuristics for molecules given as a comma"
             + "separated list. Currently available heuristics: type, weight, size");
 

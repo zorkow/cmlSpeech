@@ -35,6 +35,12 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 
 public class SharedAtom extends Connection {
 
+  /**
+   * Constructs a shared atom.
+   *
+   * @param connector Name of connecting structure.
+   * @param connected Name of connected structure.
+   */
   public SharedAtom(final String connector, final String connected) {
     super(connector, connected);
   }

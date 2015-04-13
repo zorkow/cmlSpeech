@@ -35,6 +35,12 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 
 public class BridgeAtom extends Connection {
 
+  /**
+   * Constructs a bridge atom.
+   *
+   * @param connector Name of connecting structure.
+   * @param connected Name of connected structure.
+   */
   public BridgeAtom(final String connector, final String connected) {
     super(connector, connected);
   }

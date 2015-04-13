@@ -53,12 +53,8 @@ public class Logger {
   public static void start() {
     debug = Cli.hasOption("d");
     verbose = Cli.hasOption("v");
-    openLogfile("l", (final PrintWriter stream) -> {
-      logFile = stream;
-    });
-    openLogfile("x", (final PrintWriter stream) -> {
-      errFile = stream;
-    });
+    openLogfile("l", (final PrintWriter stream) -> { logFile = stream; });
+    openLogfile("x", (final PrintWriter stream) -> { errFile = stream; });
   }
 
   private static void openLogfile(final String optionName,

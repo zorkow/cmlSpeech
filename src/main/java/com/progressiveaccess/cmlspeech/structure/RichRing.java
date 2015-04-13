@@ -236,7 +236,10 @@ public abstract class RichRing extends RichAtomSet {
   /**
    * Finds the next atom in the ring that has not yet been visited.
    *
+   * @param visited
+   *          The list of already visited atoms.
    * @param atom
+   *          The source atom.
    *
    * @return atom that's next to the input atom.
    */

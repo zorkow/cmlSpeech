@@ -27,8 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.google.common.base.Joiner;
-
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
@@ -36,6 +34,8 @@ import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
+
+import com.google.common.base.Joiner;
 
 import nu.xom.Document;
 
@@ -113,7 +113,8 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    * the rim of the ring.
    *
    * @param atom
-   *
+   *          The atom connections are computed for.
+   * 
    * @return List of connected atoms.
    */
   protected List<IAtom> getConnectedAtomsList(final IAtom atom) {

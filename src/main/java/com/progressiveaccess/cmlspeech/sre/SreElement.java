@@ -31,8 +31,6 @@ import nu.xom.Element;
 
 /**
  * Basic elements for Sre annotations.
- *
- * @extends Element
  */
 
 public class SreElement extends Element {

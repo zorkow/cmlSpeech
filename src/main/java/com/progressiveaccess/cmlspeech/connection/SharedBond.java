@@ -36,6 +36,12 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 
 public class SharedBond extends Connection {
 
+  /**
+   * Constructs a shared bond.
+   *
+   * @param connector Name of connecting structure.
+   * @param connected Name of connected structure.
+   */
   public SharedBond(final String connector, final String connected) {
     super(connector, connected);
   }

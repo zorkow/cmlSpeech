@@ -37,10 +37,17 @@ public enum ConnectionType {
   CONNECTINGBOND("connectingBond"),
   SHAREDBOND("sharedBond"),
   SHAREDATOM("sharedAtom"),
-  SPIROATOM("spiroAtom"), ;
+  SPIROATOM("spiroAtom");
 
-  public final String type;
 
+  private String type;
+
+  /**
+   * Constructor of connection types.
+   *
+   * @param type
+   *          The type as a string.
+   */
   private ConnectionType(final String type) {
     this.type = type;
   }

@@ -57,7 +57,12 @@ import java.io.StringWriter;
  * Utility class for handling CML files and other chem file formats.
  */
 
-public class FileHandler {
+final class FileHandler {
+
+  /** Dummy constructor. */
+  private FileHandler() {
+    throw new AssertionError("Instantiating utility class...");
+  }
 
   /**
    * Loads current file into the molecule IAtomContainer.

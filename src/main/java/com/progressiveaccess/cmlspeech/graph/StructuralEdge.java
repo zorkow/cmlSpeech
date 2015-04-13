@@ -42,11 +42,11 @@ public class StructuralEdge extends DefaultEdge {
   private final String label;
   private boolean shortBonds = false;
 
-
   /**
    * Constructs a structural edge with a given label.
    *
-   * @param label The edge label.
+   * @param label
+   *          The edge label.
    */
   public StructuralEdge(final String label) {
     super();
@@ -54,13 +54,12 @@ public class StructuralEdge extends DefaultEdge {
     this.shortBonds = Cli.hasOption("vis_short");
   }
 
-
   @Override
   public String toString() {
     if (this.shortBonds) {
       return this.label;
     }
     return "(" + this.getSource().toString() + " : " + this.label + " : "
-      + this.getTarget().toString() + ")";
+        + this.getTarget().toString() + ")";
   }
 }
