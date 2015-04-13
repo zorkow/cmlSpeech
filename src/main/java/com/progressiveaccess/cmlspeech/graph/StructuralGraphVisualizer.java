@@ -65,8 +65,6 @@ public class StructuralGraphVisualizer {
   private static final Color BLACK = Color.decode("#000000");
   private static final Color GRAY = Color.decode("#C2CBCC");
 
-  // TODO (sorge) Test if this is better done with double and infinity.
-  //
   // TODO (sorge) Refactor into visualiser class that sets all frames at the
   // right point.
   private final double scale = 150;
@@ -76,17 +74,34 @@ public class StructuralGraphVisualizer {
   private double minY = Double.POSITIVE_INFINITY;
   private double maxX = Double.NEGATIVE_INFINITY;
   private double maxY = Double.NEGATIVE_INFINITY;
-
   private boolean colour = true;
 
+
+  /** A class of points with names. */
   class NamedPoint extends Point2d {
+
+    private static final long serialVersionUID = 1L;
+
     private final String name;
 
+
+    /**
+     * Constructor for named points.
+     *
+     * @param name The name of point.
+     * @param pointX X coordinate.
+     * @param pointY Y coordinate.
+     */
     NamedPoint(final String name, final double pointX, final double pointY) {
       super(pointX, pointY);
       this.name = name;
     }
 
+    /**
+     * The name of the point.
+     *
+     * @return The name.
+     */
     public String getName() {
       return this.name;
     }
@@ -96,6 +111,11 @@ public class StructuralGraphVisualizer {
   private JGraphModelAdapter<?, ?> mjgAdapter;
 
   /**
+   * Initialises the graph visualiser.
+   *
+   * @param sg The graph.
+   * @param structures A list of rich chemical objects.
+   * @param name The name of the graph to display as frame title.
    * @see java.applet.Applet#init().
    */
   public void init(final SimpleGraph<?, ?> sg,
@@ -137,6 +157,12 @@ public class StructuralGraphVisualizer {
     jgraph.repaint();
   }
 
+
+  /**
+   * Computes the correct positions for points in the display frame.
+   *
+   * @param points A list of named points.
+   */
   private void positionPoints(final List<NamedPoint> points) {
     points.stream().forEach(
         p -> this.positionVertexAt(p.getName(), p.getX() - this.minX
@@ -144,10 +170,19 @@ public class StructuralGraphVisualizer {
             p.getY() - this.minY + this.offset));
   }
 
+
+  /**
+   * Compute the centroid for a rich atom set.
+   *
+   * @param set The rich atom set.
+   *
+   * @return The named point corresponding to the centroid, named with the set
+   *     id.
+   */
   private NamedPoint computeCentroid(final RichAtomSet set) {
     double pointX = 0;
     double pointY = 0;
-    double steps = 0;
+    int steps = 0;
     for (final IAtom atom : set.getStructure().atoms()) {
       final Point2d x2d = atom.getPoint2d();
       pointX += (x2d.getX() * this.scale);
@@ -163,6 +198,14 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
+
+  /**
+   * Get a named point for a rich atom at the right position in the frame.
+   *
+   * @param richAtom The rich atom.
+   *
+   * @return The named point.
+   */
   private NamedPoint computeAtom(final RichAtom richAtom) {
     final IAtom atom = richAtom.getStructure();
     final Point2d x2d = atom.getPoint2d();
@@ -176,6 +219,14 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
+
+  /**
+   * Poisitions a vertex at a given point in the graph.
+   *
+   * @param vertex The vertex.
+   * @param pointX X coordinate.
+   * @param pointY Y coordinate.
+   */
   private void positionVertexAt(final String vertex, final double pointX,
       final double pointY) {
     final DefaultGraphCell cell = this.mjgAdapter.getVertexCell(vertex);

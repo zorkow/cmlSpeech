@@ -27,13 +27,14 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.analysis.WeightComparator;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionType;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
