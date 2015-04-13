@@ -31,7 +31,7 @@ import com.progressiveaccess.cmlspeech.analysis.MolecularFormula;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.analysis.StructuralAnalysis;
 import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
-import com.progressiveaccess.cmlspeech.cactus.Cactus;
+import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
@@ -186,9 +186,9 @@ public class CmlEnricher {
     Logger.logging("Registering calls for " + id + "\n");
     final IAtomContainer newcontainer = this.checkedClone(container);
     if (newcontainer != null) {
-      this.executor.register(new CactusCallable(id, Cactus.Type.IUPAC,
+      this.executor.register(new CactusCallable(id, CactusType.IUPAC,
           newcontainer));
-      this.executor.register(new CactusCallable(id, Cactus.Type.NAME,
+      this.executor.register(new CactusCallable(id, CactusType.NAME,
           newcontainer));
     }
   }

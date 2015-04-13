@@ -38,7 +38,7 @@ import java.util.concurrent.Callable;
 public class CactusCallable implements Callable<SreAttribute> {
 
   private String id = "";
-  private final Cactus.Type type;
+  private final CactusType type;
   private IAtomContainer container = null;
 
 
@@ -52,7 +52,7 @@ public class CactusCallable implements Callable<SreAttribute> {
    * @param container
    *          Atom container for query.
    */
-  public CactusCallable(final String id, final Cactus.Type type,
+  public CactusCallable(final String id, final CactusType type,
       final IAtomContainer container) {
     super();
     this.id = id;
