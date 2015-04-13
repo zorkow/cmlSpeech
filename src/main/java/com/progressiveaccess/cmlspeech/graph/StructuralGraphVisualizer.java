@@ -69,22 +69,22 @@ public class StructuralGraphVisualizer {
   //
   // TODO (sorge) Refactor into visualiser class that sets all frames at the
   // right point.
-  private final int scale = 150;
-  private final int offset = 10;
-  private final int padding = 120;
-  private int minX = Integer.MAX_VALUE;
-  private int minY = Integer.MAX_VALUE;
-  private int maxX = Integer.MIN_VALUE;
-  private int maxY = Integer.MIN_VALUE;
+  private final double scale = 150;
+  private final double offset = 10;
+  private final double padding = 120;
+  private double minX = Double.POSITIVE_INFINITY;
+  private double minY = Double.POSITIVE_INFINITY;
+  private double maxX = Double.NEGATIVE_INFINITY;
+  private double maxY = Double.NEGATIVE_INFINITY;
 
   private boolean colour = true;
 
   class NamedPoint {
-    private final int pointX;
-    private final int pointY;
+    private final double pointX;
+    private final double pointY;
     private final String name;
 
-    NamedPoint(final String name, final int pointX, final int pointY) {
+    NamedPoint(final String name, final double pointX, final double pointY) {
       this.pointX = pointX;
       this.pointY = pointY;
       this.name = name;
@@ -94,11 +94,11 @@ public class StructuralGraphVisualizer {
       return this.name;
     }
 
-    public int getX() {
+    public double getX() {
       return this.pointX;
     }
 
-    public int getY() {
+    public double getY() {
       return this.pointY;
     }
   }
@@ -138,8 +138,9 @@ public class StructuralGraphVisualizer {
     final JScrollPane scroller = new JScrollPane(jgraph);
     final JFrame frame = new JFrame(name);
 
-    frame.setBounds(this.minX, this.minY, this.maxX - this.minX + this.padding,
-        this.maxY - this.minY + this.padding);
+    frame.setBounds((int) this.minX, (int) this.minY,
+                    (int) (this.maxX - this.minX + this.padding),
+                    (int) (this.maxY - this.minY + this.padding));
     frame.add(scroller);
     frame.setVisible(true);
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -157,15 +158,15 @@ public class StructuralGraphVisualizer {
   private NamedPoint computeCentroid(final RichAtomSet set) {
     double pointX = 0;
     double pointY = 0;
-    int steps = 0;
+    double steps = 0;
     for (final IAtom atom : set.getStructure().atoms()) {
       final Point2d x2d = atom.getPoint2d();
-      pointX += (x2d.x * this.scale);
-      pointY += (x2d.y * this.scale);
+      pointX += (x2d.getX() * this.scale);
+      pointY += (x2d.getY() * this.scale);
       steps++;
     }
-    final NamedPoint point = new NamedPoint(set.getId(), (int) pointX / steps,
-        -1 * (int) pointY / steps);
+    final NamedPoint point = new NamedPoint(set.getId(), pointX / steps,
+        -1 * pointY / steps);
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
     this.maxX = Math.max(this.maxX, point.getX());
@@ -177,8 +178,8 @@ public class StructuralGraphVisualizer {
     final IAtom atom = richAtom.getStructure();
     final Point2d x2d = atom.getPoint2d();
     final NamedPoint point = new NamedPoint(atom.getID(),
-        (int) (x2d.x * this.scale),
-        (int) (-1 * x2d.y * this.scale));
+        (x2d.getX() * this.scale),
+        (-1 * x2d.getY() * this.scale));
     this.minX = Math.min(this.minX, point.getX());
     this.minY = Math.min(this.minY, point.getY());
     this.maxX = Math.max(this.maxX, point.getX());
@@ -186,8 +187,8 @@ public class StructuralGraphVisualizer {
     return point;
   }
 
-  private void positionVertexAt(final String vertex, final int pointX,
-      final int pointY) {
+  private void positionVertexAt(final String vertex, final double pointX,
+      final double pointY) {
     final DefaultGraphCell cell = this.mjgAdapter.getVertexCell(vertex);
     final AttributeMap attr = cell.getAttributes();
     final Rectangle2D bounds = GraphConstants.getBounds(attr);
@@ -197,9 +198,8 @@ public class StructuralGraphVisualizer {
       attr.applyValue("backgroundColor", GRAY);
     }
 
-    GraphConstants.setBounds(attr, new Rectangle(pointX, pointY,
-        (int) bounds.getWidth(),
-        (int) bounds.getHeight()));
+    GraphConstants.setBounds(attr, new Rectangle((int) pointX, (int) pointY,
+        (int) bounds.getWidth(), (int) bounds.getHeight()));
     final Map<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<>();
     cellAttr.put(cell, attr);
     this.mjgAdapter.edit(cellAttr, null, null, null);
