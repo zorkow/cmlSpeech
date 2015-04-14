@@ -55,7 +55,7 @@ import java.util.SortedSet;
  */
 public abstract class RichRing extends RichAtomSet {
 
-  protected Set<IAtom> rim = null;
+  private Set<IAtom> rim = null;
 
   public RichRing(final IAtomContainer container, final String id,
       final RichSetType type) {
@@ -70,6 +70,10 @@ public abstract class RichRing extends RichAtomSet {
 
   public final Set<IAtom> getRim() {
     return this.rim;
+  }
+
+  public final void setRim(final Set<IAtom> rim) {
+    this.rim = rim;
   }
 
   protected class InternalSubstComparator implements Comparator<IAtom> {
@@ -233,28 +237,6 @@ public abstract class RichRing extends RichAtomSet {
     this.walkStraight(endAtom, path);
   }
 
-
-  /**
-   * Finds the next atom in the ring that has not yet been visited.
-   *
-   * @param visited
-   *          The list of already visited atoms.
-   * @param atom
-   *          The source atom.
-   *
-   * @return atom that's next to the input atom.
-   */
-  private IAtom chooseNext(final List<IAtom> visited, final IAtom atom) {
-    visited.add(atom);
-    final List<IAtom> connected = this.getConnectedAtomsList(atom);
-    if (!visited.contains(connected.get(0))) {
-      return connected.get(0);
-    }
-    if (visited.size() > 1 && !visited.contains(connected.get(1))) {
-      return connected.get(1);
-    }
-    return null;
-  }
 
   private static Boolean isCarbon(final IAtom atom) {
     return atom.getSymbol().equals("C");

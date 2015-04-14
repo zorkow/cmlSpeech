@@ -68,7 +68,7 @@ public class FunctionalGroupsFilter {
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
       final Map<String, IAtomContainer> groups) {
     this.existingSets = existing.stream()
-        .filter(as -> as.type != RichSetType.SMALLEST)
+        .filter(as -> as.getType() != RichSetType.SMALLEST)
         .collect(Collectors.toList());
     this.newSets = groups;
   }

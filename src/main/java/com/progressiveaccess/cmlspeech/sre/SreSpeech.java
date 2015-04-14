@@ -222,7 +222,7 @@ public class SreSpeech extends SreXml {
 
   private SreAttribute speechAtomSet(final RichAtomSet atomSet) {
     String result = this.describeAtomSet(atomSet);
-    switch (atomSet.type) {
+    switch (atomSet.getType()) {
       case MOLECULE:
         break;
       case ALIPHATIC:
@@ -240,7 +240,7 @@ public class SreSpeech extends SreXml {
   }
 
   private String describeAtomSet(final RichAtomSet atomSet) {
-    switch (atomSet.type) {
+    switch (atomSet.getType()) {
       case MOLECULE:
         return this.describeMolecule(atomSet);
       case FUSED:

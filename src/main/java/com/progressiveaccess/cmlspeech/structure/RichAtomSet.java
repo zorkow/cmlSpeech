@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.Stack;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -59,7 +58,7 @@ import java.util.stream.Collectors;
 
 public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
-  public RichSetType type;
+  private RichSetType type;
   private CMLAtomSet cml;
 
   private String iupac = "";
@@ -134,6 +133,31 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    */
   protected List<IAtom> getConnectedAtomsList(final IAtom atom) {
     return this.getStructure().getConnectedAtomsList(atom);
+  }
+
+
+  /**
+   * Finds the next atom in the set that has not yet been visited.
+   * This is aimed for sets that are rings or chains.
+   *
+   * @param visited
+   *          The list of already visited atoms.
+   * @param atom
+   *          The source atom.
+   *
+   * @return atom that's next to the input atom.
+   */
+  protected final IAtom chooseNext(final List<IAtom> visited,
+      final IAtom atom) {
+    visited.add(atom);
+    final List<IAtom> connected = this.getConnectedAtomsList(atom);
+    if (!visited.contains(connected.get(0))) {
+      return connected.get(0);
+    }
+    if (visited.size() > 1 && !visited.contains(connected.get(1))) {
+      return connected.get(1);
+    }
+    return null;
   }
 
 

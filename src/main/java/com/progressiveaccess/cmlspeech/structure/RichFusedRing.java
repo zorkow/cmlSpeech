@@ -72,11 +72,11 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
 
   private void computeRim() {
     final IAtomContainer container = this.getStructure();
-    this.rim = new HashSet<>();
+    this.setRim(new HashSet<>());
     for (final IBond bond : container.bonds()) {
       if (!this.sharedBonds.contains(bond.getID())) {
         for (final IAtom atom : bond.atoms()) {
-          this.rim.add(atom);
+          this.getRim().add(atom);
         }
       }
     }

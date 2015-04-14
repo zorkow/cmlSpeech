@@ -46,20 +46,6 @@ public class RichAliphaticChain extends RichAtomSet {
     super(container, id, RichSetType.ALIPHATIC);
   }
 
-  @Override
-  public RichSetType getType() {
-    return this.type;
-  }
-
-  protected final List<IAtom> getSinglyConnectedAtoms() {
-    final List<IAtom> atoms = new ArrayList<>();
-    for (final IAtom atom : this.getStructure().atoms()) {
-      if (this.getConnectedAtomsList(atom).size() <= 1) {
-        atoms.add(atom);
-      }
-    }
-    return atoms;
-  }
 
   @Override
   protected final void walk() {
@@ -74,7 +60,17 @@ public class RichAliphaticChain extends RichAtomSet {
     this.walkStraight(startAtom);
   }
 
-  private final List<IAtom> visited = new ArrayList<>();
+
+  protected final List<IAtom> getSinglyConnectedAtoms() {
+    final List<IAtom> atoms = new ArrayList<>();
+    for (final IAtom atom : this.getStructure().atoms()) {
+      if (this.getConnectedAtomsList(atom).size() <= 1) {
+        atoms.add(atom);
+      }
+    }
+    return atoms;
+  }
+
 
   /**
    * Finds the lowest external or internal substitution. Walks chain from either
@@ -92,6 +88,7 @@ public class RichAliphaticChain extends RichAtomSet {
   private IAtom findLowestSubstitution(final IAtom leftAtom,
       final IAtom rightAtom) {
     final IAtomContainer structure = this.getStructure();
+    final List<IAtom> visited = new ArrayList<>();
     IAtom currentLeft = leftAtom;
     IAtom currentRight = rightAtom;
     Integer internal = 0;
@@ -108,8 +105,8 @@ public class RichAliphaticChain extends RichAtomSet {
         external = pointer;
         break;
       }
-      final IAtom nextLeft = this.chooseNext(currentLeft);
-      final IAtom nextRight = this.chooseNext(currentRight);
+      final IAtom nextLeft = this.chooseNext(visited, currentLeft);
+      final IAtom nextRight = this.chooseNext(visited, currentRight);
       // TODO sorge Add stereo chemistry here!
       if (internal == 0) {
         if (structure.getBond(currentLeft, nextLeft).getOrder()
@@ -136,27 +133,6 @@ public class RichAliphaticChain extends RichAtomSet {
       return rightAtom;
     }
     return leftAtom;
-  }
-
-  /**
-   * Finds the next atom in the chain that has not yet been visited.
-   *
-   * @param atom
-   *          The source atom.
-   *
-   * @return atom that is next to the input atom.
-   */
-  private IAtom chooseNext(final IAtom atom) {
-    this.visited.add(atom);
-    final List<IAtom> connected = this.getStructure().getConnectedAtomsList(
-        atom);
-    if (!this.visited.contains(connected.get(0))) {
-      return connected.get(0);
-    }
-    if (this.visited.size() > 1 && !this.visited.contains(connected.get(1))) {
-      return connected.get(1);
-    }
-    return null;
   }
 
 }
