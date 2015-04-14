@@ -92,7 +92,8 @@ public final class Cli {
         "Use subscripts with structural formula");
     options.addOption("m", "molcom", true,
         "Comparison heuristics for molecules given as a comma"
-            + "separated list. Currently available heuristics: type, weight, size");
+                      + "separated list. Currently available heuristics:"
+                      + " type, weight, size");
 
     final CommandLineParser parser = new BasicParser();
     try {

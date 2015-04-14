@@ -58,14 +58,14 @@ public class Logger {
   }
 
   private static void openLogfile(final String optionName,
-      final Consumer<PrintWriter> logFile) {
+      final Consumer<PrintWriter> log) {
     if (!Cli.hasOption(optionName)) {
       return;
     }
     final String fileName = Cli.getOptionValue(optionName);
     final File file = new File(fileName);
     try {
-      logFile.accept(new PrintWriter(file));
+      log.accept(new PrintWriter(file));
     } catch (final IOException e) {
       System.err.println("Error: Can't open logfile' " + fileName);
     }

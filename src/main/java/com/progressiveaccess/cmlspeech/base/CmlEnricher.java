@@ -61,7 +61,6 @@ import java.util.List;
  */
 
 public class CmlEnricher {
-  public StructuralAnalysis analysis;
 
   private Document doc;
   private IAtomContainer molecule;
@@ -70,13 +69,6 @@ public class CmlEnricher {
   private final CactusExecutor executor = new CactusExecutor();
   private final StructuralFormula formula = new StructuralFormula();
 
-  /**
-   * Constructor
-   *
-   * @return The newly created object.
-   */
-  public CmlEnricher() {
-  }
 
   /**
    * Convenience method to enrich a CML file. Does all the error catching.
@@ -150,7 +142,7 @@ public class CmlEnricher {
    */
   public void analyseMolecule() {
     this.removeExplicitHydrogens();
-    this.analysis = new StructuralAnalysis(this.molecule);
+    new StructuralAnalysis(this.molecule);
     RichStructureHelper.getAtomSets().forEach(RichAtomSet::printPositions);
   }
 
