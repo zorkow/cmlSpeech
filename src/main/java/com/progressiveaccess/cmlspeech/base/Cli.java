@@ -41,20 +41,35 @@ import java.util.List;
 /**
  * Command line interface for enricher app.
  */
-
 public final class Cli {
 
   private static CommandLine cl;
-
   private static List<String> files = new ArrayList<String>();
 
-  protected Cli() {
+
+  /** Dummy constructor. */
+  private Cli() {
+    throw new AssertionError("Instantiating utility class...");
   }
 
+
+  /**
+   * Initialises the command line interpreter.
+   *
+   * @param args
+   *          The command line argument list.
+   */
   public static void init(final String[] args) {
     Cli.parse(args);
   }
 
+
+  /**
+   * Parses the command line arguments.
+   *
+   * @param args
+   *          The command line argument list.
+   */
   private static void parse(final String[] args) {
     final Options options = new Options();
     // Basic Options
@@ -117,6 +132,15 @@ public final class Cli {
 
   }
 
+
+  /**
+   * Prints the usage information.
+   *
+   * @param options
+   *          The options of the cli.
+   * @param exitValue
+   *          The exit value.
+   */
   private static void usage(final Options options, final int exitValue) {
 
     final HelpFormatter formatter = new HelpFormatter();
@@ -124,19 +148,48 @@ public final class Cli {
     System.exit(exitValue);
   }
 
+
+  /**
+   * Prints warnings for missing file names.
+   *
+   * @param fileName
+   *          The filename.
+   */
   private static void warning(final String fileName) {
     System.err.println("Warning: File " + fileName
         + " does not exist. Ignored!");
   }
 
+
+  /**
+   * Checks if the command line has a particular option.
+   *
+   * @param option
+   *          The option in question.
+   *
+   * @return True if the option is available.
+   */
   public static boolean hasOption(final String option) {
     return Cli.cl.hasOption(option);
   }
 
+
+  /**
+   * Retrieves the value for a particular option.
+   *
+   * @param option
+   *          The option in question.
+   *
+   * @return The value of that option.
+   */
   public static String getOptionValue(final String option) {
     return Cli.cl.getOptionValue(option);
   }
 
+
+  /**
+   * @return The file list given on the command line.
+   */
   public static List<String> getFiles() {
     return Cli.files;
   }

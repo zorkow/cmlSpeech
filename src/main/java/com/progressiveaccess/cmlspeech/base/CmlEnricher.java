@@ -31,9 +31,9 @@ import com.progressiveaccess.cmlspeech.analysis.MolecularFormula;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.analysis.StructuralAnalysis;
 import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
-import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
+import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
@@ -119,6 +119,7 @@ public class CmlEnricher {
     }
   }
 
+
   /**
    * Loads a molecule and initiates the CML document.
    *
@@ -137,6 +138,7 @@ public class CmlEnricher {
     }
   }
 
+
   /**
    * Runs the analysis of the molecule.
    */
@@ -145,6 +147,7 @@ public class CmlEnricher {
     new StructuralAnalysis(this.molecule);
     RichStructureHelper.getAtomSets().forEach(RichAtomSet::printPositions);
   }
+
 
   /**
    * Names the molecule and its components and inserts the results in the CML
@@ -164,6 +167,7 @@ public class CmlEnricher {
       System.out.println(structuralFormula);
     }
   }
+
 
   /**
    * Computes some names for a molecule by registering calls to Cactus.
@@ -185,6 +189,7 @@ public class CmlEnricher {
     }
   }
 
+
   /**
    * Appends annotations to the CML document.
    */
@@ -199,6 +204,7 @@ public class CmlEnricher {
     }
   }
 
+
   /**
    * Removes explicit hydrogens from the CML representation.
    */
@@ -206,6 +212,7 @@ public class CmlEnricher {
     // TODO (sorge) These should be reattached at the end!
     this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
   }
+
 
   /**
    * Creates a deep clone of an atom container catching possible errors.
@@ -230,6 +237,7 @@ public class CmlEnricher {
     return newcontainer;
   }
 
+
   /**
    * Append the Atom Sets from the structural analysis to the CML documents.
    */
@@ -248,6 +256,10 @@ public class CmlEnricher {
     }
   }
 
+
+  /**
+   * Removes regular CML from the document.
+   */
   private void removeNonAnnotations() {
     final Element root = this.doc.getRootElement();
     final Elements elements = root.getChildElements();

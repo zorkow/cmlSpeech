@@ -41,22 +41,44 @@ import java.util.function.Consumer;
  * </p>
  *
  */
-public class Logger {
+public final class Logger {
   private static Boolean debug = false;
   private static Boolean verbose = false;
   private static PrintWriter logFile = new PrintWriter(System.out);
   private static PrintWriter errFile = new PrintWriter(System.err);
 
-  protected Logger() {
+
+  /** Dummy constructor. */
+  private Logger() {
+    throw new AssertionError("Instantiating utility class...");
   }
 
+
+  /** Starts logging facilities. */
   public static void start() {
-    debug = Cli.hasOption("d");
-    verbose = Cli.hasOption("v");
-    openLogfile("l", (final PrintWriter stream) -> { logFile = stream; });
-    openLogfile("x", (final PrintWriter stream) -> { errFile = stream; });
+    Logger.debug = Cli.hasOption("d");
+    Logger.verbose = Cli.hasOption("v");
+    Logger.openLogfile("l", (final PrintWriter stream) -> {
+        Logger.logFile = stream;
+      });
+    Logger.openLogfile("x", (final PrintWriter stream) -> {
+        Logger.errFile = stream;
+      });
   }
 
+
+  /**
+   * Opens log or error file the relevant option is provided on the command
+   * line.
+   *
+   * <p>By default verbose output is sent to stdout and debug output to
+   * stderr.</p>
+   *
+   * @param optionName
+   *          The command line option to check.
+   * @param log
+   *          The logging function.
+   */
   private static void openLogfile(final String optionName,
       final Consumer<PrintWriter> log) {
     if (!Cli.hasOption(optionName)) {
@@ -71,18 +93,34 @@ public class Logger {
     }
   }
 
+
+  /**
+   * Prints debug information if option is set.
+   *
+   * @param str
+   *          The information to print.
+   */
   public static void error(final Object str) {
-    if (debug) {
+    if (Logger.debug) {
       Logger.errFile.print(str);
     }
   }
 
+
+  /**
+   * Prints verbose information if option is set.
+   *
+   * @param str
+   *          The information to print.
+   */
   public static void logging(final Object str) {
-    if (verbose) {
+    if (Logger.verbose) {
       Logger.logFile.print(str);
     }
   }
 
+
+  /** Ends logging. */
   public static void end() {
     Logger.errFile.close();
     Logger.logFile.close();

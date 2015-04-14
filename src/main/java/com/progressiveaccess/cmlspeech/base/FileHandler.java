@@ -64,6 +64,7 @@ public final class FileHandler {
     throw new AssertionError("Instantiating utility class...");
   }
 
+
   /**
    * Loads current file into the molecule IAtomContainer.
    *
@@ -94,6 +95,7 @@ public final class FileHandler {
     Logger.logging(molecule);
     return molecule;
   }
+
 
   /**
    * Builds the CML XOM element.
@@ -126,6 +128,7 @@ public final class FileHandler {
     Logger.logging(doc.toXML());
     return doc;
   }
+
 
   /**
    * Writes a document to a CML file.

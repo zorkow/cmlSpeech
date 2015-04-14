@@ -27,6 +27,9 @@
 
 package com.progressiveaccess.cmlspeech.base;
 
+/**
+ * The application class.
+ */
 public final class App {
 
   /** Dummy constructor. */
@@ -35,6 +38,15 @@ public final class App {
   }
 
 
+  /**
+   * The main class.
+   *
+   * @param args
+   *          The arguments from the command line.
+   *
+   * @throws Exception
+   *          Any run-time error.
+   */
   public static void main(final String[] args) throws Exception {
     Cli.init(args);
     Logger.start();
