@@ -247,7 +247,7 @@ public class CmlEnricher {
       final CMLAtomSet set = richSet.getCml(this.doc);
       // this.atomSets.add(richSet);
       this.doc.getRootElement().appendChild(set);
-      set.addAttribute(new SreAttribute("formula", richSet.molecularFormula));
+      set.addAttribute(new SreAttribute("formula", richSet.getMolecularFormula()));
       if (richSet.getType() == RichSetType.FUNCGROUP) {
         set.addAttribute(new SreAttribute("name", richSet.name));
       } else {

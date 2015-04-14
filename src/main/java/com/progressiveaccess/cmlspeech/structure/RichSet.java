@@ -43,12 +43,12 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
   /**
    * @return The type of this rich atom set.
    */
-  public RichSetType getType();
+  RichSetType getType();
 
   /**
    * @return The sorted set of connecting atoms.
    */
-  public SortedSet<String> getConnectingAtoms();
+  SortedSet<String> getConnectingAtoms();
 
   /**
    * @param doc
@@ -56,7 +56,7 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
    *
    * @return A CML element represengin this atom set.
    */
-  public CMLAtomSet getCml(Document doc);
+  CMLAtomSet getCml(Document doc);
 
   /**
    * Finds an element in the set by its position.
@@ -66,7 +66,7 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
    *
    * @return The name of the retrieved element.
    */
-  public String getAtom(Integer position);
+  String getAtom(Integer position);
 
   /**
    * Retrieves the position of an element in the set.
@@ -76,5 +76,18 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
    *
    * @return The retrieved position.
    */
-  public Integer getPosition(String element);
+  Integer getPosition(String element);
+
+  /**
+   * Sets the molecular formula of the set.
+   *
+   * @param formula
+   *          The molecular formula.
+   */
+  void setMolecularFormula(String formula);
+
+  /**
+   * @return The molecular formular of the set.
+   */
+  String getMolecularFormula();
 }

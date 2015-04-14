@@ -23,11 +23,11 @@ public interface RichSuperSet extends RichSet {
   /**
    * @return The order of the subsystems.
    */
-  public ComponentsPositions getPath();
+  ComponentsPositions getPath();
 
   /**
    * @return Computes the order of the subsystems.
    */
-  public void setPath();
+  void setPath();
 
 }

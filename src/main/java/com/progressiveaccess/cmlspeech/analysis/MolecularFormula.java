@@ -52,7 +52,7 @@ public class MolecularFormula {
   }
 
   public static void set(final RichAtomSet system) {
-    system.molecularFormula = MolecularFormula.compute(system);
+    system.setMolecularFormula(MolecularFormula.compute(system));
   }
 
   public static void set(final List<RichAtomSet> systems) {

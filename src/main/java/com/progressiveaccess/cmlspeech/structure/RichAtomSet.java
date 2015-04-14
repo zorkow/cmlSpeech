@@ -60,19 +60,29 @@ import java.util.stream.Collectors;
 public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   public RichSetType type;
-  public CMLAtomSet cml;
+  private CMLAtomSet cml;
 
-  public String iupac = "";
+  private String iupac = "";
   public String name = "";
-  public String molecularFormula = "";
-  public String structuralFormula = "";
+  private String molecularFormula = "";
+  private String structuralFormula = "";
 
   private final SortedSet<String> connectingAtoms = new TreeSet<String>(
       new CmlNameComparator());
 
   public ComponentsPositions componentPositions = new ComponentsPositions();
-  public Integer offset = 0;
 
+
+  /**
+   * Constructor for rich atom sets.
+   *
+   * @param container
+   *          The atom container comprising the set.
+   * @param id
+   *          The name of the set.
+   * @param type
+   *          The type of the set.
+   */
   public RichAtomSet(final IAtomContainer container, final String id,
       final RichSetType type) {
     super(container);
@@ -87,20 +97,24 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     this.makeCml();
   }
 
+
   @Override
   public IAtomContainer getStructure() {
     return (IAtomContainer) this.structure;
   }
+
 
   @Override
   public RichSetType getType() {
     return this.type;
   }
 
+
   @Override
   public SortedSet<String> getConnectingAtoms() {
     return this.connectingAtoms;
   }
+
 
   /**
    * Walks the structure and computes the positions of its elements,
@@ -108,23 +122,40 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    */
   protected abstract void walk();
 
+
   /**
    * Returns a list with two elements that are the connected atoms that lie on
    * the rim of the ring.
    *
    * @param atom
    *          The atom connections are computed for.
-   * 
+   *
    * @return List of connected atoms.
    */
   protected List<IAtom> getConnectedAtomsList(final IAtom atom) {
     return this.getStructure().getConnectedAtomsList(atom);
   }
 
+
+  /**
+   * Walks the structure straight from a given atom.
+   *
+   * @param atom
+   *          The start atom.
+   */
   protected final void walkStraight(final IAtom atom) {
     this.walkStraight(atom, new ArrayList<IAtom>());
   }
 
+
+  /**
+   * Walks the structure straight from a given atom, maintaining a visited list.
+   *
+   * @param atom
+   *          The start atom.
+   * @param visited
+   *          The list of atoms already visited during the walk.
+   */
   protected final void walkStraight(final IAtom atom,
                                     final List<IAtom> visited) {
     if (visited.contains(atom)) {
@@ -140,64 +171,32 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
   }
 
-  /**
-   * Depth first traversal of structure.
-   *
-   * @param atom
-   *          The start atom.
-   */
-  protected final void walkDepthFirst(final IAtom atom) {
-    if (atom == null) {
-      return;
-    }
-    final List<IAtom> visited = new ArrayList<IAtom>();
-    final Stack<IAtom> frontier = new Stack<IAtom>();
-    frontier.push(atom);
-    while (!frontier.empty()) {
-      final IAtom current = frontier.pop();
-      if (visited.contains(current)) {
-        continue;
-      }
-      visited.add(current);
-      this.componentPositions.addNext(current.getID());
-      this.getConnectedAtomsList(current).stream()
-          .forEach(a -> frontier.push(a));
-    }
-  }
 
   @Override
   public String getAtom(final Integer position) {
     return this.componentPositions.getAtom(position);
   }
 
+
   @Override
   public Integer getPosition(final String atom) {
     return this.componentPositions.getPosition(atom);
   }
+
 
   @Override
   public Iterator<String> iterator() {
     return this.componentPositions.iterator();
   }
 
+
+  /**
+   * Prints the positions of the components of this atom set.
+   */
   public void printPositions() {
     Logger.logging(this.getId() + "\n" + this.componentPositions.toString());
   }
 
-  public final List<String> orderedAtomNames() {
-    if (this.componentPositions.size() == 0) {
-      return null;
-    }
-    final List<String> result = new ArrayList<>();
-    while (result.size() < this.getStructure().getAtomCount()) {
-      result.add("");
-    }
-    for (final IAtom atom : this.getStructure().atoms()) {
-      final String id = atom.getID();
-      result.set(this.getPosition(id) - 1, atom.getSymbol());
-    }
-    return result;
-  }
 
   @Override
   public String toString() {
@@ -208,11 +207,16 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
         + "\nConnecting Atoms:" + joiner.join(this.getConnectingAtoms());
   }
 
+
+  /**
+   * Finalises the CML entry for this set.
+   */
   private void makeCml() {
     this.cml = new CMLAtomSet();
     this.cml.setTitle(this.type.name);
     this.cml.setId(this.getId());
   }
+
 
   // This should only ever be called once!
   // Need a better solution!
@@ -226,9 +230,14 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     return this.cml;
   }
 
+
+  /**
+   * @return  True if the atom set is a ring.
+   */
   public boolean isRing() {
     return false;
   }
+
 
   @Override
   public void visualize() {
@@ -236,10 +245,24 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     graph.visualize(this.getId());
   }
 
+
+  @Override
+  public void setMolecularFormula(final String formula) {
+    this.molecularFormula = formula;
+  }
+
+
+  @Override
+  public String getMolecularFormula() {
+    return this.molecularFormula;
+  }
+
+
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOMSET;
   }
+
 
   @Override
   public SreElement annotation() {

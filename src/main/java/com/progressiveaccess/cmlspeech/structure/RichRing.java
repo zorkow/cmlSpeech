@@ -233,6 +233,7 @@ public abstract class RichRing extends RichAtomSet {
     this.walkStraight(endAtom, path);
   }
 
+
   /**
    * Finds the next atom in the ring that has not yet been visited.
    *
