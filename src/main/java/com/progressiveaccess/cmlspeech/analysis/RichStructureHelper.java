@@ -5,6 +5,7 @@ import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
+import com.progressiveaccess.cmlspeech.structure.RichSet;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 
 import org.openscience.cdk.interfaces.IAtom;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Set;
 
 /** Utility class that holds useful mappings for rich chemical objects. */
 public final class RichStructureHelper {
@@ -25,9 +27,9 @@ public final class RichStructureHelper {
 
 
   public static RichMolecule richMolecule;
-  public static SortedMap<String, RichStructure<?>> richAtoms;
-  public static SortedMap<String, RichStructure<?>> richBonds;
-  public static SortedMap<String, RichStructure<?>> richAtomSets;
+  private static SortedMap<String, RichAtom> richAtoms;
+  private static SortedMap<String, RichBond> richBonds;
+  private static SortedMap<String, RichAtomSet> richAtomSets;
 
 
   /** Initialises and re-initialises helper structure. */
@@ -83,7 +85,7 @@ public final class RichStructureHelper {
    * @return The rich atom if it exists.
    */
   public static RichAtom getRichAtom(final String id) {
-    return (RichAtom) RichStructureHelper.richAtoms.get(id);
+    return RichStructureHelper.richAtoms.get(id);
   }
 
 
@@ -91,12 +93,9 @@ public final class RichStructureHelper {
    * Creates and registers a rich atom from a chemical object.
    *
    * @param atom The chemical object.
-   *
-   * @return The newly created rich atom.
    */
-  public static RichStructure<?> setRichAtom(final IAtom atom) {
-    return RichStructureHelper.setRichStructure(RichStructureHelper.richAtoms,
-        atom.getID(), new RichAtom(atom));
+  public static void setRichAtom(final IAtom atom) {
+    RichStructureHelper.richAtoms.put(atom.getID(), new RichAtom(atom));
   }
 
 
@@ -108,7 +107,7 @@ public final class RichStructureHelper {
    * @return The rich bond if it exists.
    */
   public static RichBond getRichBond(final String id) {
-    return (RichBond) RichStructureHelper.richBonds.get(id);
+    return RichStructureHelper.richBonds.get(id);
   }
 
 
@@ -116,12 +115,9 @@ public final class RichStructureHelper {
    * Creates and registers a rich bond from a chemical object.
    *
    * @param bond The chemical object.
-   *
-   * @return The newly created rich bond.
    */
-  public static RichStructure<?> setRichBond(final IBond bond) {
-    return RichStructureHelper.setRichStructure(RichStructureHelper.richBonds,
-        bond.getID(), new RichBond(bond));
+  public static void setRichBond(final IBond bond) {
+    RichStructureHelper.richBonds.put(bond.getID(), new RichBond(bond));
   }
 
 
@@ -133,20 +129,17 @@ public final class RichStructureHelper {
    * @return The rich atom set if it exists.
    */
   public static RichAtomSet getRichAtomSet(final String id) {
-    return (RichAtomSet) RichStructureHelper.richAtomSets.get(id);
+    return RichStructureHelper.richAtomSets.get(id);
   }
 
 
   /**
-   * Creates and registers a rich atom set from a chemical object.
+   * Registers an already existing rich atom set.
    *
    * @param atomSet The chemical object.
-   *
-   * @return The newly created rich atom set.
    */
-  public static RichAtomSet setRichAtomSet(final RichAtomSet atomSet) {
-    return (RichAtomSet) RichStructureHelper.setRichStructure(
-        RichStructureHelper.richAtomSets, atomSet.getId(), atomSet);
+  public static void setRichAtomSet(final RichAtomSet atomSet) {
+    RichStructureHelper.richAtomSets.put(atomSet.getId(), atomSet);
   }
 
 
@@ -171,49 +164,51 @@ public final class RichStructureHelper {
 
 
   /**
-   * Inserts a rich structure into the provided rich structure mapping.
-   *
-   * @param map The rich structure mapping.
-   * @param id The name of the structure.
-   * @param structure The actual rich structure.
-   *
-   * @return The rich structure.
-   */
-  private static RichStructure<?> setRichStructure(
-      final SortedMap<String, RichStructure<?>> map, final String id,
-      final RichStructure<?> structure) {
-    map.put(id, structure);
-    return structure;
-  }
-
-
-  /**
    * @return List of rich atoms.
    */
-  @SuppressWarnings("unchecked")
   public static List<RichAtom> getAtoms() {
-    return (List<RichAtom>) (List<?>) new ArrayList<RichStructure<?>>(
-        RichStructureHelper.richAtoms.values());
+    return new ArrayList<RichAtom>(RichStructureHelper.richAtoms.values());
   }
 
 
   /**
    * @return List of rich bonds.
    */
-  @SuppressWarnings("unchecked")
   public static List<RichBond> getBonds() {
-    return (List<RichBond>) (List<?>) new ArrayList<RichStructure<?>>(
-        RichStructureHelper.richBonds.values());
+    return new ArrayList<RichBond>(RichStructureHelper.richBonds.values());
   }
 
 
   /**
    * @return List of rich atom sets.
    */
-  @SuppressWarnings("unchecked")
   public static List<RichAtomSet> getAtomSets() {
-    return (List<RichAtomSet>) (List<?>) new ArrayList<RichStructure<?>>(
+    return new ArrayList<RichAtomSet>(
         RichStructureHelper.richAtomSets.values());
+  }
+
+
+  /**
+   * @return Set of atoms ids.
+   */
+  public static Set<String> getAtomIds() {
+    return RichStructureHelper.richAtoms.keySet();
+  }
+
+
+  /**
+   * @return Set of bonds ids.
+   */
+  public static Set<String> getBondIds() {
+    return RichStructureHelper.richBonds.keySet();
+  }
+
+
+  /**
+   * @return Set of atom set ids.
+   */
+  public static Set<String> getAtomSetIds() {
+    return RichStructureHelper.richAtomSets.keySet();
   }
 
 }

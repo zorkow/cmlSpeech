@@ -38,6 +38,7 @@ import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
+import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
@@ -140,9 +141,9 @@ public class StructuralAnalysis {
   private void makeTopSet() {
     final String id = this.getAtomSetId();
     RichStructureHelper.richMolecule = new RichMolecule(this.molecule, id);
-    this.setContexts(RichStructureHelper.richAtoms.keySet(), id);
-    this.setContexts(RichStructureHelper.richBonds.keySet(), id);
-    this.setContexts(RichStructureHelper.richAtomSets.keySet(), id);
+    this.setContexts(RichStructureHelper.getAtomIds(), id);
+    this.setContexts(RichStructureHelper.getBondIds(), id);
+    this.setContexts(RichStructureHelper.getAtomSetIds(), id);
     RichStructureHelper.richMolecule.getContexts().remove(id);
     for (final RichAtomSet system : RichStructureHelper.getAtomSets()) {
       if (system.getType() == RichSetType.SMALLEST) {
@@ -182,19 +183,25 @@ public class StructuralAnalysis {
     return "as" + this.atomSetCount;
   }
 
-  private String valuesToString(final SortedMap<String, RichStructure<?>> map) {
-    return Joiner.on("\n").join(
-        map.values().stream().map(RichStructure::toString)
-        .collect(Collectors.toList()));
+  private String valuesToString(final List<String> list) {
+    return Joiner.on("\n").join(list);
   }
+  
 
   @Override
   public String toString() {
-    return this.valuesToString(RichStructureHelper.richAtoms) + "\n"
-        + this.valuesToString(RichStructureHelper.richBonds) + "\n"
-        + this.valuesToString(RichStructureHelper.richAtomSets);
+    return this.valuesToString(RichStructureHelper.getAtoms()
+        .stream().map(RichAtom::toString)
+                               .collect(Collectors.toList())) + "\n"
+        + this.valuesToString(RichStructureHelper.getBonds()
+        .stream().map(RichBond::toString)
+        .collect(Collectors.toList())) + "\n"
+        + this.valuesToString(RichStructureHelper.getAtomSets()
+        .stream().map(RichAtomSet::toString)
+        .collect(Collectors.toList()));
   }
 
+  
   /**
    * Computes information on ring systems in the molecule.
    */
@@ -202,12 +209,15 @@ public class StructuralAnalysis {
     final RingSystem ringSystem = new RingSystem(this.molecule);
     final Boolean sub = !Cli.hasOption("s");
     for (final IAtomContainer ring : ringSystem.fusedRings()) {
-      final RichStructure<?> fusedRing = RichStructureHelper
-          .setRichAtomSet(new RichFusedRing(ring, this.getAtomSetId()));
+      // System.out.println("Here we are.");
+      final RichAtomSet fusedRing = new RichFusedRing(
+          ring, this.getAtomSetId());
+      RichStructureHelper.setRichAtomSet(fusedRing);
       if (sub) {
         for (final IAtomContainer subSystem : ringSystem.subRings(ring)) {
-          final RichStructure<?> subRing = RichStructureHelper
-              .setRichAtomSet(new RichSubRing(subSystem, this.getAtomSetId()));
+          final RichAtomSet subRing = new RichSubRing(
+              subSystem, this.getAtomSetId());
+          RichStructureHelper.setRichAtomSet(subRing);
           final String ringId = fusedRing.getId();
           final String subRingId = subRing.getId();
           subRing.getSuperSystems().add(ringId);
@@ -247,9 +257,9 @@ public class StructuralAnalysis {
     final Map<String, IAtomContainer> groups = filter.filter();
     for (final String key : groups.keySet()) {
       final IAtomContainer container = groups.get(key);
-      final RichAtomSet set = RichStructureHelper
-          .setRichAtomSet(new RichFunctionalGroup(groups.get(key), this
-              .getAtomSetId()));
+      final RichAtomSet set = new RichFunctionalGroup(
+          groups.get(key), this.getAtomSetId());
+      RichStructureHelper.setRichAtomSet(set);
       set.name = key.split("-")[0];
       Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
           + container.getBondCount() + " bonds");
@@ -258,15 +268,14 @@ public class StructuralAnalysis {
 
   /** Computes the contexts of single atoms. */
   private void contexts() {
-    for (final String key : RichStructureHelper.richAtomSets.keySet()) {
+    for (final String key : RichStructureHelper.getAtomSetIds()) {
       this.setContexts(RichStructureHelper.getRichAtomSet(key).getComponents(),
           key);
     }
   }
 
   private void atomSetsAttachments() {
-    RichStructureHelper.richAtomSets.values().forEach(
-        as -> this.atomSetAttachments((RichAtomSet) as));
+    RichStructureHelper.getAtomSets().forEach(this::atomSetAttachments);
   }
 
   /**
@@ -337,8 +346,8 @@ public class StructuralAnalysis {
    *         substructure.
    */
   private void connectingBonds() {
-    for (final String bond : RichStructureHelper.richBonds.keySet()) {
-      final RichStructure<?> richBond = RichStructureHelper.getRichBond(bond);
+    for (final String bond : RichStructureHelper.getBondIds()) {
+      final RichBond richBond = RichStructureHelper.getRichBond(bond);
       final String first = ((TreeSet<String>) richBond.getComponents()).first();
       final String last = ((TreeSet<String>) richBond.getComponents()).last();
       if (richBond.getContexts().isEmpty()) {
@@ -368,8 +377,7 @@ public class StructuralAnalysis {
    */
   private Set<String> contextCloud(final String atom) {
     Set<String> contextAtom = Sets.intersection(RichStructureHelper
-        .getRichAtom(atom).getContexts(), RichStructureHelper.richAtomSets
-        .keySet());
+        .getRichAtom(atom).getContexts(), RichStructureHelper.getAtomSetIds());
     if (contextAtom.isEmpty()) {
       contextAtom = new HashSet<String>();
       contextAtom.add(atom);
@@ -405,7 +413,7 @@ public class StructuralAnalysis {
 
   /** Computes bridge atoms and bonds for structures that share components. */
   private void sharedComponents() {
-    for (final String atomSet : RichStructureHelper.richAtomSets.keySet()) {
+    for (final String atomSet : RichStructureHelper.getAtomSetIds()) {
       final TreeMultimap<String, String> connectionsSet = TreeMultimap.create(
           new CmlNameComparator(), new CmlNameComparator());
       final RichAtomSet richAtomSet = RichStructureHelper
@@ -415,7 +423,7 @@ public class StructuralAnalysis {
             .getRichStructure(component);
         final Set<String> contexts = Sets.intersection(
             richComponent.getContexts(),
-            RichStructureHelper.richAtomSets.keySet());
+            RichStructureHelper.getAtomSetIds());
         for (final String context : contexts) {
           if (richAtomSet.getSubSystems().contains(context)
               || richAtomSet.getSuperSystems().contains(context)
@@ -505,7 +513,7 @@ public class StructuralAnalysis {
 
   private void singletonAtoms() {
     final Set<String> atomSetComponents = new HashSet<String>();
-    RichStructureHelper.richAtomSets.values().forEach(
+    RichStructureHelper.getAtomSets().forEach(
         as -> atomSetComponents.addAll(as.getComponents()));
     for (final RichAtom atom : RichStructureHelper.getAtoms()) {
       if (!atomSetComponents.contains(atom.getId())) {
