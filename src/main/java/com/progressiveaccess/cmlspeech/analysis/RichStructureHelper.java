@@ -5,7 +5,6 @@ import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
-import com.progressiveaccess.cmlspeech.structure.RichSet;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 
 import org.openscience.cdk.interfaces.IAtom;
@@ -13,9 +12,9 @@ import org.openscience.cdk.interfaces.IBond;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Set;
 
 /** Utility class that holds useful mappings for rich chemical objects. */
 public final class RichStructureHelper {
@@ -26,7 +25,7 @@ public final class RichStructureHelper {
   }
 
 
-  public static RichMolecule richMolecule;
+  private static RichMolecule richMolecule;
   private static SortedMap<String, RichAtom> richAtoms;
   private static SortedMap<String, RichBond> richBonds;
   private static SortedMap<String, RichAtomSet> richAtomSets;
@@ -74,6 +73,36 @@ public final class RichStructureHelper {
    */
   public static boolean isAtomSet(final String id) {
     return RichStructureHelper.richAtomSets.containsKey(id);
+  }
+
+
+  /**
+   * Predicate to check if an id represents the rich molecule.
+   *
+   * @param id Name of a rich structure.
+   *
+   * @return True if id represents the molecule.
+   */
+  public static boolean isMolecule(final String id) {
+    return id.equals(RichStructureHelper.richMolecule.getId());
+  }
+
+
+  /**
+   * @return The rich molecule.
+   */
+  public static RichMolecule getRichMolecule() {
+    return RichStructureHelper.richMolecule;
+  }
+
+
+  /**
+   * Creates and registers a rich molecule from a chemical object.
+   *
+   * @param molecule The chemical object.
+   */
+  public static void setRichMolecule(final RichMolecule molecule) {
+    RichStructureHelper.richMolecule = molecule;
   }
 
 

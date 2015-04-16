@@ -115,7 +115,7 @@ public class CmlEnricher {
           atomSet.visualize();
         }
       } else {
-        RichStructureHelper.richMolecule.visualize();
+        RichStructureHelper.getRichMolecule().visualize();
       }
     }
   }

@@ -100,10 +100,8 @@ public class StructuralAnalysis {
     this.makeTopSet();
     this.makeBottomSet();
 
-    // Important that the top set is only added here as otherwise the
-    // previous two methods will result in an infinite loop.
-    RichStructureHelper.setRichAtomSet(RichStructureHelper.richMolecule);
-    RichStructureHelper.richMolecule.computePositions();
+    RichStructureHelper.setRichAtomSet(RichStructureHelper.getRichMolecule());
+    RichStructureHelper.getRichMolecule().computePositions();
   }
 
   public List<RichAtom> getSingletonAtoms() {
@@ -140,27 +138,29 @@ public class StructuralAnalysis {
 
   private void makeTopSet() {
     final String id = this.getAtomSetId();
-    RichStructureHelper.richMolecule = new RichMolecule(this.molecule, id);
+    RichMolecule richMolecule = new RichMolecule(this.molecule, id);
     this.setContexts(RichStructureHelper.getAtomIds(), id);
     this.setContexts(RichStructureHelper.getBondIds(), id);
     this.setContexts(RichStructureHelper.getAtomSetIds(), id);
-    RichStructureHelper.richMolecule.getContexts().remove(id);
+    richMolecule.getContexts().remove(id);
     for (final RichAtomSet system : RichStructureHelper.getAtomSets()) {
       if (system.getType() == RichSetType.SMALLEST) {
         continue;
       }
       system.getSuperSystems().add(id);
-      RichStructureHelper.richMolecule.getSubSystems().add(system.getId());
+      richMolecule.getSubSystems().add(system.getId());
     }
     for (final RichAtom atom : this.getSingletonAtoms()) {
       atom.getSuperSystems().add(id);
-      RichStructureHelper.richMolecule.getSubSystems().add(atom.getId());
+      richMolecule.getSubSystems().add(atom.getId());
     }
+    RichStructureHelper.setRichMolecule(richMolecule);
   }
 
   private void makeBottomSet() {
     for (final RichAtomSet system : RichStructureHelper.getAtomSets()) {
-      if (system.getType() == RichSetType.FUSED) {
+      if (system.getType() == RichSetType.FUSED
+          || system.getType() == RichSetType.MOLECULE) {
         continue;
       }
       for (final String component : system.getComponents()) {

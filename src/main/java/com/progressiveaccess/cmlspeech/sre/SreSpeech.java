@@ -72,7 +72,7 @@ public class SreSpeech extends SreXml {
 
   @Override
   public void compute() {
-    final RichMolecule molecule = RichStructureHelper.richMolecule;
+    final RichMolecule molecule = RichStructureHelper.getRichMolecule();
     this.atomSet(molecule);
 
     // Describe the first level.
@@ -134,8 +134,8 @@ public class SreSpeech extends SreXml {
   }
 
   private String describeAtomPosition(final RichAtom atom) {
-    final Integer position = RichStructureHelper.richMolecule.getPosition(atom
-        .getId());
+    final Integer position = RichStructureHelper.getRichMolecule()
+      .getPosition(atom.getId());
     if (position == null) {
       return this.describeAtom(atom) + " unknown position.";
     }
