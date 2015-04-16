@@ -34,7 +34,9 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -44,14 +46,65 @@ import java.util.stream.Collectors;
 public class RichMolecule extends RichAtomSet implements RichSuperSet {
 
   private final List<RichStructure<?>> blocks = new ArrayList<>();
+  private final List<RichAtom> singletonAtoms = new ArrayList<>();
+  private ComponentsPositions path = new ComponentsPositions();
 
+
+  /**
+   * Constructs a rich molecule.
+   *
+   * @param container
+   *          The atom container of the molecule.
+   * @param id
+   *          The name of the molecule.
+   */
   public RichMolecule(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.MOLECULE);
-  }
-
-  public final void computePositions() {
+    this.singletonAtoms();
+    this.subSuperSystems();
     this.walk();
   }
+
+
+  /**
+   * Computes the singleton atoms in the molecule, i.e. those not belonging to
+   * any atom set or block in the molecule.
+   */
+  private void singletonAtoms() {
+    final Set<String> atomSetComponents = new HashSet<String>();
+    RichStructureHelper.getAtomSets().forEach(
+        as -> atomSetComponents.addAll(as.getComponents()));
+    for (final RichAtom atom : RichStructureHelper.getAtoms()) {
+      if (!atomSetComponents.contains(atom.getId())) {
+        this.singletonAtoms.add(atom);
+      }
+    }
+  }
+
+
+  /**
+   * @return Returns the list of singleton atoms.
+   */
+  public List<RichAtom> getSingletonAtoms() {
+    return this.singletonAtoms;
+  }
+
+
+  /** Sets the sub systems of the molecule, and it as their supersystem. */
+  private void subSuperSystems() {
+    for (final RichAtomSet system : RichStructureHelper.getAtomSets()) {
+      if (system.getType() == RichSetType.SMALLEST) {
+        continue;
+      }
+      system.getSuperSystems().add(this.getId());
+      this.getSubSystems().add(system.getId());
+    }
+    for (final RichAtom atom : this.getSingletonAtoms()) {
+      atom.getSuperSystems().add(this.getId());
+      this.getSubSystems().add(atom.getId());
+    }
+  }
+
 
   @Override
   protected final void walk() {
@@ -75,12 +128,12 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     }
   }
 
-  private ComponentsPositions path = new ComponentsPositions();
 
   @Override
   public ComponentsPositions getPath() {
     return this.path;
   }
+
 
   @Override
   public void setPath() {
