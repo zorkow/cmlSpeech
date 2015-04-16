@@ -324,7 +324,7 @@ public class SreSpeech extends SreXml {
         continue;
       }
       // TODO (sorge) Make this one safer!
-      final Iterator<String> atoms = RichStructureHelper.getRichBond(bond)
+      final Iterator<String> atoms = RichStructureHelper.getRichBond(bond.getID())
           .getComponents().iterator();
       Integer atomA = system.getPosition(atoms.next());
       Integer atomB = system.getPosition(atoms.next());
