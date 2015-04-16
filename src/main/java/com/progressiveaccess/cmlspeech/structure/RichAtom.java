@@ -34,21 +34,32 @@ import org.openscience.cdk.interfaces.IAtom;
 /**
  * Atoms with admin information.
  */
-
 public class RichAtom extends RichChemObject {
 
+  /**
+   * Generates the rich atom structure.
+   *
+   * @param structure
+   *          The chemical atom.
+   */
   public RichAtom(final IAtom structure) {
     super(structure);
   }
+
 
   @Override
   public IAtom getStructure() {
     return (IAtom) super.getStructure();
   }
 
+
+  /**
+   * @return True if atom is carbon.
+   */
   public Boolean isCarbon() {
     return this.getStructure().getSymbol().equals("C");
   }
+
 
   @Override
   public SreNamespace.Tag tag() {

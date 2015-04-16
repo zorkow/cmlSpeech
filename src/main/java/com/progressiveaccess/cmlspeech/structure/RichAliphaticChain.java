@@ -39,9 +39,16 @@ import java.util.List;
 /**
  * Atom sets that are rich aliphatic chains.
  */
-
 public class RichAliphaticChain extends RichAtomSet {
 
+  /**
+   * Constructs a rich aliphatic chains.
+   *
+   * @param container
+   *          The atom container of the chain.
+   * @param id
+   *          The name of the chain.
+   */
   public RichAliphaticChain(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.ALIPHATIC);
   }
@@ -61,6 +68,9 @@ public class RichAliphaticChain extends RichAtomSet {
   }
 
 
+  /**
+   * @return The list of atoms in the chain that have only one connection.
+   */
   protected final List<IAtom> getSinglyConnectedAtoms() {
     final List<IAtom> atoms = new ArrayList<>();
     for (final IAtom atom : this.getStructure().atoms()) {

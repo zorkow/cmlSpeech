@@ -32,9 +32,16 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 /**
  * Atom sets that are rich sub rings.
  */
-
 public class RichSubRing extends RichRing {
 
+  /**
+   * Generates the rich sub ring.
+   *
+   * @param container
+   *          The atom container of the ring.
+   * @param id
+   *          The name of the structure.
+   */
   public RichSubRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.SMALLEST);
   }

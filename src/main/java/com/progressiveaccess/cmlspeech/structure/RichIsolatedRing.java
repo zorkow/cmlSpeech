@@ -32,9 +32,16 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 /**
  * Atom sets that are rich isolated rings.
  */
-
 public class RichIsolatedRing extends RichRing {
 
+  /**
+   * Generates the rich isolated ring.
+   *
+   * @param container
+   *          The atom container of the ring.
+   * @param id
+   *          The name of the structure.
+   */
   public RichIsolatedRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.ISOLATED);
   }

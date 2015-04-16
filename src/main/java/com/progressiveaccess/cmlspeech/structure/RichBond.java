@@ -35,21 +35,27 @@ import org.openscience.cdk.interfaces.IBond;
 /**
  * Bonds with admin informatoin.
  */
-
 public class RichBond extends RichChemObject {
 
+  /**
+   * Generates the rich bond structure.
+   *
+   * @param structure
+   *          The chemical bond.
+   */
   public RichBond(final IBond structure) {
     super(structure);
-
     for (final IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
   }
 
+
   @Override
   public IBond getStructure() {
     return (IBond) super.getStructure();
   }
+
 
   @Override
   public SreNamespace.Tag tag() {

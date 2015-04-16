@@ -38,11 +38,26 @@ public enum RichSetType {
   ISOLATED("Isolated ring"),
   SMALLEST("Subring"),
   MOLECULE("Molecule"),
-  FUNCGROUP("Functional Group"), ;
+  FUNCGROUP("Functional Group");
 
-  public final String name;
+  private final String name;
 
+
+  /**
+   * Generates a type for rich atom sets.
+   *
+   * @param type
+   *          The type of the set.
+   */
   private RichSetType(final String type) {
     this.name = type;
+  }
+
+
+  /**
+   * @return The name of the type.
+   */
+  public final String getName() {
+    return this.name;
   }
 }

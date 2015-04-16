@@ -237,7 +237,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    */
   private void makeCml() {
     this.cml = new CMLAtomSet();
-    this.cml.setTitle(this.type.name);
+    this.cml.setTitle(this.type.getName());
     this.cml.setId(this.getId());
   }
 

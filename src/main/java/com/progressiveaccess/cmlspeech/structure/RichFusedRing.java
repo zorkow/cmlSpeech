@@ -43,14 +43,25 @@ import java.util.stream.Collectors;
 /**
  * Atom sets that are rich fused rings.
  */
-
 public class RichFusedRing extends RichRing implements RichSuperSet {
 
+  private final Set<String> sharedBonds = new HashSet<>();
+  private final ComponentsPositions path = new ComponentsPositions();
+  private Set<RichAtomSet> richSubSystems = null;
+
+
+  /**
+   * Generates the rich fused ring.
+   *
+   * @param container
+   *          The atom container of the ring.
+   * @param id
+   *          The name of the structure.
+   */
   public RichFusedRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUSED);
   }
 
-  private final Set<String> sharedBonds = new HashSet<>();
 
   @Override
   protected final void walk() {
@@ -62,6 +73,8 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     this.setPath();
   }
 
+
+  /** Computes the shared bonds inside the fused ring. */
   private void computeSharedBonds() {
     for (final RichAtomSet subRing : this.richSubSystems) {
       this.sharedBonds.addAll(subRing.getConnections().stream()
@@ -70,6 +83,8 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     }
   }
 
+
+  /** Computes the atoms on the rim of the fused ring. */
   private void computeRim() {
     final IAtomContainer container = this.getStructure();
     this.setRim(new HashSet<>());
@@ -81,6 +96,7 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
       }
     }
   }
+
 
   @Override
   protected List<IAtom> getConnectedAtomsList(final IAtom atom) {
@@ -99,28 +115,41 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
     return rimAtoms;
   }
 
-  private final ComponentsPositions path = new ComponentsPositions();
-  private Set<RichAtomSet> richSubSystems = null;
 
+  /** Computes the set of rich sub rings. */
   private void computeRichSubSystems() {
     this.richSubSystems = this.getSubSystems().stream()
         .map(s -> RichStructureHelper.getRichAtomSet(s))
         .collect(Collectors.toSet());
   }
 
+
   @Override
   public ComponentsPositions getPath() {
     return this.path;
   }
 
-  private RichAtomSet findAtom(final List<RichAtomSet> sets, final RichAtom atom) {
+
+  /**
+   * Finds the first atom set in a list that contains a particular atom.
+   *
+   * @param sets
+   *          The list of atom sets.
+   * @param atom
+   *          The atom to search.
+   *
+   * @return The first set that contains the atom.
+   */
+  private RichAtomSet findAtom(final List<RichAtomSet> sets,
+                               final RichAtom atom) {
     for (final RichAtomSet set : sets) {
-      if (set.getStructure().contains(atom.getStructure())) {
+      if (set.getComponents().contains(atom.getId())) {
         return set;
       }
     }
     return null;
   }
+
 
   @Override
   public void setPath() {
