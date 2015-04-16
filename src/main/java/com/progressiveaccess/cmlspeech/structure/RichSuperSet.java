@@ -26,7 +26,7 @@ public interface RichSuperSet extends RichSet {
   ComponentsPositions getPath();
 
   /**
-   * @return Computes the order of the subsystems.
+   * Computes the order of the subsystems.
    */
   void setPath();
 

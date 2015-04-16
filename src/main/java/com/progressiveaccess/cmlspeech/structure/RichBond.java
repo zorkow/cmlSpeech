@@ -48,7 +48,7 @@ public class RichBond extends RichChemObject {
 
   @Override
   public IBond getStructure() {
-    return (IBond) this.structure;
+    return (IBond) super.getStructure();
   }
 
   @Override

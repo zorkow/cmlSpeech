@@ -36,22 +36,22 @@ import nu.xom.Element;
 public class SreElement extends Element {
 
   SreElement(final String tag) {
-    super(SreNamespace.getInstance().prefix + ":" + tag, SreNamespace
-        .getInstance().uri);
+    super(SreNamespace.getInstance().getPrefix() + ":" + tag, SreNamespace
+        .getInstance().getUri());
   }
 
   public SreElement(final SreNamespace.Tag tag) {
-    super(tag.tag, SreNamespace.getInstance().uri);
+    super(tag.getTag(), SreNamespace.getInstance().getUri());
   }
 
   public SreElement(final SreNamespace.Tag tag, final String text) {
-    super(tag.tag, SreNamespace.getInstance().uri);
+    super(tag.getTag(), SreNamespace.getInstance().getUri());
     this.appendChild(text);
   }
 
   public SreElement(final SreNamespace.Tag tag, final Element child1,
       final Element child2) {
-    super(tag.tag, SreNamespace.getInstance().uri);
+    super(tag.getTag(), SreNamespace.getInstance().getUri());
     this.appendChild(child1);
     this.appendChild(child2);
   }

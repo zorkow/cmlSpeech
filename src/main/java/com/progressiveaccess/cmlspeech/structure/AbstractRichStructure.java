@@ -43,21 +43,31 @@ import java.util.stream.Collectors;
 
 /**
  * Implements basic functionality for Rich Structures.
+ *
+ * @param <S> The embedded structure.
  */
-
 public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     XmlAnnotations {
 
-  protected final S structure;
+  private final S structure;
 
+
+  /**
+   * Constructs a rich structure.
+   *
+   * @param structure
+   *          The simple chemical structure.
+   */
   AbstractRichStructure(final S structure) {
     this.structure = structure;
   }
+
 
   @Override
   public S getStructure() {
     return this.structure;
   }
+
 
   private final SortedSet<String> components = new TreeSet<String>(
       new CmlNameComparator());
@@ -67,6 +77,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.components;
   }
 
+
   private final SortedSet<String> contexts = new TreeSet<String>(
       new CmlNameComparator());
 
@@ -74,6 +85,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   public SortedSet<String> getContexts() {
     return this.contexts;
   }
+
 
   private final SortedSet<String> externalBonds = new TreeSet<String>(
       new CmlNameComparator());
@@ -83,6 +95,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.externalBonds;
   }
 
+
   private final SortedSet<Connection> connections = new TreeSet<Connection>(
       new ConnectionComparator());
 
@@ -90,6 +103,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   public SortedSet<Connection> getConnections() {
     return this.connections;
   }
+
 
   private final SortedSet<String> superSystems = new TreeSet<String>(
       new CmlNameComparator());
@@ -99,6 +113,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return this.superSystems;
   }
 
+
   private final SortedSet<String> subSystems = new TreeSet<String>(
       new CmlNameComparator());
 
@@ -106,6 +121,7 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   public SortedSet<String> getSubSystems() {
     return this.subSystems;
   }
+
 
   @Override
   public String toString() {
@@ -123,13 +139,17 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
             .collect(Collectors.toList()));
   }
 
+
+  /** Graph visualisation. */
   public void visualize() {
   }
+
 
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.UNKNOWN;
   }
+
 
   @Override
   public SreElement annotation() {
@@ -147,6 +167,12 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     return element;
   }
 
+
+  /**
+   * Computes annotations for structure's connections.
+   *
+   * @return The annotation element.
+   */
   private SreElement connectionsAnnotations() {
     if (this.getConnections().isEmpty()) {
       return null;

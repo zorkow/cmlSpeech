@@ -40,22 +40,31 @@ import java.util.Set;
  * Singleton class to hold smart patterns. These patterns are currently loaded
  * from files given in hard coded pathnames.
  */
-public class SmartsPatterns {
+public final class SmartsPatterns {
 
   private static volatile SmartsPatterns instance = null;
-  private static String[] smartsFiles = {
+  private static final String[] smartsFiles = {
     "src/main/resources/smarts/daylight-pattern.txt",
     "src/main/resources/smarts/smarts-pattern.txt" };
-  private static Map<String, String> smartsPatterns = new HashMap<String, String>();
+  private static final Map<String, String> smartsPatterns =
+      new HashMap<String, String>();
   private static boolean loaded = false;
 
-  protected SmartsPatterns() {
+
+  /**
+   * Constructor for smarts patterns.
+   */
+  private SmartsPatterns() {
     if (!loaded) {
       SmartsPatterns.loadSmartsFiles();
       loaded = true;
     }
   }
 
+
+  /**
+   * @return The only instance of the class.
+   */
   private static SmartsPatterns getInstance() {
     if (instance == null) {
       instance = new SmartsPatterns();
@@ -63,17 +72,32 @@ public class SmartsPatterns {
     return instance;
   }
 
+
+  /**
+   * @return The set of patterns.
+   */
   public static Set<Map.Entry<String, String>> getPatterns() {
     getInstance();
     return smartsPatterns.entrySet();
   }
 
+
+  /**
+   * Loads the smarts patterns from the given.
+   */
   private static void loadSmartsFiles() {
     for (final String file : SmartsPatterns.smartsFiles) {
       loadSmartsFile(file);
     }
   }
 
+
+  /**
+   * Loads a single smarts patterns file.
+   *
+   * @param file
+   *          The name of the file to load.
+   */
   private static void loadSmartsFile(final String file) {
     try {
       final BufferedReader br = new BufferedReader(new FileReader(

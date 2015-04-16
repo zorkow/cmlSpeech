@@ -33,8 +33,9 @@ import java.util.SortedSet;
 
 /**
  * Interface for all structures with admin information.
+ *
+ * @param <S> The embedded structure.
  */
-
 public interface RichStructure<S> {
 
   /**

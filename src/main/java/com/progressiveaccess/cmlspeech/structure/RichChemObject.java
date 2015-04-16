@@ -33,15 +33,23 @@ import org.openscience.cdk.interfaces.IChemObject;
  * Chemical objects with admin information.
  */
 
-public abstract class RichChemObject extends AbstractRichStructure<IChemObject> {
+public abstract class RichChemObject extends
+    AbstractRichStructure<IChemObject> {
 
+  /**
+   * Constructs a rich chemical object.
+   *
+   * @param structure
+   *          The base structured to be enriched.
+   */
   RichChemObject(final IChemObject structure) {
     super(structure);
   }
 
+
   @Override
   public String getId() {
-    return this.structure.getID();
+    return this.getStructure().getID();
   }
 
 }

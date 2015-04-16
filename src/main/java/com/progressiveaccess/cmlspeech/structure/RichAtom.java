@@ -43,7 +43,7 @@ public class RichAtom extends RichChemObject {
 
   @Override
   public IAtom getStructure() {
-    return (IAtom) this.structure;
+    return (IAtom) super.getStructure();
   }
 
   public Boolean isCarbon() {

@@ -99,7 +99,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   @Override
   public IAtomContainer getStructure() {
-    return (IAtomContainer) this.structure;
+    return (IAtomContainer) super.getStructure();
   }
 
 

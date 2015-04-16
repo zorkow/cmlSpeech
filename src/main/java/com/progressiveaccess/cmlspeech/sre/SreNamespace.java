@@ -30,22 +30,38 @@ package com.progressiveaccess.cmlspeech.sre;
 /**
  * Reference to the basic namespace for speech tags.
  */
-
 public class SreNamespace {
-  public final String uri = "http://www.chemaccess.org/sre-schema";
-  public final String prefix = "sre";
-
+  private final String uri = "http://www.chemaccess.org/sre-schema";
+  private final String prefix = "sre";
   private static volatile SreNamespace instance = null;
 
-  public SreNamespace() {
-  }
 
+  /**
+   * @return The instance of the SreNamespace class.
+   */
   public static SreNamespace getInstance() {
     if (instance == null) {
       instance = new SreNamespace();
     }
     return instance;
   }
+
+
+  /**
+   * @return The namespace URI.
+   */
+  public final String getUri() {
+    return uri;
+  }
+
+
+  /**
+   * @return The namespace prefix.
+   */
+  public final String getPrefix() {
+    return prefix;
+  }
+
 
   /**
    * Different Tags for the SRE speech annotations. Some notes;
@@ -104,18 +120,35 @@ public class SreNamespace {
     NEIGHBOUR("neighbour"),
     POSITIONS("positions"),
     POSITION("position"),
-    VIA("via"),
+    VIA("via");
 
-    ;
+    private final String tag;
 
-    public final String tag;
 
+    /**
+     * Constructs an tag.
+     *
+     * @param tag
+     *          The name of the tag.
+     */
     private Tag(final String tag) {
       this.tag = "sre:" + tag;
     }
 
+
+    /**
+     * @return The tag name.
+     */
+    public final String getTag() {
+      return this.tag;
+    }
+
   }
 
+
+  /**
+   * Different Attributes for the SRE speech annotations.
+   */
   public enum Attribute {
     LEVEL("level"),
     ELEMENTS("elements"),
@@ -124,12 +157,27 @@ public class SreNamespace {
     ORDER("order"),
     ATOM("bond"),
     BOND("bond"),
-    TYPE("type"), ;
+    TYPE("type");
 
-    public final String attribute;
+    private final String attribute;
 
+
+    /**
+     * Constructs an attribute.
+     *
+     * @param attribute
+     *          The name of the attribute.
+     */
     private Attribute(final String attribute) {
       this.attribute = attribute;
+    }
+
+
+    /**
+     * @return The attribute name.
+     */
+    public final String getAttribute() {
+      return this.attribute;
     }
 
   }

@@ -94,7 +94,8 @@ public class CmlEnricher {
     this.nameMolecule();
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
-        SreNamespace.getInstance().prefix, SreNamespace.getInstance().uri);
+        SreNamespace.getInstance().getPrefix(),
+        SreNamespace.getInstance().getUri());
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }

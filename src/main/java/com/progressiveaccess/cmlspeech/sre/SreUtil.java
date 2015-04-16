@@ -58,8 +58,8 @@ public final class SreUtil {
 
   public static Nodes xpathQuery(final Element element, final String query) {
     final XPathContext xc = XPathContext.makeNamespaceContext(element);
-    xc.addNamespace(SreNamespace.getInstance().prefix,
-        SreNamespace.getInstance().uri);
+    xc.addNamespace(SreNamespace.getInstance().getPrefix(),
+        SreNamespace.getInstance().getUri());
     xc.addNamespace("cml", "http://www.xml-cml.org/schema");
     return element.query(query, xc);
   }

@@ -174,6 +174,7 @@ public abstract class RichRing extends RichAtomSet {
     this.walkOnSubst(internalSubst.get(0), externalSubst);
   }
 
+
   /**
    * Walking a ring without any substitutions. This is necessary to keep stable
    * tests as the choice of first element is non-deterministic.
@@ -198,6 +199,21 @@ public abstract class RichRing extends RichAtomSet {
     }
   }
 
+
+  /**
+   * Walks on the ring with respect to the substitutions that were found.
+   *
+   * <p>Given a start atom (i.e., the element with the most important
+   * substitution) and set of (internal or external) substitutions, the method
+   * will walk around the ring in both directions, until it has found the first
+   * relevant substitution, and then finalise the walk in that direction,
+   * i.e. assign the positions.</p>
+   *
+   * @param startAtom
+   *          The start atom for the walk (most important substitution).
+   * @param reference
+   *          A list of substitutions.
+   */
   private void walkOnSubst(final IAtom startAtom, final List<IAtom> reference) {
     final List<IAtom> queueLeft = new ArrayList<>();
     final List<IAtom> queueRight = new ArrayList<>();
@@ -277,7 +293,8 @@ public abstract class RichRing extends RichAtomSet {
     while (this.externalConnections.peek() != null) {
       final Connection connection = this.externalConnections.poll();
       final ConnectionType type = connection.getType();
-      if (type == ConnectionType.SPIROATOM || type == ConnectionType.SHAREDATOM) {
+      if (type == ConnectionType.SPIROATOM
+          || type == ConnectionType.SHAREDATOM) {
         result.add(RichStructureHelper.getRichAtom(connection.getConnector())
             .getStructure());
       }

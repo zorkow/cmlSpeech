@@ -88,7 +88,7 @@ public class SreAnnotations extends SreElement {
   public void appendAnnotation(final Element annotate,
       final SreNamespace.Tag tag,
       final Element entry) {
-    final Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.tag);
+    final Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.getTag());
     Element node = null;
     if (nodes.size() == 0) {
       node = new SreElement(tag);
@@ -130,7 +130,7 @@ public class SreAnnotations extends SreElement {
     if (element == null) {
       return null;
     }
-    return (SreElement) SreUtil.xpathQuery(element, "//" + tag.tag).get(0);
+    return (SreElement) SreUtil.xpathQuery(element, "//" + tag.getTag()).get(0);
   }
 
   public void complete() {

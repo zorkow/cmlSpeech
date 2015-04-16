@@ -39,13 +39,13 @@ import nu.xom.Element;
 public class SreAttribute extends Attribute {
 
   public SreAttribute(final String localName, final String value) {
-    super(SreNamespace.getInstance().prefix + ":" + localName, SreNamespace
-        .getInstance().uri, value);
+    super(SreNamespace.getInstance().getPrefix() + ":" + localName, SreNamespace
+        .getInstance().getUri(), value);
   }
 
   public SreAttribute(final SreNamespace.Attribute attr, final String value) {
-    super(SreNamespace.getInstance().prefix + ":" + attr.attribute,
-        SreNamespace.getInstance().uri, value);
+    super(SreNamespace.getInstance().getPrefix() + ":" + attr.getAttribute(),
+        SreNamespace.getInstance().getUri(), value);
   }
 
   public void addValue(final String value) {

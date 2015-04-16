@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Utility class for molecular formula computation.
  */
-public class MolecularFormula {
+public final class MolecularFormula {
 
   /** Dummy constructor. */
   private MolecularFormula() {
@@ -45,16 +45,37 @@ public class MolecularFormula {
   }
 
 
+  /**
+   * Computes the molecular formula for a rich atom set.
+   *
+   * @param system
+   *          The rich atom set.
+   *
+   * @return The molecular formula.
+   */
   public static String compute(final RichAtomSet system) {
     final IMolecularFormula form = MolecularFormulaManipulator
         .getMolecularFormula(system.getStructure());
     return MolecularFormulaManipulator.getString(form);
   }
 
+
+  /**
+   * Computes and sets the molecular formula in a rich atom sets.
+   *
+   * @param system The rich atom to use.
+   */
   public static void set(final RichAtomSet system) {
     system.setMolecularFormula(MolecularFormula.compute(system));
   }
 
+
+  /**
+   * Computes and sets the molecular formula for each element of a list of rich
+   * atom sets.
+   *
+   * @param systems A list of rich atom sets.
+   */
   public static void set(final List<RichAtomSet> systems) {
     systems.stream().forEach(MolecularFormula::set);
   }
