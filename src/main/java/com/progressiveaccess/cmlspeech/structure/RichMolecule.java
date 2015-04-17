@@ -111,17 +111,18 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     this.setPath();
     for (final String structure : this.getPath()) {
       if (RichStructureHelper.isAtom(structure)) {
-        this.componentPositions.addNext(structure);
+        this.getComponentsPositions().addNext(structure);
       } else {
         final RichAtomSet atomSet = RichStructureHelper
             .getRichAtomSet(structure);
         atomSet.walk();
-        this.componentPositions.putAll(atomSet.componentPositions);
+        this.getComponentsPositions().putAll(atomSet.getComponentsPositions());
         if (atomSet.getType() == RichSetType.FUSED) {
           for (final String subRing : ((RichFusedRing) atomSet).getPath()) {
             final RichAtomSet subSet = RichStructureHelper
                 .getRichAtomSet(subRing);
-            this.componentPositions.putAll(subSet.componentPositions);
+            this.getComponentsPositions()
+              .putAll(subSet.getComponentsPositions());
           }
         }
       }
@@ -142,7 +143,7 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
         .collect(Collectors.toList()));
     Collections.sort(this.blocks, new Heuristics(""));
     final WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
-    this.path = dfs.getPositions();
+    dfs.putPositions(this.path);
   }
 
 }

@@ -25,12 +25,20 @@ import java.util.stream.Collectors;
 /**
  * Constructs positions by depth first walk.
  */
-
 public class WalkDepthFirst {
 
+  /**
+   * A comparator that compares components with respect to a given order.
+   */
   private class OrderComparator<T> implements Comparator<T> {
     private final List<T> order;
 
+    /**
+     * Constructs a comparator based on a given component order.
+     *
+     * @param order
+     *          The initial order.
+     */
     public OrderComparator(final List<T> order) {
       this.order = order;
     }
@@ -47,12 +55,28 @@ public class WalkDepthFirst {
   private List<RichStructure<?>> order = null;
   private RichStructure<?> start = null;
 
+
+  /**
+   * Walks a structure depth first and assigns positions to the components.
+   *
+   * @param order
+   *          The priority order of components for node expansion.
+   */
   public WalkDepthFirst(final List<RichStructure<?>> order) {
     this.order = order;
     this.start();
     this.walkDepthFirst();
   }
 
+
+  /**
+   * Walks a structure depth first and assigns positions to the components.
+   *
+   * @param start
+   *          The component to start the walk from.
+   * @param order
+   *          The priority order of components for node expansion.
+   */
   public WalkDepthFirst(final RichStructure<?> start,
       final List<RichStructure<?>> order) {
     this.start = start;
@@ -60,12 +84,15 @@ public class WalkDepthFirst {
     this.walkDepthFirst();
   }
 
-  private final void start() {
+
+  /** Start DFS. */
+  private void start() {
     if (this.order.isEmpty()) {
       return;
     }
     this.start = this.order.get(0);
   }
+
 
   /**
    * Depth first traversal of structure.
@@ -91,7 +118,16 @@ public class WalkDepthFirst {
     }
   }
 
-  public final ComponentsPositions getPositions() {
-    return this.positions;
+
+  /**
+   * Puts the position computed in the depth first walk into a given components
+   * to positions mapping.
+   *
+   * @param componentsPositions
+   *          The mapping to add to.//@}
+   */
+  public final void putPositions(
+      final ComponentsPositions componentsPositions) {
+    componentsPositions.putAll(this.positions);
   }
 }

@@ -230,8 +230,8 @@ public class StructuralAnalysis {
       final RichAtomSet set = new RichFunctionalGroup(
           groups.get(key), this.getAtomSetId());
       RichStructureHelper.setRichAtomSet(set);
-      set.name = key.split("-")[0];
-      Logger.logging(set.name + ": " + container.getAtomCount() + " atoms "
+      set.setName(key.split("-")[0]);
+      Logger.logging(set.getName() + ": " + container.getAtomCount() + " atoms "
           + container.getBondCount() + " bonds");
     }
   }

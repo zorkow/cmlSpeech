@@ -64,7 +64,8 @@ public final class SreUtil {
     return element.query(query, xc);
   }
 
-  public static Node xpathQueryElement(final Element element, final String query) {
+  public static Node xpathQueryElement(final Element element,
+                                       final String query) {
     Node node;
     try {
       node = xpathQuery(element, query).get(0);

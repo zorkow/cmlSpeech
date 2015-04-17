@@ -57,7 +57,7 @@ import java.util.TreeSet;
 
 public class SreSpeech extends SreXml {
 
-  public Document doc;
+  private Document doc;
 
   SreSpeech() {
     super();
@@ -85,7 +85,7 @@ public class SreSpeech extends SreXml {
         this.atomSet(atomSet, molecule);
         // TODO (sorge) Deal with FUSED rings here.
         // Describe the bottom level.
-        for (final String atom : atomSet.componentPositions) {
+        for (final String atom : atomSet.getComponentsPositions()) {
           this.atom(RichStructureHelper.getRichAtom(atom), atomSet);
         }
       }
@@ -110,7 +110,7 @@ public class SreSpeech extends SreXml {
   // Atom to speech translation.
   private void atom(final RichAtom atom, final RichAtomSet system) {
     final String id = atom.getId();
-    this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM,
+    this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
         this.speechAtom(atom));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
     this.describeConnections(system, atom, id);
@@ -118,7 +118,7 @@ public class SreSpeech extends SreXml {
 
   private void atom(final RichAtom atom, final RichMolecule system) {
     final String id = atom.getId();
-    this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOM,
+    this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
         this.speechAtom(atom));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
     this.describeConnections(system, atom, id);
@@ -135,7 +135,7 @@ public class SreSpeech extends SreXml {
 
   private String describeAtomPosition(final RichAtom atom) {
     final Integer position = RichStructureHelper.getRichMolecule()
-      .getPosition(atom.getId());
+        .getPosition(atom.getId());
     if (position == null) {
       return this.describeAtom(atom) + " unknown position.";
     }
@@ -162,9 +162,9 @@ public class SreSpeech extends SreXml {
   // Bond to speech translation.
   private void bond(final RichBond bond) {
     final String id = bond.getId();
-    this.annotations.registerAnnotation(id, SreNamespace.Tag.BOND,
+    this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.BOND,
         this.speechBond(bond));
-    this.annotations.addAttribute(id, new SreAttribute(
+    this.getAnnotations().addAttribute(id, new SreAttribute(
         SreNamespace.Attribute.ORDER, this.describeBond(bond, false)));
     this.toSreSet(id, SreNamespace.Tag.COMPONENT, bond.getComponents());
   }
@@ -193,7 +193,7 @@ public class SreSpeech extends SreXml {
   // AtomSet to speech translation.
   private void atomSet(final RichMolecule atomSet) {
     final String id = atomSet.getId();
-    this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET,
+    this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOMSET,
         this.speechAtomSet(atomSet));
     // Children are given in the order of their positions!
     this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getPath());
@@ -202,20 +202,23 @@ public class SreSpeech extends SreXml {
 
   private void atomSet(final RichAtomSet atomSet) {
     final String id = atomSet.getId();
-    this.annotations.registerAnnotation(id, SreNamespace.Tag.ATOMSET,
+    this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOMSET,
         this.speechAtomSet(atomSet));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atomSet.getSuperSystems());
     // Children are given in the order of their positions!
-    this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.componentPositions);
+    this.toSreSet(id, SreNamespace.Tag.CHILDREN,
+                  atomSet.getComponentsPositions());
     this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
   }
 
-  private void atomSet(final RichAtomSet atomSet, final RichAtomSet superSystem) {
+  private void atomSet(final RichAtomSet atomSet,
+                       final RichAtomSet superSystem) {
     this.atomSet(atomSet);
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
 
-  private void atomSet(final RichAtomSet atomSet, final RichMolecule superSystem) {
+  private void atomSet(final RichAtomSet atomSet,
+                       final RichMolecule superSystem) {
     this.atomSet(atomSet);
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
@@ -283,7 +286,7 @@ public class SreSpeech extends SreXml {
   }
 
   private String describeFunctionalGroup(final RichAtomSet system) {
-    return "Functional group " + system.name + ".";
+    return "Functional group " + system.getName() + ".";
   }
 
   private String describeReplacements(final RichAtomSet system) {
@@ -324,7 +327,8 @@ public class SreSpeech extends SreXml {
         continue;
       }
       // TODO (sorge) Make this one safer!
-      final Iterator<String> atoms = RichStructureHelper.getRichBond(bond.getID())
+      final Iterator<String> atoms = RichStructureHelper
+          .getRichBond(bond.getID())
           .getComponents().iterator();
       Integer atomA = system.getPosition(atoms.next());
       Integer atomB = system.getPosition(atoms.next());
@@ -346,7 +350,7 @@ public class SreSpeech extends SreXml {
     Integer count = 0;
     for (final Connection connection : block.getConnections()) {
       final String connected = connection.getConnected();
-      if (!system.componentPositions.contains(connected)) {
+      if (!system.getComponentsPositions().contains(connected)) {
         continue;
       }
       count++;
@@ -391,7 +395,8 @@ public class SreSpeech extends SreXml {
     final SreElement via = new SreElement(SreNamespace.Tag.VIA);
     via.appendChild(positions);
     element.appendChild(via);
-    this.annotations.appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
+    this.getAnnotations()
+      .appendAnnotation(id, SreNamespace.Tag.NEIGHBOURS, element);
   }
 
   private void describeConnection(final Connection connection,
@@ -479,8 +484,8 @@ public class SreSpeech extends SreXml {
     final String bond = this.describeBond(
         RichStructureHelper.getRichBond(connector),
         false);
-    final String structure = RichStructureHelper.isAtom(connected) ?
-        this.describeAtomPosition(RichStructureHelper.getRichAtom(connected))
+    final String structure = RichStructureHelper.isAtom(connected)
+        ? this.describeAtomPosition(RichStructureHelper.getRichAtom(connected))
         : this.describeAtomSet(RichStructureHelper.getRichAtomSet(connected));
     return bond + " bonded to " + structure;
   }

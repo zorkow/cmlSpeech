@@ -248,7 +248,7 @@ public abstract class RichRing extends RichAtomSet {
 
   private void walkFinalise(final IAtom endAtom, final List<IAtom> path) {
     for (final IAtom atom : path) {
-      this.componentPositions.addNext(atom.getID());
+      this.getComponentsPositions().addNext(atom.getID());
     }
     this.walkStraight(endAtom, path);
   }

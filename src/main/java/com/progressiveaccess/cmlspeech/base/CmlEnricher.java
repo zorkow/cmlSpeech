@@ -197,11 +197,11 @@ public class CmlEnricher {
   public void annotateMolecule() {
     if (Cli.hasOption("ann")) {
       this.sreOutput = new SreOutput();
-      this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+      this.doc.getRootElement().appendChild(this.sreOutput.xmlAnnotations());
     }
     if (Cli.hasOption("descr")) {
       this.sreSpeech = new SreSpeech(this.doc);
-      this.doc.getRootElement().appendChild(this.sreSpeech.getAnnotations());
+      this.doc.getRootElement().appendChild(this.sreSpeech.xmlAnnotations());
     }
   }
 
@@ -248,9 +248,10 @@ public class CmlEnricher {
       final CMLAtomSet set = richSet.getCml(this.doc);
       // this.atomSets.add(richSet);
       this.doc.getRootElement().appendChild(set);
-      set.addAttribute(new SreAttribute("formula", richSet.getMolecularFormula()));
+      set.addAttribute(new SreAttribute("formula",
+                                        richSet.getMolecularFormula()));
       if (richSet.getType() == RichSetType.FUNCGROUP) {
-        set.addAttribute(new SreAttribute("name", richSet.name));
+        set.addAttribute(new SreAttribute("name", richSet.getName()));
       } else {
         this.nameMolecule(richSet.getId(), richSet.getStructure());
       }

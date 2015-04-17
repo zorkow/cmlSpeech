@@ -62,7 +62,8 @@ public class FunctionalGroups {
    * the atom container.
    */
   private void compute() {
-    for (final Map.Entry<String, String> smarts : SmartsPatterns.getPatterns()) {
+    for (final Map.Entry<String, String> smarts
+           : SmartsPatterns.getPatterns()) {
       try {
         this.checkMolecule(smarts.getValue(), smarts.getKey(),
             this.molecule.clone());
@@ -150,7 +151,8 @@ public class FunctionalGroups {
   }
 
   public void logGroups() {
-    for (final Map.Entry<String, IAtomContainer> entry : this.groups.entrySet()) {
+    for (final Map.Entry<String, IAtomContainer> entry
+           : this.groups.entrySet()) {
       Logger.logging(entry.getKey() + ": ");
       entry.getValue().atoms().forEach(a -> Logger.logging(a.getID() + " "));
       Logger.logging("\n");

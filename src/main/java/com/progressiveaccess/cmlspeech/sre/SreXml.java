@@ -38,13 +38,17 @@ import java.util.Set;
 
 public abstract class SreXml {
 
-  SreAnnotations annotations;
+  private SreAnnotations annotations;
 
   SreXml() {
     this.annotations = new SreAnnotations();
   }
 
   public SreAnnotations getAnnotations() {
+    return this.annotations;
+  }
+
+  public SreAnnotations xmlAnnotations() {
     this.complete();
     return this.annotations;
   }

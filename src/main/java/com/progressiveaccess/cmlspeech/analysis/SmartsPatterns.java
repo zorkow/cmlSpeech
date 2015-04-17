@@ -43,10 +43,10 @@ import java.util.Set;
 public final class SmartsPatterns {
 
   private static volatile SmartsPatterns instance = null;
-  private static final String[] smartsFiles = {
+  private static final String[] SMARTS_FILES = {
     "src/main/resources/smarts/daylight-pattern.txt",
     "src/main/resources/smarts/smarts-pattern.txt" };
-  private static final Map<String, String> smartsPatterns =
+  private static final Map<String, String> SMARTS_PATTERNS =
       new HashMap<String, String>();
   private static boolean loaded = false;
 
@@ -78,7 +78,7 @@ public final class SmartsPatterns {
    */
   public static Set<Map.Entry<String, String>> getPatterns() {
     getInstance();
-    return smartsPatterns.entrySet();
+    return SMARTS_PATTERNS.entrySet();
   }
 
 
@@ -86,7 +86,7 @@ public final class SmartsPatterns {
    * Loads the smarts patterns from the given.
    */
   private static void loadSmartsFiles() {
-    for (final String file : SmartsPatterns.smartsFiles) {
+    for (final String file : SmartsPatterns.SMARTS_FILES) {
       loadSmartsFile(file);
     }
   }
@@ -109,7 +109,7 @@ public final class SmartsPatterns {
         // the patterns to be skipped (notated by a '#' before the name
         // in the file
         if (colonIndex != -1 && line.charAt(0) != '#') {
-          smartsPatterns.put(line.substring(0, colonIndex),
+          SMARTS_PATTERNS.put(line.substring(0, colonIndex),
               line.substring(colonIndex + 2));
         }
       }

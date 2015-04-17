@@ -64,8 +64,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     IMolecularDescriptor {
 
   private boolean checkRingSystem = true;
-
-  private static final String[] names = { "allLAC" };
+  private static final String[] NAMES = {"allLAC"};
+  private static final Integer FLOYD_MAX = 999999999;
 
   // Containers of chains.
   private final List<IAtomContainer> chain = new ArrayList<>();
@@ -108,7 +108,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
   @TestMethod("testGetSpecification")
   public DescriptorSpecification getSpecification() {
     return new DescriptorSpecification(
-        "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/#longestAliphaticChain",
+        "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/"
+        + "#longestAliphaticChain",
         this.getClass().getName(), "The Chemistry Development Kit");
   }
 
@@ -160,7 +161,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
   @Override
   @TestMethod(value = "testNamesConsistency")
   public String[] getDescriptorNames() {
-    return names;
+    return NAMES;
   }
 
   private DescriptorValue getDummyDescriptorValue(final Exception exception) {
@@ -238,9 +239,10 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
             path);
         if (aliphaticChain.getAtomCount() >= this.minLength) {
           final double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
-          final Integer[][] pathMatrix = new Integer[conMat.length][conMat.length];
+          final Integer[][] pathMatrix =
+              new Integer[conMat.length][conMat.length];
           final int[][] apsp = this.computeFloydApsp(conMat, pathMatrix);
-          final int[] pathCoordinates = new int[] { 0, 0 };
+          final int[] pathCoordinates = new int[] {0, 0};
           tmpLongestChainAtomCount = this.getLongestChainPath(apsp,
               pathCoordinates);
           final IAtomContainer longestAliphaticChain = this
@@ -264,20 +266,23 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         this.getDescriptorNames());
   }
 
-  public List<IAtom> longestPath(final Integer[][] pathMatrix, int pathStart,
-      final int pathEnd, final IAtomContainer chain) {
+  private List<IAtom> longestPath(final Integer[][] pathMatrix,
+        final int pathStart, final int pathEnd,
+        final IAtomContainer container) {
     final List<IAtom> path = new ArrayList<>();
     if (pathMatrix[pathStart][pathEnd] == null) {
       return path;
     }
-    final List<IAtom> chainAtoms = Lists.newArrayList(chain.atoms());
+    final List<IAtom> chainAtoms = Lists.newArrayList(container.atoms());
     path.add(chainAtoms.get(pathStart));
-    while (pathStart != pathEnd) {
-      pathStart = pathMatrix[pathStart][pathEnd];
-      path.add(chainAtoms.get(pathStart));
+    int nextPathStart = pathStart;
+    while (nextPathStart != pathEnd) {
+      nextPathStart = pathMatrix[nextPathStart][pathEnd];
+      path.add(chainAtoms.get(nextPathStart));
     }
     return path;
   }
+
 
   public int[][] computeFloydApsp(final double[][] costMatrix,
       final Integer[][] pathMatrix) {
@@ -287,7 +292,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     for (int i = 0; i < nrow; i++) {
       for (int j = 0; j < nrow; j++) {
         if (costMatrix[i][j] == 0) {
-          distMatrix[i][j] = 999999999;
+          distMatrix[i][j] = FLOYD_MAX;
           pathMatrix[i][j] = null;
         } else {
           distMatrix[i][j] = 1;
@@ -429,8 +434,8 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    *          A sphere of atoms to start the search with
    * @param path
    *          A vector which stores the atoms belonging to the pi system
-   * @exception org.openscience.cdk.exception.CDKException
-   *              Description of the Exception
+   * @throws CDKException
+   *          Description of the Exception
    */
   private void breadthFirstSearch(final IAtomContainer container,
       final List<IAtom> sphere,

@@ -62,14 +62,14 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   private CMLAtomSet cml;
 
   private String iupac = "";
-  public String name = "";
+  private String name = "";
   private String molecularFormula = "";
   private String structuralFormula = "";
 
   private final SortedSet<String> connectingAtoms = new TreeSet<String>(
       new CmlNameComparator());
 
-  public ComponentsPositions componentPositions = new ComponentsPositions();
+  private ComponentsPositions componentsPositions = new ComponentsPositions();
 
 
   /**
@@ -94,6 +94,33 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       this.getComponents().add(bond.getID());
     }
     this.makeCml();
+  }
+
+
+  /**
+   * @return The component to positions mapping.
+   */
+  public ComponentsPositions getComponentsPositions() {
+    return this.componentsPositions;
+  }
+
+
+  /**
+   * @return The name of the set.
+   */
+  public String getName() {
+    return this.name;
+  }
+
+
+  /**
+   * Sets the name of the atom set.
+   *
+   * @param name
+   *          The name of the set.
+   */
+  public void setName(final String name) {
+    this.name = name;
   }
 
 
@@ -185,7 +212,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     if (visited.contains(atom)) {
       return;
     }
-    this.componentPositions.addNext(atom.getID());
+    this.getComponentsPositions().addNext(atom.getID());
     visited.add(atom);
     for (final IAtom connected : this.getConnectedAtomsList(atom)) {
       if (!visited.contains(connected)) {
@@ -198,19 +225,19 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   @Override
   public String getAtom(final Integer position) {
-    return this.componentPositions.getAtom(position);
+    return this.getComponentsPositions().getAtom(position);
   }
 
 
   @Override
   public Integer getPosition(final String atom) {
-    return this.componentPositions.getPosition(atom);
+    return this.getComponentsPositions().getPosition(atom);
   }
 
 
   @Override
   public Iterator<String> iterator() {
-    return this.componentPositions.iterator();
+    return this.getComponentsPositions().iterator();
   }
 
 
@@ -218,7 +245,8 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    * Prints the positions of the components of this atom set.
    */
   public void printPositions() {
-    Logger.logging(this.getId() + "\n" + this.componentPositions.toString());
+    Logger.logging(this.getId() + "\n"
+                   + this.getComponentsPositions().toString());
   }
 
 

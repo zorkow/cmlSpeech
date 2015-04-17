@@ -54,6 +54,8 @@ public class StructuralFormula {
   private boolean useSubScripts;
   private final ArrayList<String> appendedAtoms = new ArrayList<String>();
   private final ArrayList<String> allConnectingAtoms = new ArrayList<String>();
+  private static final Integer SUBSCRIPT_MAX = 9;
+  private static final Integer SUBSCRIPT_ZERO = 0x2080;
 
   /**
    * Computes a structural formula using a Structural Analysis.
@@ -98,7 +100,7 @@ public class StructuralFormula {
     }
 
     // The atom positions of the current RichAtomSet
-    this.componentPositions = richAtomSet.componentPositions;
+    this.componentPositions = richAtomSet.getComponentsPositions();
 
     // For each atom in the atomPositions
     for (int i = 1; i < this.componentPositions.size() + 1; i++) {
@@ -231,9 +233,9 @@ public class StructuralFormula {
    * @return Returns the subscript of the inserted number
    */
   private String getSubScript(final int number) {
-    if (number > 9) {
+    if (number > SUBSCRIPT_MAX) {
       throw new IllegalArgumentException("Sub Scripts cannot be larger than 9");
     }
-    return Character.toString((char) (0x2080 + number));
+    return Character.toString((char) (SUBSCRIPT_ZERO + number));
   }
 }

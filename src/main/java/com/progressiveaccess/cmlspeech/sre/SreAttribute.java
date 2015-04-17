@@ -32,10 +32,7 @@ import nu.xom.Element;
 
 /**
  * Attribute structure.
- *
- * @extends Attribute
  */
-
 public class SreAttribute extends Attribute {
 
   public SreAttribute(final String localName, final String value) {

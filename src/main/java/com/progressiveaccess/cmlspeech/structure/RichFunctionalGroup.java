@@ -62,7 +62,7 @@ public class RichFunctionalGroup extends RichAtomSet {
     } else {
       dfs = new WalkDepthFirst(start, atoms);
     }
-    this.componentPositions = dfs.getPositions();
+    dfs.putPositions(this.getComponentsPositions());
   }
 
   private RichAtom getStartAtom() {
@@ -81,7 +81,6 @@ public class RichFunctionalGroup extends RichAtomSet {
         maxConnected = connected;
         maxConnection = connection;
       }
-      ;
     }
     if (maxConnection.getType() == ConnectionType.CONNECTINGBOND) {
       final SortedSet<String> atoms = RichStructureHelper.getRichBond(
