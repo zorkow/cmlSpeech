@@ -91,7 +91,8 @@ public class CmlEnricher {
       }
     }
     this.analyseMolecule();
-    this.nameMolecule();
+    this.nameAtomSets();
+    this.appendAtomSets();
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().getPrefix(),
@@ -111,11 +112,7 @@ public class CmlEnricher {
     }
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
-        for (final RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
-          System.out.println(atomSet.getName());
-          System.out.println(atomSet.getIupac());
-           atomSet.visualize();
-        }
+        RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
       } else {
         RichStructureHelper.getRichMolecule().visualize();
       }
@@ -156,9 +153,9 @@ public class CmlEnricher {
    * Names the molecule and its components and inserts the results in the CML
    * document.
    */
-  public void nameMolecule() {
+  public void nameAtomSets() {
+    RichStructureHelper.getAtomSets().stream().forEach(this::nameAtomSet);
     MolecularFormula.set(RichStructureHelper.getAtomSets());
-    this.appendAtomSets();
     if (!Cli.hasOption("nonih")) {
       this.executor.execute();
       this.executor.addResults(this.doc);
@@ -178,7 +175,7 @@ public class CmlEnricher {
    * @param set
    *          The rich atom set.
    */
-  private void nameMolecule(final RichAtomSet set) {
+  private void nameAtomSet(final RichAtomSet set) {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
       this.executor.register(new CactusCallable(set.getId(),
@@ -248,11 +245,7 @@ public class CmlEnricher {
     final List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
     for (final RichAtomSet richSet : richSets) {
       final CMLAtomSet set = richSet.getCml(this.doc);
-      // this.atomSets.add(richSet);
       this.doc.getRootElement().appendChild(set);
-      set.addAttribute(new SreAttribute("formula",
-                                        richSet.getMolecularFormula()));
-      this.nameMolecule(richSet);
     }
   }
 

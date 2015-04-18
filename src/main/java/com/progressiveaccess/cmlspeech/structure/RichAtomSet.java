@@ -31,6 +31,7 @@ import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
 import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
+import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
@@ -51,7 +52,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import nu.xom.Element;
 
 /**
  * Base class for all atom sets with admin information.
@@ -306,7 +306,26 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       final CMLAtom node = (CMLAtom) SreUtil.getElementById(doc, atomId);
       this.cml.addAtom(node);
     }
+    this.attachAttribute("formula", this.getMolecularFormula());
+    this.attachAttribute("name", this.getName());
+    this.attachAttribute("iupac", this.getIupac());
     return this.cml;
+  }
+
+
+  /**
+   * Attaches an attribute of a given name to the CML structure if the value is
+   * not empty.
+   *
+   * @param attribute
+   *          The attribute.
+   * @param value
+   *          Its value.
+   */
+  private void attachAttribute(final String attribute, final String value) {
+    if (value != "") {
+      this.cml.addAttribute(new SreAttribute(attribute, value));
+    }
   }
 
 

@@ -84,7 +84,7 @@ public class EnrichTest extends XMLTestCase {
         String original = readFile("src/test/resources/enriched/" + name + "-enr.cml");
         String revised  = readFile(name + "-enr.cml");
         try {
-            assertXMLEqual(name, original, revised);
+          assertXMLEqual(name, original, revised);
         }
         catch (Exception e) {
             System.out.println("XML Error " + e.getMessage());

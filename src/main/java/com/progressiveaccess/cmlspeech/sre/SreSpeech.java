@@ -259,12 +259,9 @@ public class SreSpeech extends SreXml {
     }
   }
 
-  private String describeMolecule(final RichStructure<?> structure) {
-    final String id = structure.getId();
-    final Node element = SreUtil.xpathQueryElement(this.doc.getRootElement(),
-        "//cml:atomSet[@id='" + id + "']");
-    return SreUtil.xpathValue((Element) element,
-        "@sre:name | @sre:iupac | @sre:formula");
+  private String describeMolecule(final RichAtomSet structure) {
+    // TODO (sorge) Needs to be adjusted to take names into account.
+    return structure.getMolecularFormula();
   }
 
   private String describeAliphaticChain(final RichAtomSet system) {
