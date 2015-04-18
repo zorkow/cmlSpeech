@@ -51,10 +51,13 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
   SortedSet<String> getConnectingAtoms();
 
   /**
+   * Finalises the CML representation for this atom set.
+   * This should only be called once!
+   *
    * @param doc
    *          The CML document structure.
    *
-   * @return A CML element represengin this atom set.
+   * @return A CML element representing this atom set.
    */
   CMLAtomSet getCml(Document doc);
 

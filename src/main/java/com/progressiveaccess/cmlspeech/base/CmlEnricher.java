@@ -173,20 +173,18 @@ public class CmlEnricher {
   /**
    * Computes some names for a molecule by registering calls to Cactus.
    *
-   * @param id
-   *          The id of the atom set.
-   * @param container
-   *          The molecule to be named.
+   * @param set
+   *          The rich atom set.
    */
-  private void nameMolecule(final String id, final IAtomContainer container) {
-    // TODO (sorge) catch the right exception.
-    Logger.logging("Registering calls for " + id + "\n");
-    final IAtomContainer newcontainer = this.checkedClone(container);
+  private void nameMolecule(final RichAtomSet set) {
+    final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
-      this.executor.register(new CactusCallable(id, CactusType.IUPAC,
-          newcontainer));
-      this.executor.register(new CactusCallable(id, CactusType.NAME,
-          newcontainer));
+      this.executor.register(new CactusCallable(set.getId(),
+          (final String x) -> {set.setIupac(x);},
+          CactusType.IUPAC, newcontainer));
+      this.executor.register(new CactusCallable(set.getId(),
+          (final String x) -> {set.setName(x);},
+          CactusType.NAME, newcontainer));
     }
   }
 
@@ -253,7 +251,7 @@ public class CmlEnricher {
       if (richSet.getType() == RichSetType.FUNCGROUP) {
         set.addAttribute(new SreAttribute("name", richSet.getName()));
       } else {
-        this.nameMolecule(richSet.getId(), richSet.getStructure());
+        this.nameMolecule(richSet);
       }
     }
   }

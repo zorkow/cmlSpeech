@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import nu.xom.Element;
 
 /**
  * Base class for all atom sets with admin information.
@@ -60,17 +61,14 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   private RichSetType type;
   private CMLAtomSet cml;
+  private ComponentsPositions componentsPositions = new ComponentsPositions();
+  private final SortedSet<String> connectingAtoms = new TreeSet<String>(
+      new CmlNameComparator());
 
   private String iupac = "";
   private String name = "";
   private String molecularFormula = "";
   private String structuralFormula = "";
-
-  private final SortedSet<String> connectingAtoms = new TreeSet<String>(
-      new CmlNameComparator());
-
-  private ComponentsPositions componentsPositions = new ComponentsPositions();
-
 
   /**
    * Constructor for rich atom sets.
@@ -105,6 +103,24 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
 
+  @Override
+  public IAtomContainer getStructure() {
+    return (IAtomContainer) super.getStructure();
+  }
+
+
+  @Override
+  public RichSetType getType() {
+    return this.type;
+  }
+
+
+  @Override
+  public SortedSet<String> getConnectingAtoms() {
+    return this.connectingAtoms;
+  }
+
+
   /**
    * @return The name of the set.
    */
@@ -124,21 +140,34 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
 
-  @Override
-  public IAtomContainer getStructure() {
-    return (IAtomContainer) super.getStructure();
+  /**
+   * @return The iupac of the set.
+   */
+  public String getIupac() {
+    return this.iupac;
   }
 
 
   @Override
-  public RichSetType getType() {
-    return this.type;
+  public void setMolecularFormula(final String formula) {
+    this.molecularFormula = formula;
   }
 
 
   @Override
-  public SortedSet<String> getConnectingAtoms() {
-    return this.connectingAtoms;
+  public String getMolecularFormula() {
+    return this.molecularFormula;
+  }
+
+
+  /**
+   * Sets the iupac of the atom set.
+   *
+   * @param iupac
+   *          The iupac of the set.
+   */
+  public void setIupac(final String iupac) {
+    this.iupac = iupac;
   }
 
 
@@ -261,7 +290,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
 
   /**
-   * Finalises the CML entry for this set.
+   * Initialises the CML entry for this set.
    */
   private void makeCml() {
     this.cml = new CMLAtomSet();
@@ -270,8 +299,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
 
-  // This should only ever be called once!
-  // Need a better solution!
   @Override
   public CMLAtomSet getCml(final Document doc) {
     for (final IAtom atom : this.getStructure().atoms()) {
@@ -295,18 +322,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   public void visualize() {
     final StructuralGraph graph = new StructuralGraph(this.getSubSystems());
     graph.visualize(this.getId());
-  }
-
-
-  @Override
-  public void setMolecularFormula(final String formula) {
-    this.molecularFormula = formula;
-  }
-
-
-  @Override
-  public String getMolecularFormula() {
-    return this.molecularFormula;
   }
 
 
