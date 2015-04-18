@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 /**
  * Executes Cactus calls and collects their results.
@@ -52,8 +53,8 @@ public class CactusExecutor {
   /** Pool of callables for Cactus. */
   private final List<CactusCallable> pool = new ArrayList<>();
   /** Registry for futures expecting results from Cactus calls. */
-  private final Multimap<String, Future<SreAttribute>> registry = HashMultimap
-      .create();
+  private final Multimap<CactusCallable, Future<String>> registry =
+      HashMultimap.create();
   /** The executor service that runs the callables. */
   private ExecutorService executor;
 
@@ -73,8 +74,8 @@ public class CactusExecutor {
   public void execute() {
     this.executor = Executors.newFixedThreadPool(this.pool.size());
     for (final CactusCallable callable : this.pool) {
-      final Future<SreAttribute> future = this.executor.submit(callable);
-      this.registry.put(callable.getId(), future);
+      final Future<String> future = this.executor.submit(callable);
+      this.registry.put(callable, future);
     }
   }
 
@@ -86,14 +87,12 @@ public class CactusExecutor {
    *          The current document.
    */
   public void addResults(final Document doc) {
-    for (final Map.Entry<String, Future<SreAttribute>> entry : this.registry
+    for (final Map.Entry<CactusCallable, Future<String>> entry : this.registry
         .entries()) {
-      final String id = entry.getKey();
-      final Future<SreAttribute> future = entry.getValue();
+      final Consumer<String> consumer = entry.getKey().getSetter();
+      final Future<String> future = entry.getValue();
       try {
-        final Element element = SreUtil.getElementById(doc, id);
-        final SreAttribute result = future.get();
-        element.addAttribute(result);
+        consumer.accept(future.get());
       } catch (final Throwable e) {
         Logger.error("Cactus Error: " + e.getMessage() + "\n");
         continue;

@@ -112,7 +112,9 @@ public class CmlEnricher {
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         for (final RichAtomSet atomSet : RichStructureHelper.getAtomSets()) {
-          atomSet.visualize();
+          System.out.println(atomSet.getName());
+          System.out.println(atomSet.getIupac());
+           atomSet.visualize();
         }
       } else {
         RichStructureHelper.getRichMolecule().visualize();
@@ -182,9 +184,11 @@ public class CmlEnricher {
       this.executor.register(new CactusCallable(set.getId(),
           (final String x) -> {set.setIupac(x);},
           CactusType.IUPAC, newcontainer));
-      this.executor.register(new CactusCallable(set.getId(),
-          (final String x) -> {set.setName(x);},
-          CactusType.NAME, newcontainer));
+      if (set.getType() != RichSetType.FUNCGROUP) {
+        this.executor.register(new CactusCallable(set.getId(),
+            (final String x) -> {set.setName(x);},
+            CactusType.NAME, newcontainer));
+      }
     }
   }
 
@@ -248,11 +252,7 @@ public class CmlEnricher {
       this.doc.getRootElement().appendChild(set);
       set.addAttribute(new SreAttribute("formula",
                                         richSet.getMolecularFormula()));
-      if (richSet.getType() == RichSetType.FUNCGROUP) {
-        set.addAttribute(new SreAttribute("name", richSet.getName()));
-      } else {
-        this.nameMolecule(richSet);
-      }
+      this.nameMolecule(richSet);
     }
   }
 

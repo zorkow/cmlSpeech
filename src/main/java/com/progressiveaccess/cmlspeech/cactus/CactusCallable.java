@@ -37,7 +37,7 @@ import java.util.function.Consumer;
 /**
  * Callables for Cactus Futures.
  */
-public class CactusCallable implements Callable<SreAttribute> {
+public class CactusCallable implements Callable<String> {
 
   private final String id;
   private final CactusType type;
@@ -75,12 +75,17 @@ public class CactusCallable implements Callable<SreAttribute> {
 
 
   @Override
-  public SreAttribute call() throws CactusException {
+  public String call() throws CactusException {
     Logger.logging("Executing Cactus call for " + this.id +
                    " " + this.type.getTag());
     final String result = this.type.getCaller().apply(this.container);
-    this.setter.accept(result);
-    return new SreAttribute(this.type.getTag(), result);
+    //this.setter.accept(result);
+    return result;
+  }
+
+
+  public Consumer<String> getSetter() {
+    return this.setter;
   }
 
 }
