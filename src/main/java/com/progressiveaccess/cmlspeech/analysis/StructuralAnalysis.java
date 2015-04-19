@@ -46,7 +46,6 @@ import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultimap;
 
@@ -61,7 +60,6 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Main functionality for the structural analysis of molecules.
@@ -407,11 +405,8 @@ public class StructuralAnalysis {
           break;
         }
         atomSet.getConnections().add(new SharedBond(bond, key));
-        for (final IAtom atom : RichStructureHelper.getRichBond(bond)
-            .getStructure()
-            .atoms()) {
-          sharedAtoms.add(atom.getID());
-        }
+        sharedAtoms.addAll(RichStructureHelper.getRichBond(bond)
+                           .getComponents());
       }
       for (final String shared : sharedAtoms) {
         atomSet.getConnections().add(new BridgeAtom(shared, key));
