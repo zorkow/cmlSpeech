@@ -62,4 +62,33 @@ public class RichBond extends RichChemObject {
     return SreNamespace.Tag.BOND;
   }
 
+
+  /** 
+   * @return True if structure is single bond.
+   */
+  public final Boolean isSingle() {
+    return this.getStructure().getOrder() == IBond.Order.SINGLE;
+  }
+
+  
+  @Override
+  public String shortSimpleDescription() {
+    return this.orderDescription() + " bond";
+  }
+
+
+  // TODO (sorge) Implement long description.
+  @Override
+  public String longSimpleDescription() {
+    return "";
+  }
+
+
+  /** 
+   * @return The order of the bond.
+   */
+  public String orderDescription() {
+    return this.getStructure().getOrder().toString().toLowerCase();
+  }
+
 }

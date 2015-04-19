@@ -137,5 +137,4 @@ public class DescriptionTest extends XMLTestCase {
         this.compareEnrichedMolecule("US06358966-20020319-C00001");
     }
 
-
 }

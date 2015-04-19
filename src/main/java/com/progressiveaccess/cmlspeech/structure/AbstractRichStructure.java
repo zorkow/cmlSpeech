@@ -30,6 +30,7 @@ package com.progressiveaccess.cmlspeech.structure;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
+import com.progressiveaccess.cmlspeech.sre.SpeechAnnotations;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
@@ -46,8 +47,8 @@ import java.util.stream.Collectors;
  *
  * @param <S> The embedded structure.
  */
-public abstract class AbstractRichStructure<S> implements RichStructure<S>,
-    XmlAnnotations {
+public abstract class AbstractRichStructure<S>
+    implements RichStructure<S>, XmlAnnotations, SpeechAnnotations {
 
   private final S structure;
 
@@ -182,4 +183,11 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
         .forEach(c -> element.appendChild(c.annotation()));
     return element;
   }
+
+
+  @Override
+  public String shortSimpleDescription() {
+    return "";
+  }
+
 }

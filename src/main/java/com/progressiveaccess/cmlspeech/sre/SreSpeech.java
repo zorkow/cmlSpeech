@@ -163,31 +163,10 @@ public class SreSpeech extends SreXml {
   private void bond(final RichBond bond) {
     final String id = bond.getId();
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.BOND,
-        this.speechBond(bond));
+        this.speechAttribute(bond.shortSimpleDescription()));
     this.getAnnotations().addAttribute(id, new SreAttribute(
-        SreNamespace.Attribute.ORDER, this.describeBond(bond, false)));
+        SreNamespace.Attribute.ORDER, bond.orderDescription()));
     this.toSreSet(id, SreNamespace.Tag.COMPONENT, bond.getComponents());
-  }
-
-  private SreAttribute speechBond(final RichBond bond) {
-    return this.speechAttribute(this.describeBond(bond, false) + " bond");
-  }
-
-  private String describeBond(final RichBond bond, final Boolean ignoreSingle) {
-    return this.describeBond(bond.getStructure(), ignoreSingle);
-  }
-
-  private String describeBond(final IBond bond, final Boolean ignoreSingle) {
-    final IBond.Order order = bond.getOrder();
-    if (ignoreSingle && order == IBond.Order.SINGLE) {
-      return "";
-    } else {
-      return this.describeBondOrder(order);
-    }
-  }
-
-  private String describeBondOrder(final IBond.Order bond) {
-    return bond.toString().toLowerCase();
   }
 
   // AtomSet to speech translation.
@@ -318,15 +297,16 @@ public class SreSpeech extends SreXml {
 
   private String describeMultiBonds(final RichAtomSet system) {
     final Map<Integer, String> bounded = new TreeMap<Integer, String>();
-    for (final IBond bond : system.getStructure().bonds()) {
-      final String order = this.describeBond(bond, true);
-      if (order.equals("")) {
+    for (final String component : system.getComponents()) {
+      if (!RichStructureHelper.isBond(component)) {
+        continue;
+      }
+      RichBond bond = RichStructureHelper.getRichBond(component);
+      if (bond.isSingle()) {
         continue;
       }
       // TODO (sorge) Make this one safer!
-      final Iterator<String> atoms = RichStructureHelper
-          .getRichBond(bond.getID())
-          .getComponents().iterator();
+      final Iterator<String> atoms = bond.getComponents().iterator();
       Integer atomA = system.getPosition(atoms.next());
       Integer atomB = system.getPosition(atoms.next());
       if (atomA > atomB) {
@@ -334,8 +314,8 @@ public class SreSpeech extends SreXml {
         atomA = atomB;
         atomB = aux;
       }
-      bounded.put(atomA, order + " bond between position " + atomA + " and "
-          + atomB + ".");
+      bounded.put(atomA, bond.shortSimpleDescription() + " between position "
+          + atomA + " and " + atomB + ".");
     }
     final Joiner joiner = Joiner.on(" ");
     return joiner.join(bounded.values());
@@ -409,8 +389,9 @@ public class SreSpeech extends SreXml {
       case CONNECTINGBOND:
         elementSpeech = this.describeConnectingBond(connector, connected);
         connAttr = SreNamespace.Attribute.BOND;
-        connSpeech = this
-            .speechBond(RichStructureHelper.getRichBond(connector));
+        connSpeech = this.speechAttribute(RichStructureHelper
+                                          .getRichBond(connector)
+                                          .shortSimpleDescription());
         break;
       case BRIDGEATOM:
         elementSpeech = this.describeBridgeAtom(connector, connected);
@@ -433,8 +414,9 @@ public class SreSpeech extends SreXml {
       case SHAREDBOND:
         // elementSpeech = ???
         connAttr = SreNamespace.Attribute.BOND;
-        connSpeech = this
-            .speechBond(RichStructureHelper.getRichBond(connector));
+        connSpeech = this.speechAttribute(RichStructureHelper
+                                          .getRichBond(connector)
+                                          .shortSimpleDescription());
         break;
       default:
         throw (new SreException("Unknown connection type in structure."));
@@ -478,12 +460,12 @@ public class SreSpeech extends SreXml {
 
   private String describeConnectingBond(final String connector,
       final String connected) {
-    final String bond = this.describeBond(
-        RichStructureHelper.getRichBond(connector),
-        false);
+    final String bond = RichStructureHelper.getRichBond(connector)
+        .shortSimpleDescription();
     final String structure = RichStructureHelper.isAtom(connected)
         ? this.describeAtomPosition(RichStructureHelper.getRichAtom(connected))
         : this.describeAtomSet(RichStructureHelper.getRichAtomSet(connected));
-    return bond + " bonded to " + structure;
+    return bond + "ed to " + structure;
   }
+  
 }
