@@ -14,7 +14,7 @@
 
 
 /**
- * @file   EnrichTest.java
+ * @file   DescriptionTest.java
  * @author Volker Sorge <sorge@zorkstone>
  * @date   Thu Feb 26 17:30:05 2015
  * 
@@ -45,14 +45,14 @@ import org.custommonkey.xmlunit.XMLTestCase;
  * Full functional test for the enricher.
  */
 
-public class EnrichTest extends XMLTestCase {
+public class DescriptionTest extends XMLTestCase {
 
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public EnrichTest( String testName )
+    public DescriptionTest( String testName )
     {
         super( testName );
     }
@@ -71,7 +71,7 @@ public class EnrichTest extends XMLTestCase {
 
     private void compareEnrichedMolecule(String name) {
         System.out.println("Testing " + name + "...");
-        String[] dummy = {"-ao", "-a", "-nonih",
+        String[] dummy = {"-ao", "-r", "-nonih",
                           "src/main/resources/test_files/molecule/" +
                           name + ".mol"};
         try {
@@ -81,7 +81,7 @@ public class EnrichTest extends XMLTestCase {
             System.out.println("Application Error: " + e.getMessage());
             fail();
         }
-        String original = readFile("src/test/resources/enriched/" + name + "-enr.cml");
+        String original = readFile("src/test/resources/described/" + name + "-enr.cml");
         String revised  = readFile(name + "-enr.cml");
         try {
           assertXMLEqual(name, original, revised);
