@@ -34,16 +34,12 @@ import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
-import com.progressiveaccess.cmlspeech.structure.RichStructure;
 
 import com.google.common.base.Joiner;
 
 import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Node;
 
 import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -467,5 +463,5 @@ public class SreSpeech extends SreXml {
         : this.describeAtomSet(RichStructureHelper.getRichAtomSet(connected));
     return bond + "ed to " + structure;
   }
-  
+
 }

@@ -45,9 +45,18 @@ import java.util.stream.Collectors;
 
 public class RichFunctionalGroup extends RichAtomSet {
 
+  /**
+   * Constructor for rich functional groups.
+   *
+   * @param container
+   *          The atom container of the functional group.
+   * @param id
+   *          The atom set id of the functional group.
+   */
   public RichFunctionalGroup(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUNCGROUP);
   }
+
 
   @Override
   protected final void walk() {
@@ -65,6 +74,10 @@ public class RichFunctionalGroup extends RichAtomSet {
     dfs.putPositions(this.getComponentsPositions());
   }
 
+
+  /**
+   * @return Atom at lowest position of the group.
+   */
   private RichAtom getStartAtom() {
     final SortedSet<Connection> connections = this.getConnections();
     if (connections.isEmpty()) {
