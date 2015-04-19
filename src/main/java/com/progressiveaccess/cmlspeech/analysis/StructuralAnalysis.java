@@ -262,54 +262,20 @@ public class StructuralAnalysis {
    *          A rich atom set.
    */
   private void atomSetAttachments(final RichAtomSet atomSet) {
-    final IAtomContainer container = atomSet.getStructure();
-    final Set<IBond> externalBonds = this.externalBonds(container);
-    for (final IBond bond : externalBonds) {
-      atomSet.getExternalBonds().add(bond.getID());
+    final Set<String> internalBonds = atomSet.getInternalBonds();
+    final Set<String> externalBonds = atomSet.getExternalBonds();
+    final Set<String> connectingAtoms = atomSet.getConnectingAtoms();
+    for (final String atom : atomSet.getComponents()) {
+      if (RichStructureHelper.isAtom(atom)) {
+        for (final String bond : RichStructureHelper.getRichAtom(atom)
+               .getExternalBonds()) {
+          if (!internalBonds.contains(bond)) {
+            externalBonds.add(bond);
+            connectingAtoms.add(atom);
+          }
+        }
+      }
     }
-    final Set<IAtom> connectingAtoms = this.connectingAtoms(container,
-        externalBonds);
-    for (final IAtom atom : connectingAtoms) {
-      atomSet.getConnectingAtoms().add(atom.getID());
-    }
-  }
-
-  /**
-   * Compute the bonds that connects this atom container to the rest of the
-   * molecule.
-   *
-   * @param container
-   *          The substructure under consideration.
-   * @return List of bonds attached to but not contained in the container.
-   */
-  private Set<IBond> externalBonds(final IAtomContainer container) {
-    final Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
-    final Set<IBond> allBonds = Sets.newHashSet();
-    for (final IAtom atom : container.atoms()) {
-      allBonds.addAll(this.molecule.getConnectedBondsList(atom));
-    }
-    return Sets.difference(allBonds, internalBonds);
-  }
-
-
-  /**
-   * Compute the atoms that have bonds not internal to the molecule.
-   *
-   * @param container
-   *          The substructure under consideration.
-   * @param bonds
-   *          External bonds.
-   * @return List of atoms with external connections.
-   */
-  private Set<IAtom> connectingAtoms(final IAtomContainer container,
-      final Set<IBond> bonds) {
-    final Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
-    final Set<IAtom> connectedAtoms = Sets.newHashSet();
-    for (final IBond bond : bonds) {
-      connectedAtoms.addAll(Lists.newArrayList(bond.atoms()).stream()
-          .filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
-    }
-    return connectedAtoms;
   }
 
 
