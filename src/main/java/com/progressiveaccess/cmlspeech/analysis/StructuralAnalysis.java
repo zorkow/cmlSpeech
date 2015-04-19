@@ -46,7 +46,6 @@ import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultimap;
 
@@ -61,7 +60,6 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Main functionality for the structural analysis of molecules.
@@ -262,54 +260,20 @@ public class StructuralAnalysis {
    *          A rich atom set.
    */
   private void atomSetAttachments(final RichAtomSet atomSet) {
-    final IAtomContainer container = atomSet.getStructure();
-    final Set<IBond> externalBonds = this.externalBonds(container);
-    for (final IBond bond : externalBonds) {
-      atomSet.getExternalBonds().add(bond.getID());
+    final Set<String> internalBonds = atomSet.getInternalBonds();
+    final Set<String> externalBonds = atomSet.getExternalBonds();
+    final Set<String> connectingAtoms = atomSet.getConnectingAtoms();
+    for (final String atom : atomSet.getComponents()) {
+      if (RichStructureHelper.isAtom(atom)) {
+        for (final String bond : RichStructureHelper.getRichAtom(atom)
+               .getExternalBonds()) {
+          if (!internalBonds.contains(bond)) {
+            externalBonds.add(bond);
+            connectingAtoms.add(atom);
+          }
+        }
+      }
     }
-    final Set<IAtom> connectingAtoms = this.connectingAtoms(container,
-        externalBonds);
-    for (final IAtom atom : connectingAtoms) {
-      atomSet.getConnectingAtoms().add(atom.getID());
-    }
-  }
-
-  /**
-   * Compute the bonds that connects this atom container to the rest of the
-   * molecule.
-   *
-   * @param container
-   *          The substructure under consideration.
-   * @return List of bonds attached to but not contained in the container.
-   */
-  private Set<IBond> externalBonds(final IAtomContainer container) {
-    final Set<IBond> internalBonds = Sets.newHashSet(container.bonds());
-    final Set<IBond> allBonds = Sets.newHashSet();
-    for (final IAtom atom : container.atoms()) {
-      allBonds.addAll(this.molecule.getConnectedBondsList(atom));
-    }
-    return Sets.difference(allBonds, internalBonds);
-  }
-
-
-  /**
-   * Compute the atoms that have bonds not internal to the molecule.
-   *
-   * @param container
-   *          The substructure under consideration.
-   * @param bonds
-   *          External bonds.
-   * @return List of atoms with external connections.
-   */
-  private Set<IAtom> connectingAtoms(final IAtomContainer container,
-      final Set<IBond> bonds) {
-    final Set<IAtom> allAtoms = Sets.newHashSet(container.atoms());
-    final Set<IAtom> connectedAtoms = Sets.newHashSet();
-    for (final IBond bond : bonds) {
-      connectedAtoms.addAll(Lists.newArrayList(bond.atoms()).stream()
-          .filter(a -> allAtoms.contains(a)).collect(Collectors.toSet()));
-    }
-    return connectedAtoms;
   }
 
 
@@ -318,18 +282,16 @@ public class StructuralAnalysis {
    * external bonds.
    */
   private void connectingBonds() {
-    for (final String bond : RichStructureHelper.getBondIds()) {
-      final RichBond richBond = RichStructureHelper.getRichBond(bond);
+    for (final RichBond richBond : RichStructureHelper.getBonds()) {
+      final String id = richBond.getId();
       final String first = ((TreeSet<String>) richBond.getComponents()).first();
       final String last = ((TreeSet<String>) richBond.getComponents()).last();
       if (richBond.getContexts().isEmpty()) {
         // We assume each bond has two atoms only!
-        this.addSetConnections(bond, first, last);
+        this.addSetConnections(id, first, last);
       }
-      this.addConnectingBond(RichStructureHelper.getRichStructure(first), bond,
-          last);
-      this.addConnectingBond(RichStructureHelper.getRichStructure(last), bond,
-          first);
+      this.addConnectingBond(first, id, last);
+      this.addConnectingBond(last, id, first);
     }
   }
 
@@ -338,16 +300,16 @@ public class StructuralAnalysis {
    * Adds a connecting bond for a structures.
    *
    * @param structure
-   *          The structures with the connections.
+   *          Name of structure with the connections.
    * @param bond
    *          The connecting bond.
    * @param connected
    *          The structure the bond connects to.
    */
-  private void addConnectingBond(final RichStructure<?> structure,
-      final String bond,
+  private void addConnectingBond(final String structure, final String bond,
       final String connected) {
-    structure.getConnections().add(new ConnectingBond(bond, connected));
+    RichStructureHelper.getRichStructure(structure).getConnections()
+      .add(new ConnectingBond(bond, connected));
   }
 
 
@@ -385,13 +347,9 @@ public class StructuralAnalysis {
     final Set<String> contextAtomA = this.contextCloud(atomA);
     final Set<String> contextAtomB = this.contextCloud(atomB);
     for (final String contextA : contextAtomA) {
-      final RichStructure<?> richStructureA = RichStructureHelper
-          .getRichStructure(contextA);
       for (final String contextB : contextAtomB) {
-        final RichStructure<?> richStructureB = RichStructureHelper
-            .getRichStructure(contextB);
-        this.addConnectingBond(richStructureA, bond, contextB);
-        this.addConnectingBond(richStructureB, bond, contextA);
+        this.addConnectingBond(contextA, bond, contextB);
+        this.addConnectingBond(contextB, bond, contextA);
       }
     }
   }
@@ -447,11 +405,8 @@ public class StructuralAnalysis {
           break;
         }
         atomSet.getConnections().add(new SharedBond(bond, key));
-        for (final IAtom atom : RichStructureHelper.getRichBond(bond)
-            .getStructure()
-            .atoms()) {
-          sharedAtoms.add(atom.getID());
-        }
+        sharedAtoms.addAll(RichStructureHelper.getRichBond(bond)
+                           .getComponents());
       }
       for (final String shared : sharedAtoms) {
         atomSet.getConnections().add(new BridgeAtom(shared, key));

@@ -64,6 +64,8 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   private ComponentsPositions componentsPositions = new ComponentsPositions();
   private final SortedSet<String> connectingAtoms = new TreeSet<String>(
       new CmlNameComparator());
+  private final SortedSet<String> internalBonds = new TreeSet<String>(
+      new CmlNameComparator());
 
   private String iupac = "";
   private String name = "";
@@ -89,6 +91,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       this.getComponents().add(atom.getID());
     }
     for (final IBond bond : this.getStructure().bonds()) {
+      this.getInternalBonds().add(bond.getID());
       this.getComponents().add(bond.getID());
     }
     this.makeCml();
@@ -118,6 +121,12 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   @Override
   public SortedSet<String> getConnectingAtoms() {
     return this.connectingAtoms;
+  }
+
+
+  @Override
+  public SortedSet<String> getInternalBonds() {
+    return this.internalBonds;
   }
 
 
@@ -354,8 +363,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   public SreElement annotation() {
     final SreElement element = super.annotation();
     element.appendChild(SreUtil.sreSet(SreNamespace.Tag.INTERNALBONDS,
-        this.getComponents().stream().filter(RichStructureHelper::isBond)
-            .collect(Collectors.toSet())));
+        this.getInternalBonds()));
     element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUBSYSTEM,
         this.getSubSystems()));
     element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUPERSYSTEM,

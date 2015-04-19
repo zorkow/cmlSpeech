@@ -112,7 +112,7 @@ public class EnrichTest extends XMLTestCase {
 
 
     /**
-     * Test enrichment of molecule.
+     * Test enrichment of ring.
      */
     public void testRing()
     {
@@ -121,7 +121,7 @@ public class EnrichTest extends XMLTestCase {
 
 
     /**
-     * Test enrichment of molecule.
+     * Test enrichment of ring with functional groups.
      */
     public void testRingFunctional()
     {
@@ -130,12 +130,20 @@ public class EnrichTest extends XMLTestCase {
 
 
     /**
-     * Test enrichment of molecule.
+     * Test enrichment of complex molecule with multiple systems..
      */
     public void testComplex()
     {
-        this.compareEnrichedMolecule("US06358966-20020319-C00001");
+      this.compareEnrichedMolecule("US06358966-20020319-C00001");
     }
 
+
+    /**
+     * Test enrichment of large fused ring system.
+     */
+    public void testFused()
+    {
+      this.compareEnrichedMolecule("ovalene");
+    }
 
 }

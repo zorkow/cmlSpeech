@@ -563,10 +563,10 @@
                 </sre:sharedAtom>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b11</sre:bond>
+                <sre:bond>b1</sre:bond>
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b8</sre:bond>
-                <sre:bond>b1</sre:bond>
+                <sre:bond>b11</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a1</sre:atom>
@@ -613,10 +613,6 @@
                 <sre:bond>b13</sre:bond>
             </sre:component>
             <sre:internalBonds>
-                <sre:bond>b10</sre:bond>
-                <sre:bond>b12</sre:bond>
-                <sre:bond>b11</sre:bond>
-                <sre:bond>b13</sre:bond>
                 <sre:bond>b1</sre:bond>
                 <sre:bond>b2</sre:bond>
                 <sre:bond>b3</sre:bond>
@@ -626,6 +622,10 @@
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b8</sre:bond>
                 <sre:bond>b9</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b12</sre:bond>
+                <sre:bond>b13</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atomSet>as1</sre:atomSet>

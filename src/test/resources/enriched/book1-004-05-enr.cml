@@ -209,10 +209,10 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b10</sre:bond>
                 <sre:bond>b4</sre:bond>
-                <sre:bond>b11</sre:bond>
                 <sre:bond>b7</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a2</sre:atom>
@@ -244,11 +244,11 @@
                 <sre:bond>b11</sre:bond>
             </sre:component>
             <sre:internalBonds>
-                <sre:bond>b10</sre:bond>
                 <sre:bond>b4</sre:bond>
                 <sre:bond>b5</sre:bond>
-                <sre:bond>b11</sre:bond>
                 <sre:bond>b7</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a1</sre:atom>
