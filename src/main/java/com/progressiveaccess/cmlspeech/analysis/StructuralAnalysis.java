@@ -284,18 +284,16 @@ public class StructuralAnalysis {
    * external bonds.
    */
   private void connectingBonds() {
-    for (final String bond : RichStructureHelper.getBondIds()) {
-      final RichBond richBond = RichStructureHelper.getRichBond(bond);
+    for (final RichBond richBond : RichStructureHelper.getBonds()) {
+      final String id = richBond.getId();
       final String first = ((TreeSet<String>) richBond.getComponents()).first();
       final String last = ((TreeSet<String>) richBond.getComponents()).last();
       if (richBond.getContexts().isEmpty()) {
         // We assume each bond has two atoms only!
-        this.addSetConnections(bond, first, last);
+        this.addSetConnections(id, first, last);
       }
-      this.addConnectingBond(RichStructureHelper.getRichStructure(first), bond,
-          last);
-      this.addConnectingBond(RichStructureHelper.getRichStructure(last), bond,
-          first);
+      this.addConnectingBond(first, id, last);
+      this.addConnectingBond(last, id, first);
     }
   }
 
@@ -304,16 +302,16 @@ public class StructuralAnalysis {
    * Adds a connecting bond for a structures.
    *
    * @param structure
-   *          The structures with the connections.
+   *          Name of structure with the connections.
    * @param bond
    *          The connecting bond.
    * @param connected
    *          The structure the bond connects to.
    */
-  private void addConnectingBond(final RichStructure<?> structure,
-      final String bond,
+  private void addConnectingBond(final String structure, final String bond,
       final String connected) {
-    structure.getConnections().add(new ConnectingBond(bond, connected));
+    RichStructureHelper.getRichStructure(structure).getConnections()
+      .add(new ConnectingBond(bond, connected));
   }
 
 
@@ -351,13 +349,9 @@ public class StructuralAnalysis {
     final Set<String> contextAtomA = this.contextCloud(atomA);
     final Set<String> contextAtomB = this.contextCloud(atomB);
     for (final String contextA : contextAtomA) {
-      final RichStructure<?> richStructureA = RichStructureHelper
-          .getRichStructure(contextA);
       for (final String contextB : contextAtomB) {
-        final RichStructure<?> richStructureB = RichStructureHelper
-            .getRichStructure(contextB);
-        this.addConnectingBond(richStructureA, bond, contextB);
-        this.addConnectingBond(richStructureB, bond, contextA);
+        this.addConnectingBond(contextA, bond, contextB);
+        this.addConnectingBond(contextB, bond, contextA);
       }
     }
   }
