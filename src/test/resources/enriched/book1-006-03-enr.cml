@@ -313,11 +313,11 @@
                 <sre:bond>b11</sre:bond>
             </sre:component>
             <sre:internalBonds>
+                <sre:bond>b1</sre:bond>
                 <sre:bond>b5</sre:bond>
-                <sre:bond>b11</sre:bond>
                 <sre:bond>b8</sre:bond>
                 <sre:bond>b9</sre:bond>
-                <sre:bond>b1</sre:bond>
+                <sre:bond>b11</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atomSet>as1</sre:atomSet>

@@ -51,6 +51,11 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
   SortedSet<String> getConnectingAtoms();
 
   /**
+   * @return The sorted set of internal bonds.
+   */
+  SortedSet<String> getInternalBonds();
+
+  /**
    * Finalises the CML representation for this atom set.
    * This should only be called once!
    *

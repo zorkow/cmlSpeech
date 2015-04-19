@@ -1352,15 +1352,15 @@
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b2</sre:bond>
-                <sre:bond>b34</sre:bond>
-                <sre:bond>b14</sre:bond>
-                <sre:bond>b25</sre:bond>
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b13</sre:bond>
-                <sre:bond>b24</sre:bond>
-                <sre:bond>b35</sre:bond>
+                <sre:bond>b14</sre:bond>
                 <sre:bond>b15</sre:bond>
                 <sre:bond>b19</sre:bond>
+                <sre:bond>b24</sre:bond>
+                <sre:bond>b25</sre:bond>
+                <sre:bond>b34</sre:bond>
+                <sre:bond>b35</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atomSet>as2</sre:atomSet>
@@ -1413,11 +1413,11 @@
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b2</sre:bond>
-                <sre:bond>b14</sre:bond>
-                <sre:bond>b25</sre:bond>
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b13</sre:bond>
+                <sre:bond>b14</sre:bond>
                 <sre:bond>b24</sre:bond>
+                <sre:bond>b25</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a1</sre:atom>
@@ -1478,11 +1478,11 @@
                 </sre:sharedBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b34</sre:bond>
                 <sre:bond>b13</sre:bond>
-                <sre:bond>b35</sre:bond>
                 <sre:bond>b15</sre:bond>
                 <sre:bond>b19</sre:bond>
+                <sre:bond>b34</sre:bond>
+                <sre:bond>b35</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a1</sre:atom>
@@ -1541,16 +1541,16 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b32</sre:bond>
                 <sre:bond>b3</sre:bond>
-                <sre:bond>b31</sre:bond>
                 <sre:bond>b4</sre:bond>
-                <sre:bond>b23</sre:bond>
                 <sre:bond>b5</sre:bond>
-                <sre:bond>b22</sre:bond>
                 <sre:bond>b6</sre:bond>
                 <sre:bond>b16</sre:bond>
                 <sre:bond>b18</sre:bond>
+                <sre:bond>b22</sre:bond>
+                <sre:bond>b23</sre:bond>
+                <sre:bond>b31</sre:bond>
+                <sre:bond>b32</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atomSet>as5</sre:atomSet>
@@ -1611,11 +1611,11 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b32</sre:bond>
-                <sre:bond>b31</sre:bond>
                 <sre:bond>b4</sre:bond>
                 <sre:bond>b5</sre:bond>
                 <sre:bond>b16</sre:bond>
+                <sre:bond>b31</sre:bond>
+                <sre:bond>b32</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a2</sre:atom>
@@ -1674,11 +1674,11 @@
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b3</sre:bond>
-                <sre:bond>b23</sre:bond>
                 <sre:bond>b5</sre:bond>
-                <sre:bond>b22</sre:bond>
                 <sre:bond>b6</sre:bond>
                 <sre:bond>b18</sre:bond>
+                <sre:bond>b22</sre:bond>
+                <sre:bond>b23</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a2</sre:atom>
@@ -1735,12 +1735,12 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b21</sre:bond>
                 <sre:bond>b20</sre:bond>
-                <sre:bond>b36</sre:bond>
-                <sre:bond>b27</sre:bond>
-                <sre:bond>b38</sre:bond>
+                <sre:bond>b21</sre:bond>
                 <sre:bond>b26</sre:bond>
+                <sre:bond>b27</sre:bond>
+                <sre:bond>b36</sre:bond>
+                <sre:bond>b38</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a11</sre:atom>
@@ -1796,12 +1796,12 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b10</sre:bond>
-                <sre:bond>b12</sre:bond>
-                <sre:bond>b11</sre:bond>
+                <sre:bond>b1</sre:bond>
                 <sre:bond>b8</sre:bond>
                 <sre:bond>b9</sre:bond>
-                <sre:bond>b1</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b12</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atom>a3</sre:atom>
@@ -1852,8 +1852,8 @@
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>
-                <sre:bond>b29</sre:bond>
                 <sre:bond>b28</sre:bond>
+                <sre:bond>b29</sre:bond>
                 <sre:bond>b30</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
@@ -1982,25 +1982,6 @@
                 <sre:bond>b39</sre:bond>
             </sre:component>
             <sre:internalBonds>
-                <sre:bond>b10</sre:bond>
-                <sre:bond>b32</sre:bond>
-                <sre:bond>b31</sre:bond>
-                <sre:bond>b12</sre:bond>
-                <sre:bond>b34</sre:bond>
-                <sre:bond>b11</sre:bond>
-                <sre:bond>b33</sre:bond>
-                <sre:bond>b14</sre:bond>
-                <sre:bond>b36</sre:bond>
-                <sre:bond>b13</sre:bond>
-                <sre:bond>b35</sre:bond>
-                <sre:bond>b16</sre:bond>
-                <sre:bond>b38</sre:bond>
-                <sre:bond>b15</sre:bond>
-                <sre:bond>b37</sre:bond>
-                <sre:bond>b18</sre:bond>
-                <sre:bond>b17</sre:bond>
-                <sre:bond>b39</sre:bond>
-                <sre:bond>b19</sre:bond>
                 <sre:bond>b1</sre:bond>
                 <sre:bond>b2</sre:bond>
                 <sre:bond>b3</sre:bond>
@@ -2010,17 +1991,36 @@
                 <sre:bond>b7</sre:bond>
                 <sre:bond>b8</sre:bond>
                 <sre:bond>b9</sre:bond>
-                <sre:bond>b21</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b12</sre:bond>
+                <sre:bond>b13</sre:bond>
+                <sre:bond>b14</sre:bond>
+                <sre:bond>b15</sre:bond>
+                <sre:bond>b16</sre:bond>
+                <sre:bond>b17</sre:bond>
+                <sre:bond>b18</sre:bond>
+                <sre:bond>b19</sre:bond>
                 <sre:bond>b20</sre:bond>
-                <sre:bond>b23</sre:bond>
+                <sre:bond>b21</sre:bond>
                 <sre:bond>b22</sre:bond>
-                <sre:bond>b25</sre:bond>
+                <sre:bond>b23</sre:bond>
                 <sre:bond>b24</sre:bond>
-                <sre:bond>b27</sre:bond>
+                <sre:bond>b25</sre:bond>
                 <sre:bond>b26</sre:bond>
-                <sre:bond>b29</sre:bond>
+                <sre:bond>b27</sre:bond>
                 <sre:bond>b28</sre:bond>
+                <sre:bond>b29</sre:bond>
                 <sre:bond>b30</sre:bond>
+                <sre:bond>b31</sre:bond>
+                <sre:bond>b32</sre:bond>
+                <sre:bond>b33</sre:bond>
+                <sre:bond>b34</sre:bond>
+                <sre:bond>b35</sre:bond>
+                <sre:bond>b36</sre:bond>
+                <sre:bond>b37</sre:bond>
+                <sre:bond>b38</sre:bond>
+                <sre:bond>b39</sre:bond>
             </sre:internalBonds>
             <sre:subSystem>
                 <sre:atomSet>as1</sre:atomSet>
