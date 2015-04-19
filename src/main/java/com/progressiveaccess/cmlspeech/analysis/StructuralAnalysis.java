@@ -112,22 +112,6 @@ public class StructuralAnalysis {
   }
 
 
-  /**
-   * Adds a context element for a set of structures.
-   *
-   * @param structures
-   *          Set of structure names.
-   * @param id
-   *          Context element to be added.
-   */
-  private void setContexts(final List<RichStructure<?>> structures,
-                           final String id) {
-    for (final RichStructure<?> structure : structures) {
-      structure.getContexts().add(id);
-    }
-  }
-
-
   /** Create the rich atom set of the molecule. */
   private void makeTopSet() {
     final String id = this.getAtomSetId();
