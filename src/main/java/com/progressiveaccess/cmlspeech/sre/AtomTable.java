@@ -38,9 +38,8 @@ import java.util.Map;
  * Maps atom identifiers to their proper names.
  */
 
-public class AtomTable {
+public final class AtomTable {
 
-  private static volatile AtomTable instance = null;
   private static final Map<String, String> ATOM_MAP;
 
   static {
@@ -165,16 +164,21 @@ public class AtomTable {
     ATOM_MAP.put("Zr", "Zirconium");
   }
 
-  protected AtomTable() {
+
+  /** Dummy constructor. */
+  private AtomTable() {
+    throw new AssertionError("Instantiating utility class...");
   }
 
-  public static AtomTable getInstance() {
-    if (instance == null) {
-      instance = new AtomTable();
-    }
-    return instance;
-  }
 
+  /**
+   * Gets the name of an atom given its chemical symbol.
+   *
+   * @param name
+   *          The atom symbol.
+   *
+   * @return The atom name.
+   */
   public static String lookup(final String name) {
     final String result = ATOM_MAP.get(name);
     if (result == null) {
@@ -183,10 +187,28 @@ public class AtomTable {
     return result;
   }
 
+
+  /**
+   * Gets the name of an atom.
+   *
+   * @param atom
+   *          The atom.
+   *
+   * @return The atom name.
+   */
   public static String lookup(final IAtom atom) {
     return lookup(atom.getSymbol());
   }
 
+
+  /**
+   * Gets the name of an rich atom.
+   *
+   * @param atom
+   *          The rich atom.
+   *
+   * @return The atom name.
+   */
   public static String lookup(final RichAtom atom) {
     return lookup(atom.getStructure());
   }

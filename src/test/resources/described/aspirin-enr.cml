@@ -112,7 +112,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 8 ">
+        <sre:annotation sre:speech="Carbon 8">
             <sre:atom>a6</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>
@@ -144,7 +144,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 2 ">
+        <sre:annotation sre:speech="Carbon 2">
             <sre:atom>a7</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
@@ -168,7 +168,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 1 ">
+        <sre:annotation sre:speech="Carbon 1">
             <sre:atom>a8</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
@@ -203,7 +203,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 11 ">
+        <sre:annotation sre:speech="Carbon 11">
             <sre:atom>a9</sre:atom>
             <sre:parents>
                 <sre:atomSet>as2</sre:atomSet>
@@ -227,7 +227,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Oxygen 9 ">
+        <sre:annotation sre:speech="Oxygen 9">
             <sre:atom>a10</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>
@@ -243,7 +243,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Oxygen 12 ">
+        <sre:annotation sre:speech="Oxygen 12">
             <sre:atom>a11</sre:atom>
             <sre:parents>
                 <sre:atomSet>as2</sre:atomSet>
@@ -275,7 +275,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Oxygen 7 ">
+        <sre:annotation sre:speech="Oxygen 7">
             <sre:atom>a13</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>
@@ -421,7 +421,7 @@
                 <sre:neighbour sre:speech="shared Carbon atom with Functional group Ester.">
                     <sre:atomSet>as3</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a8" sre:speech="Carbon 1 " sre:type="sharedatom">
+                        <sre:positions sre:bond="a8" sre:speech="Carbon 1" sre:type="sharedatom">
                             <sre:position>1</sre:position>
                         </sre:positions>
                     </sre:via>
@@ -454,7 +454,7 @@
                 <sre:bond>b13</sre:bond>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="single bonded to Ring with 6 elements. ">
+                <sre:neighbour sre:speech="single bonded to Ring with 6 elements.">
                     <sre:atomSet>as1</sre:atomSet>
                     <sre:via>
                         <sre:positions sre:bond="b10" sre:speech="single bond" sre:type="connectingbond">
@@ -488,10 +488,10 @@
                 <sre:bond>b11</sre:bond>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="shared Carbon atom with Ring with 6 elements. ">
+                <sre:neighbour sre:speech="shared Carbon atom with Ring with 6 elements.">
                     <sre:atomSet>as1</sre:atomSet>
                     <sre:via>
-                        <sre:positions sre:bond="a8" sre:speech="Carbon 1 " sre:type="sharedatom">
+                        <sre:positions sre:bond="a8" sre:speech="Carbon 1" sre:type="sharedatom">
                             <sre:position>1</sre:position>
                         </sre:positions>
                     </sre:via>

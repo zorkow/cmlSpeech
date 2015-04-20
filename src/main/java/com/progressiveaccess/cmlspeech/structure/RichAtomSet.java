@@ -68,7 +68,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       new CmlNameComparator());
 
   private String iupac = "";
-  private String name = "";
   private String molecularFormula = "";
   private String structuralFormula = "";
 
@@ -127,25 +126,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   @Override
   public SortedSet<String> getInternalBonds() {
     return this.internalBonds;
-  }
-
-
-  /**
-   * @return The name of the set.
-   */
-  public String getName() {
-    return this.name;
-  }
-
-
-  /**
-   * Sets the name of the atom set.
-   *
-   * @param name
-   *          The name of the set.
-   */
-  public void setName(final String name) {
-    this.name = name;
   }
 
 

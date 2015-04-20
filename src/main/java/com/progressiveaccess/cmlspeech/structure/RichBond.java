@@ -48,6 +48,7 @@ public class RichBond extends RichChemObject {
     for (final IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
+    this.setName(this.orderDescription() + " bond");
   }
 
 
@@ -73,7 +74,7 @@ public class RichBond extends RichChemObject {
 
   @Override
   public String shortSimpleDescription() {
-    return this.orderDescription() + " bond";
+    return this.getName();
   }
 
 

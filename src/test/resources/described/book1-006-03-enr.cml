@@ -1,6 +1,6 @@
 <molecule id="m1" title="Molfile book1-006-03.tif" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema"> 
     <sre:annotations>
-        <sre:annotation sre:speech="Bromine 5 ">
+        <sre:annotation sre:speech="Bromine 5">
             <sre:atom>a1</sre:atom>
             <sre:parents>
                 <sre:atomSet>as2</sre:atomSet>
@@ -43,7 +43,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Chlorine 6 ">
+        <sre:annotation sre:speech="Chlorine 6">
             <sre:atom>a3</sre:atom>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>

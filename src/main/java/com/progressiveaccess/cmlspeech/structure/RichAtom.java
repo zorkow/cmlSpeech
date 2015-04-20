@@ -30,6 +30,7 @@ package com.progressiveaccess.cmlspeech.structure;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 
 import org.openscience.cdk.interfaces.IAtom;
+import com.progressiveaccess.cmlspeech.sre.AtomTable;
 
 /**
  * Atoms with admin information.
@@ -44,6 +45,7 @@ public class RichAtom extends RichChemObject {
    */
   public RichAtom(final IAtom structure) {
     super(structure);
+    this.setName(AtomTable.lookup(this));
   }
 
 
@@ -64,6 +66,75 @@ public class RichAtom extends RichChemObject {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOM;
+  }
+
+
+  @Override
+  public String shortSimpleDescription() {
+    return this.getName();
+  };
+
+
+  /** 
+   * Computes the atom description in the context of an atom set.
+   * 
+   * @param atomSet
+   *          A rich atom set.
+   * 
+   * @return The speech string for the atom.
+   */
+  public String shortSimpleDescription(final RichAtomSet atomSet) {
+    return this.getName() + this.describeAtomPosition(atomSet);
+  };
+
+
+  @Override
+  public String longSimpleDescription() {
+    return this.getName() + this.describeHydrogenBonds();
+  };
+
+
+  /** 
+   * Computes the atom description in the context of an atom set.
+   * 
+   * @param atomSet
+   *          A rich atom set.
+   * 
+   * @return The speech string for the atom.
+   */
+  public String longSimpleDescription(final RichAtomSet atomSet) {
+    return this.getName() + this.describeAtomPosition(atomSet)
+        + this.describeHydrogenBonds();
+  };
+
+
+    /**
+   * @return Description of hydrogen bonds of the atom.
+   */
+  private String describeHydrogenBonds() {
+    final Integer count = this.getStructure().getImplicitHydrogenCount();
+    switch (count) {
+      case 0:
+        return "";
+      case 1:
+        return " bonded to " + count.toString() + " hydrogen";
+      default:
+        return " bonded to " + count.toString() + " hydrogens";
+    }
+  }
+
+
+  /** 
+   * Describes the position of the atom in the context of a given atom set.
+   * 
+   * @param atomSet
+   *          A rich atom set.
+   * 
+   * @return The speech string for the atom's position.
+   */
+  private String describeAtomPosition(final RichAtomSet atomSet) {
+    final Integer position = atomSet.getPosition(this.getId());
+    return position == null ? "" : " " + position.toString();
   }
 
 }

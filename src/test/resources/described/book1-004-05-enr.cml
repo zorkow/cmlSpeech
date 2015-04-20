@@ -56,7 +56,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="Carbon 3 ">
+        <sre:annotation sre:speech="Carbon 3">
             <sre:atom>a10</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>

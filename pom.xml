@@ -104,14 +104,21 @@
           <showDeprecation>true</showDeprecation>
 	</configuration>
     </plugin>
-    <!-- <plugin> -->
-    <!--   <groupId>org.apache.maven.plugins</groupId> -->
-    <!--   <artifactId>maven-surefire-plugin</artifactId> -->
-    <!--   <version>2.10</version> -->
-    <!--   <configuration> -->
-    <!--     <skipTests>true</skipTests> -->
-    <!--   </configuration> -->
-    <!-- </plugin> -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>2.10</version>
+      <configuration>
+        <!-- <skipTests>true</skipTests> -->
+        <excludes>
+          <exclude>**/AppTest.java</exclude>
+          <!-- <exclude>**/DescriptionTest.java</exclude> -->
+          <exclude>**/EnrichTest.java</exclude>
+          <exclude>**/PositionTest.java</exclude>
+          <exclude>**/RingTest.java</exclude>
+        </excludes>
+      </configuration>
+    </plugin>
     <plugin>
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>appassembler-maven-plugin</artifactId>
