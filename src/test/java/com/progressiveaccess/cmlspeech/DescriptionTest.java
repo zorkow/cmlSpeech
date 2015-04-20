@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,31 +14,31 @@
 
 
 /**
- * @file   DescriptionTest.java
- * @author Volker Sorge <sorge@zorkstone>
- * @date   Thu Feb 26 17:30:05 2015
+ * @file DescriptionTest.java
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @date Thu Feb 26 17:30:05 2015
  *
- * @brief  Full blown tests for enrichment of some standard molecules.
+ * @brief Full blown tests for enrichment of some standard molecules.
  *
  *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech;
 
 import com.progressiveaccess.cmlspeech.base.App;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.junit.Test;
-import org.custommonkey.xmlunit.XMLTestCase;
 
 
 /**
@@ -48,44 +48,57 @@ import org.custommonkey.xmlunit.XMLTestCase;
 public class DescriptionTest extends XMLTestCase {
 
   /**
-   * Create the test case
+   * Create the test case.
    *
-   * @param testName name of the test case
+   * @param testName
+   *          Name of the test case.
    */
-  public DescriptionTest( String testName ) {
-    super( testName );
+  public DescriptionTest(final String testName) {
+    super(testName);
   }
 
 
-  private static String readFile(String filename) {
+  /**
+   * Reads a file for comparison.
+   *
+   * @param filename
+   *          The name of the file to load.
+   *
+   * @return The content of the file as a one line string.
+   */
+  private static String readFile(final String filename) {
     List<String> lines = new LinkedList<String>();
     try {
       lines = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
     }
     return String.join("", lines);
   }
 
 
-  private void compareEnrichedMolecule(String name) {
+  /**
+   * Compares enriched molecules.
+   *
+   * @param name
+   *          The name of the molecule, which corresponds to the filename.
+   */
+  private void compareEnrichedMolecule(final String name) {
     System.out.println("Testing " + name + "...");
-    String[] dummy = {"-ao", "-r", "-nonih",
-                      "src/main/resources/test_files/molecule/" +
-                      name + ".mol"};
+    final String[] dummy = {"-ao", "-r", "-nonih",
+        "src/main/resources/test_files/molecule/" + name + ".mol"};
     try {
       App.main(dummy);
-    }
-    catch (Exception e) {
+    } catch (final Exception e) {
       System.out.println("Application Error: " + e.getMessage());
       fail();
     }
-    String original = readFile("src/test/resources/described/" + name + "-enr.cml");
-    String revised  = readFile(name + "-enr.cml");
+    final String original = readFile("src/test/resources/described/" + name
+        + "-enr.cml");
+    final String revised = readFile(name + "-enr.cml");
     try {
-      assertXMLEqual(name, original, revised);
-    }
-    catch (Exception e) {
+      this.assertXMLEqual(name, original, revised);
+    } catch (final Exception e) {
       System.out.println("XML Error " + e.getMessage());
       fail();
     }
