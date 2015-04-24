@@ -137,4 +137,26 @@ c c c o c    O is 1 but at position 4.
 *** in context of an atom set
 *** in context with direction, depending on the incoming connection.
 
+** XML structure for elements:
+*** Notes:
+**** the set should be complete and some might be empty.
+**** Components are uniquely identified by their name/type, their parent and position.
+*** XML Components:
+**** Component
+**** Parent
+**** Position (in the context of the parent)
+**** Children
+**** Speech: This contains all the descriptions.
+**** Neighbours: 
+     Note that an atom has up to two neighbours. Left neighbour with position
+     n-1, right neighbour with position n+1.
+     
+     An atom set has multiple neighbours given in the order in which they can be
+     explored with right and left.
+
+***** Component
+***** Via: Element making up the connection such as shared bonds, bridge atoms.
+***** Position: The position of the neighbour in context of Parent.
+***** Speech: Description of the connection.
+
 * Refactoring notes [TEMPORARY]
