@@ -356,19 +356,4 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     return SreNamespace.Tag.ATOMSET;
   }
 
-
-  @Override
-  public SreElement annotation() {
-    final SreElement element = super.annotation();
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.INTERNALBONDS,
-        this.getInternalBonds()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUBSYSTEM,
-        this.getSubSystems()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUPERSYSTEM,
-        this.getSuperSystems()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONNECTINGATOMS,
-        this.getConnectingAtoms()));
-    return element;
-  }
-
 }

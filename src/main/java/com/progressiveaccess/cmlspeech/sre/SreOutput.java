@@ -32,24 +32,28 @@ import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 /**
  * Constructs structural annotations for Sre.
  */
-public class SreOutput extends SreXml {
+public class SreOutput {
 
+  AnnotationVisitor visitor = new AnnotationVisitor();
+  
   public SreOutput() {
-    super();
     this.compute();
   }
 
-  @Override
+  
   public void compute() {
     RichStructureHelper.getAtoms().stream()
-        .forEach(a -> this.getAnnotations()
-               .registerAnnotation(a.getId(), a.annotation()));
+      .forEach(a -> a.accept(visitor));
     RichStructureHelper.getBonds().stream()
-        .forEach(a -> this.getAnnotations()
-               .registerAnnotation(a.getId(), a.annotation()));
-    RichStructureHelper .getAtomSets().stream()
-        .forEach(a -> this.getAnnotations()
-               .registerAnnotation(a.getId(), a.annotation()));
+      .forEach(a -> a.accept(visitor));
+    RichStructureHelper.getAtomSets().stream()
+      .forEach(a -> a.accept(visitor));
+  }
+
+  public SreAnnotations getAnnotations() {
+    SreAnnotations annotations = visitor.getAnnotations();
+    annotations.complete();
+    return annotations;
   }
 
 }

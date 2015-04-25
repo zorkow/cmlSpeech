@@ -55,6 +55,7 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
+import com.progressiveaccess.cmlspeech.sre.AnnotationVisitor;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -196,7 +197,7 @@ public class CmlEnricher {
   public void annotateMolecule() {
     if (Cli.hasOption("ann")) {
       this.sreOutput = new SreOutput();
-      this.doc.getRootElement().appendChild(this.sreOutput.xmlAnnotations());
+      this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
     }
     if (Cli.hasOption("descr")) {
       this.sreSpeech = new SreSpeech(this.doc);

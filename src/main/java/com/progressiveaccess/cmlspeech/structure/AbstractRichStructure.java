@@ -154,39 +154,9 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
 
   @Override
-  public SreElement annotation() {
-    final SreElement element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    element.appendChild(new SreElement(this.tag(), this.getId()));
-    // System.out.println("here1");
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONTEXT,
-        this.getContexts()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-        this.getComponents()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.EXTERNALBONDS,
-        this.getExternalBonds()));
-    element.appendChild(this.connectionsAnnotations());
-    // System.out.println(element.toXML());
-    return element;
-  }
-
-
-  /**
-   * Computes annotations for structure's connections.
-   *
-   * @return The annotation element.
-   */
-  private SreElement connectionsAnnotations() {
-    if (this.getConnections().isEmpty()) {
-      return null;
-    }
-    final SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
-    this.getConnections().stream()
-        .forEach(c -> element.appendChild(c.annotation()));
-    return element;
-  }
-
+  public abstract void accept(final XmlVisitor visitor);
 
   @Override
-  public abstract void accept(final XmlVisitor visitor);
+  public SreElement annotation() { return new SreElement(this.tag());}
 
 }
