@@ -28,7 +28,6 @@
 
 package com.progressiveaccess.cmlspeech.connection;
 
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;

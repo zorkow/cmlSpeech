@@ -27,14 +27,11 @@
 package com.progressiveaccess.cmlspeech.cactus;
 
 import com.progressiveaccess.cmlspeech.base.Logger;
-import com.progressiveaccess.cmlspeech.sre.SreAttribute;
-import com.progressiveaccess.cmlspeech.sre.SreUtil;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import nu.xom.Document;
-import nu.xom.Element;
 
 import java.util.ArrayList;
 import java.util.List;

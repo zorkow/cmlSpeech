@@ -60,7 +60,7 @@ public class AnnotationVisitor implements XmlVisitor {
     return this.annotations;
   }
 
-  
+
   @Override
   public void visit(RichAtom atom) {
     this.structureAnnotation(atom);
@@ -192,7 +192,6 @@ public class AnnotationVisitor implements XmlVisitor {
     structure.getConnections().stream().forEach(c -> c.accept(this));
     oldElement.appendChild(this.element);
     this.element = oldElement;
-    
   }
 
 

@@ -31,7 +31,6 @@ import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
 import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
 

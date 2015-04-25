@@ -27,7 +27,6 @@
 package com.progressiveaccess.cmlspeech.cactus;
 
 import com.progressiveaccess.cmlspeech.base.Logger;
-import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 
@@ -76,8 +75,8 @@ public class CactusCallable implements Callable<String> {
 
   @Override
   public String call() throws CactusException {
-    Logger.logging("Executing Cactus call for " + this.id +
-                   " " + this.type.getTag());
+    Logger.logging("Executing Cactus call for " + this.id
+                   + " " + this.type.getTag());
     final String result = this.type.getCaller().apply(this.container);
     //this.setter.accept(result);
     return result;
