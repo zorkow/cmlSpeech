@@ -35,6 +35,4 @@ public interface XmlAnnotations {
 
   SreNamespace.Tag tag();
 
-  SreElement annotation();
-
 }

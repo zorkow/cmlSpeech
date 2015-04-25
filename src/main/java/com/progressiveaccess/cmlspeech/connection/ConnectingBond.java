@@ -59,16 +59,6 @@ public class ConnectingBond extends Connection {
   }
 
   @Override
-  public SreElement annotation() {
-    final String connected = this.getConnected();
-    final SreNamespace.Tag type = RichStructureHelper.isAtom(connected)
-        ? SreNamespace.Tag.ATOM
-        : SreNamespace.Tag.ATOMSET;
-    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
-        this.getConnector()), new SreElement(type, connected));
-  }
-
-  @Override
   public void accept(final XmlVisitor visitor) {
     visitor.visit(this);
   }

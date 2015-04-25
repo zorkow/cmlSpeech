@@ -110,14 +110,6 @@ public abstract class Connection extends ConnectionComparator implements
 
 
   @Override
-  public SreElement annotation() {
-    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.ATOM,
-        this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
-            this.getConnected()));
-  }
-
-
-  @Override
   public abstract void accept(final XmlVisitor visitor);
 
 }

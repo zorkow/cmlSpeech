@@ -156,7 +156,4 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
   @Override
   public abstract void accept(final XmlVisitor visitor);
 
-  @Override
-  public SreElement annotation() { return new SreElement(this.tag());}
-
 }

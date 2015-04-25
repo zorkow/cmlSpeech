@@ -43,6 +43,8 @@ import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.AbstractRichStructure;
+import com.progressiveaccess.cmlspeech.connection.Connection;
+import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 
 
 /**
@@ -109,26 +111,39 @@ public class AnnotationVisitor implements XmlVisitor {
 
   @Override
   public void visit(SpiroAtom spiroAtom) {
+    this.connectionAnnotation(spiroAtom,
+        SreNamespace.Tag.ATOM, SreNamespace.Tag.ATOMSET);
   }
 
 
   @Override
   public void visit(BridgeAtom bridgeAtom) {
+    this.connectionAnnotation(bridgeAtom,
+        SreNamespace.Tag.ATOM, SreNamespace.Tag.ATOMSET);
   }
 
 
   @Override
   public void visit(SharedAtom sharedAtom) {
+    this.connectionAnnotation(sharedAtom,
+        SreNamespace.Tag.ATOM, SreNamespace.Tag.ATOMSET);
   }
 
 
   @Override
   public void visit(ConnectingBond connectingBond) {
+    final String connected = connectingBond.getConnected();
+    final SreNamespace.Tag type = RichStructureHelper.isAtom(connected)
+        ? SreNamespace.Tag.ATOM
+        : SreNamespace.Tag.ATOMSET;
+    this.connectionAnnotation(connectingBond, SreNamespace.Tag.BOND, type);
   }
 
 
   @Override
   public void visit(SharedBond sharedBond) {
+    this.connectionAnnotation(sharedBond,
+        SreNamespace.Tag.BOND, SreNamespace.Tag.ATOMSET); 
   }
 
 
@@ -147,7 +162,7 @@ public class AnnotationVisitor implements XmlVisitor {
         structure.getComponents()));
     this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.EXTERNALBONDS,
         structure.getExternalBonds()));
-    this.element.appendChild(this.connectionsAnnotations(structure));
+    this.connectionsAnnotations(structure);
   }
 
   
@@ -168,14 +183,25 @@ public class AnnotationVisitor implements XmlVisitor {
    *
    * @return The annotation element.
    */
-  private SreElement connectionsAnnotations(AbstractRichStructure<?> structure) {
+  private void connectionsAnnotations(AbstractRichStructure<?> structure) {
     if (structure.getConnections().isEmpty()) {
-      return null;
+      return;
     }
-    final SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
-    structure.getConnections().stream()
-        .forEach(c -> element.appendChild(c.annotation()));
-    return element;
+    final SreElement oldElement = this.element;
+    this.element = new SreElement(SreNamespace.Tag.CONNECTIONS);
+    structure.getConnections().stream().forEach(c -> c.accept(this));
+    oldElement.appendChild(this.element);
+    this.element = oldElement;
+    
+  }
+
+
+  public void connectionAnnotation(Connection connection,
+      SreNamespace.Tag connector, SreNamespace.Tag connected) {
+    this.element.appendChild(
+        new SreElement(connection.tag(),
+                       new SreElement(connector, connection.getConnector()),
+                       new SreElement(connected, connection.getConnected())));
   }
 
 }
