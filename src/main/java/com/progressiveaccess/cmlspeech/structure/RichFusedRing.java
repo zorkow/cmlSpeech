@@ -29,6 +29,7 @@ package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.ConnectionType;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -176,6 +177,12 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
         }
       }
     }
+  }
+
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

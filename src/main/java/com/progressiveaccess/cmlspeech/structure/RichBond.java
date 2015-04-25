@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
@@ -60,6 +61,12 @@ public class RichBond extends RichChemObject {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.BOND;
+  }
+
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

@@ -30,6 +30,7 @@ package com.progressiveaccess.cmlspeech.connection;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Class of connecting bonds.
@@ -65,6 +66,11 @@ public class ConnectingBond extends Connection {
         : SreNamespace.Tag.ATOMSET;
     return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
         this.getConnector()), new SreElement(type, connected));
+  }
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

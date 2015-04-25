@@ -32,6 +32,7 @@ import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Connections consist of -- the connecting structure: name of either bond or
@@ -114,5 +115,9 @@ public abstract class Connection extends ConnectionComparator implements
         this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
             this.getConnected()));
   }
+
+
+  @Override
+  public abstract void accept(final XmlVisitor visitor);
 
 }

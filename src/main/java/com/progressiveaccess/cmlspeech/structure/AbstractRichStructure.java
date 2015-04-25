@@ -34,6 +34,8 @@ import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import com.google.common.base.Joiner;
 
@@ -47,7 +49,7 @@ import java.util.stream.Collectors;
  * @param <S> The embedded structure.
  */
 public abstract class AbstractRichStructure<S> implements RichStructure<S>,
-    XmlAnnotations {
+    XmlAnnotations, XmlVisitable {
 
   private final S structure;
 
@@ -182,4 +184,9 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
         .forEach(c -> element.appendChild(c.annotation()));
     return element;
   }
+
+
+  @Override
+  public abstract void accept(final XmlVisitor visitor);
+
 }

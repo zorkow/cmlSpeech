@@ -28,7 +28,6 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.connection.Connection;
-import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
 
 import java.util.SortedSet;
 
@@ -37,7 +36,7 @@ import java.util.SortedSet;
  *
  * @param <S> The embedded structure.
  */
-public interface RichStructure<S> extends XmlVisitable {
+public interface RichStructure<S> {
 
   /**
    * @return The list of components of this structure.

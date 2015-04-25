@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.connection;
 
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Class of spiro atoms.
@@ -53,6 +54,11 @@ public class SpiroAtom extends Connection {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.SPIROATOM;
+  }
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

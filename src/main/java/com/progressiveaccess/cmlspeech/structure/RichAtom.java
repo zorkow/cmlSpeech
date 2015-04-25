@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
 
@@ -64,6 +65,11 @@ public class RichAtom extends RichChemObject {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOM;
+  }
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }
