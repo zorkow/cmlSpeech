@@ -83,6 +83,10 @@ public class CactusCallable implements Callable<String> {
   }
 
 
+  /**
+   * @return The consumer that takes the computed result from calling the
+   *     webservice.
+   */
   public Consumer<String> getSetter() {
     return this.setter;
   }

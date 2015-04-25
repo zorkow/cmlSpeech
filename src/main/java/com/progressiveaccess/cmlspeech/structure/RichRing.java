@@ -57,25 +57,50 @@ public abstract class RichRing extends RichAtomSet {
 
   private Set<IAtom> rim = null;
 
+  /**
+   * Generates the rich ring.
+   *
+   * @param container
+   *          The atom container of the ring.
+   * @param id
+   *          The name of the structure.
+   * @param type
+   *          The type of the ring.
+   */
   public RichRing(final IAtomContainer container, final String id,
       final RichSetType type) {
     super(container, id, type);
     this.rim = Sets.newHashSet(container.atoms());
   }
 
+
   @Override
   public final boolean isRing() {
     return true;
   }
 
+  /**
+   * @return The rim of the ring.
+   */
   public final Set<IAtom> getRim() {
     return this.rim;
   }
 
+
+  /**
+   * Sets the rim of the ring.
+   *
+   * @param rim
+   *          Set of atoms that form the rim.
+   */
   public final void setRim(final Set<IAtom> rim) {
     this.rim = rim;
   }
 
+
+  /**
+   * Comparator for internal substitutions.
+   */
   protected class InternalSubstComparator implements Comparator<IAtom> {
     @Override
     public int compare(final IAtom atom1, final IAtom atom2) {
@@ -97,9 +122,13 @@ public abstract class RichRing extends RichAtomSet {
     }
   }
 
-  // TODO (sorge) This comparator contains a lot of redundancy. This could be
-  // simplified.
+
+  /**
+   * Comparator for external substitutions.
+   */
   protected class ExternalSubstComparator implements Comparator<Connection> {
+    // TODO (sorge) This comparator contains a lot of redundancy. This could be
+    // simplified.
     private final WeightComparator weightCompare = new WeightComparator();
 
     @Override
@@ -119,6 +148,15 @@ public abstract class RichRing extends RichAtomSet {
       return this.weightCompare.compare(connected1, connected2);
     }
 
+
+    /**
+     * Checks if a structure forms a hydroxyl group.
+     *
+     * @param structure
+     *          The structure to test.
+     *
+     * @return True if it is a hydroxyl group.
+     */
     private boolean isHydroxylGroup(final RichStructure<?> structure) {
       if (!RichStructureHelper.isAtomSet(structure.getId())) {
         return false;
@@ -141,10 +179,20 @@ public abstract class RichRing extends RichAtomSet {
       return false;
     }
 
+
+    /**
+     * Checks if an atom is an oxygen with exactly one hydrogen.
+     *
+     * @param atom
+     *          The atom to check.
+     *
+     * @return True if OH.
+     */
     private boolean isHydroxyl(final IAtom atom) {
       return atom.getSymbol() == "O" && atom.getImplicitHydrogenCount() == 1;
     }
   }
+
 
   @Override
   protected void walk() {
@@ -246,20 +294,42 @@ public abstract class RichRing extends RichAtomSet {
     }
   }
 
-  private void walkFinalise(final IAtom endAtom, final List<IAtom> path) {
+
+  /**
+   * Completes a partial walk on the ring.
+   *
+   * @param startAtom
+   *          The atom up to which we have already walked, and from where to
+   *          start the rest of the walk.
+   * @param path
+   *          The path of the already walked atoms.
+   */
+  private void walkFinalise(final IAtom startAtom, final List<IAtom> path) {
     for (final IAtom atom : path) {
       this.getComponentsPositions().addNext(atom.getID());
     }
-    this.walkStraight(endAtom, path);
+    this.walkStraight(startAtom, path);
   }
 
 
+  /**
+   * Checks if an atom is a carbon.
+   *
+   * @param atom
+   *          The atom to test.
+   *
+   * @return True if atom is a carbon atom.
+   */
   private static Boolean isCarbon(final IAtom atom) {
     return atom.getSymbol().equals("C");
   }
 
-  // TODO (sorge) Eventually this needs to be rewritten to work with the rim.
+
+  /**
+   * @return The list of internal substitutions.
+   */
   private List<IAtom> getInternalSubsts() {
+    // TODO (sorge) Eventually this needs to be rewritten to work with the rim.
     final Queue<IAtom> substs = new PriorityQueue<>(
         new InternalSubstComparator());
     for (final IAtom atom : this.getStructure().atoms()) {
@@ -277,6 +347,10 @@ public abstract class RichRing extends RichAtomSet {
   private final Queue<Connection> externalConnections = new PriorityQueue<>(
       new ExternalSubstComparator());
 
+  /**
+   * Computes the external connections (i.e., not the shared ones) of the
+   * ring.
+   */
   private void getExternalConnections() {
     for (final Connection connection : this.getConnections()) {
       final ConnectionType type = connection.getType();
@@ -288,6 +362,10 @@ public abstract class RichRing extends RichAtomSet {
 
   }
 
+
+  /**
+   * @return The external substitutions of the ring.
+   */
   private List<IAtom> getExternalSubsts() {
     final List<IAtom> result = new ArrayList<>();
     while (this.externalConnections.peek() != null) {

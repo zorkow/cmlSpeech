@@ -34,13 +34,17 @@ import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
  */
 public class SreOutput {
 
-  AnnotationVisitor visitor = new AnnotationVisitor();
-  
+  private AnnotationVisitor visitor = new AnnotationVisitor();
+
+  /** Constructor. */
   public SreOutput() {
     this.compute();
   }
 
-  
+
+  /**
+   * Computes the annotation.
+   */
   public void compute() {
     RichStructureHelper.getAtoms().stream()
       .forEach(a -> a.accept(visitor));
@@ -50,6 +54,10 @@ public class SreOutput {
       .forEach(a -> a.accept(visitor));
   }
 
+
+  /**
+   * @return The annotation.
+   */
   public SreAnnotations getAnnotations() {
     SreAnnotations annotations = visitor.getAnnotations();
     annotations.complete();

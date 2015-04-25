@@ -46,6 +46,14 @@ import java.util.stream.Collectors;
 
 public class RichFunctionalGroup extends RichAtomSet {
 
+  /**
+   * Generates the rich functional group.
+   *
+   * @param container
+   *          The atom container of the group.
+   * @param id
+   *          The name of the structure.
+   */
   public RichFunctionalGroup(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUNCGROUP);
   }
@@ -66,6 +74,11 @@ public class RichFunctionalGroup extends RichAtomSet {
     dfs.putPositions(this.getComponentsPositions());
   }
 
+
+  /**
+   * @return The start axiom of the functional group. I.e., the axiom connected
+   *      to the highest order outside structure.
+   */
   private RichAtom getStartAtom() {
     final SortedSet<Connection> connections = this.getConnections();
     if (connections.isEmpty()) {

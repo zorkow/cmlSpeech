@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   CMLEnricher.java
- * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Mon Apr 28 01:41:35 2014
+ * @file CMLEnricher.java
+ * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
+ *         Sorge</a>
+ * @date Mon Apr 28 01:41:35 2014
  *
- * @brief  Main class to enrich CML files.
+ * @brief Main class to enrich CML files.
  *
  *
  */
@@ -34,7 +34,6 @@ import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
-import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
 import com.progressiveaccess.cmlspeech.sre.SreSpeech;
@@ -55,7 +54,6 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
-import com.progressiveaccess.cmlspeech.sre.AnnotationVisitor;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -180,11 +178,15 @@ public class CmlEnricher {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
       this.executor.register(new CactusCallable(set.getId(),
-          (final String x) -> {set.setIupac(x);},
+          (final String name) -> {
+          set.setIupac(name);
+        },
           CactusType.IUPAC, newcontainer));
       if (set.getType() != RichSetType.FUNCGROUP) {
         this.executor.register(new CactusCallable(set.getId(),
-            (final String x) -> {set.setName(x);},
+            (final String name) -> {
+            set.setName(name);
+          },
             CactusType.NAME, newcontainer));
       }
     }
@@ -228,7 +230,7 @@ public class CmlEnricher {
       newcontainer = container.clone();
       AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(newcontainer);
       CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance())
-        .addImplicitHydrogens(newcontainer);
+          .addImplicitHydrogens(newcontainer);
     } catch (final CloneNotSupportedException e) {
       Logger.error("Something went wrong cloning atom container: "
           + e.getMessage());
