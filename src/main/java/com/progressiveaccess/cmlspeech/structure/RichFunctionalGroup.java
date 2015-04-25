@@ -31,6 +31,7 @@ import com.progressiveaccess.cmlspeech.analysis.Heuristics;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionType;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 
@@ -76,7 +77,8 @@ public class RichFunctionalGroup extends RichAtomSet {
 
 
   /**
-   * @return Atom at lowest position of the group.
+   * @return The start axiom of the functional group. I.e., the axiom connected
+   *      to the highest order outside structure.
    */
   private RichAtom getStartAtom() {
     final SortedSet<Connection> connections = this.getConnections();
@@ -106,4 +108,11 @@ public class RichFunctionalGroup extends RichAtomSet {
     }
     return RichStructureHelper.getRichAtom(maxConnection.getConnector());
   }
+
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
+  }
+
 }

@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.sre.SreException;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -143,6 +144,12 @@ public class RichAliphaticChain extends RichAtomSet {
       return rightAtom;
     }
     return leftAtom;
+  }
+
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

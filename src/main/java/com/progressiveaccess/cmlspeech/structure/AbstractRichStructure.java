@@ -33,8 +33,9 @@ import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.sre.SpeechAnnotations;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
-import com.progressiveaccess.cmlspeech.sre.SreUtil;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import com.google.common.base.Joiner;
 
@@ -47,8 +48,9 @@ import java.util.stream.Collectors;
  *
  * @param <S> The embedded structure.
  */
-public abstract class AbstractRichStructure<S>
-    implements RichStructure<S>, XmlAnnotations, SpeechAnnotations {
+
+public abstract class AbstractRichStructure<S> implements RichStructure<S>,
+    XmlAnnotations, XmlVisitable, SpeechAnnotations {
 
   private final S structure;
   private String name = "";
@@ -167,38 +169,10 @@ public abstract class AbstractRichStructure<S>
 
 
   @Override
-  public SreElement annotation() {
-    final SreElement element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    element.appendChild(new SreElement(this.tag(), this.getId()));
-    // System.out.println("here1");
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONTEXT,
-        this.getContexts()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-        this.getComponents()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.EXTERNALBONDS,
-        this.getExternalBonds()));
-    element.appendChild(this.connectionsAnnotations());
-    // System.out.println(element.toXML());
-    return element;
-  }
+  public abstract void accept(final XmlVisitor visitor);
 
 
-  /**
-   * Computes annotations for structure's connections.
-   *
-   * @return The annotation element.
-   */
-  private SreElement connectionsAnnotations() {
-    if (this.getConnections().isEmpty()) {
-      return null;
-    }
-    final SreElement element = new SreElement(SreNamespace.Tag.CONNECTIONS);
-    this.getConnections().stream()
-        .forEach(c -> element.appendChild(c.annotation()));
-    return element;
-  }
-
-
+  // TODO (sorge) Refactor into speech visitor.
   @Override
   public String shortSimpleDescription() {
     return "";

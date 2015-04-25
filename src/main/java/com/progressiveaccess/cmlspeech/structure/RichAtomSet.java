@@ -27,12 +27,10 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
 import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreUtil;
 
@@ -51,7 +49,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Base class for all atom sets with admin information.
@@ -336,21 +333,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOMSET;
-  }
-
-
-  @Override
-  public SreElement annotation() {
-    final SreElement element = super.annotation();
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.INTERNALBONDS,
-        this.getInternalBonds()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUBSYSTEM,
-        this.getSubSystems()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.SUPERSYSTEM,
-        this.getSuperSystems()));
-    element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CONNECTINGATOMS,
-        this.getConnectingAtoms()));
-    return element;
   }
 
 }

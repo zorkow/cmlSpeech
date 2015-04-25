@@ -27,8 +27,8 @@
 
 package com.progressiveaccess.cmlspeech.connection;
 
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Class of shared bonds.
@@ -57,10 +57,8 @@ public class SharedBond extends Connection {
   }
 
   @Override
-  public SreElement annotation() {
-    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.BOND,
-        this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
-            this.getConnected()));
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

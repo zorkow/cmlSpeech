@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.connection;
 
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Class of shared atoms.
@@ -53,6 +54,11 @@ public class SharedAtom extends Connection {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.SHAREDATOM;
+  }
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

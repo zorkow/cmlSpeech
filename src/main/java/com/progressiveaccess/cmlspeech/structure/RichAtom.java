@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
 import com.progressiveaccess.cmlspeech.sre.AtomTable;
@@ -69,6 +70,13 @@ public class RichAtom extends RichChemObject {
   }
 
 
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  
+  // TODO (sorge) Refactor into speech visitor.
   @Override
   public String shortSimpleDescription() {
     return this.getName();

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   XMLAnnotations.java
+ * @file   XmlVisitable.java
  * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Thu Apr  9 12:23:40 2015
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @date   Sat Apr 25 01:24:04 2015
  *
- * @brief  Interface for XML annotations output.
+ * @brief  Interface for all visitable objects.
  *
  *
  */
@@ -28,14 +28,17 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 /**
- * The basic XML annotations every enriched object should produce.
+ * Interface for visitable objects.
  */
 
-public interface XmlAnnotations {
+public interface XmlVisitable {
 
   /**
-   * @return The SRE tag for the annotated object.
+   * Accept method for visitable objects.
+   *
+   * @param visitor
+   *          The XML visitor.
    */
-  SreNamespace.Tag tag();
+  void accept(XmlVisitor visitor);
 
 }

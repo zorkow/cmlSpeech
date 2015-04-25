@@ -28,9 +28,10 @@
 
 package com.progressiveaccess.cmlspeech.connection;
 
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 /**
  * Connections consist of -- the connecting structure: name of either bond or
@@ -38,7 +39,7 @@ import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
  */
 
 public abstract class Connection extends ConnectionComparator implements
-    Comparable<Connection>, XmlAnnotations {
+    Comparable<Connection>, XmlAnnotations, XmlVisitable {
 
   private String connector = "";
   private String connected = "";
@@ -108,10 +109,6 @@ public abstract class Connection extends ConnectionComparator implements
 
 
   @Override
-  public SreElement annotation() {
-    return new SreElement(this.tag(), new SreElement(SreNamespace.Tag.ATOM,
-        this.getConnector()), new SreElement(SreNamespace.Tag.ATOMSET,
-            this.getConnected()));
-  }
+  public abstract void accept(final XmlVisitor visitor);
 
 }

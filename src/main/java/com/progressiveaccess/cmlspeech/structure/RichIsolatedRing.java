@@ -27,6 +27,8 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
+import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
+
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
@@ -44,6 +46,12 @@ public class RichIsolatedRing extends RichRing {
    */
   public RichIsolatedRing(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.ISOLATED);
+  }
+
+
+  @Override
+  public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
 }
