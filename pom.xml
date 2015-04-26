@@ -112,7 +112,7 @@
         <!-- <skipTests>true</skipTests> -->
         <excludes>
           <exclude>**/AppTest.java</exclude>
-          <!-- <exclude>**/DescriptionTest.java</exclude> -->
+          <exclude>**/DescriptionTest.java</exclude>
           <exclude>**/EnrichTest.java</exclude>
           <exclude>**/PositionTest.java</exclude>
           <exclude>**/RingTest.java</exclude>

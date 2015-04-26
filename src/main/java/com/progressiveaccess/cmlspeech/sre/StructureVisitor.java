@@ -33,6 +33,12 @@ import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.google.common.collect.TreeMultimap;
 import java.util.Comparator;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
+import java.util.Set;
+import com.progressiveaccess.cmlspeech.connection.Connection;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import java.util.List;
 
 /**
  * Constructs the exploration structure.
@@ -44,7 +50,8 @@ public class StructureVisitor implements XmlVisitor {
 
   private TreeMultimap<String, SreElement> annotations = TreeMultimap.create(new CmlNameComparator(), new SreComparator());
   private SreElement element;
-
+  private RichAtomSet context;
+  
 
   private class SreComparator implements Comparator<SreElement> {
 
@@ -73,35 +80,118 @@ public class StructureVisitor implements XmlVisitor {
     for (String parent : atom.getSuperSystems()) {
       this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
       annotations.put(atom.getId(), this.element);
+      this.context =  RichStructureHelper.getRichAtomSet(parent);
       // this.annotations.registerAnnotation(atom.getId(),
       //                                     this.element);
-      this.atomStructure(atom, RichStructureHelper.getRichAtomSet(parent));
+      this.atomStructure(atom);
     }
   }
 
 
   /**
-   * Computes annotations for a structure.
+   * Computes structure for an atom in the context of a set.
    *
-   * @param structure
-   *          The rich structure.
+   * @param atom
+   *          The rich atom.
    */
-  private void atomStructure(final RichAtom atom, final RichAtomSet parent) {
-    this.element
-        .appendChild(new SreElement(atom.tag(), atom.getId()));
+  private void atomStructure(final RichAtom atom) {
+    String id = atom.getId();
+    ComponentsPositions positions = this.context.getComponentsPositions();
+    Integer position = positions.getPosition(id);
+    Set<Connection> internalConnections = this.connectionsInContext(atom);
+    this.element.appendChild(new SreElement(atom.tag(), id));
     this.element.appendChild(new SreElement(SreNamespace.Tag.PARENTS,
-        parent.getId()));
+        this.context.getId()));
     this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-        atom.getComponents()));
+        internalConnections.stream().map(conn -> conn.getConnector())
+                           .collect(Collectors.toList())));
     this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
-        parent.getPosition(atom.getId()).toString()));
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
-        atom.getSubSystems()));
-                             //this.connectionsAnnotations(atom);
+                                            position.toString()));
+    this.element.appendChild(new SreElement(SreNamespace.Tag.CHILDREN));
+    SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+    if (position > 1) {
+      Integer decr = position - 1;
+      SreElement neighbourElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+      this.element.appendChild(neighbourElement);
+      String neighbour = positions.get(decr);
+      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.ATOM, neighbour));
+      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
+                                              decr.toString()));
+      SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
+      neighbourElement.appendChild(viaElement);
+      internalConnections.stream().
+        filter(c -> c.getConnected() == neighbour).
+        forEach(c -> viaElement.appendChild(SreUtil.sreElement(c.getConnector())));
+    }
+
+    if (position < positions.size()) {
+      Integer incr = position + 1;
+      SreElement neighbourElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+      this.element.appendChild(neighbourElement);
+      String neighbour = positions.get(incr);
+      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.ATOM, neighbour));
+      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
+                                              incr.toString()));
+      SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
+      neighbourElement.appendChild(viaElement);
+      internalConnections.stream().
+        filter(c -> c.getConnected() == neighbour).
+        forEach(c -> viaElement.appendChild(SreUtil.sreElement(c.getConnector())));
+
+    } 
+  }
+  
+  //   ComponentsPositions positions = this.context.getComponentsPositions();
+  //   Integer current = positions.getPosition(id);
+  //   String next = this.nextElement(id);
+  //   String previous = this.previousElement(id);
+  //   this.connectionsStructure(internalConnections);
+  // }
+
+
+  private void connectionsStructure(Set<Connection> connections) {
+    SreElement connElement = new SreElement(SreNamespace.Tag.CONNECTIONS);
+    
+    
+  };
+  
+
+  /**
+   * Computes connections of an atom in the context of a set.
+   *
+   * @param atom
+   *          The rich atom.
+   * 
+   * @return The connections of the atom that belong to the set.
+   */
+  private Set<Connection> connectionsInContext(final RichAtom atom) {
+    if (!this.context.getConnectingAtoms().contains(atom.getId())) {
+      return atom.getConnections();
+    }
+    Set<Connection> internal = new HashSet<>();
+    for (Connection connection : atom.getConnections()) {
+      if (this.context.getInternalBonds().contains(connection.getConnector())) {
+        internal.add(connection);
+      }
+    }
+    return internal;
+  }
+
+  
+  public void complete() {
   }
 
 
-  public void complete() {
+  private String nextElement (String id) {
+    ComponentsPositions positions = this.context.getComponentsPositions();
+    Integer current = positions.getPosition(id);
+    return (current >= positions.size()) ? null : positions.get(current + 1);
+  }
+  
+  private String previousElement (String id) {
+    ComponentsPositions positions = this.context.getComponentsPositions();
+    Integer current = positions.getPosition(id);
+    return (current <= 1) ? null : positions.get(current - 1);
   }
   
 }
