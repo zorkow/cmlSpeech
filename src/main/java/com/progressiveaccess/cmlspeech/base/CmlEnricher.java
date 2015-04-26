@@ -54,6 +54,7 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
+import com.progressiveaccess.cmlspeech.sre.SreStructure;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -63,8 +64,6 @@ public class CmlEnricher {
 
   private Document doc;
   private IAtomContainer molecule;
-  private SreOutput sreOutput;
-  private SreSpeech sreSpeech;
   private final CactusExecutor executor = new CactusExecutor();
   private final StructuralFormula formula = new StructuralFormula();
 
@@ -198,12 +197,16 @@ public class CmlEnricher {
    */
   public void annotateMolecule() {
     if (Cli.hasOption("ann")) {
-      this.sreOutput = new SreOutput();
-      this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+      SreOutput sreOutput = new SreOutput();
+      this.doc.getRootElement().appendChild(sreOutput.getAnnotations());
+    }
+    if (Cli.hasOption("struct")) {
+      SreStructure sreStructure = new SreStructure();
+      this.doc.getRootElement().appendChild(sreStructure.getAnnotations());
     }
     if (Cli.hasOption("descr")) {
-      this.sreSpeech = new SreSpeech(this.doc);
-      this.doc.getRootElement().appendChild(this.sreSpeech.xmlAnnotations());
+      SreSpeech sreSpeech = new SreSpeech(this.doc);
+      this.doc.getRootElement().appendChild(sreSpeech.xmlAnnotations());
     }
   }
 

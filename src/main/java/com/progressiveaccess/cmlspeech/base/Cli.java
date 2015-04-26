@@ -89,6 +89,8 @@ public final class Cli {
         "Annotations only output. Omits the original CML output");
     options.addOption("r", "descr", false,
         "Include speech descriptions in CML output");
+    options.addOption("t", "struct", false,
+        "Include explodation structure in CML output");
     options.addOption("nonih", "nonih", false,
         "Do not use the NIH naming service");
     options.addOption("s", "subrings", false, "Do not compute subrings");
