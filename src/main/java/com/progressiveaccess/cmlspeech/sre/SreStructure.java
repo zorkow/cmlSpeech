@@ -47,6 +47,8 @@ public class SreStructure {
   public void compute() {
     RichStructureHelper.getAtoms().stream()
       .forEach(a -> a.accept(this.visitor));
+    RichStructureHelper.getAtomSets().stream()
+      .forEach(a -> a.accept(this.visitor));
   }
 
 
