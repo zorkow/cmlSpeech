@@ -138,7 +138,13 @@ public class AnnotationVisitor implements XmlVisitor {
     final SreNamespace.Tag type = RichStructureHelper.isAtom(connected)
         ? SreNamespace.Tag.ATOM
         : SreNamespace.Tag.ATOMSET;
-    this.connectionAnnotation(connectingBond, SreNamespace.Tag.BOND, type);
+    final SreElement connection = new SreElement(connectingBond.tag());
+    connection.appendChild(new SreElement(SreNamespace.Tag.BOND,
+                                          connectingBond.getConnector()));
+    connection.appendChild(new SreElement(type, connected));
+    connection.appendChild(new SreElement(SreNamespace.Tag.ATOM,
+                                          connectingBond.getOrigin()));
+    this.element.appendChild(connection);
   }
 
 
