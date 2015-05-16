@@ -51,7 +51,8 @@ public class StructureVisitor implements XmlVisitor {
 
   //private final SreAnnotations annotations = new SreAnnotations();
 
-  private TreeMultimap<String, SreElement> annotations = TreeMultimap.create(new CmlNameComparator(), new SreComparator());
+  private TreeMultimap<String, SreElement> annotations =
+    TreeMultimap.create(new CmlNameComparator(), new SreComparator());
   private SreElement element;
   private RichAtomSet context;
   
@@ -109,10 +110,6 @@ public class StructureVisitor implements XmlVisitor {
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     annotations.put(group.getId(), this.element);
     this.context = RichStructureHelper.getRichMolecule();
-      // this.annotations.registerAnnotation(atom.getId(),
-      //                                     this.element);
-      //this.atomStructure(group);
-
     String id = group.getId();
     ComponentsPositions positions = ((RichMolecule)this.context).getPath();
     Integer position = positions.getPosition(id);
@@ -137,8 +134,6 @@ public class StructureVisitor implements XmlVisitor {
       this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
       annotations.put(atom.getId(), this.element);
       this.context =  RichStructureHelper.getRichAtomSet(parent);
-      // this.annotations.registerAnnotation(atom.getId(),
-      //                                     this.element);
       this.atomStructure(atom);
     }
   }
@@ -166,6 +161,8 @@ public class StructureVisitor implements XmlVisitor {
                            .collect(Collectors.toList())));
     this.element.appendChild(new SreElement(SreNamespace.Tag.CHILDREN));
     SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+    this.element.appendChild(connElement);
+    this.element = connElement;
     if (position > 1) {
       this.appendNeighbours(positions.get(position - 1),
                             position - 1, internalConnections);
