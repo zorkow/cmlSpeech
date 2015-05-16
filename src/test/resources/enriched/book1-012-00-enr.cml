@@ -13,10 +13,12 @@
                 <sre:connectingBond>
                     <sre:bond>b5</sre:bond>
                     <sre:atom>a7</sre:atom>
+                    <sre:atom>a1</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b5</sre:bond>
                     <sre:atomSet>as3</sre:atomSet>
+                    <sre:atom>a1</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -36,10 +38,12 @@
                 <sre:connectingBond>
                     <sre:bond>b1</sre:bond>
                     <sre:atom>a3</sre:atom>
+                    <sre:atom>a2</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b3</sre:bond>
                     <sre:atom>a5</sre:atom>
+                    <sre:atom>a2</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -59,10 +63,12 @@
                 <sre:connectingBond>
                     <sre:bond>b1</sre:bond>
                     <sre:atom>a2</sre:atom>
+                    <sre:atom>a3</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b2</sre:bond>
                     <sre:atom>a4</sre:atom>
+                    <sre:atom>a3</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -85,14 +91,17 @@
                 <sre:connectingBond>
                     <sre:bond>b2</sre:bond>
                     <sre:atom>a3</sre:atom>
+                    <sre:atom>a4</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b7</sre:bond>
                     <sre:atom>a8</sre:atom>
+                    <sre:atom>a4</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b9</sre:bond>
                     <sre:atom>a10</sre:atom>
+                    <sre:atom>a4</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -115,14 +124,17 @@
                 <sre:connectingBond>
                     <sre:bond>b3</sre:bond>
                     <sre:atom>a2</sre:atom>
+                    <sre:atom>a5</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b4</sre:bond>
                     <sre:atom>a6</sre:atom>
+                    <sre:atom>a5</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b8</sre:bond>
                     <sre:atom>a9</sre:atom>
+                    <sre:atom>a5</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -142,10 +154,12 @@
                 <sre:connectingBond>
                     <sre:bond>b4</sre:bond>
                     <sre:atom>a5</sre:atom>
+                    <sre:atom>a6</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b6</sre:bond>
                     <sre:atom>a8</sre:atom>
+                    <sre:atom>a6</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -167,14 +181,17 @@
                 <sre:connectingBond>
                     <sre:bond>b5</sre:bond>
                     <sre:atom>a1</sre:atom>
+                    <sre:atom>a7</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b10</sre:bond>
                     <sre:atom>a10</sre:atom>
+                    <sre:atom>a7</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b11</sre:bond>
                     <sre:atom>a11</sre:atom>
+                    <sre:atom>a7</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -194,10 +211,12 @@
                 <sre:connectingBond>
                     <sre:bond>b6</sre:bond>
                     <sre:atom>a6</sre:atom>
+                    <sre:atom>a8</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b7</sre:bond>
                     <sre:atom>a4</sre:atom>
+                    <sre:atom>a8</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -215,6 +234,7 @@
                 <sre:connectingBond>
                     <sre:bond>b8</sre:bond>
                     <sre:atom>a5</sre:atom>
+                    <sre:atom>a9</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -234,10 +254,12 @@
                 <sre:connectingBond>
                     <sre:bond>b9</sre:bond>
                     <sre:atom>a4</sre:atom>
+                    <sre:atom>a10</sre:atom>
                 </sre:connectingBond>
                 <sre:connectingBond>
                     <sre:bond>b10</sre:bond>
                     <sre:atom>a7</sre:atom>
+                    <sre:atom>a10</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -255,6 +277,7 @@
                 <sre:connectingBond>
                     <sre:bond>b11</sre:bond>
                     <sre:atom>a7</sre:atom>
+                    <sre:atom>a11</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
         </sre:annotation>
@@ -496,6 +519,7 @@
                 <sre:connectingBond>
                     <sre:bond>b5</sre:bond>
                     <sre:atom>a1</sre:atom>
+                    <sre:atom>a7</sre:atom>
                 </sre:connectingBond>
             </sre:connections>
             <sre:internalBonds>

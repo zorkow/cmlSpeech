@@ -41,6 +41,7 @@ import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import java.util.List;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
+import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
 
 /**
  * Constructs the exploration structure.
@@ -78,6 +79,32 @@ public class StructureVisitor implements XmlVisitor {
 
 
   @Override
+  public void visit(final RichIsolatedRing group) {
+    this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
+    annotations.put(group.getId(), this.element);
+    this.context = RichStructureHelper.getRichMolecule();
+      // this.annotations.registerAnnotation(atom.getId(),
+      //                                     this.element);
+      //this.atomStructure(group);
+
+    String id = group.getId();
+    ComponentsPositions positions = ((RichMolecule)this.context).getPath();
+    Integer position = positions.getPosition(id);
+    System.out.println(position);
+    this.element.appendChild(new SreElement(group.tag(), id));
+    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
+    this.element.appendChild(parent);
+    parent.appendChild(SreUtil.sreElement(this.context.getId()));
+    this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
+                                            position.toString()));
+    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
+                                            group.getComponents()));
+    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
+                                            group.getSubSystems()));
+    SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+  }
+    
+  @Override
   public void visit(final RichFunctionalGroup group) {
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     annotations.put(group.getId(), this.element);
@@ -91,8 +118,9 @@ public class StructureVisitor implements XmlVisitor {
     Integer position = positions.getPosition(id);
     System.out.println(position);
     this.element.appendChild(new SreElement(group.tag(), id));
-    this.element.appendChild(new SreElement(SreNamespace.Tag.PARENTS,
-        this.context.getId()));
+    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
+    this.element.appendChild(parent);
+    parent.appendChild(SreUtil.sreElement(this.context.getId()));
     this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
                                             position.toString()));
     this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
@@ -127,8 +155,9 @@ public class StructureVisitor implements XmlVisitor {
     ComponentsPositions positions = this.context.getComponentsPositions();
     Integer position = positions.getPosition(id);
     this.element.appendChild(new SreElement(atom.tag(), id));
-    this.element.appendChild(new SreElement(SreNamespace.Tag.PARENTS,
-        this.context.getId()));
+    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
+    this.element.appendChild(parent);
+    parent.appendChild(SreUtil.sreElement(this.context.getId()));
     this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
                                             position.toString()));
     Set<Connection> internalConnections = this.connectionsInContext(atom);
@@ -150,16 +179,16 @@ public class StructureVisitor implements XmlVisitor {
 
   private void appendNeighbours(String neighbour, Integer position,
                                 Set<Connection> connections) {
-      SreElement neighbourElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-      this.element.appendChild(neighbourElement);
-      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.ATOM, neighbour));
-      neighbourElement.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
-                                              position.toString()));
-      SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
-      neighbourElement.appendChild(viaElement);
-      connections.stream().
-        filter(c -> c.getConnected() == neighbour).
-        forEach(c -> viaElement.appendChild(SreUtil.sreElement(c.getConnector())));
+    SreElement neighbourElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+    this.element.appendChild(neighbourElement);
+    neighbourElement.appendChild(new SreElement(SreNamespace.Tag.ATOM, neighbour));
+    neighbourElement.appendChild(new SreElement(SreNamespace.Tag.POSITION, 
+                                                position.toString()));
+    SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
+    neighbourElement.appendChild(viaElement);
+    connections.stream().
+      filter(c -> c.getConnected() == neighbour).
+      forEach(c -> viaElement.appendChild(SreUtil.sreElement(c.getConnector())));
   }
 
   //   ComponentsPositions positions = this.context.getComponentsPositions();
