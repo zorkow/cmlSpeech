@@ -29,28 +29,26 @@ package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Connection;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichChemObject;
+import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
+import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 import com.google.common.base.Joiner;
 
 import nu.xom.Document;
 
-import org.openscience.cdk.interfaces.IAtom;
-
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import com.progressiveaccess.cmlspeech.structure.RichSetType;
-import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
-import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -89,7 +87,7 @@ public class SreSpeech extends SreXml {
           for (final String subRing : atomSet.getSubSystems()) {
             final RichAtomSet subRingSet = RichStructureHelper
               .getRichAtomSet(subRing);
-            this.atomSet(subRingSet, (RichFusedRing)atomSet);
+            this.atomSet(subRingSet, (RichFusedRing) atomSet);
           }
         }
         // TODO (sorge) Deal with FUSED rings here.
@@ -124,14 +122,14 @@ public class SreSpeech extends SreXml {
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
 
     Set<Connection> internalConnections = this.connectionsInContext(atom, system);
-    this.toSreSet(id, SreNamespace.Tag.COMPONENT, 
+    this.toSreSet(id, SreNamespace.Tag.COMPONENT,
                   internalConnections.stream().map(conn -> conn.getConnector())
                   .collect(Collectors.toSet()));
 
     ComponentsPositions positions = system.getComponentsPositions();
     Integer position = positions.getPosition(id);
     this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
-    
+
     this.describeConnections(system, atom, id);
   }
 
@@ -140,7 +138,7 @@ public class SreSpeech extends SreXml {
    *
    * @param atom
    *          The rich atom.
-   * 
+   *
    * @return The connections of the atom that belong to the set.
    */
   private Set<Connection> connectionsInContext(final RichAtom atom, final RichAtomSet atomSet) {
@@ -156,7 +154,7 @@ public class SreSpeech extends SreXml {
     return internal;
   }
 
-  
+
   private void atom(final RichAtom atom, final RichMolecule system) {
     final String id = atom.getId();
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
@@ -212,7 +210,7 @@ public class SreSpeech extends SreXml {
     ComponentsPositions positions = superSystem.getPath();
     Integer position = positions.getPosition(id);
     this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
-    
+
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
 
@@ -224,7 +222,7 @@ public class SreSpeech extends SreXml {
     ComponentsPositions positions = superSystem.getPath();
     Integer position = positions.getPosition(id);
     this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
-    
+
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
 
