@@ -49,6 +49,9 @@ import java.util.TreeSet;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Constructs the Sre speech annotations.
@@ -120,6 +123,11 @@ public class SreSpeech extends SreXml {
         this.speechAttribute(atom.longSimpleDescription(this.molecule)));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
 
+    Set<Connection> internalConnections = this.connectionsInContext(atom, system);
+    this.toSreSet(id, SreNamespace.Tag.COMPONENT, 
+                  internalConnections.stream().map(conn -> conn.getConnector())
+                  .collect(Collectors.toSet()));
+
     ComponentsPositions positions = system.getComponentsPositions();
     Integer position = positions.getPosition(id);
     this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
@@ -127,6 +135,28 @@ public class SreSpeech extends SreXml {
     this.describeConnections(system, atom, id);
   }
 
+  /**
+   * Computes connections of an atom in the context of a set.
+   *
+   * @param atom
+   *          The rich atom.
+   * 
+   * @return The connections of the atom that belong to the set.
+   */
+  private Set<Connection> connectionsInContext(final RichAtom atom, final RichAtomSet atomSet) {
+    if (!atomSet.getConnectingAtoms().contains(atom.getId())) {
+      return atom.getConnections();
+    }
+    Set<Connection> internal = new HashSet<>();
+    for (Connection connection : atom.getConnections()) {
+      if (atomSet.getInternalBonds().contains(connection.getConnector())) {
+        internal.add(connection);
+      }
+    }
+    return internal;
+  }
+
+  
   private void atom(final RichAtom atom, final RichMolecule system) {
     final String id = atom.getId();
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
