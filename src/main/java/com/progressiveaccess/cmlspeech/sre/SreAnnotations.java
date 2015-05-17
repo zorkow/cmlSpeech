@@ -85,6 +85,13 @@ public class SreAnnotations extends SreElement {
         this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), tag, entry);
   }
 
+  public void appendAnnotation(final String annotate,
+      final SreNamespace.Tag tag,
+      final String entry) {
+    final Element element = this.getNodeToAnnotate(annotate);
+    element.appendChild(new SreElement(tag, entry));
+  }
+
   public void appendAnnotation(final Element annotate,
       final SreNamespace.Tag tag,
       final Element entry) {

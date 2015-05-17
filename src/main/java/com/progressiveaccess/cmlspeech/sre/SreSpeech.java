@@ -46,6 +46,9 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import com.progressiveaccess.cmlspeech.structure.RichSetType;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 
 /**
  * Constructs the Sre speech annotations.
@@ -79,6 +82,13 @@ public class SreSpeech extends SreXml {
         final RichAtomSet atomSet = RichStructureHelper
             .getRichAtomSet(structure);
         this.atomSet(atomSet, this.molecule);
+        if (atomSet.getType() == RichSetType.FUSED) {
+          for (final String subRing : atomSet.getSubSystems()) {
+            final RichAtomSet subRingSet = RichStructureHelper
+              .getRichAtomSet(subRing);
+            this.atomSet(subRingSet, (RichFusedRing)atomSet);
+          }
+        }
         // TODO (sorge) Deal with FUSED rings here.
         // Describe the bottom level.
         for (final String atom : atomSet.getComponentsPositions()) {
@@ -109,6 +119,11 @@ public class SreSpeech extends SreXml {
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
         this.speechAttribute(atom.longSimpleDescription(this.molecule)));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
+
+    ComponentsPositions positions = system.getComponentsPositions();
+    Integer position = positions.getPosition(id);
+    this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
+    
     this.describeConnections(system, atom, id);
   }
 
@@ -135,6 +150,7 @@ public class SreSpeech extends SreXml {
     final String id = atomSet.getId();
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOMSET,
         this.speechAtomSet(atomSet));
+    this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, "1");
     // Children are given in the order of their positions!
     this.toSreSet(id, SreNamespace.Tag.CHILDREN, atomSet.getPath());
     this.toSreSet(id, SreNamespace.Tag.COMPONENT, atomSet.getComponents());
@@ -154,12 +170,31 @@ public class SreSpeech extends SreXml {
   private void atomSet(final RichAtomSet atomSet,
                        final RichAtomSet superSystem) {
     this.atomSet(atomSet);
+
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
 
   private void atomSet(final RichAtomSet atomSet,
                        final RichMolecule superSystem) {
     this.atomSet(atomSet);
+
+    String id = atomSet.getId();
+    ComponentsPositions positions = superSystem.getPath();
+    Integer position = positions.getPosition(id);
+    this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
+    
+    this.describeConnections(superSystem, atomSet, atomSet.getId());
+  }
+
+  private void atomSet(final RichAtomSet atomSet,
+                       final RichFusedRing superSystem) {
+    this.atomSet(atomSet);
+
+    String id = atomSet.getId();
+    ComponentsPositions positions = superSystem.getPath();
+    Integer position = positions.getPosition(id);
+    this.getAnnotations().appendAnnotation(id, SreNamespace.Tag.POSITION, position.toString());
+    
     this.describeConnections(superSystem, atomSet, atomSet.getId());
   }
 
@@ -194,6 +229,8 @@ public class SreSpeech extends SreXml {
         return this.describeIsolatedRing(atomSet);
       case FUNCGROUP:
         return this.describeFunctionalGroup(atomSet);
+      case SMALLEST:
+        return this.describeSubRing(atomSet);
       default:
         return "";
     }
@@ -206,6 +243,13 @@ public class SreSpeech extends SreXml {
 
   private String describeAliphaticChain(final RichAtomSet system) {
     return "Aliphatic chain of length " + system.getStructure().getAtomCount();
+  }
+
+  private String describeSubRing(final RichAtomSet system) {
+    String descr = "Subring with " + system.getStructure().getAtomCount()
+        + " elements.";
+    String replacements = this.describeReplacements(system);
+    return replacements == "" ? descr : descr + " " + replacements;
   }
 
   private String describeFusedRing(final RichAtomSet system) {
