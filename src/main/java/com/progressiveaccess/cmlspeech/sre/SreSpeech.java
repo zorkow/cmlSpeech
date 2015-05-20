@@ -59,6 +59,7 @@ public class SreSpeech extends SreXml {
 
   private Document doc;
   private RichMolecule molecule = RichStructureHelper.getRichMolecule();
+  private RichAtomSet currentSystem = null;
 
   SreSpeech() {
     super();
@@ -118,7 +119,7 @@ public class SreSpeech extends SreXml {
   private void atom(final RichAtom atom, final RichAtomSet system) {
     final String id = atom.getId();
     this.getAnnotations().registerAnnotation(id, SreNamespace.Tag.ATOM,
-        this.speechAttribute(atom.longSimpleDescription(this.molecule)));
+        this.speechAttribute(atom.longSimpleDescription(system)));
     this.toSreSet(id, SreNamespace.Tag.PARENTS, atom.getSuperSystems());
 
     Set<Connection> internalConnections = this.connectionsInContext(atom, system);
@@ -357,6 +358,7 @@ public class SreSpeech extends SreXml {
   private void describeConnections(final RichAtomSet system,
       final RichChemObject block,
       final String id) {
+    this.currentSystem = system;
     Integer count = 0;
     for (final Connection connection : block.getConnections()) {
       final String connected = connection.getConnected();
@@ -366,11 +368,13 @@ public class SreSpeech extends SreXml {
       count++;
       this.describeConnection(connection, connected, id, count);
     }
+    this.currentSystem = null;
   }
 
   private void describeConnections(final RichMolecule system,
       final RichChemObject block,
       final String id) {
+    this.currentSystem = system;
     Integer count = 0;
     for (final Connection connection : block.getConnections()) {
       final String connected = connection.getConnected();
@@ -380,6 +384,7 @@ public class SreSpeech extends SreXml {
       count++;
       this.describeConnection(connection, connected, id, count);
     }
+    this.currentSystem = null;
   }
 
   private void describeConnection(final Connection connection,
@@ -430,19 +435,19 @@ public class SreSpeech extends SreXml {
         elementSpeech = this.describeBridgeAtom(connector, connected);
         connAttr = SreNamespace.Attribute.ATOM;
         connSpeech = this.speechAttribute(RichStructureHelper
-          .getRichAtom(connector).shortSimpleDescription(this.molecule));
+          .getRichAtom(connector).shortSimpleDescription(this.currentSystem));
         break;
       case SHAREDATOM:
         elementSpeech = this.describeSharedAtom(connector, connected);
         connAttr = SreNamespace.Attribute.ATOM;
         connSpeech = this.speechAttribute(RichStructureHelper
-          .getRichAtom(connector).longSimpleDescription(this.molecule));
+          .getRichAtom(connector).longSimpleDescription(this.currentSystem));
         break;
       case SPIROATOM:
         elementSpeech = this.describeSpiroAtom(connector, connected);
         connAttr = SreNamespace.Attribute.ATOM;
         connSpeech = this.speechAttribute(RichStructureHelper
-          .getRichAtom(connector).shortSimpleDescription(this.molecule));
+          .getRichAtom(connector).shortSimpleDescription(this.currentSystem));
         break;
       case SHAREDBOND:
         // elementSpeech = ???
@@ -493,7 +498,7 @@ public class SreSpeech extends SreXml {
     final String bond = RichStructureHelper.getRichBond(connector)
         .shortSimpleDescription();
     final String structure = RichStructureHelper.isAtom(connected)
-        ? RichStructureHelper.getRichAtom(connected).shortSimpleDescription(this.molecule)
+        ? RichStructureHelper.getRichAtom(connected).shortSimpleDescription(this.currentSystem)
         : this.describeAtomSet(RichStructureHelper.getRichAtomSet(connected));
     return bond + "ed to " + structure;
   }
