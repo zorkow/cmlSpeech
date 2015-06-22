@@ -66,6 +66,7 @@ public class StructureVisitor implements XmlVisitor {
   private SreElement element = null;
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
+  private TypeVisitor typeVisitor = new TypeVisitor();
 
 
   /**
@@ -154,7 +155,7 @@ public class StructureVisitor implements XmlVisitor {
   @Override
   public void visit(final ConnectingBond bond) {
     this.element = this.makeNeighbour(bond.getConnected(),
-            this.makeVia(bond.getConnector(),
+            this.makeVia(bond,
                 this.positions.getPosition(bond.getOrigin())));
   }
 
@@ -252,7 +253,7 @@ public class StructureVisitor implements XmlVisitor {
         .forEach(c -> {
             final SreElement neighbour =
                 this.makeNeighbour(c.getConnected(),
-                      this.makeVia(c.getConnector(),
+                      this.makeVia(c,
                       this.positions.getPosition(c.getConnected())));
             this.element.appendChild(neighbour);
           });
@@ -269,7 +270,10 @@ public class StructureVisitor implements XmlVisitor {
     final String id = structure.getId();
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     this.annotations.put(id, this.element);
-    this.element.appendChild(new SreElement(structure.tag(), id));
+    SreElement structureElement = new SreElement(structure.tag(), id);
+    this.element.appendChild(structureElement);
+    structure.accept(this.typeVisitor);
+    this.addTypeAttribute(structureElement);
     final SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
     this.element.appendChild(parent);
     Integer position = 1;
@@ -304,7 +308,7 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void makeConnection(final Connection connection) {
     this.element = this.makeNeighbour(connection.getConnected(),
-            this.makeVia(connection.getConnector(),
+            this.makeVia(connection,
                 this.positions.getPosition(connection.getConnector())));
   }
 
@@ -319,11 +323,17 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @return The newly create via element.
    */
-  private SreElement makeVia(final String via, final Integer position) {
+  private SreElement makeVia(final Connection via, final Integer position) {
     final SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
-    viaElement.appendChild(SreUtil.sreElement(via));
+    final SreElement connectorElement = SreUtil.sreElement(via.getConnector());
+    ((RichChemObject) RichStructureHelper.getRichStructure(via.getConnector()))
+        .accept(this.typeVisitor);
+    this.addTypeAttribute(connectorElement);
+    viaElement.appendChild(connectorElement);
     viaElement.appendChild(new SreElement(SreNamespace.Tag.POSITION,
         position == null ? "0" : position.toString()));
+    via.accept(this.typeVisitor);
+    this.addTypeAttribute(viaElement);
     return viaElement;
   }
 
@@ -341,7 +351,11 @@ public class StructureVisitor implements XmlVisitor {
   private SreElement makeNeighbour(final String neighbour,
                                    final SreElement via) {
     final SreElement newElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-    newElement.appendChild(SreUtil.sreElement(neighbour));
+    final SreElement neighbourElement = SreUtil.sreElement(neighbour);
+    ((RichChemObject) RichStructureHelper.getRichStructure(neighbour))
+        .accept(this.typeVisitor);
+    this.addTypeAttribute(neighbourElement);
+    newElement.appendChild(neighbourElement);
     newElement.appendChild(via);
     return newElement;
   }
@@ -405,6 +419,19 @@ public class StructureVisitor implements XmlVisitor {
       }
     }
     return internal;
+  }
+
+
+  /**
+   * Adds a computed type attribute to the given element.
+   *
+   * @param structure
+   *          The structural element.
+   */
+  private void addTypeAttribute(final SreElement structure) {
+    structure.addAttribute(
+        new SreAttribute(SreNamespace.Attribute.TYPE,
+                         this.typeVisitor.getType()));
   }
 
 }
