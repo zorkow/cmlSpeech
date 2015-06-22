@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   StructureVisitor.java
+ * @file StructureVisitor.java
  * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker
  *         Sorge</a>
- * @date   Sat Apr 25 23:36:58 2015
+ * @date Sat Apr 25 23:36:58 2015
  *
- * @brief  Visitor to construct the exploration structure.
+ * @brief Visitor to construct the exploration structure.
  *
  *
  */
@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 
 public class StructureVisitor implements XmlVisitor {
 
-  private TreeMultimap<String, SreElement> annotations =
+  private final TreeMultimap<String, SreElement> annotations =
       TreeMultimap.create(new CmlNameComparator(), new SreComparator());
   private SreElement element = null;
   private RichAtomSet context = null;
@@ -84,7 +84,7 @@ public class StructureVisitor implements XmlVisitor {
    * @return The annotation the visitor computes.
    */
   public SreElement getAnnotations() {
-    SreElement annotation = new SreElement(SreNamespace.Tag.ANNOTATIONS);
+    final SreElement annotation = new SreElement(SreNamespace.Tag.ANNOTATIONS);
     for (final String key : this.annotations.keySet()) {
       for (final SreElement value : this.annotations.get(key)) {
         annotation.appendChild(value);
@@ -96,7 +96,7 @@ public class StructureVisitor implements XmlVisitor {
 
   @Override
   public void visit(final RichAtom atom) {
-    for (String parent : atom.getSuperSystems()) {
+    for (final String parent : atom.getSuperSystems()) {
       this.context = RichStructureHelper.getRichAtomSet(parent);
       this.atomStructure(atom);
     }
@@ -139,6 +139,38 @@ public class StructureVisitor implements XmlVisitor {
   }
 
 
+  @Override
+  public void visit(final SpiroAtom spiroAtom) {
+    this.makeConnection(spiroAtom);
+  }
+
+
+  @Override
+  public void visit(final BridgeAtom bridgeAtom) {
+    this.makeConnection(bridgeAtom);
+  }
+
+
+  @Override
+  public void visit(final ConnectingBond bond) {
+    this.element = this.makeNeighbour(bond.getConnected(),
+            this.makeVia(bond.getConnector(),
+                this.positions.getPosition(bond.getOrigin())));
+  }
+
+
+  @Override
+  public void visit(final SharedAtom sharedAtom) {
+    this.makeConnection(sharedAtom);
+  }
+
+
+  @Override
+  public void visit(final SharedBond sharedBond) {
+    this.makeConnection(sharedBond);
+  }
+
+
   /**
    * Computes structure for an atom set in the context given context.
    *
@@ -147,15 +179,15 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void atomSetStructure(final RichAtomSet set) {
     this.context = RichStructureHelper.getRichAtomSet(
-         set.getSuperSystems().iterator().next());
+        set.getSuperSystems().iterator().next());
     this.positions = ((RichSuperSet) this.context).getPath();
     this.addStructure(set);
     this.addComponents(set.getComponents());
-    SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+    final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.element = connElement;
-    Set<Connection> internalConnections = this.connectionsInContext(set);
-    for (Connection connection : internalConnections) {
+    final Set<Connection> internalConnections = this.connectionsInContext(set);
+    for (final Connection connection : internalConnections) {
       this.context = set;
       this.positions = this.context.getComponentsPositions();
       connection.accept(this);
@@ -171,10 +203,10 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom set.
    */
   private void atomSetStructure(final RichMolecule set) {
-    context = null;
+    this.context = null;
     this.addStructure(set);
     this.addComponents(set.getComponents());
-    SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+    final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
   }
 
@@ -188,194 +220,150 @@ public class StructureVisitor implements XmlVisitor {
   private void atomStructure(final RichAtom atom) {
     this.positions = this.context.getComponentsPositions();
     this.addStructure(atom);
-    Integer position = this.positions.getPosition(atom.getId());
-    Set<Connection> internalConnections = this.bondsInContext(atom);
+    final Set<Connection> internalConnections = this.bondsInContext(atom);
     this.addComponents(internalConnections.stream()
-                       .map(conn -> conn.getConnector())
-                       .collect(Collectors.toSet()));
-    SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
+        .map(conn -> conn.getConnector())
+        .collect(Collectors.toSet()));
+    final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
+    this.element = connElement;
+    final Integer position = this.positions.getPosition(atom.getId());
     if (position > 1) {
-      internalConnections.stream()
-          .filter(c -> c.getConnected() == this.positions.get(position - 1))
-          .forEach(c -> {
-              SreElement neighbour = this.makeNeighbour(c.getConnected(),
-                  this.makeVia(c.getConnector(),
-                               this.positions.getPosition(c.getConnected())));
-              connElement.appendChild(neighbour);
-            });
+      this.addConnectingBond(internalConnections, position - 1);
     }
-    if (position < positions.size()) {
-      internalConnections.stream()
-        .filter(c -> c.getConnected() == this.positions.get(position + 1))
-        .forEach(c -> {
-            SreElement neighbour = this.makeNeighbour
-              (c.getConnected(),
-               this.makeVia(c.getConnector(),
-                            this.positions.getPosition(c.getConnected())));
-            connElement.appendChild(neighbour);});
+    if (position < this.positions.size()) {
+      this.addConnectingBond(internalConnections, position + 1);
     }
   }
 
 
-  /** 
-   * Creates a neighbour element.
-   * 
+  /**
+   * Adds connecting bond element as neighbour of an atom.
+   *
+   * @param connections
+   *          The set of internal connections.
    * @param position
-   *          The position of the connected element in the current context.
-   * @param neighbour
-   *          The connected element.
-   * @param via
-   *          The via element representing how the element is connected.
-   * 
-   * @return The newly create neighbour element.
+   *          Neighbour position to add.
    */
-  private void addStructure(RichChemObject structure) {
-    String id = structure.getId();
+  private void addConnectingBond(final Set<Connection> connections,
+      final Integer position) {
+    connections.stream()
+        .filter(c -> c.getConnected() == this.positions.get(position))
+        .forEach(c -> {
+            final SreElement neighbour =
+                this.makeNeighbour(c.getConnected(),
+                      this.makeVia(c.getConnector(),
+                      this.positions.getPosition(c.getConnected())));
+            this.element.appendChild(neighbour);
+          });
+  }
+
+
+  /**
+   * Creates an annotation element and adds the structural components.
+   *
+   * @param structure
+   *          A rich chemical object.
+   */
+  private void addStructure(final RichChemObject structure) {
+    final String id = structure.getId();
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    annotations.put(id, this.element);
+    this.annotations.put(id, this.element);
     this.element.appendChild(new SreElement(structure.tag(), id));
-    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
+    final SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
     this.element.appendChild(parent);
     Integer position = 1;
     if (this.context != null) {
       position = this.positions.getPosition(id);
       parent.appendChild(SreUtil.sreElement(this.context.getId()));
     }
-    this.element.appendChild
-        (new SreElement(SreNamespace.Tag.POSITION, position.toString()));
-    this.element.appendChild
-        (SreUtil.sreSet(SreNamespace.Tag.CHILDREN, structure.getSubSystems()));
-  };
+    this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION,
+                                            position.toString()));
+    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
+                                            structure.getSubSystems()));
+  }
 
-  
-  /** 
-   * Creates a neighbour element.
-   * 
-   * @param position
-   *          The position of the connected element in the current context.
-   * @param neighbour
-   *          The connected element.
-   * @param via
-   *          The via element representing how the element is connected.
-   * 
-   * @return The newly create neighbour element.
-   */
-  private void addComponents(Integer position, Set<String> components,
-                             Set<String> children) {
-    this.element.appendChild
-        (new SreElement(SreNamespace.Tag.POSITION, position.toString()));
-    this.element.appendChild
-        (SreUtil.sreSet(SreNamespace.Tag.COMPONENT, components));
-    this.element.appendChild
-        (SreUtil.sreSet(SreNamespace.Tag.CHILDREN, children));
-  };
 
-  
-  /** 
+  /**
    * Adds the components of a structure to the global element.
-   * 
+   *
    * @param components
    *          Set of component elements to be added.
    */
-  private void addComponents(Set<String> components) {
-    this.element.appendChild
-        (SreUtil.sreSet(SreNamespace.Tag.COMPONENT, components));
-  };
-
-  
-  @Override
-  public void visit(final SpiroAtom spiroAtom) {
-    this.makeConnection(spiroAtom);
+  private void addComponents(final Set<String> components) {
+    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
+                                            components));
   }
 
 
-  @Override
-  public void visit(final BridgeAtom bridgeAtom) {
-    this.makeConnection(bridgeAtom);
+  /**
+   * Creates a neighbour element for connections on the block level.
+   *
+   * @param connection
+   *          The block connection.
+   */
+  private void makeConnection(final Connection connection) {
+    this.element = this.makeNeighbour(connection.getConnected(),
+            this.makeVia(connection.getConnector(),
+                this.positions.getPosition(connection.getConnector())));
   }
 
 
-  @Override
-  public void visit(final ConnectingBond bond) {
-    this.element = this.makeNeighbour
-      (bond.getConnected(),
-       this.makeVia(bond.getConnector(),
-                    this.positions.getPosition(bond.getOrigin())));
-  }
-  
-
-  @Override
-  public void visit(final SharedAtom sharedAtom) {
-    this.makeConnection(sharedAtom);
-  }
-
-
-  @Override
-  public void visit(final SharedBond sharedBond) {
-    this.makeConnection(sharedBond);
-  }
-
-
-  private void makeConnection(Connection connection) {
-    this.element = this.makeNeighbour
-      (connection.getConnected(),
-       this.makeVia(connection.getConnector(),
-                    this.positions.getPosition(connection.getConnector())));
-  }
-
-  
-  /** 
+  /**
    * Creates a via element.
-   * 
+   *
    * @param via
    *          The connector.
    * @param position
    *          The position of the connected element in the current context.
-   * 
+   *
    * @return The newly create via element.
    */
-  private SreElement makeVia(String via, Integer position) {
-    SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
+  private SreElement makeVia(final String via, final Integer position) {
+    final SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
     viaElement.appendChild(SreUtil.sreElement(via));
     viaElement.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-                                          position == null ? "0" : position.toString()));
+        position == null ? "0" : position.toString()));
     return viaElement;
   }
 
 
-  /** 
+  /**
    * Creates a neighbour element.
-   * 
+   *
    * @param neighbour
    *          The connected element.
    * @param via
    *          The via element representing how the element is connected.
-   * 
+   *
    * @return The newly create neighbour element.
    */
-  private SreElement makeNeighbour(String neighbour, SreElement via) {
-    SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-    element.appendChild(SreUtil.sreElement(neighbour));
-    element.appendChild(via);
-    return element;
-  };
+  private SreElement makeNeighbour(final String neighbour,
+                                   final SreElement via) {
+    final SreElement newElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+    newElement.appendChild(SreUtil.sreElement(neighbour));
+    newElement.appendChild(via);
+    return newElement;
+  }
 
-  
-  /** 
+
+  /**
    * Creates a neighbour element.
-   * 
-   * @param neighbour The connector.
-   * @param vias The list of via elements representing how the element is
-   *     connected.
-   * 
+   *
+   * @param neighbour
+   *          The connector.
+   * @param vias
+   *          The list of via elements representing how the element is
+   *          connected.
+   *
    * @return The newly create neighbour element.
    */
-  private SreElement makeNeighbour(String neighbour, List<SreElement> vias) {
-    SreElement element = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-    element.appendChild(SreUtil.sreElement(neighbour));
-    vias.stream().forEach(element::appendChild);
-    return element;
+  private SreElement makeNeighbour(final String neighbour,
+      final List<SreElement> vias) {
+    final SreElement newElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
+    newElement.appendChild(SreUtil.sreElement(neighbour));
+    vias.stream().forEach(newElement::appendChild);
+    return newElement;
   }
 
 
@@ -391,8 +379,8 @@ public class StructureVisitor implements XmlVisitor {
     if (!this.context.getConnectingAtoms().contains(atom.getId())) {
       return atom.getConnections();
     }
-    Set<Connection> internal = new HashSet<>();
-    for (Connection connection : atom.getConnections()) {
+    final Set<Connection> internal = new HashSet<>();
+    for (final Connection connection : atom.getConnections()) {
       if (this.context.getInternalBonds().contains(connection.getConnector())) {
         internal.add(connection);
       }
@@ -410,26 +398,13 @@ public class StructureVisitor implements XmlVisitor {
    * @return The connections of the atom that belong to the set.
    */
   private Set<Connection> connectionsInContext(final RichAtomSet set) {
-    Set<Connection> internal = new HashSet<>();
-    for (Connection connection : set.getConnections()) {
+    final Set<Connection> internal = new HashSet<>();
+    for (final Connection connection : set.getConnections()) {
       if (this.positions.contains(connection.getConnected())) {
         internal.add(connection);
       }
     }
     return internal;
-  }
-
-
-  private String nextElement(final String id) {
-    ComponentsPositions positions = this.context.getComponentsPositions();
-    Integer current = positions.getPosition(id);
-    return (current >= positions.size()) ? null : positions.get(current + 1);
-  }
-
-  private String previousElement(final String id) {
-    ComponentsPositions positions = this.context.getComponentsPositions();
-    Integer current = positions.getPosition(id);
-    return (current <= 1) ? null : positions.get(current - 1);
   }
 
 }
