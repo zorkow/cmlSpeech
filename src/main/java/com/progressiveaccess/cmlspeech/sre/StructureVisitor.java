@@ -28,29 +28,32 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
-import com.progressiveaccess.cmlspeech.structure.RichAtom;
-import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
-import com.google.common.collect.TreeMultimap;
-import java.util.Comparator;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
-import java.util.Set;
-import com.progressiveaccess.cmlspeech.connection.Connection;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
-import java.util.List;
-import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
-import com.progressiveaccess.cmlspeech.structure.RichMolecule;
-import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
-import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
-import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
-import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
-import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
+import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
+import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
+import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
+import com.progressiveaccess.cmlspeech.structure.RichAtom;
+import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
+import com.progressiveaccess.cmlspeech.structure.RichChemObject;
+import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
+import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
+import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
+import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 import com.progressiveaccess.cmlspeech.structure.RichSuperSet;
+
+import com.google.common.collect.TreeMultimap;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Constructs the exploration structure.
@@ -58,34 +61,45 @@ import com.progressiveaccess.cmlspeech.structure.RichSuperSet;
 
 public class StructureVisitor implements XmlVisitor {
 
-  //private final SreAnnotations annotations = new SreAnnotations();
-
   private TreeMultimap<String, SreElement> annotations =
       TreeMultimap.create(new CmlNameComparator(), new SreComparator());
-  private SreElement element;
-  private RichAtomSet context;
-  private ComponentsPositions positions;
+  private SreElement element = null;
+  private RichAtomSet context = null;
+  private ComponentsPositions positions = null;
 
 
+  /**
+   * Dummy comparator for the tree multi map.
+   */
   private class SreComparator implements Comparator<SreElement> {
 
-  @Override
-  public int compare(final SreElement element1, final SreElement element2) {
-    return 1;
-  }}
+    @Override
+    public int compare(final SreElement element1, final SreElement element2) {
+      return 1;
+    }
+  }
 
 
   /**
    * @return The annotation the visitor computes.
    */
   public SreElement getAnnotations() {
-    SreElement element = new SreElement(SreNamespace.Tag.ANNOTATIONS);
+    SreElement annotation = new SreElement(SreNamespace.Tag.ANNOTATIONS);
     for (final String key : this.annotations.keySet()) {
       for (final SreElement value : this.annotations.get(key)) {
-        element.appendChild(value);
+        annotation.appendChild(value);
       }
     }
-    return element;
+    return annotation;
+  }
+
+
+  @Override
+  public void visit(final RichAtom atom) {
+    for (String parent : atom.getSuperSystems()) {
+      this.context = RichStructureHelper.getRichAtomSet(parent);
+      this.atomStructure(atom);
+    }
   }
 
 
@@ -125,40 +139,6 @@ public class StructureVisitor implements XmlVisitor {
   }
 
 
-  // /**
-  //  * Computes structure for an atom set in the context given context.
-  //  *
-  //  * @param set
-  //  *          The rich atom set.
-  //  */
-  // private void atomSetStructure(final RichAtomSet set) {
-  //   this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-  //   annotations.put(set.getId(), this.element);
-  //   this.context = RichStructureHelper.getRichMolecule();
-  //   String id = set.getId();
-  //   this.positions = ((RichMolecule)this.context).getPath();
-  //   Integer position = this.positions.getPosition(id);
-  //   this.element.appendChild(new SreElement(set.tag(), id));
-  //   SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
-  //   this.element.appendChild(parent);
-  //   parent.appendChild(SreUtil.sreElement(this.context.getId()));
-  //   this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-  //                                           position.toString()));
-  //   this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-  //                                           set.getComponents()));
-  //   this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
-  //                                           set.getSubSystems()));
-  //   SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
-  //   this.element.appendChild(connElement);
-  //   this.element = connElement;
-  //   Set<Connection> internalConnections = this.connectionsInContext(set);
-  //   for (Connection connection : internalConnections) {
-  //     connection.accept(this);
-  //     connElement.appendChild(this.element);
-  //   }
-  // }
-
-
   /**
    * Computes structure for an atom set in the context given context.
    *
@@ -166,27 +146,18 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom set.
    */
   private void atomSetStructure(final RichAtomSet set) {
-    this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    annotations.put(set.getId(), this.element);
-    this.context = RichStructureHelper.getRichAtomSet(set.getSuperSystems().iterator().next());
-    String id = set.getId();
-    this.positions = ((RichSuperSet)this.context).getPath();
-    Integer position = this.positions.getPosition(id);
-    this.element.appendChild(new SreElement(set.tag(), id));
-    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
-    this.element.appendChild(parent);
-    parent.appendChild(SreUtil.sreElement(this.context.getId()));
-    this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-                                            position.toString()));
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-                                            set.getComponents()));
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
-                                            set.getSubSystems()));
+    this.context = RichStructureHelper.getRichAtomSet(
+         set.getSuperSystems().iterator().next());
+    this.positions = ((RichSuperSet) this.context).getPath();
+    this.addStructure(set);
+    this.addComponents(set.getComponents());
     SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.element = connElement;
     Set<Connection> internalConnections = this.connectionsInContext(set);
     for (Connection connection : internalConnections) {
+      this.context = set;
+      this.positions = this.context.getComponentsPositions();
       connection.accept(this);
       connElement.appendChild(this.element);
     }
@@ -200,30 +171,11 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom set.
    */
   private void atomSetStructure(final RichMolecule set) {
-    this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    annotations.put(set.getId(), this.element);
-    String id = set.getId();
-    this.element.appendChild(new SreElement(set.tag(), id));
-    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
-    this.element.appendChild(parent);
-    this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION, "1"));
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-                                            set.getComponents()));
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
-                                            set.getSubSystems()));
+    context = null;
+    this.addStructure(set);
+    this.addComponents(set.getComponents());
     SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
-  }
-
-
-  @Override
-  public void visit(final RichAtom atom) {
-    for (String parent : atom.getSuperSystems()) {
-      this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-      annotations.put(atom.getId(), this.element);
-      this.context =  RichStructureHelper.getRichAtomSet(parent);
-      this.atomStructure(atom);
-    }
   }
 
 
@@ -234,42 +186,106 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom.
    */
   private void atomStructure(final RichAtom atom) {
-    String id = atom.getId();
     this.positions = this.context.getComponentsPositions();
-    Integer position = this.positions.getPosition(id);
-    this.element.appendChild(new SreElement(atom.tag(), id));
-    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
-    this.element.appendChild(parent);
-    parent.appendChild(SreUtil.sreElement(this.context.getId()));
-    this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-                                            position.toString()));
+    this.addStructure(atom);
+    Integer position = this.positions.getPosition(atom.getId());
     Set<Connection> internalConnections = this.bondsInContext(atom);
-    this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-        internalConnections.stream().map(conn -> conn.getConnector())
-                           .collect(Collectors.toList())));
-    this.element.appendChild(new SreElement(SreNamespace.Tag.CHILDREN));
+    this.addComponents(internalConnections.stream()
+                       .map(conn -> conn.getConnector())
+                       .collect(Collectors.toSet()));
     SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     if (position > 1) {
       internalConnections.stream()
-        .filter(c -> c.getConnected() == this.positions.get(position - 1))
-        .forEach(c -> {
-            c.accept(this);
-            connElement.appendChild(this.element);});
+          .filter(c -> c.getConnected() == this.positions.get(position - 1))
+          .forEach(c -> {
+              SreElement neighbour = this.makeNeighbour(c.getConnected(),
+                  this.makeVia(c.getConnector(),
+                               this.positions.getPosition(c.getConnected())));
+              connElement.appendChild(neighbour);
+            });
     }
     if (position < positions.size()) {
       internalConnections.stream()
         .filter(c -> c.getConnected() == this.positions.get(position + 1))
         .forEach(c -> {
-            c.accept(this);
-            connElement.appendChild(this.element);});
+            SreElement neighbour = this.makeNeighbour
+              (c.getConnected(),
+               this.makeVia(c.getConnector(),
+                            this.positions.getPosition(c.getConnected())));
+            connElement.appendChild(neighbour);});
     }
   }
 
 
+  /** 
+   * Creates a neighbour element.
+   * 
+   * @param position
+   *          The position of the connected element in the current context.
+   * @param neighbour
+   *          The connected element.
+   * @param via
+   *          The via element representing how the element is connected.
+   * 
+   * @return The newly create neighbour element.
+   */
+  private void addStructure(RichChemObject structure) {
+    String id = structure.getId();
+    this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
+    annotations.put(id, this.element);
+    this.element.appendChild(new SreElement(structure.tag(), id));
+    SreElement parent = new SreElement(SreNamespace.Tag.PARENTS);
+    this.element.appendChild(parent);
+    Integer position = 1;
+    if (this.context != null) {
+      position = this.positions.getPosition(id);
+      parent.appendChild(SreUtil.sreElement(this.context.getId()));
+    }
+    this.element.appendChild
+        (new SreElement(SreNamespace.Tag.POSITION, position.toString()));
+    this.element.appendChild
+        (SreUtil.sreSet(SreNamespace.Tag.CHILDREN, structure.getSubSystems()));
+  };
+
+  
+  /** 
+   * Creates a neighbour element.
+   * 
+   * @param position
+   *          The position of the connected element in the current context.
+   * @param neighbour
+   *          The connected element.
+   * @param via
+   *          The via element representing how the element is connected.
+   * 
+   * @return The newly create neighbour element.
+   */
+  private void addComponents(Integer position, Set<String> components,
+                             Set<String> children) {
+    this.element.appendChild
+        (new SreElement(SreNamespace.Tag.POSITION, position.toString()));
+    this.element.appendChild
+        (SreUtil.sreSet(SreNamespace.Tag.COMPONENT, components));
+    this.element.appendChild
+        (SreUtil.sreSet(SreNamespace.Tag.CHILDREN, children));
+  };
+
+  
+  /** 
+   * Adds the components of a structure to the global element.
+   * 
+   * @param components
+   *          Set of component elements to be added.
+   */
+  private void addComponents(Set<String> components) {
+    this.element.appendChild
+        (SreUtil.sreSet(SreNamespace.Tag.COMPONENT, components));
+  };
+
+  
   @Override
   public void visit(final SpiroAtom spiroAtom) {
-    System.out.println(spiroAtom);
     this.makeConnection(spiroAtom);
   }
 
@@ -282,7 +298,10 @@ public class StructureVisitor implements XmlVisitor {
 
   @Override
   public void visit(final ConnectingBond bond) {
-    this.makeConnection(bond);
+    this.element = this.makeNeighbour
+      (bond.getConnected(),
+       this.makeVia(bond.getConnector(),
+                    this.positions.getPosition(bond.getOrigin())));
   }
   
 
@@ -302,7 +321,7 @@ public class StructureVisitor implements XmlVisitor {
     this.element = this.makeNeighbour
       (connection.getConnected(),
        this.makeVia(connection.getConnector(),
-                    this.positions.getPosition(connection.getConnected())));
+                    this.positions.getPosition(connection.getConnector())));
   }
 
   
@@ -320,7 +339,7 @@ public class StructureVisitor implements XmlVisitor {
     SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
     viaElement.appendChild(SreUtil.sreElement(via));
     viaElement.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-                                          position.toString()));
+                                          position == null ? "0" : position.toString()));
     return viaElement;
   }
 
