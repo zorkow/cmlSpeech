@@ -204,7 +204,8 @@ public class AnnotationVisitor implements XmlVisitor {
   /**
    * Computes annotations for a structure's connections.
    *
-   * @param structure The structure that is currently visited.
+   * @param structure
+   *          The structure that is currently visited.
    */
   private void connectionsAnnotations(
       final AbstractRichStructure<?> structure) {
