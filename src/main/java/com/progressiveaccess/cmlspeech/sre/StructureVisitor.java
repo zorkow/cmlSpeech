@@ -32,6 +32,7 @@ import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
+import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
@@ -49,9 +50,12 @@ import com.progressiveaccess.cmlspeech.structure.RichSuperSet;
 
 import com.google.common.collect.TreeMultimap;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,7 +70,7 @@ public class StructureVisitor implements XmlVisitor {
   private SreElement element = null;
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
-  private TypeVisitor typeVisitor = new TypeVisitor();
+  private final TypeVisitor typeVisitor = new TypeVisitor();
 
 
   /**
@@ -155,8 +159,8 @@ public class StructureVisitor implements XmlVisitor {
   @Override
   public void visit(final ConnectingBond bond) {
     this.element = this.makeNeighbour(bond.getConnected(),
-            this.makeVia(bond,
-                this.positions.getPosition(bond.getOrigin())));
+        this.makeVia(bond,
+            this.positions.getPosition(bond.getOrigin())));
   }
 
 
@@ -188,12 +192,14 @@ public class StructureVisitor implements XmlVisitor {
     this.element.appendChild(connElement);
     this.element = connElement;
     final Set<Connection> internalConnections = this.connectionsInContext(set);
+    this.context = set;
+    this.positions = this.context.getComponentsPositions();
+    final List<SreElement> neighbours = new ArrayList<SreElement>();
     for (final Connection connection : internalConnections) {
-      this.context = set;
-      this.positions = this.context.getComponentsPositions();
       connection.accept(this);
-      connElement.appendChild(this.element);
+      neighbours.add(this.element);
     }
+    this.combineConnections(connElement, neighbours);
   }
 
 
@@ -253,8 +259,8 @@ public class StructureVisitor implements XmlVisitor {
         .forEach(c -> {
             final SreElement neighbour =
                 this.makeNeighbour(c.getConnected(),
-                      this.makeVia(c,
-                      this.positions.getPosition(c.getConnected())));
+                  this.makeVia(c,
+                  this.positions.getPosition(c.getConnected())));
             this.element.appendChild(neighbour);
           });
   }
@@ -270,7 +276,7 @@ public class StructureVisitor implements XmlVisitor {
     final String id = structure.getId();
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     this.annotations.put(id, this.element);
-    SreElement structureElement = new SreElement(structure.tag(), id);
+    final SreElement structureElement = new SreElement(structure.tag(), id);
     this.element.appendChild(structureElement);
     structure.accept(this.typeVisitor);
     this.addTypeAttribute(structureElement);
@@ -282,9 +288,9 @@ public class StructureVisitor implements XmlVisitor {
       parent.appendChild(SreUtil.sreElement(this.context.getId()));
     }
     this.element.appendChild(new SreElement(SreNamespace.Tag.POSITION,
-                                            position.toString()));
+        position.toString()));
     this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.CHILDREN,
-                                            structure.getSubSystems()));
+        structure.getSubSystems()));
   }
 
 
@@ -296,7 +302,7 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void addComponents(final Set<String> components) {
     this.element.appendChild(SreUtil.sreSet(SreNamespace.Tag.COMPONENT,
-                                            components));
+        components));
   }
 
 
@@ -308,8 +314,8 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void makeConnection(final Connection connection) {
     this.element = this.makeNeighbour(connection.getConnected(),
-            this.makeVia(connection,
-                this.positions.getPosition(connection.getConnector())));
+        this.makeVia(connection,
+            this.positions.getPosition(connection.getConnector())));
   }
 
 
@@ -327,7 +333,7 @@ public class StructureVisitor implements XmlVisitor {
     final SreElement viaElement = new SreElement(SreNamespace.Tag.VIA);
     final SreElement connectorElement = SreUtil.sreElement(via.getConnector());
     ((RichChemObject) RichStructureHelper.getRichStructure(via.getConnector()))
-        .accept(this.typeVisitor);
+    .accept(this.typeVisitor);
     this.addTypeAttribute(connectorElement);
     viaElement.appendChild(connectorElement);
     viaElement.appendChild(new SreElement(SreNamespace.Tag.POSITION,
@@ -349,11 +355,11 @@ public class StructureVisitor implements XmlVisitor {
    * @return The newly create neighbour element.
    */
   private SreElement makeNeighbour(final String neighbour,
-                                   final SreElement via) {
+      final SreElement via) {
     final SreElement newElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
     final SreElement neighbourElement = SreUtil.sreElement(neighbour);
     ((RichChemObject) RichStructureHelper.getRichStructure(neighbour))
-        .accept(this.typeVisitor);
+    .accept(this.typeVisitor);
     this.addTypeAttribute(neighbourElement);
     newElement.appendChild(neighbourElement);
     newElement.appendChild(via);
@@ -372,10 +378,10 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @return The newly create neighbour element.
    */
-  private SreElement makeNeighbour(final String neighbour,
+  private SreElement makeNeighbour(final SreElement neighbour,
       final List<SreElement> vias) {
     final SreElement newElement = new SreElement(SreNamespace.Tag.NEIGHBOUR);
-    newElement.appendChild(SreUtil.sreElement(neighbour));
+    newElement.appendChild(neighbour);
     vias.stream().forEach(newElement::appendChild);
     return newElement;
   }
@@ -431,7 +437,54 @@ public class StructureVisitor implements XmlVisitor {
   private void addTypeAttribute(final SreElement structure) {
     structure.addAttribute(
         new SreAttribute(SreNamespace.Attribute.TYPE,
-                         this.typeVisitor.getType()));
+            this.typeVisitor.getType()));
+  }
+
+
+  // TODO (sorge) Here is a lot of redundancy. This should be combined earlier,
+  //     when connections are translated for the first time. Possibly also think
+  //     about sorting them wrt. positions.
+  /**
+   * Combines shared connections to a single neighbour element.
+   *
+   * @param connElement
+   *          The connection element the neighbours are appended to.
+   * @param neighbours
+   *          A list of neighbours to insert.
+   */
+  private void combineConnections(final SreElement connElement,
+      final List<SreElement> neighbours) {
+    final Map<String, List<SreElement>> shares = new HashMap<>();
+    final Map<String, SreElement> sharedElements = new HashMap<>();
+    for (final SreElement node : neighbours) {
+      final SreElement child0 = (SreElement) node.getChildElements().get(0);
+      final SreElement child1 = (SreElement) node.getChildElements().get(1);
+      final String type = child1
+          .getAttributeValue(SreNamespace.Attribute.TYPE.getAttribute(),
+              SreNamespace.getInstance().getUri());
+      if (type.equals(ConnectionType.SHAREDBOND.getName())
+          || type.equals(ConnectionType.BRIDGEATOM.getName())) {
+        node.removeChild(child0);
+        node.removeChild(child1);
+        final String key = child0.getChild(0).getValue();
+        if (shares.containsKey(key)) {
+          shares.get(key).add(child1);
+        } else {
+          final List<SreElement> list = new ArrayList<SreElement>();
+          list.add(child1);
+          shares.put(key, list);
+          sharedElements.put(key, child0);
+        }
+      } else {
+        connElement.appendChild(node);
+      }
+    }
+    for (final String share : sharedElements.keySet()) {
+      final SreElement neighbour = this.makeNeighbour(
+          sharedElements.get(share),
+          shares.get(share));
+      connElement.appendChild(neighbour);
+    }
   }
 
 }
