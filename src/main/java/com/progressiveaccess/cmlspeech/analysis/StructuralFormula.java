@@ -240,9 +240,8 @@ public class StructuralFormula {
    *
    * @param subScripts
    *          flag.
-   * @return string with structural formula.
    */
-  public String getStructuralFormula(final boolean subScripts) {
+  public void getStructuralFormula(final boolean subScripts) {
     this.useSubScripts = subScripts;
     RichAtomSet molecule = RichStructureHelper.getRichMolecule();
     this.computeAnalysis();
@@ -257,7 +256,6 @@ public class StructuralFormula {
       this.isolatedRichAtomSet(richAtomSet);
       richAtomSet.setStructuralFormula(this.structuralFormula);
     }
-    return molecule.getStructuralFormula();
   }
 
   /**

@@ -66,7 +66,6 @@ public class CmlEnricher {
   private SreOutput sreOutput;
   private SreSpeech sreSpeech;
   private final CactusExecutor executor = new CactusExecutor();
-  private final StructuralFormula formula = new StructuralFormula();
 
 
   /**
@@ -161,9 +160,7 @@ public class CmlEnricher {
       this.executor.shutdown();
     }
     if (Cli.hasOption("sf")) {
-      final String structuralFormula = this.formula.getStructuralFormula(Cli
-          .hasOption("sub"));
-      System.out.println(structuralFormula);
+      (new StructuralFormula()).getStructuralFormula(Cli.hasOption("sub"));
     }
   }
 
