@@ -98,4 +98,18 @@ public interface RichSet extends RichStructure<IChemObject>, Iterable<String> {
    * @return The molecular formular of the set.
    */
   String getMolecularFormula();
+
+  /**
+   * Sets the structural formula of the set.
+   *
+   * @param formula
+   *          The structural formula.
+   */
+  void setStructuralFormula(String formula);
+
+  /**
+   * @return The structural formular of the set.
+   */
+  String getStructuralFormula();
+
 }

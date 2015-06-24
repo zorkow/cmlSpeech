@@ -166,6 +166,18 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
 
+  @Override
+  public void setStructuralFormula(final String formula) {
+    this.structuralFormula = formula;
+  }
+
+
+  @Override
+  public String getStructuralFormula() {
+    return this.structuralFormula;
+  }
+
+
   /**
    * Sets the iupac of the atom set.
    *
@@ -312,6 +324,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       final CMLAtom node = (CMLAtom) SreUtil.getElementById(doc, atomId);
       this.cml.addAtom(node);
     }
+    this.attachAttribute("condensed", this.getStructuralFormula());
     this.attachAttribute("formula", this.getMolecularFormula());
     this.attachAttribute("name", this.getName());
     this.attachAttribute("iupac", this.getIupac());
