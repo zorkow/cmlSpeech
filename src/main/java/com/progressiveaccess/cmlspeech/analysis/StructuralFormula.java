@@ -222,15 +222,8 @@ public class StructuralFormula {
    *          The RichAtomSet to be computed
    */
   public void isolatedRichAtomSet(final RichAtomSet richAtomSet) {
-    // The atom positions of the current RichAtomSet
     this.componentPositions = richAtomSet.getComponentsPositions();
-
-    // For each atom in the atomPositions
-    for (int i = 1; i < this.componentPositions.size() + 1; i++) {
-      // Get data of the current atom
-      final String currentAtom = this.componentPositions.get(i);
-      // Check if the current atom is connected to a subStructure
-      // If not then simply "print" the atom
+    for (final String currentAtom : this.componentPositions) {
       this.appendAtom(currentAtom);
     }
   }
