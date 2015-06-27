@@ -65,7 +65,6 @@ public class CmlEnricher {
   private Document doc;
   private IAtomContainer molecule;
   private final CactusExecutor executor = new CactusExecutor();
-  private final StructuralFormula formula = new StructuralFormula();
 
 
   /**
@@ -159,11 +158,7 @@ public class CmlEnricher {
       this.executor.addResults(this.doc);
       this.executor.shutdown();
     }
-    if (Cli.hasOption("sf")) {
-      final String structuralFormula = this.formula.getStructuralFormula(Cli
-          .hasOption("sub"));
-      System.out.println(structuralFormula);
-    }
+    new StructuralFormula();
   }
 
 

@@ -104,7 +104,7 @@ public final class Cli {
         "Visualize graph black and white; default colour");
     options.addOption("vs", "vis_short", false, "Visualize bonds short");
     options.addOption("sf", "structuralformula", false,
-        "Print the structural formula");
+        "Compute the structural formula for the molecule");
     options.addOption("sub", "subscript", false,
         "Use subscripts with structural formula");
     options.addOption("m", "molcom", true,
