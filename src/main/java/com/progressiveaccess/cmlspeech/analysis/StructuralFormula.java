@@ -91,9 +91,8 @@ public class StructuralFormula {
     this.componentPositions = richAtomSet.getComponentsPositions();
 
     // For each atom in the atomPositions
-    for (int i = 1; i < this.componentPositions.size() + 1; i++) {
+    for (final String currentAtom : this.componentPositions) {
       // Get data of the current atom
-      final String currentAtom = this.componentPositions.get(i);
       final RichAtom currentRichAtom = RichStructureHelper
           .getRichAtom(currentAtom);
       // Check if the current atom is connected to a subStructure
