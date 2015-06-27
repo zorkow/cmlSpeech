@@ -159,9 +159,7 @@ public class CmlEnricher {
       this.executor.addResults(this.doc);
       this.executor.shutdown();
     }
-    if (Cli.hasOption("sf")) {
-      (new StructuralFormula()).getStructuralFormula(Cli.hasOption("sub"));
-    }
+    new StructuralFormula();
   }
 
 

@@ -25,6 +25,7 @@
 
 package com.progressiveaccess.cmlspeech.analysis;
 
+import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
@@ -54,6 +55,28 @@ public class StructuralFormula {
   private final ArrayList<String> appendedAtoms = new ArrayList<String>();
 
   private String structuralFormula = "";
+
+  /**
+   * Computes the Structural Formulas for the atom sets.
+   */
+  public StructuralFormula() {
+    this.useSubScripts = Cli.hasOption("sub");
+    RichAtomSet molecule = RichStructureHelper.getRichMolecule();
+    if (Cli.hasOption("sf")) {
+      this.computeAnalysis();
+      molecule.setStructuralFormula(this.structuralFormula);
+    }
+    this.allConnectingAtoms.clear();
+    for (RichAtomSet richAtomSet : RichStructureHelper.getAtomSets()) {
+      if (richAtomSet == molecule) {
+        continue;
+      }
+      this.appendedAtoms.clear();
+      this.structuralFormula = "";
+      this.isolatedRichAtomSet(richAtomSet);
+      richAtomSet.setStructuralFormula(this.structuralFormula);
+    }
+  }
 
   // TODO (sorge) The complex formula for the molecule does not work properly.
   /**
@@ -224,29 +247,6 @@ public class StructuralFormula {
     this.componentPositions = richAtomSet.getComponentsPositions();
     for (final String currentAtom : this.componentPositions) {
       this.appendAtom(currentAtom);
-    }
-  }
-
-  /**
-   * Returns the computed string of Structural Formula.
-   *
-   * @param subScripts
-   *          flag.
-   */
-  public void getStructuralFormula(final boolean subScripts) {
-    this.useSubScripts = subScripts;
-    RichAtomSet molecule = RichStructureHelper.getRichMolecule();
-    this.computeAnalysis();
-    molecule.setStructuralFormula(this.structuralFormula);
-    this.allConnectingAtoms.clear();
-    for (RichAtomSet richAtomSet : RichStructureHelper.getAtomSets()) {
-      if (richAtomSet == molecule) {
-        continue;
-      }
-      this.appendedAtoms.clear();
-      this.structuralFormula = "";
-      this.isolatedRichAtomSet(richAtomSet);
-      richAtomSet.setStructuralFormula(this.structuralFormula);
     }
   }
 
