@@ -30,8 +30,10 @@ package com.progressiveaccess.cmlspeech.analysis;
 import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
+import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
+import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
@@ -53,7 +55,9 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -381,21 +385,31 @@ public class StructuralAnalysis {
       final TreeMultimap<String, String> connectionsSet) {
     for (final String key : connectionsSet.keySet()) {
       final NavigableSet<String> allConnections = connectionsSet.get(key);
-      final SortedSet<String> sharedAtoms = new TreeSet<String>(
+      final SortedSet<String> bridgeAtoms = new TreeSet<String>(
           new CmlNameComparator());
+      final List<Connection> bridges = new ArrayList<Connection>();
       for (final String bond : allConnections.descendingSet()) {
         if (!RichStructureHelper.isBond(bond)) {
           break;
         }
-        atomSet.getConnections().add(new SharedBond(bond, key));
-        sharedAtoms.addAll(RichStructureHelper.getRichBond(bond)
+        Connection sharedBond = new SharedBond(bond, key);
+        atomSet.getConnections().add(sharedBond);
+        bridges.add(sharedBond);
+        bridgeAtoms.addAll(RichStructureHelper.getRichBond(bond)
                            .getComponents());
       }
-      for (final String shared : sharedAtoms) {
-        atomSet.getConnections().add(new BridgeAtom(shared, key));
+      for (final String shared : bridgeAtoms) {
+        Connection bridgeAtom = new BridgeAtom(shared, key);
+        atomSet.getConnections().add(bridgeAtom);
+        bridges.add(bridgeAtom);
       }
+      if (!bridges.isEmpty()) {
+        // We know the atom set is a subring!
+        ((RichSubRing) atomSet).getBridges().add(new Bridge(bridges, key));
+      }
+
       for (final String connection : Sets.difference(allConnections,
-          sharedAtoms)) {
+          bridgeAtoms)) {
         if (!RichStructureHelper.isAtom(connection)) {
           break;
         }

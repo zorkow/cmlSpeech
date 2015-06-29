@@ -33,6 +33,7 @@ package com.progressiveaccess.cmlspeech.connection;
 
 public enum ConnectionType {
 
+  BRIDGE("bridge"),
   BRIDGEATOM("bridgeAtom"),
   CONNECTINGBOND("connectingBond"),
   SHAREDBOND("sharedBond"),
