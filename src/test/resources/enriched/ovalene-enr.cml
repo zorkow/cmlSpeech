@@ -1581,42 +1581,51 @@
                 <sre:bond>b41</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a3</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a22</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a3</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b25</sre:bond>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a22</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b23</sre:bond>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b23</sre:bond>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b24</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b25</sre:bond>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b24</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b1</sre:bond>
@@ -1671,42 +1680,51 @@
                 <sre:bond>b28</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a3</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a6</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a3</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b25</sre:bond>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a6</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b27</sre:bond>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b25</sre:bond>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b26</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b27</sre:bond>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b26</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b3</sre:bond>
@@ -1762,54 +1780,66 @@
                 <sre:bond>b38</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a6</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a8</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a6</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b27</sre:bond>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a8</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b30</sre:bond>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b28</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b27</sre:bond>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b28</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b29</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b30</sre:bond>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b29</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b6</sre:bond>
@@ -1865,42 +1895,51 @@
                 <sre:bond>b33</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a8</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a11</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a8</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b30</sre:bond>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a11</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b32</sre:bond>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b30</sre:bond>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b31</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b32</sre:bond>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b31</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b8</sre:bond>
@@ -1955,42 +1994,51 @@
                 <sre:bond>b35</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a11</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a14</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a11</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b32</sre:bond>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a14</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b34</sre:bond>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b32</sre:bond>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b33</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b34</sre:bond>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b33</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b11</sre:bond>
@@ -2045,42 +2093,51 @@
                 <sre:bond>b37</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a14</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a17</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a14</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b34</sre:bond>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a17</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b36</sre:bond>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b34</sre:bond>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b35</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b36</sre:bond>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b35</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b14</sre:bond>
@@ -2136,54 +2193,66 @@
                 <sre:bond>b41</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a17</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a19</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a17</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b36</sre:bond>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a19</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b40</sre:bond>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b37</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b36</sre:bond>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b37</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b39</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b40</sre:bond>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b39</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b17</sre:bond>
@@ -2239,42 +2308,51 @@
                 <sre:bond>b39</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a19</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a22</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a19</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b40</sre:bond>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a22</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b23</sre:bond>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b23</sre:bond>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b40</sre:bond>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b41</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b41</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b19</sre:bond>
@@ -2331,78 +2409,96 @@
                 <sre:bond>b40</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a23</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b24</sre:bond>
+                        <sre:atomSet>as2</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a24</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a23</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b41</sre:bond>
+                        <sre:atomSet>as9</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a25</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a24</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b26</sre:bond>
+                        <sre:atomSet>as3</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a25</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b28</sre:bond>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b38</sre:bond>
+                        <sre:atomSet>as11</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a32</sre:atom>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b24</sre:bond>
-                    <sre:atomSet>as2</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b26</sre:bond>
-                    <sre:atomSet>as3</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b28</sre:bond>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b38</sre:bond>
-                    <sre:atomSet>as11</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b39</sre:bond>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b41</sre:bond>
-                    <sre:atomSet>as9</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a32</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b39</sre:bond>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b24</sre:bond>
@@ -2461,78 +2557,96 @@
                 <sre:bond>b39</sre:bond>
             </sre:externalBonds>
             <sre:connections>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
+                <sre:bridge>
                     <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a26</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b29</sre:bond>
+                        <sre:atomSet>as4</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a27</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a26</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b38</sre:bond>
+                        <sre:atomSet>as10</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a28</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a27</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b31</sre:bond>
+                        <sre:atomSet>as5</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a29</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a28</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b33</sre:bond>
+                        <sre:atomSet>as6</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a30</sre:atom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a29</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b35</sre:bond>
+                        <sre:atomSet>as7</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
+                <sre:bridge>
                     <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:bridgeAtom>
-                    <sre:atom>a31</sre:atom>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:bridgeAtom>
-                <sre:sharedBond>
-                    <sre:bond>b29</sre:bond>
-                    <sre:atomSet>as4</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b31</sre:bond>
-                    <sre:atomSet>as5</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b33</sre:bond>
-                    <sre:atomSet>as6</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b35</sre:bond>
-                    <sre:atomSet>as7</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b37</sre:bond>
-                    <sre:atomSet>as8</sre:atomSet>
-                </sre:sharedBond>
-                <sre:sharedBond>
-                    <sre:bond>b38</sre:bond>
-                    <sre:atomSet>as10</sre:atomSet>
-                </sre:sharedBond>
+                    <sre:bridgeAtom>
+                        <sre:atom>a30</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:bridgeAtom>
+                        <sre:atom>a31</sre:atom>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:bridgeAtom>
+                    <sre:sharedBond>
+                        <sre:bond>b37</sre:bond>
+                        <sre:atomSet>as8</sre:atomSet>
+                    </sre:sharedBond>
+                </sre:bridge>
             </sre:connections>
             <sre:internalBonds>
                 <sre:bond>b29</sre:bond>
