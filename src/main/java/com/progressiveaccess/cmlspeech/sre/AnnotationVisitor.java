@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
@@ -55,7 +56,7 @@ public class AnnotationVisitor implements XmlVisitor {
   private SreElement element;
 
 
-  /** 
+  /**
    * @return The annotation the visitor computes.
    */
   public SreAnnotations getAnnotations() {
@@ -146,6 +147,12 @@ public class AnnotationVisitor implements XmlVisitor {
   public void visit(final SharedBond sharedBond) {
     this.connectionAnnotation(sharedBond,
         SreNamespace.Tag.BOND, SreNamespace.Tag.ATOMSET);
+  }
+
+
+  @Override
+  public void visit(final Bridge bridge) {
+    bridge.getBridges().stream().forEach(x -> x.accept(this));
   }
 
 

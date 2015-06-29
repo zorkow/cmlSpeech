@@ -28,6 +28,8 @@
 package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.connection.Bridge;
+import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
@@ -78,9 +80,15 @@ public class RichFusedRing extends RichRing implements RichSuperSet {
   /** Computes the shared bonds inside the fused ring. */
   private void computeSharedBonds() {
     for (final RichAtomSet subRing : this.richSubSystems) {
-      this.sharedBonds.addAll(subRing.getConnections().stream()
-          .filter(c -> c.getType().equals(ConnectionType.SHAREDBOND))
-          .map(c -> c.getConnector()).collect(Collectors.toSet()));
+      for (final Connection connection : subRing.getConnections()) {
+        if (connection.getType().equals(ConnectionType.BRIDGE)) {
+          for (final Connection bridge : ((Bridge) connection).getBridges()) {
+            if (bridge.getType().equals(ConnectionType.SHAREDBOND)) {
+              this.sharedBonds.add(bridge.getConnector());
+            }
+          }
+        }
+      }
     }
   }
 

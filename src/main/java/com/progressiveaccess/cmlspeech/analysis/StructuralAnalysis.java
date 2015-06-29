@@ -393,19 +393,20 @@ public class StructuralAnalysis {
           break;
         }
         Connection sharedBond = new SharedBond(bond, key);
-        atomSet.getConnections().add(sharedBond);
+        //atomSet.getConnections().add(sharedBond);
         bridges.add(sharedBond);
         bridgeAtoms.addAll(RichStructureHelper.getRichBond(bond)
                            .getComponents());
       }
       for (final String shared : bridgeAtoms) {
         Connection bridgeAtom = new BridgeAtom(shared, key);
-        atomSet.getConnections().add(bridgeAtom);
+        //atomSet.getConnections().add(bridgeAtom);
         bridges.add(bridgeAtom);
       }
       if (!bridges.isEmpty()) {
         // We know the atom set is a subring!
         ((RichSubRing) atomSet).getBridges().add(new Bridge(bridges, key));
+        atomSet.getConnections().add(new Bridge(bridges, key));
       }
 
       for (final String connection : Sets.difference(allConnections,

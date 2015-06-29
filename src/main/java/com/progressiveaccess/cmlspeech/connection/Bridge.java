@@ -15,8 +15,9 @@ package com.progressiveaccess.cmlspeech.connection;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Bridge for a neighbouring fused ring is a combination of shared bonds and
@@ -25,7 +26,8 @@ import java.util.List;
 
 public class Bridge extends Connection {
 
-  private List<Connection> bridges = new ArrayList<Connection>();
+  private final SortedSet<Connection> bridges = new TreeSet<Connection>(
+      new ConnectionComparator());
 
   /**
    * Constructs a bridge.
@@ -34,7 +36,7 @@ public class Bridge extends Connection {
    * @param connected Name of connected structure.
    */
   public Bridge(final List<Connection> connectors, final String connected) {
-    super("", connected);
+    super("a1", connected);
     bridges.addAll(connectors);
   }
 
@@ -42,7 +44,7 @@ public class Bridge extends Connection {
   /**
    * @return List of shared bonds and bridge atoms.
    */
-  public List<Connection> getBridges() {
+  public SortedSet<Connection> getBridges() {
     return bridges;
   }
 
