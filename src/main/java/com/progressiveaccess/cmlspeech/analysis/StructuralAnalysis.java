@@ -34,6 +34,7 @@ import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
+import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
@@ -55,9 +56,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -387,7 +386,8 @@ public class StructuralAnalysis {
       final NavigableSet<String> allConnections = connectionsSet.get(key);
       final SortedSet<String> bridgeAtoms = new TreeSet<String>(
           new CmlNameComparator());
-      final List<Connection> bridges = new ArrayList<Connection>();
+      final SortedSet<Connection> bridges = new TreeSet<Connection>(
+          new ConnectionComparator());
       for (final String bond : allConnections.descendingSet()) {
         if (!RichStructureHelper.isBond(bond)) {
           break;

@@ -15,7 +15,6 @@ package com.progressiveaccess.cmlspeech.connection;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -26,23 +25,22 @@ import java.util.TreeSet;
 
 public class Bridge extends Connection {
 
-  private final SortedSet<Connection> bridges = new TreeSet<Connection>(
-      new ConnectionComparator());
+  private SortedSet<Connection> bridges;
 
   /**
    * Constructs a bridge.
    *
-   * @param connectors The list of bridges.
+   * @param connectors Set of bridges.
    * @param connected Name of connected structure.
    */
-  public Bridge(final List<Connection> connectors, final String connected) {
-    super("a1", connected);
-    bridges.addAll(connectors);
+  public Bridge(final SortedSet<Connection> connectors, final String connected) {
+    super(connectors.first().getConnector(), connected);
+    bridges = connectors;
   }
 
-
+    
   /**
-   * @return List of shared bonds and bridge atoms.
+   * @return Set of shared bonds and bridge atoms.
    */
   public SortedSet<Connection> getBridges() {
     return bridges;
