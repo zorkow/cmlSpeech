@@ -38,7 +38,7 @@ public enum RichSetType {
   ISOLATED("Isolated ring"),
   SMALLEST("Subring"),
   MOLECULE("Molecule"),
-  FUNCGROUP("Functional Group");
+  FUNCGROUP("Functional group");
 
   private final String name;
 

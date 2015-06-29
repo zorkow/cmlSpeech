@@ -36,7 +36,7 @@ import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 public class ConnectingBond extends Connection {
 
-  String origin;
+  private String origin;
 
   /**
    * Constructs a connecting bond.
@@ -71,6 +71,13 @@ public class ConnectingBond extends Connection {
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.CONNECTINGBOND;
   }
+
+  @Override
+  public String toString() {
+    return "\n" + this.getType() + ": " + this.getOrigin() + " -> "
+        + this.getConnector() + " -> " + this.getConnected();
+  }
+
 
   @Override
   public void accept(final XmlVisitor visitor) {

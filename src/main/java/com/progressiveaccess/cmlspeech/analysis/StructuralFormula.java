@@ -23,11 +23,9 @@
  *
  */
 
-// TODO (sorge): This seems to be currently broken!
-//
-
 package com.progressiveaccess.cmlspeech.analysis;
 
+import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
@@ -48,32 +46,53 @@ import java.util.Set;
 
 public class StructuralFormula {
 
-  private String structuralFormula = "";
-  private ComponentsPositions componentPositions = new ComponentsPositions();
-  private final ArrayList<String> richAtomSetAtoms = new ArrayList<String>();
-  private boolean useSubScripts;
-  private final ArrayList<String> appendedAtoms = new ArrayList<String>();
-  private final ArrayList<String> allConnectingAtoms = new ArrayList<String>();
   private static final Integer SUBSCRIPT_MAX = 9;
   private static final Integer SUBSCRIPT_ZERO = 0x2080;
 
+  private ComponentsPositions componentPositions;
+  private boolean useSubScripts;
+  private final ArrayList<String> allConnectingAtoms = new ArrayList<String>();
+  private final ArrayList<String> appendedAtoms = new ArrayList<String>();
+
+  private String structuralFormula = "";
+
+  /**
+   * Computes the Structural Formulas for the atom sets.
+   */
+  public StructuralFormula() {
+    this.useSubScripts = Cli.hasOption("sub");
+    RichAtomSet molecule = RichStructureHelper.getRichMolecule();
+    if (Cli.hasOption("sf")) {
+      this.computeAnalysis();
+      molecule.setStructuralFormula(this.structuralFormula);
+    }
+    this.allConnectingAtoms.clear();
+    for (RichAtomSet richAtomSet : RichStructureHelper.getAtomSets()) {
+      if (richAtomSet == molecule) {
+        continue;
+      }
+      this.appendedAtoms.clear();
+      this.structuralFormula = "";
+      this.isolatedRichAtomSet(richAtomSet);
+      richAtomSet.setStructuralFormula(this.structuralFormula);
+    }
+  }
+
+  // TODO (sorge) The complex formula for the molecule does not work properly.
   /**
    * Computes a structural formula using a Structural Analysis.
    */
   public void computeAnalysis() {
     final List<RichAtomSet> atomSets = RichStructureHelper.getAtomSets();
-    // If there is only one atom
-    if (atomSets.size() == 1) {
-      for (final RichAtom atom : RichStructureHelper.getAtoms()) {
-        this.appendAtom(atom.getId());
+
+    // Adds all connectingAtoms from all RichAtomSets to a list
+    // for checking when adding neighbours
+    for (final RichAtomSet set : atomSets) {
+      for (final String connectingAtom : set.getConnectingAtoms()) {
+        this.allConnectingAtoms.add(connectingAtom);
       }
     }
-    // Stores all atoms contained in a richAtomSet
-    for (final RichAtomSet richAtomSet : atomSets) {
-      for (final IAtom atom : richAtomSet.getStructure().atoms()) {
-        this.richAtomSetAtoms.add(atom.getID());
-      }
-    }
+
     // Computes the structural formula for each RichAtomSet
     for (final RichAtomSet richAtomSet : atomSets) {
       this.computeRichAtomSet(richAtomSet);
@@ -91,21 +110,12 @@ public class StructuralFormula {
     // subStructures or superStructures
     final Set<String> connectingAtoms = richAtomSet.getConnectingAtoms();
 
-    // Adds all connectingAtoms from all RichAtomSets to a list
-    // for checking when adding neighbours
-    for (final RichAtomSet set : RichStructureHelper.getAtomSets()) {
-      for (final String connectingAtom : set.getConnectingAtoms()) {
-        this.allConnectingAtoms.add(connectingAtom);
-      }
-    }
-
     // The atom positions of the current RichAtomSet
     this.componentPositions = richAtomSet.getComponentsPositions();
 
     // For each atom in the atomPositions
-    for (int i = 1; i < this.componentPositions.size() + 1; i++) {
+    for (final String currentAtom : this.componentPositions) {
       // Get data of the current atom
-      final String currentAtom = this.componentPositions.get(i);
       final RichAtom currentRichAtom = RichStructureHelper
           .getRichAtom(currentAtom);
       // Check if the current atom is connected to a subStructure
@@ -145,7 +155,7 @@ public class StructuralFormula {
         if (!connectingAtoms.contains(currentSubAtom)
             && !this.componentPositions.contains(currentSubAtom)) {
 
-          this.structuralFormula += "(";
+          this.appendSymbol("(");
           this.appendAtom(currentSubAtom);
           this.addNeighbours(currentSubAtom, connectingAtoms);
 
@@ -195,34 +205,49 @@ public class StructuralFormula {
   private void appendAtom(final String atomId) {
     if (this.appendedAtoms.contains(atomId)) {
       return;
-    } else {
-      this.appendedAtoms.add(atomId);
     }
+    this.appendedAtoms.add(atomId);
     final IAtom atom = RichStructureHelper.getRichAtom(atomId).getStructure();
-    this.structuralFormula += atom.getSymbol();
+    this.appendSymbol(atom.getSymbol());
     final int hydrogens = atom.getImplicitHydrogenCount();
     if (hydrogens > 0) {
-      this.structuralFormula += "H";
-      // Checking whether to use sub scripts or not
-      if (this.useSubScripts) {
-        this.structuralFormula += this.getSubScript(hydrogens);
-      } else {
-        this.structuralFormula += hydrogens;
-      }
+      this.appendSymbol("H" + (hydrogens == 1 ? ""
+                               : this.getSubScript(hydrogens)));
     }
   }
 
+
   /**
-   * Returns the computed string of Structural Formula.
+   * Adds an atom symbol to the structural formula.
    *
-   * @param subScripts
-   *          flag.
-   * @return string with structural formula.
+   * @param atom
+   *          The atom symbol to add.
    */
-  public String getStructuralFormula(final boolean subScripts) {
-    this.useSubScripts = subScripts;
-    this.computeAnalysis();
-    return this.structuralFormula;
+  private void appendSymbol(final String atom) {
+    if (this.structuralFormula.equals("")) {
+      this.structuralFormula = atom;
+      return;
+    }
+    if (this.structuralFormula.substring(
+            this.structuralFormula.length() - 1).equals("(")) {
+      this.structuralFormula += atom;
+      return;
+    }
+    this.structuralFormula += " " + atom;
+  }
+
+
+  /**
+   * Computes the structural formula for a RichAtomSet.
+   *
+   * @param richAtomSet
+   *          The RichAtomSet to be computed
+   */
+  public void isolatedRichAtomSet(final RichAtomSet richAtomSet) {
+    this.componentPositions = richAtomSet.getComponentsPositions();
+    for (final String currentAtom : this.componentPositions) {
+      this.appendAtom(currentAtom);
+    }
   }
 
   /**
@@ -232,10 +257,11 @@ public class StructuralFormula {
    *          The number to be translated
    * @return Returns the subscript of the inserted number
    */
-  private String getSubScript(final int number) {
-    if (number > SUBSCRIPT_MAX) {
-      throw new IllegalArgumentException("Sub Scripts cannot be larger than 9");
+  private String getSubScript(final Integer number) {
+    if (this.useSubScripts && number <= SUBSCRIPT_MAX) {
+      return Character.toString((char) (SUBSCRIPT_ZERO + number));
     }
-    return Character.toString((char) (SUBSCRIPT_ZERO + number));
+    return number.toString();
   }
+
 }

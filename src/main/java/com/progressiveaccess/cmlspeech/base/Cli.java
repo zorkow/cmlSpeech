@@ -90,7 +90,7 @@ public final class Cli {
     options.addOption("r", "descr", false,
         "Include speech descriptions in CML output");
     options.addOption("t", "struct", false,
-        "Include explodation structure in CML output");
+        "Include exploration structure in CML output");
     options.addOption("nonih", "nonih", false,
         "Do not use the NIH naming service");
     options.addOption("s", "subrings", false, "Do not compute subrings");
@@ -104,7 +104,7 @@ public final class Cli {
         "Visualize graph black and white; default colour");
     options.addOption("vs", "vis_short", false, "Visualize bonds short");
     options.addOption("sf", "structuralformula", false,
-        "Print the structural formula");
+        "Compute the structural formula for the molecule");
     options.addOption("sub", "subscript", false,
         "Use subscripts with structural formula");
     options.addOption("m", "molcom", true,

@@ -27,6 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.sre;
 
+import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
@@ -58,7 +59,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an bond.
+   * Visits a bond.
    *
    * @param bond
    *          The visited bond.
@@ -68,7 +69,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an subring.
+   * Visits a subring.
    *
    * @param subRing
    *          The visited subring.
@@ -88,7 +89,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an fused ring.
+   * Visits a fused ring.
    *
    * @param fusedRing
    *          The visited fused ring.
@@ -98,7 +99,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an functional group.
+   * Visits a functional group.
    *
    * @param functionalGroup
    *          The visited functional group.
@@ -118,7 +119,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an molecule.
+   * Visits a molecule.
    *
    * @param molecule
    *          The visited molecule.
@@ -128,7 +129,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an spiro atom.
+   * Visits a spiro atom.
    *
    * @param spiroAtom
    *          The visited spiro atom.
@@ -138,7 +139,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an bridge atom.
+   * Visits a bridge atom.
    *
    * @param bridgeAtom
    *          The visited bridge atom.
@@ -148,7 +149,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an shared atom.
+   * Visits a shared atom.
    *
    * @param sharedAtom
    *          The visited shared atom.
@@ -158,7 +159,7 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an connecting bond.
+   * Visits a connecting bond.
    *
    * @param connectingBond
    *          The visited connecting bond.
@@ -168,12 +169,22 @@ public interface XmlVisitor {
 
 
   /**
-   * Visits an shared bond.
+   * Visits a shared bond.
    *
    * @param sharedBond
    *          The visited shared bond.
    */
   default void visit(SharedBond sharedBond) {
+  }
+
+
+  /**
+   * Visits a bridge.
+   *
+   * @param bridge
+   *          The visited bridge.
+   */
+  default void visit(Bridge bridge) {
   }
 
 }

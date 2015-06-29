@@ -33,15 +33,16 @@ package com.progressiveaccess.cmlspeech.connection;
 
 public enum ConnectionType {
 
-  BRIDGEATOM("bridgeAtom"),
-  CONNECTINGBOND("connectingBond"),
-  SHAREDBOND("sharedBond"),
-  SHAREDATOM("sharedAtom"),
-  SPIROATOM("spiroAtom");
+  BRIDGE("Bridge"),
+  BRIDGEATOM("Bridge atom"),
+  CONNECTINGBOND("Connecting bond"),
+  SHAREDBOND("Shared bond"),
+  SHAREDATOM("Shared atom"),
+  SPIROATOM("Spiro atom");
 
+  private final String name;
 
-  private String type;
-
+  
   /**
    * Constructor of connection types.
    *
@@ -49,7 +50,14 @@ public enum ConnectionType {
    *          The type as a string.
    */
   private ConnectionType(final String type) {
-    this.type = type;
+    this.name = type;
   }
 
+
+  /**
+   * @return The name of the type.
+   */
+  public final String getName() {
+    return this.name;
+  }
 }

@@ -27,7 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.sre;
 
-import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
@@ -55,7 +55,7 @@ public class AnnotationVisitor implements XmlVisitor {
   private SreElement element;
 
 
-  /** 
+  /**
    * @return The annotation the visitor computes.
    */
   public SreAnnotations getAnnotations() {
@@ -134,14 +134,10 @@ public class AnnotationVisitor implements XmlVisitor {
 
   @Override
   public void visit(final ConnectingBond connectingBond) {
-    final String connected = connectingBond.getConnected();
-    final SreNamespace.Tag type = RichStructureHelper.isAtom(connected)
-        ? SreNamespace.Tag.ATOM
-        : SreNamespace.Tag.ATOMSET;
     final SreElement connection = new SreElement(connectingBond.tag());
     connection.appendChild(new SreElement(SreNamespace.Tag.BOND,
                                           connectingBond.getConnector()));
-    connection.appendChild(new SreElement(type, connected));
+    connection.appendChild(SreUtil.sreElement(connectingBond.getConnected()));
     connection.appendChild(new SreElement(SreNamespace.Tag.ATOM,
                                           connectingBond.getOrigin()));
     this.element.appendChild(connection);
@@ -152,6 +148,17 @@ public class AnnotationVisitor implements XmlVisitor {
   public void visit(final SharedBond sharedBond) {
     this.connectionAnnotation(sharedBond,
         SreNamespace.Tag.BOND, SreNamespace.Tag.ATOMSET);
+  }
+
+
+  @Override
+  public void visit(final Bridge bridge) {
+    final SreElement oldElement = this.element;
+    this.element = new SreElement(SreNamespace.Tag.BRIDGE);
+    this.element.appendChild(SreUtil.sreElement(bridge.getConnected()));
+    bridge.getBridges().stream().forEach(b -> b.accept(this));
+    oldElement.appendChild(this.element);
+    this.element = oldElement;
   }
 
 
@@ -209,7 +216,8 @@ public class AnnotationVisitor implements XmlVisitor {
   /**
    * Computes annotations for a structure's connections.
    *
-   * @param structure The structure that is currently visited.
+   * @param structure
+   *          The structure that is currently visited.
    */
   private void connectionsAnnotations(
       final AbstractRichStructure<?> structure) {
