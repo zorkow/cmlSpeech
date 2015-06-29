@@ -101,6 +101,7 @@ public class SreNamespace {
     UNKNOWN("unknown"),
 
     CONNECTIONS("connections"),
+    BRIDGE("bridge"),
     SHAREDBOND("sharedBond"),
     BRIDGEATOM("bridgeAtom"),
     SHAREDATOM("sharedAtom"),

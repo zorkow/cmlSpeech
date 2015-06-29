@@ -27,6 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.sre;
 
+import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
@@ -147,6 +148,17 @@ public class AnnotationVisitor implements XmlVisitor {
   public void visit(final SharedBond sharedBond) {
     this.connectionAnnotation(sharedBond,
         SreNamespace.Tag.BOND, SreNamespace.Tag.ATOMSET);
+  }
+
+
+  @Override
+  public void visit(final Bridge bridge) {
+    final SreElement oldElement = this.element;
+    this.element = new SreElement(SreNamespace.Tag.BRIDGE);
+    this.element.appendChild(SreUtil.sreElement(bridge.getConnected()));
+    bridge.getBridges().stream().forEach(b -> b.accept(this));
+    oldElement.appendChild(this.element);
+    this.element = oldElement;
   }
 
 
