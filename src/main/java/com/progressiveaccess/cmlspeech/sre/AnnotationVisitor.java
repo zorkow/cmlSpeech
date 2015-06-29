@@ -152,7 +152,12 @@ public class AnnotationVisitor implements XmlVisitor {
 
   @Override
   public void visit(final Bridge bridge) {
-    bridge.getBridges().stream().forEach(x -> x.accept(this));
+    final SreElement oldElement = this.element;
+    this.element = new SreElement(SreNamespace.Tag.BRIDGE);
+    this.element.appendChild(SreUtil.sreElement(bridge.getConnected()));
+    bridge.getBridges().stream().forEach(b -> b.accept(this));
+    oldElement.appendChild(this.element);
+    this.element = oldElement;
   }
 
 

@@ -59,6 +59,7 @@ public class Bridge extends Connection {
 
   @Override
   public void accept(final XmlVisitor visitor) {
+    visitor.visit(this);
   }
 
   @Override
