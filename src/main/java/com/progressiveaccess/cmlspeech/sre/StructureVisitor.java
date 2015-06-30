@@ -212,7 +212,6 @@ public class StructureVisitor implements XmlVisitor {
       connection.accept(this);
       connElement.appendChild(this.element);
     }
-    //this.combineConnections(connElement, neighbours);
   }
 
 
