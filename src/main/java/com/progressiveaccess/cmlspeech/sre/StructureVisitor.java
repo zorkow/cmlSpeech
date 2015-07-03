@@ -72,8 +72,9 @@ public class StructureVisitor implements XmlVisitor {
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
+  private boolean internal = false;
 
-
+  
   /**
    * Dummy comparator for the tree multi map.
    */
@@ -162,7 +163,9 @@ public class StructureVisitor implements XmlVisitor {
   public void visit(final ConnectingBond bond) {
     this.element = this.makeNeighbour(bond.getConnected(),
         this.makeVia(bond,
-            this.positions.getPosition(bond.getOrigin())));
+            this.positions.getPosition(this.internal ?
+                                       bond.getConnected() :
+                                       bond.getOrigin())));
   }
 
 
@@ -245,36 +248,13 @@ public class StructureVisitor implements XmlVisitor {
         .collect(Collectors.toSet()));
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
-    this.element = connElement;
-    final Integer position = this.positions.getPosition(atom.getId());
-    if (position > 1) {
-      this.addConnectingBond(internalConnections, position - 1);
+    this.internal = true;
+    for (Connection connection : atom.getConnections()) {
+      connection.accept(this);
+      connElement.appendChild(this.element);
+      this.element.addAttribute(new SreAttribute(SreNamespace.Attribute.LOCATION,
+          internalConnections.contains(connection) ? "internal" : "external"));
     }
-    if (position < this.positions.size()) {
-      this.addConnectingBond(internalConnections, position + 1);
-    }
-  }
-
-
-  /**
-   * Adds connecting bond element as neighbour of an atom.
-   *
-   * @param connections
-   *          The set of internal connections.
-   * @param position
-   *          Neighbour position to add.
-   */
-  private void addConnectingBond(final Set<Connection> connections,
-      final Integer position) {
-    connections.stream()
-        .filter(c -> c.getConnected() == this.positions.get(position))
-        .forEach(c -> {
-            final SreElement neighbour =
-                this.makeNeighbour(c.getConnected(),
-                  this.makeVia(c,
-                  this.positions.getPosition(c.getConnected())));
-            this.element.appendChild(neighbour);
-          });
   }
 
 

@@ -158,8 +158,9 @@ public class SreNamespace {
     ORDER("order"),
     ATOM("bond"),
     BOND("bond"),
+    LOCATION("location"),
     TYPE("type");
-
+    
     private final String attribute;
 
 
