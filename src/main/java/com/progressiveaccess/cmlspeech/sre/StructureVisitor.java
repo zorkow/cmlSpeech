@@ -72,6 +72,7 @@ public class StructureVisitor implements XmlVisitor {
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
+  private final SpeechVisitor speechVisitor = new SpeechVisitor();
   private boolean internal = false;
 
   
@@ -166,6 +167,10 @@ public class StructureVisitor implements XmlVisitor {
             this.positions.getPosition(this.internal ?
                                        bond.getConnected() :
                                        bond.getOrigin())));
+    
+    this.speechVisitor.setContextPositions(this.positions);
+    bond.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
   }
 
 
@@ -190,6 +195,10 @@ public class StructureVisitor implements XmlVisitor {
       vias.add(this.element);
     }
     this.element = this.makeNeighbour(bridge.getConnected(), vias);
+
+    this.speechVisitor.setContextPositions(this.positions);
+    bridge.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
   }
 
 
@@ -205,6 +214,10 @@ public class StructureVisitor implements XmlVisitor {
     this.positions = ((RichSuperSet) this.context).getPath();
     this.addStructure(set);
     this.addComponents(set.getComponents());
+    
+    set.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
+
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.element = connElement;
@@ -230,6 +243,10 @@ public class StructureVisitor implements XmlVisitor {
     this.addComponents(set.getComponents());
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
+
+    set.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
+
   }
 
 
@@ -240,8 +257,15 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom.
    */
   private void atomStructure(final RichAtom atom) {
-    this.positions = this.context.getComponentsPositions();
+    this.positions = RichStructureHelper.isMolecule(this.context.getId()) ?
+      ((RichMolecule) this.context).getPath() :
+      this.context.getComponentsPositions();
     this.addStructure(atom);
+
+    this.speechVisitor.setContextPositions(this.positions);
+    atom.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
+
     final Set<Connection> internalConnections = this.bondsInContext(atom);
     this.addComponents(internalConnections.stream()
         .map(conn -> conn.getConnector())
@@ -308,6 +332,10 @@ public class StructureVisitor implements XmlVisitor {
     this.element = this.makeNeighbour(connection.getConnected(),
         this.makeVia(connection,
             this.positions.getPosition(connection.getConnector())));
+
+    this.speechVisitor.setContextPositions(this.positions);
+    connection.accept(this.speechVisitor);
+    this.addSpeechAttribute(this.element);
   }
 
 
@@ -443,6 +471,19 @@ public class StructureVisitor implements XmlVisitor {
     structure.addAttribute(
         new SreAttribute(SreNamespace.Attribute.TYPE,
             this.typeVisitor.getType()));
+  }
+
+
+  /**
+   * Adds a computed speech attribute to the given element.
+   *
+   * @param structure
+   *          The structural element.
+   */
+  private void addSpeechAttribute(final SreElement structure) {
+    structure.addAttribute(
+        new SreAttribute(SreNamespace.Attribute.SPEECH,
+            this.speechVisitor.getSpeech()));
   }
 
 }

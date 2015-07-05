@@ -116,7 +116,7 @@ public class RichAtom extends RichChemObject {
   };
 
 
-    /**
+  /**
    * @return Description of hydrogen bonds of the atom.
    */
   private String describeHydrogenBonds() {
