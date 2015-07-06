@@ -60,9 +60,9 @@ public class FunctionalGroupsFilter {
   private final SortedSet<RichFunctionalGroup> workingSets =
       new TreeSet<RichFunctionalGroup>(new SizeAndNameComparator());
 
-  private final Integer minimalSize = 1;
   private final Integer minimalOverlap = 1;
 
+  
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
       final Map<String, IAtomContainer> groups) {
     this.existingSets = existing.stream()
@@ -85,11 +85,6 @@ public class FunctionalGroupsFilter {
   //
   // - At least one elements not in another container.
   //
-
-  private boolean considerSize(final IAtomContainer container) {
-    return container.getAtomCount() >= this.minimalSize;
-  }
-
 
   private boolean considerOverlap(final IAtomContainer container) {
     for (final RichAtomSet old : this.existingSets) {
