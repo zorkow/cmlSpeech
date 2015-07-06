@@ -212,6 +212,7 @@ public class PositionTest {
     // });
   }
 
+
   @Test
   public void fusedRingSimpleExtTest() {
     System.out
@@ -225,6 +226,7 @@ public class PositionTest {
                       "a5", "a4", "a3", "a2", "a1"});
   }
 
+
   @Test
   public void fusedRingComplexTest() {
     System.out
@@ -234,6 +236,7 @@ public class PositionTest {
                       "a9", "a10", "a11", "a12", "a13", "a14", "a15",
                       "a16", "a17", "a18", "a19", "a20", "a21", "a22"});
   }
+
 
   @Test
   public void essentialRingTest() {
@@ -251,15 +254,16 @@ public class PositionTest {
     // new String[]{"as2", "as3", "as4", "as5", "as6"});
   }
 
+
   @Test
   public void moleculeTest() {
     System.out.println("Testing order of blocks in a molecule...");
-    this.comparePaths("molecule/book1-004-05.mol", "as2",
-        new String[] {"as1", "a1"});
+    this.comparePaths("molecule/book1-004-05.mol", "as3",
+        new String[] {"as1", "as2"});
     this.comparePaths("molecule/book1-006-03.mol", "as4",
-        new String[] {"as1", "as2", "as3"});
-    this.comparePaths("molecule/book1-012-00.mol", "as4",
-        new String[] {"as1", "as3", "a1", "as2"});
+        new String[] {"as1", "as3", "as2"});
+    this.comparePaths("molecule/book1-012-00.mol", "as5",
+        new String[] {"as1", "as4", "as2", "as3"});
     this.comparePaths("molecule/aspirin.mol", "as4",
         new String[] {"as1", "as3", "as2"});
     this.comparePaths("molecule/US06358966-20020319-C00001.mol", "as11",
