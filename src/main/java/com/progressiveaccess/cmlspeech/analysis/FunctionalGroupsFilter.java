@@ -32,18 +32,16 @@ import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichStructure;
 
-import com.google.common.collect.Sets;
-
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -59,12 +57,12 @@ public class FunctionalGroupsFilter {
   private final Map<String, IAtomContainer> resultSets =
       new HashMap<String, IAtomContainer>();
   // The set that is reduced to distill the interesting functional groups.
-  private final List<RichFunctionalGroup> workingSets =
-      new ArrayList<RichFunctionalGroup>();
+  private final SortedSet<RichFunctionalGroup> workingSets =
+      new TreeSet<RichFunctionalGroup>(new SizeAndNameComparator());
 
-  private final Integer minimalSize = 2;
   private final Integer minimalOverlap = 1;
 
+  
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
       final Map<String, IAtomContainer> groups) {
     this.existingSets = existing.stream()
@@ -79,17 +77,14 @@ public class FunctionalGroupsFilter {
   // - with same elements: shortest name.
   // - when permutation of elements with same name.
   //
+  // TODO (sorge)
   // - when we have similar content, use the one that has the least overlap.
   //
-  // + discard everything of length 1.
+  // + discard everything of length 1 that has overlap.
   // + eliminate when overlap of two with a single existing set.
   //
-  // - At least one (or two?) elements not in another container.
+  // - At least one elements not in another container.
   //
-
-  private boolean considerSize(final IAtomContainer container) {
-    return container.getAtomCount() >= this.minimalSize;
-  }
 
   private boolean considerOverlap(final IAtomContainer container) {
     for (final RichAtomSet old : this.existingSets) {
@@ -103,27 +98,13 @@ public class FunctionalGroupsFilter {
           return false;
         }
       }
+      if (container.getAtomCount() == 1 && count == 1) {
+        return false;
+      }
     }
     return true;
   }
 
-  private void subsumeSubsets() {
-    if (this.workingSets.isEmpty()) {
-      return;
-    }
-    Integer count = 0;
-    while (this.workingSets.size() > count) {
-      final RichFunctionalGroup outer = this.workingSets.get(count++);
-      Integer steps = this.workingSets.size() - 1;
-      while (steps >= count) {
-        final RichFunctionalGroup inner = this.workingSets.get(steps--);
-        if (Sets.difference(inner.getComponents(), outer.getComponents())
-            .isEmpty()) {
-          this.workingSets.remove(inner);
-        }
-      }
-    }
-  }
 
   private class SizeAndNameComparator extends DefaultComparator {
 
@@ -152,22 +133,18 @@ public class FunctionalGroupsFilter {
     for (final Map.Entry<String, IAtomContainer> entry : this.newSets
         .entrySet()) {
       final IAtomContainer set = entry.getValue();
-      if (this.considerSize(set) && this.considerOverlap(set)) {
+      if (this.considerOverlap(set)) {
         this.workingSets.add(new RichFunctionalGroup(set, entry.getKey()));
       }
     }
-    // sort by size
-    Collections.sort(this.workingSets, new SizeAndNameComparator());
-    this.subsumeSubsets();
+    this.existingSets.clear();
     for (final RichFunctionalGroup set : this.workingSets) {
       final String id = set.getId();
       // TODO (sorge) This test should be scrutinised:
-      // 1. It removes potentially interesting functional groups.
+      // It removes potentially interesting functional groups.
       // Chemical question is:
       // Should we present functional groups that have
       // multiple atoms as overlap.
-      // 2. It does redundant work, as it rechecks overlap as done
-      // in the previous loop.
       if (this.considerOverlap(set.getStructure())) {
         this.resultSets.put(id, this.newSets.get(id));
         this.existingSets.add(set);
