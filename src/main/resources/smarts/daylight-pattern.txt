@@ -13,6 +13,9 @@ Allenic Carbon: [$([CX2](=C)=C)]
 Vinylic Carbon: [$([CX3]=[CX3])]
 Acetylenic Carbon: [$([CX2]#C)]
 # Arene: c
+Methyl: [CH3]
+Methylene: [CH2]
+Methine: [CH]
 
 # CO
 Carbonyl group. Low specificity: [CX3]=[OX1]
