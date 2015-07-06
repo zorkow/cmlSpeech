@@ -62,7 +62,7 @@ public class FunctionalGroupsFilter {
   private final List<RichFunctionalGroup> workingSets =
       new ArrayList<RichFunctionalGroup>();
 
-  private final Integer minimalSize = 2;
+  private final Integer minimalSize = 1;
   private final Integer minimalOverlap = 1;
 
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
@@ -81,7 +81,7 @@ public class FunctionalGroupsFilter {
   //
   // - when we have similar content, use the one that has the least overlap.
   //
-  // + discard everything of length 1.
+  // + discard everything of length 1 that has overlap.
   // + eliminate when overlap of two with a single existing set.
   //
   // - At least one (or two?) elements not in another container.
@@ -102,6 +102,9 @@ public class FunctionalGroupsFilter {
         if (count > this.minimalOverlap) {
           return false;
         }
+      }
+      if (container.getAtomCount() == 1 && count == 1) {
+        return false;
       }
     }
     return true;
@@ -158,7 +161,7 @@ public class FunctionalGroupsFilter {
     }
     // sort by size
     Collections.sort(this.workingSets, new SizeAndNameComparator());
-    this.subsumeSubsets();
+    //this.subsumeSubsets();
     for (final RichFunctionalGroup set : this.workingSets) {
       final String id = set.getId();
       // TODO (sorge) This test should be scrutinised:
