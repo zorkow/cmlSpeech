@@ -91,8 +91,10 @@ public final class Cli {
         "Include speech descriptions in CML output");
     options.addOption("t", "struct", false,
         "Include exploration structure in CML output");
-    options.addOption("nonih", "nonih", false,
+    options.addOption("nn", "no_nih", false,
         "Do not use the NIH naming service");
+    options.addOption("tn", "time_nih", true,
+        "Add delay time for NIH naming service in ms");
     options.addOption("s", "subrings", false, "Do not compute subrings");
     options.addOption("sssr", "sssr", false,
         "Do not use SSSR method for sub-ring computation");

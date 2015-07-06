@@ -26,6 +26,7 @@
 
 package com.progressiveaccess.cmlspeech.cactus;
 
+import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.base.Logger;
 
 import com.google.common.collect.HashMultimap;
@@ -70,9 +71,24 @@ public class CactusExecutor {
   /** Execute all callables currently in the pool. */
   public void execute() {
     this.executor = Executors.newFixedThreadPool(this.pool.size());
+    Integer time = null;
+    if (Cli.hasOption("time_nih")) {
+      try {
+        time = Integer.parseInt(Cli.getOptionValue("time_nih"));
+      } catch (NumberFormatException e) {
+        Logger.error("Cactus Error: Illegal time format.\n");
+      }
+    }
     for (final CactusCallable callable : this.pool) {
       final Future<String> future = this.executor.submit(callable);
       this.registry.put(callable, future);
+      if (time != null) {
+        try {
+          Thread.sleep(time);
+        } catch (final Throwable e) {
+          Logger.error("Cactus Error: " + e.getMessage() + "\n");
+        }
+      }
     }
   }
 
