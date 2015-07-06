@@ -60,7 +60,7 @@ public class RingTest {
 
     @Before
     public void initCli() throws Exception {
-        String[] dummy = {"-nonih"};
+        String[] dummy = {"-nn"};
         Cli.init(dummy);
     }
 

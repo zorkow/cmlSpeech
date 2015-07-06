@@ -85,7 +85,8 @@ public final class Cactus {
       throw new CactusException("Can't make URL from input " + input + " "
           + output);
     } catch (final IOException e) {
-      throw new CactusException("IO exception when translating " + url);
+      throw new CactusException("IO exception when translating " + url
+          + "\n" + e);
     }
     return lines;
   }

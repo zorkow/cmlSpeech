@@ -71,7 +71,7 @@ public class EnrichTest extends XMLTestCase {
 
     private void compareEnrichedMolecule(String name) {
         System.out.println("Testing " + name + "...");
-        String[] dummy = {"-ao", "-a", "-r", "-nonih",
+        String[] dummy = {"-ao", "-a", "-r", "-nn",
                           "src/main/resources/test_files/molecule/" +
                           name + ".mol"};
         try {
