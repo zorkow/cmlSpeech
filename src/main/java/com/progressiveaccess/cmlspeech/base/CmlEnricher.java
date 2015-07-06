@@ -153,7 +153,7 @@ public class CmlEnricher {
   public void nameAtomSets() {
     RichStructureHelper.getAtomSets().stream().forEach(this::nameAtomSet);
     MolecularFormula.set(RichStructureHelper.getAtomSets());
-    if (!Cli.hasOption("nonih")) {
+    if (!Cli.hasOption("no_nih")) {
       this.executor.execute();
       this.executor.addResults(this.doc);
       this.executor.shutdown();
