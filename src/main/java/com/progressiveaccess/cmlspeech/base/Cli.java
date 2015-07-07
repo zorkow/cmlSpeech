@@ -88,7 +88,7 @@ public final class Cli {
     options.addOption("ao", "annonly", false,
         "Annotations only output. Omits the original CML output");
     options.addOption("r", "descr", false,
-        "Include speech descriptions in CML output");
+        "Include all speech descriptions in CML output");
     options.addOption("t", "struct", false,
         "Include exploration structure in CML output");
     options.addOption("nn", "no_nih", false,

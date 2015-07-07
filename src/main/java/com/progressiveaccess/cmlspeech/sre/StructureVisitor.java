@@ -28,11 +28,13 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
+import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
@@ -54,10 +56,11 @@ import com.google.common.collect.TreeMultimap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -168,9 +171,11 @@ public class StructureVisitor implements XmlVisitor {
                                        bond.getConnected() :
                                        bond.getOrigin())));
     
-    this.speechVisitor.setContextPositions(this.positions);
-    bond.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      this.speechVisitor.setContextPositions(this.positions);
+      bond.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
   }
 
 
@@ -196,9 +201,11 @@ public class StructureVisitor implements XmlVisitor {
     }
     this.element = this.makeNeighbour(bridge.getConnected(), vias);
 
-    this.speechVisitor.setContextPositions(this.positions);
-    bridge.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      this.speechVisitor.setContextPositions(this.positions);
+      bridge.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
   }
 
 
@@ -215,13 +222,15 @@ public class StructureVisitor implements XmlVisitor {
     this.addStructure(set);
     this.addComponents(set.getComponents());
     
-    set.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      set.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
 
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.element = connElement;
-    final Set<Connection> internalConnections = this.connectionsInContext(set);
+    final SortedSet<Connection> internalConnections = this.connectionsInContext(set);
     this.context = set;
     this.positions = this.context.getComponentsPositions();
     for (final Connection connection : internalConnections) {
@@ -244,8 +253,10 @@ public class StructureVisitor implements XmlVisitor {
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
 
-    set.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      set.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
 
   }
 
@@ -262,14 +273,16 @@ public class StructureVisitor implements XmlVisitor {
       this.context.getComponentsPositions();
     this.addStructure(atom);
 
-    this.speechVisitor.setContextPositions(this.positions);
-    atom.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      this.speechVisitor.setContextPositions(this.positions);
+      atom.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
 
-    final Set<Connection> internalConnections = this.bondsInContext(atom);
+    final SortedSet<Connection> internalConnections = this.bondsInContext(atom);
     this.addComponents(internalConnections.stream()
-        .map(conn -> conn.getConnector())
-        .collect(Collectors.toSet()));
+                       .map(conn -> conn.getConnector())
+                       .collect(Collectors.toSet()));
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.internal = true;
@@ -333,9 +346,11 @@ public class StructureVisitor implements XmlVisitor {
         this.makeVia(connection,
             this.positions.getPosition(connection.getConnector())));
 
-    this.speechVisitor.setContextPositions(this.positions);
-    connection.accept(this.speechVisitor);
-    this.addSpeechAttribute(this.element);
+    if (Cli.hasOption("r")) {
+      this.speechVisitor.setContextPositions(this.positions);
+      connection.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
   }
 
 
@@ -428,11 +443,12 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @return The connections of the atom that belong to the set.
    */
-  private Set<Connection> bondsInContext(final RichAtom atom) {
+  private SortedSet<Connection> bondsInContext(final RichAtom atom) {
     if (!this.context.getConnectingAtoms().contains(atom.getId())) {
       return atom.getConnections();
     }
-    final Set<Connection> internal = new HashSet<>();
+    final SortedSet<Connection> internal =
+        new TreeSet<>(new ConnectionComparator());
     for (final Connection connection : atom.getConnections()) {
       if (this.context.getInternalBonds().contains(connection.getConnector())) {
         internal.add(connection);
@@ -450,8 +466,9 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @return The connections of the atom that belong to the set.
    */
-  private Set<Connection> connectionsInContext(final RichAtomSet set) {
-    final Set<Connection> internal = new HashSet<>();
+  private SortedSet<Connection> connectionsInContext(final RichAtomSet set) {
+    final SortedSet<Connection> internal =
+        new TreeSet<>(new ConnectionComparator());
     for (final Connection connection : set.getConnections()) {
       if (this.positions.contains(connection.getConnected())) {
         internal.add(connection);
