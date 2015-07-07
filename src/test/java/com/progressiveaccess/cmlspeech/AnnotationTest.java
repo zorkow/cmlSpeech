@@ -14,18 +14,16 @@
 
 
 /**
- * @file DescriptionTest.java
- * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date Thu Feb 26 17:30:05 2015
- *
- * @brief Full blown tests for enrichment of some standard molecules.
- *
- *
+ * @file   AnnotationTest.java
+ * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @date   Tue Jul  7 21:13:28 2015
+ * 
+ * @brief  Base class for annotation test.
+ * 
+ * 
  */
 
 //
-
 package com.progressiveaccess.cmlspeech;
 
 import com.progressiveaccess.cmlspeech.base.App;
@@ -40,20 +38,32 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Full functional test for the enricher.
+ * Abstract class for annotation tests.
  */
 
-public class DescriptionTest extends XMLTestCase {
+public class AnnotationTest extends XMLTestCase {
 
+  public String[] parameters;
+  public String expectedDirectory = "";
+  
+  public void setParameters(String[] parameters) {
+    this.parameters = parameters;
+  }
+
+
+  public void setDirectory(String directory) {
+    this.expectedDirectory = directory;
+  }
+
+  
   /**
    * Create the test case.
    *
    * @param testName
    *          Name of the test case.
    */
-  public DescriptionTest(final String testName) {
+  public AnnotationTest(final String testName) {
     super(testName);
   }
 
@@ -85,15 +95,17 @@ public class DescriptionTest extends XMLTestCase {
    */
   private void compareEnrichedMolecule(final String name) {
     System.out.println("Testing " + name + "...");
-    final String[] dummy = {"-ao", "-r", "-nn",
-        "src/main/resources/test_files/molecule/" + name + ".mol"};
+    String[] dummy = new String[this.parameters.length + 1];
+    System.arraycopy(this.parameters, 0, dummy, 0, this.parameters.length);
+    dummy[this.parameters.length] =
+        "src/main/resources/test_files/molecule/" + name + ".mol";
     try {
       App.main(dummy);
     } catch (final Exception e) {
       System.out.println("Application Error: " + e.getMessage());
       fail();
     }
-    final String original = readFile("src/test/resources/described/" + name
+    final String original = readFile("src/test/resources/" + this.expectedDirectory + "/" + name
         + "-enr.cml");
     final String revised = readFile(name + "-enr.cml");
     try {
