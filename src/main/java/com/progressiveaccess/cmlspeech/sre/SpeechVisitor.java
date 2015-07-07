@@ -50,6 +50,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import com.google.common.base.Joiner;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 /**
  * Produces the basic speech for structures.
@@ -76,12 +77,13 @@ public class SpeechVisitor implements XmlVisitor {
   
   @Override
   public void visit(final RichAtom atom) {
-    this.addSpeech(atom.getName());
     Integer position = this.contextPositions.getPosition(atom.getId());
     // TODO (sorge) Maybe take the supersystem of the atom outside the context.
     if (position == null) {
+      this.describeSuperSystem(atom);
       return;
     }
+    this.addSpeech(atom.getName());
     this.addSpeech(position);
     if (this.shortDescription) {
       return;
@@ -295,5 +297,22 @@ public class SpeechVisitor implements XmlVisitor {
     }
   }
 
+
+  private void describeSuperSystem(RichAtom atom) {
+    this.shortDescription = true;
+    for (String context : atom.getContexts()) {
+      if (RichStructureHelper.isAtomSet(context)) {
+        RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
+        RichSetType type = set.getType();
+        if (type == RichSetType.FUNCGROUP ||
+            type == RichSetType.ISOLATED ||
+            type == RichSetType.FUSED ||
+            type == RichSetType.ALIPHATIC) {
+          set.accept(this);
+        }
+      }
+    }
+    this.shortDescription = false;
+  }
 
 }
