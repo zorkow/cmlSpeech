@@ -53,16 +53,6 @@ public class SreAnnotations extends SreElement {
     this.annotationNodes = new TreeMap<>(new CmlNameComparator());
   }
 
-  SreAnnotations(final IAtomContainer molecule) {
-    super(SreNamespace.Tag.ANNOTATIONS);
-    for (final IAtom atom : molecule.atoms()) {
-      this.getNodeToAnnotate(atom.getID(), SreNamespace.Tag.ATOM);
-    }
-    for (final IBond bond : molecule.bonds()) {
-      this.getNodeToAnnotate(bond.getID(), SreNamespace.Tag.BOND);
-    }
-  }
-
   // Careful, this sets directly!
   public void registerAnnotation(final String id, final SreElement element) {
     this.annotationNodes.put(id, element);

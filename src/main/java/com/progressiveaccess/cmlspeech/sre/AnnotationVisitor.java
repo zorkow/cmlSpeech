@@ -34,11 +34,11 @@ import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
-import com.progressiveaccess.cmlspeech.structure.AbstractRichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
+import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
@@ -180,7 +180,7 @@ public class AnnotationVisitor implements XmlVisitor {
    * @param structure
    *          The rich structure.
    */
-  private void structureAnnotation(final AbstractRichStructure<?> structure) {
+  private void structureAnnotation(final RichChemObject structure) {
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     this.annotations.registerAnnotation(structure.getId(), this.element);
     this.element
@@ -219,8 +219,7 @@ public class AnnotationVisitor implements XmlVisitor {
    * @param structure
    *          The structure that is currently visited.
    */
-  private void connectionsAnnotations(
-      final AbstractRichStructure<?> structure) {
+  private void connectionsAnnotations(final RichChemObject structure) {
     if (structure.getConnections().isEmpty()) {
       return;
     }
