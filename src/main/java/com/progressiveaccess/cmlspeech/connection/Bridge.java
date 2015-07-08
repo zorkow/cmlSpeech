@@ -16,7 +16,6 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * Bridge for a neighbouring fused ring is a combination of shared bonds and
@@ -33,12 +32,13 @@ public class Bridge extends Connection {
    * @param connectors Set of bridges.
    * @param connected Name of connected structure.
    */
-  public Bridge(final SortedSet<Connection> connectors, final String connected) {
+  public Bridge(final SortedSet<Connection> connectors,
+                final String connected) {
     super(connectors.first().getConnector(), connected);
     bridges = connectors;
   }
 
-    
+
   /**
    * @return Set of shared bonds and bridge atoms.
    */

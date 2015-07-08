@@ -42,7 +42,7 @@ public enum ConnectionType {
 
   private final String name;
 
-  
+
   /**
    * Constructor of connection types.
    *

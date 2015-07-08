@@ -27,11 +27,11 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
+import com.progressiveaccess.cmlspeech.sre.AtomTable;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
-import com.progressiveaccess.cmlspeech.sre.AtomTable;
 
 /**
  * Atoms with admin information.
@@ -75,45 +75,45 @@ public class RichAtom extends RichChemObject {
     visitor.visit(this);
   }
 
-  
+
   // TODO (sorge) Refactor into speech visitor.
   @Override
   public String shortSimpleDescription() {
     return this.getName();
-  };
+  }
 
 
-  /** 
+  /**
    * Computes the atom description in the context of an atom set.
-   * 
+   *
    * @param atomSet
    *          A rich atom set.
-   * 
+   *
    * @return The speech string for the atom.
    */
   public String shortSimpleDescription(final RichAtomSet atomSet) {
     return this.getName() + this.describeAtomPosition(atomSet);
-  };
+  }
 
 
   @Override
   public String longSimpleDescription() {
     return this.getName() + this.describeHydrogenBonds();
-  };
+  }
 
 
-  /** 
+  /**
    * Computes the atom description in the context of an atom set.
-   * 
+   *
    * @param atomSet
    *          A rich atom set.
-   * 
+   *
    * @return The speech string for the atom.
    */
   public String longSimpleDescription(final RichAtomSet atomSet) {
     return this.getName() + this.describeAtomPosition(atomSet)
         + this.describeHydrogenBonds();
-  };
+  }
 
 
   /**
@@ -132,12 +132,12 @@ public class RichAtom extends RichChemObject {
   }
 
 
-  /** 
+  /**
    * Describes the position of the atom in the context of a given atom set.
-   * 
+   *
    * @param atomSet
    *          A rich atom set.
-   * 
+   *
    * @return The speech string for the atom's position.
    */
   private String describeAtomPosition(final RichAtomSet atomSet) {

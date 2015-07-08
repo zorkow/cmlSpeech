@@ -99,5 +99,5 @@ public class RichBond extends RichChemObject {
   public String orderDescription() {
     return this.getStructure().getOrder().toString().toLowerCase();
   }
-    
+
 }

@@ -30,12 +30,14 @@ package com.progressiveaccess.cmlspeech.structure;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Joiner;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
-import com.google.common.base.Joiner;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
+
 
 /**
  * Atom sets that are rich sub rings.
@@ -66,14 +68,14 @@ public class RichSubRing extends RichRing {
     return structure;
   }
 
-    /** 
+    /**
    * @return The collection of bridging connections.
    */
   public List<Bridge> getBridges() {
     return bridges;
   }
 
-  
+
   @Override
   public void accept(final XmlVisitor visitor) {
     visitor.visit(this);

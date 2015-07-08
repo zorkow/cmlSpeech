@@ -14,12 +14,13 @@
 
 /**
  * @file   SpeechVisitor.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 30 14:46:54 2015
- * 
+ *
  * @brief  Simple speech visitor.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -30,8 +31,6 @@ import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
-import com.progressiveaccess.cmlspeech.connection.Connection;
-import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
@@ -40,7 +39,6 @@ import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
-import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
@@ -63,20 +61,20 @@ public class SpeechVisitor implements XmlVisitor {
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
   private Integer id = 0;
-  private boolean shortDescription = false; 
-  
+  private boolean shortDescription = false;
+
 
   public void setContextPositions(final ComponentsPositions positions) {
     this.contextPositions = positions;
   }
-    
-  
+
+
   @Override
   public void visit(final RichBond bond) {
     this.addSpeech(bond.getName());
   }
 
-  
+
   @Override
   public void visit(final RichAtom atom) {
     Integer position = this.contextPositions.getPosition(atom.getId());
@@ -211,29 +209,29 @@ public class SpeechVisitor implements XmlVisitor {
     bridge.getBridges().forEach(c -> c.accept(this));
     this.shortDescription = false;
   }
-  
 
-  private void modSpeech(String msg) {
+
+  private void modSpeech(final String msg) {
     String last = this.speech.removeLast();
     this.speech.offerLast(last + msg);
   }
 
 
-  private void addSpeech(String msg) {
+  private void addSpeech(final String msg) {
     if (!msg.equals("")) {
       this.speech.add(msg);
     }
   }
 
 
-  private void addSpeech(Integer num) {
+  private void addSpeech(final Integer num) {
     this.addSpeech(num.toString());
   }
 
 
   // TODO (sorge) Do something about all upper case names without destroying
   // important upper cases. E.g.: WordUtils.capitalizeFully.
-  private void addName(RichAtomSet atomset) {
+  private void addName(final RichAtomSet atomset) {
     if (!atomset.getName().equals("")) {
       addSpeech(atomset.getName());
       return;
@@ -245,7 +243,7 @@ public class SpeechVisitor implements XmlVisitor {
     addSpeech(atomset.getMolecularFormula());
   }
 
-  
+
   public String getSpeech() {
     final Joiner joiner = Joiner.on(" ");
     String result = joiner.join(this.speech);
@@ -253,7 +251,7 @@ public class SpeechVisitor implements XmlVisitor {
     return result + ".";
   }
 
-  
+
   // TODO (sorge) For the following utility functions, see if they can be
   // refactored with walk methods, etc.
   private void describeSubstitutions(final RichAtomSet system) {
@@ -279,9 +277,12 @@ public class SpeechVisitor implements XmlVisitor {
   }
 
   /**
-   * @return Description of hydrogen bonds of an atom.
+   * Adds description of hydrogen bonds of an atom.
+   *
+   * @param atom
+   *          The atom to describe.
    */
-  private void describeHydrogenBonds(RichAtom atom) {
+  private void describeHydrogenBonds(final RichAtom atom) {
     final Integer count = atom.getStructure().getImplicitHydrogenCount();
     switch (count) {
       case 0:
@@ -300,16 +301,16 @@ public class SpeechVisitor implements XmlVisitor {
   }
 
 
-  private void describeSuperSystem(RichAtom atom) {
+  private void describeSuperSystem(final RichAtom atom) {
     this.shortDescription = true;
     for (String context : atom.getContexts()) {
       if (RichStructureHelper.isAtomSet(context)) {
         RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
         RichSetType type = set.getType();
-        if (type == RichSetType.FUNCGROUP ||
-            type == RichSetType.ISOLATED ||
-            type == RichSetType.FUSED ||
-            type == RichSetType.ALIPHATIC) {
+        if (type == RichSetType.FUNCGROUP
+            || type == RichSetType.ISOLATED
+            || type == RichSetType.FUSED
+            || type == RichSetType.ALIPHATIC) {
           set.accept(this);
         }
       }

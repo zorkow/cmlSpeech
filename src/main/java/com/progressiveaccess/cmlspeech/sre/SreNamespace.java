@@ -161,7 +161,7 @@ public class SreNamespace {
     BOND("bond"),
     LOCATION("location"),
     TYPE("type");
-    
+
     private final String attribute;
 
 

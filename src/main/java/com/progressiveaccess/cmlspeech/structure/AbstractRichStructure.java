@@ -31,7 +31,6 @@ import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.sre.SpeechAnnotations;
-import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
