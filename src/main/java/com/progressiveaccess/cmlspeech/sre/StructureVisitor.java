@@ -35,7 +35,6 @@ import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
-import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
@@ -55,9 +54,7 @@ import com.google.common.collect.TreeMultimap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -78,7 +75,7 @@ public class StructureVisitor implements XmlVisitor {
   private final SpeechVisitor speechVisitor = new SpeechVisitor();
   private boolean internal = false;
 
-  
+
   /**
    * Dummy comparator for the tree multi map.
    */
@@ -167,15 +164,9 @@ public class StructureVisitor implements XmlVisitor {
   public void visit(final ConnectingBond bond) {
     this.element = this.makeNeighbour(bond.getConnected(),
         this.makeVia(bond,
-            this.positions.getPosition(this.internal ?
-                                       bond.getConnected() :
-                                       bond.getOrigin())));
-    
-    if (Cli.hasOption("r")) {
-      this.speechVisitor.setContextPositions(this.positions);
-      bond.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
+            this.positions.getPosition(this.internal
+                ? bond.getConnected() : bond.getOrigin())));
+    this.addSpeech(bond);
   }
 
 
@@ -200,12 +191,7 @@ public class StructureVisitor implements XmlVisitor {
       vias.add(this.element);
     }
     this.element = this.makeNeighbour(bridge.getConnected(), vias);
-
-    if (Cli.hasOption("r")) {
-      this.speechVisitor.setContextPositions(this.positions);
-      bridge.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
+    this.addSpeech(bridge);
   }
 
 
@@ -221,16 +207,12 @@ public class StructureVisitor implements XmlVisitor {
     this.positions = ((RichSuperSet) this.context).getPath();
     this.addStructure(set);
     this.addComponents(set.getComponents());
-    
-    if (Cli.hasOption("r")) {
-      set.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
-
+    this.addSpeech(set);
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
     this.element = connElement;
-    final SortedSet<Connection> internalConnections = this.connectionsInContext(set);
+    final SortedSet<Connection> internalConnections =
+        this.connectionsInContext(set);
     this.context = set;
     this.positions = this.context.getComponentsPositions();
     for (final Connection connection : internalConnections) {
@@ -252,12 +234,7 @@ public class StructureVisitor implements XmlVisitor {
     this.addComponents(set.getComponents());
     final SreElement connElement = new SreElement(SreNamespace.Tag.NEIGHBOURS);
     this.element.appendChild(connElement);
-
-    if (Cli.hasOption("r")) {
-      set.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
-
+    this.addSpeech(set);
   }
 
 
@@ -268,17 +245,11 @@ public class StructureVisitor implements XmlVisitor {
    *          The rich atom.
    */
   private void atomStructure(final RichAtom atom) {
-    this.positions = RichStructureHelper.isMolecule(this.context.getId()) ?
-      ((RichMolecule) this.context).getPath() :
-      this.context.getComponentsPositions();
+    this.positions = RichStructureHelper.isMolecule(this.context.getId())
+        ? ((RichMolecule) this.context).getPath()
+        : this.context.getComponentsPositions();
     this.addStructure(atom);
-
-    if (Cli.hasOption("r")) {
-      this.speechVisitor.setContextPositions(this.positions);
-      atom.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
-
+    this.addSpeech(atom);
     final SortedSet<Connection> internalConnections = this.bondsInContext(atom);
     this.addComponents(internalConnections.stream()
                        .map(conn -> conn.getConnector())
@@ -289,7 +260,8 @@ public class StructureVisitor implements XmlVisitor {
     for (Connection connection : atom.getConnections()) {
       connection.accept(this);
       connElement.appendChild(this.element);
-      this.element.addAttribute(new SreAttribute(SreNamespace.Attribute.LOCATION,
+      this.element.addAttribute(new SreAttribute(
+          SreNamespace.Attribute.LOCATION,
           internalConnections.contains(connection) ? "internal" : "external"));
     }
   }
@@ -345,12 +317,7 @@ public class StructureVisitor implements XmlVisitor {
     this.element = this.makeNeighbour(connection.getConnected(),
         this.makeVia(connection,
             this.positions.getPosition(connection.getConnector())));
-
-    if (Cli.hasOption("r")) {
-      this.speechVisitor.setContextPositions(this.positions);
-      connection.accept(this.speechVisitor);
-      this.addSpeechAttribute(this.element);
-    }
+    this.addSpeech(connection);
   }
 
 
@@ -447,14 +414,14 @@ public class StructureVisitor implements XmlVisitor {
     if (!this.context.getConnectingAtoms().contains(atom.getId())) {
       return atom.getConnections();
     }
-    final SortedSet<Connection> internal =
+    final SortedSet<Connection> internalConnection =
         new TreeSet<>(new ConnectionComparator());
     for (final Connection connection : atom.getConnections()) {
       if (this.context.getInternalBonds().contains(connection.getConnector())) {
-        internal.add(connection);
+        internalConnection.add(connection);
       }
     }
-    return internal;
+    return internalConnection;
   }
 
 
@@ -467,14 +434,14 @@ public class StructureVisitor implements XmlVisitor {
    * @return The connections of the atom that belong to the set.
    */
   private SortedSet<Connection> connectionsInContext(final RichAtomSet set) {
-    final SortedSet<Connection> internal =
+    final SortedSet<Connection> internalConnection =
         new TreeSet<>(new ConnectionComparator());
     for (final Connection connection : set.getConnections()) {
       if (this.positions.contains(connection.getConnected())) {
-        internal.add(connection);
+        internalConnection.add(connection);
       }
     }
-    return internal;
+    return internalConnection;
   }
 
 
@@ -501,6 +468,21 @@ public class StructureVisitor implements XmlVisitor {
     structure.addAttribute(
         new SreAttribute(SreNamespace.Attribute.SPEECH,
             this.speechVisitor.getSpeech()));
+  }
+
+
+  /**
+   * Adds the speech attributes for a structure or connection.
+   *
+   * @param visitable
+   *          The visitable object to describe.
+   */
+  private void addSpeech(final XmlVisitable visitable) {
+    if (Cli.hasOption("r")) {
+      this.speechVisitor.setContextPositions(this.positions);
+      visitable.accept(this.speechVisitor);
+      this.addSpeechAttribute(this.element);
+    }
   }
 
 }
