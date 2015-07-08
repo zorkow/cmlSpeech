@@ -15,15 +15,17 @@
 
 /**
  * @file   AnnotationTest.java
- * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">
+ *          Volker Sorge</a>
  * @date   Tue Jul  7 21:13:28 2015
- * 
+ *
  * @brief  Base class for annotation test.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech;
 
 import com.progressiveaccess.cmlspeech.base.App;
@@ -42,21 +44,21 @@ import java.util.List;
  * Abstract class for annotation tests.
  */
 
-public class AnnotationTest extends XMLTestCase {
-
-  public String[] parameters;
-  public String expectedDirectory = "";
-  
-  public void setParameters(String[] parameters) {
-    this.parameters = parameters;
-  }
+public abstract class AnnotationTest extends XMLTestCase {
 
 
-  public void setDirectory(String directory) {
-    this.expectedDirectory = directory;
-  }
+  /**
+   * @return Parameter list for the dummy cli.
+   */
+  abstract String[] getParameters();
 
-  
+
+  /**
+   * @return The directory with the expected result files.
+   */
+  abstract String expectedDirectory();
+
+
   /**
    * Create the test case.
    *
@@ -93,20 +95,21 @@ public class AnnotationTest extends XMLTestCase {
    * @param name
    *          The name of the molecule, which corresponds to the filename.
    */
-  private void compareEnrichedMolecule(final String name) {
+  public void compareEnrichedMolecule(final String name) {
     System.out.println("Testing " + name + "...");
-    String[] dummy = new String[this.parameters.length + 1];
-    System.arraycopy(this.parameters, 0, dummy, 0, this.parameters.length);
-    dummy[this.parameters.length] =
-        "src/main/resources/test_files/molecule/" + name + ".mol";
+    String[] parameters = this.getParameters();
+    Integer length = parameters.length;
+    String[] dummy = new String[length + 1];
+    System.arraycopy(parameters, 0, dummy, 0, length);
+    dummy[length] = "src/main/resources/test_files/molecule/" + name + ".mol";
     try {
       App.main(dummy);
     } catch (final Exception e) {
       System.out.println("Application Error: " + e.getMessage());
       fail();
     }
-    final String original = readFile("src/test/resources/" + this.expectedDirectory + "/" + name
-        + "-enr.cml");
+    final String original = readFile("src/test/resources/"
+        + this.expectedDirectory() + "/" + name + "-enr.cml");
     final String revised = readFile(name + "-enr.cml");
     try {
       this.assertXMLEqual(name, original, revised);
@@ -116,6 +119,7 @@ public class AnnotationTest extends XMLTestCase {
     }
   }
 
+
   /**
    * Test enrichment of aliphatic chains.
    */
@@ -123,6 +127,7 @@ public class AnnotationTest extends XMLTestCase {
   public void testChain() {
     this.compareEnrichedMolecule("book1-004-05");
   }
+
 
   /**
    * Test enrichment of functional groups.
@@ -136,6 +141,7 @@ public class AnnotationTest extends XMLTestCase {
   /**
    * Test enrichment of ring.
    */
+  @Test
   public void testRing() {
     this.compareEnrichedMolecule("book1-012-00");
   }
@@ -144,6 +150,7 @@ public class AnnotationTest extends XMLTestCase {
   /**
    * Test enrichment of ring with functional groups.
    */
+  @Test
   public void testRingFunctional() {
     this.compareEnrichedMolecule("aspirin");
   }
@@ -152,6 +159,7 @@ public class AnnotationTest extends XMLTestCase {
   /**
    * Test enrichment of complex molecule with multiple systems..
    */
+  @Test
   public void testComplex() {
     this.compareEnrichedMolecule("US06358966-20020319-C00001");
   }
@@ -160,6 +168,7 @@ public class AnnotationTest extends XMLTestCase {
   /**
    * Test enrichment of large fused ring system.
    */
+  @Test
   public void testFused() {
     this.compareEnrichedMolecule("ovalene");
   }
