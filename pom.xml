@@ -111,11 +111,13 @@
       <configuration>
         <!-- <skipTests>true</skipTests> -->
         <excludes>
-          <exclude>**/AppTest.java</exclude>
-          <exclude>**/DescriptionTest.java</exclude>
-          <exclude>**/EnrichTest.java</exclude>
-          <exclude>**/PositionTest.java</exclude>
-          <exclude>**/RingTest.java</exclude>
+          <!-- <exclude>**/AppTest.java</exclude> -->
+          <!-- <exclude>**/DescriptionTest.java</exclude> -->
+          <!-- <exclude>**/EnrichTest.java</exclude> -->
+          <!-- <exclude>**/PositionTest.java</exclude> -->
+          <!-- <exclude>**/RingTest.java</exclude> -->
+          <!-- <exclude>**/SimpleSpeechTest.java</exclude> -->
+          <!-- <exclude>**/StructureTest.java</exclude> -->
         </excludes>
       </configuration>
     </plugin>
