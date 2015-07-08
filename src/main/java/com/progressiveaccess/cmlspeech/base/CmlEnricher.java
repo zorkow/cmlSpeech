@@ -199,10 +199,10 @@ public class CmlEnricher {
       SreStructure sreStructure = new SreStructure();
       this.doc.getRootElement().appendChild(sreStructure.getAnnotations());
     }
-    if (Cli.hasOption("descr")) {
-      SreSpeech sreSpeech = new SreSpeech(this.doc);
-      this.doc.getRootElement().appendChild(sreSpeech.xmlAnnotations());
-    }
+    // if (Cli.hasOption("descr")) {
+    //   SreSpeech sreSpeech = new SreSpeech(this.doc);
+    //   this.doc.getRootElement().appendChild(sreSpeech.xmlAnnotations());
+    // }
   }
 
 
