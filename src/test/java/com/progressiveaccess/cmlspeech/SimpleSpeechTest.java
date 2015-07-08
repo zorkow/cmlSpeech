@@ -25,6 +25,7 @@
  */
 
 //
+
 package com.progressiveaccess.cmlspeech;
 
 /**
@@ -32,7 +33,7 @@ package com.progressiveaccess.cmlspeech;
  */
 
 public class SimpleSpeechTest extends AnnotationTest {
-  
+
   /**
    * Create the test case.
    *

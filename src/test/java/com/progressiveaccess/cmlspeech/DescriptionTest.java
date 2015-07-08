@@ -28,18 +28,6 @@
 
 package com.progressiveaccess.cmlspeech;
 
-import com.progressiveaccess.cmlspeech.base.App;
-
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-
 
 /**
  * Full functional test for the enricher.
