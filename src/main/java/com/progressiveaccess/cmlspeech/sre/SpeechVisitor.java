@@ -35,6 +35,7 @@ import com.progressiveaccess.cmlspeech.connection.ConnectionType;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -44,13 +45,14 @@ import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
+import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
+
+import com.google.common.base.Joiner;
+
 import java.util.LinkedList;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import com.google.common.base.Joiner;
-import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
-import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 /**
  * Produces the basic speech for structures.

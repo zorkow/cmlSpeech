@@ -155,6 +155,7 @@ public class SreNamespace {
     ELEMENTS("elements"),
 
     SPEECH("speech"),
+    SPEECH2("speech2"),
     ORDER("order"),
     ATOM("bond"),
     BOND("bond"),

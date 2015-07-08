@@ -73,6 +73,8 @@ public class StructureVisitor implements XmlVisitor {
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
   private final SpeechVisitor speechVisitor = new SpeechVisitor();
+  private final SimpleSpeechVisitor simpleSpeechVisitor =
+      new SimpleSpeechVisitor();
   private boolean internal = false;
 
 
@@ -472,6 +474,22 @@ public class StructureVisitor implements XmlVisitor {
 
 
   /**
+   * Adds a computed simple speech attribute to the given element.
+   *
+   * @param structure
+   *          The structural element.
+   */
+  private void addSimpleSpeechAttribute(final SreElement structure) {
+    String speech = this.simpleSpeechVisitor.getSpeech();
+    if (speech != "") {
+      structure.addAttribute(
+          new SreAttribute(SreNamespace.Attribute.SPEECH2,
+                           speech));
+    }
+  }
+
+
+  /**
    * Adds the speech attributes for a structure or connection.
    *
    * @param visitable
@@ -482,6 +500,11 @@ public class StructureVisitor implements XmlVisitor {
       this.speechVisitor.setContextPositions(this.positions);
       visitable.accept(this.speechVisitor);
       this.addSpeechAttribute(this.element);
+    }
+    if (Cli.hasOption("r0")) {
+      this.simpleSpeechVisitor.setContextPositions(this.positions);
+      visitable.accept(this.simpleSpeechVisitor);
+      this.addSimpleSpeechAttribute(this.element);
     }
   }
 
