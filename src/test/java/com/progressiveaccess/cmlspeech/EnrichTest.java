@@ -28,24 +28,12 @@
 
 package com.progressiveaccess.cmlspeech;
 
-import com.progressiveaccess.cmlspeech.base.App;
-
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-
 
 /**
  * Full functional test for the enricher.
  */
 
-public class EnrichTest extends XMLTestCase {
+public class EnrichTest extends AnnotationTest {
 
   /**
    * Create the test case.
@@ -58,102 +46,16 @@ public class EnrichTest extends XMLTestCase {
   }
 
 
-  /**
-   * Reads a file for comparison.
-   *
-   * @param filename
-   *          The name of the file to load.
-   *
-   * @return The content of the file as a one line string.
-   */
-  private static String readFile(final String filename) {
-    List<String> lines = new LinkedList<String>();
-    try {
-      lines = Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
-    } catch (final IOException e) {
-      e.printStackTrace();
-    }
-    return String.join("", lines);
+  @Override
+  public String[] getParameters() {
+    final String[] parameters = {"-ao", "-a", "-nn"};
+    return parameters;
   }
 
 
-  /**
-   * Compares enriched molecules.
-   *
-   * @param name
-   *          The name of the molecule, which corresponds to the filename.
-   */
-  private void compareEnrichedMolecule(final String name) {
-    System.out.println("Testing " + name + "...");
-    final String[] dummy = {"-ao", "-a", "-nn",
-        "src/main/resources/test_files/molecule/" + name + ".mol"};
-    try {
-      App.main(dummy);
-    } catch (final Exception e) {
-      System.out.println("Application Error: " + e.getMessage());
-      fail();
-    }
-    final String original = readFile("src/test/resources/enriched/" + name
-        + "-enr.cml");
-    final String revised = readFile(name + "-enr.cml");
-    try {
-      this.assertXMLEqual(name, original, revised);
-    } catch (final Exception e) {
-      System.out.println("XML Error " + e.getMessage());
-      fail();
-    }
-  }
-
-  /**
-   * Test enrichment of aliphatic chains.
-   */
-  @Test
-  public void testChain() {
-    this.compareEnrichedMolecule("book1-004-05");
-  }
-
-  /**
-   * Test enrichment of functional groups.
-   */
-  @Test
-  public void testFunctional() {
-    this.compareEnrichedMolecule("book1-006-03");
-  }
-
-
-  /**
-   * Test enrichment of ring.
-   */
-  @Test
-  public void testRing() {
-    this.compareEnrichedMolecule("book1-012-00");
-  }
-
-
-  /**
-   * Test enrichment of ring with functional groups.
-   */
-  @Test
-  public void testRingFunctional() {
-    this.compareEnrichedMolecule("aspirin");
-  }
-
-
-  /**
-   * Test enrichment of complex molecule with multiple systems..
-   */
-  @Test
-  public void testComplex() {
-    this.compareEnrichedMolecule("US06358966-20020319-C00001");
-  }
-
-
-  /**
-   * Test enrichment of large fused ring system.
-   */
-  @Test
-  public void testFused() {
-    this.compareEnrichedMolecule("ovalene");
+  @Override
+  public String expectedDirectory() {
+    return "enriched";
   }
 
 }

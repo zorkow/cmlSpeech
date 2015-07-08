@@ -109,13 +109,13 @@
       <artifactId>maven-surefire-plugin</artifactId>
       <version>2.10</version>
       <configuration>
-        <skipTests>true</skipTests>
+        <!-- <skipTests>true</skipTests> -->
         <excludes>
-          <!-- <exclude>**/AppTest.java</exclude> -->
-          <!-- <exclude>**/DescriptionTest.java</exclude> -->
-          <!-- <exclude>**/EnrichTest.java</exclude> -->
-          <!-- <exclude>**/PositionTest.java</exclude> -->
-          <!-- <exclude>**/RingTest.java</exclude> -->
+          <exclude>**/AppTest.java</exclude>
+          <exclude>**/DescriptionTest.java</exclude>
+          <exclude>**/EnrichTest.java</exclude>
+          <exclude>**/PositionTest.java</exclude>
+          <exclude>**/RingTest.java</exclude>
         </excludes>
       </configuration>
     </plugin>

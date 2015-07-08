@@ -14,12 +14,12 @@
 
 
 /**
- * @file DescriptionTest.java
- * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date Thu Feb 26 17:30:05 2015
+ * @file   AnnotationTest.java
+ * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">
+ *          Volker Sorge</a>
+ * @date   Tue Jul  7 21:13:28 2015
  *
- * @brief Full blown tests for enrichment of some standard molecules.
+ * @brief  Base class for annotation test.
  *
  *
  */
@@ -40,12 +40,24 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
- * Full functional test for the enricher.
+ * Abstract class for annotation tests.
  */
 
-public class DescriptionTest extends XMLTestCase {
+public abstract class AnnotationTest extends XMLTestCase {
+
+
+  /**
+   * @return Parameter list for the dummy cli.
+   */
+  abstract String[] getParameters();
+
+
+  /**
+   * @return The directory with the expected result files.
+   */
+  abstract String expectedDirectory();
+
 
   /**
    * Create the test case.
@@ -53,7 +65,7 @@ public class DescriptionTest extends XMLTestCase {
    * @param testName
    *          Name of the test case.
    */
-  public DescriptionTest(final String testName) {
+  public AnnotationTest(final String testName) {
     super(testName);
   }
 
@@ -83,18 +95,21 @@ public class DescriptionTest extends XMLTestCase {
    * @param name
    *          The name of the molecule, which corresponds to the filename.
    */
-  private void compareEnrichedMolecule(final String name) {
+  public void compareEnrichedMolecule(final String name) {
     System.out.println("Testing " + name + "...");
-    final String[] dummy = {"-ao", "-r", "-nn",
-        "src/main/resources/test_files/molecule/" + name + ".mol"};
+    String[] parameters = this.getParameters();
+    Integer length = parameters.length;
+    String[] dummy = new String[length + 1];
+    System.arraycopy(parameters, 0, dummy, 0, length);
+    dummy[length] = "src/main/resources/test_files/molecule/" + name + ".mol";
     try {
       App.main(dummy);
     } catch (final Exception e) {
       System.out.println("Application Error: " + e.getMessage());
       fail();
     }
-    final String original = readFile("src/test/resources/described/" + name
-        + "-enr.cml");
+    final String original = readFile("src/test/resources/"
+        + this.expectedDirectory() + "/" + name + "-enr.cml");
     final String revised = readFile(name + "-enr.cml");
     try {
       this.assertXMLEqual(name, original, revised);
@@ -104,6 +119,7 @@ public class DescriptionTest extends XMLTestCase {
     }
   }
 
+
   /**
    * Test enrichment of aliphatic chains.
    */
@@ -111,6 +127,7 @@ public class DescriptionTest extends XMLTestCase {
   public void testChain() {
     this.compareEnrichedMolecule("book1-004-05");
   }
+
 
   /**
    * Test enrichment of functional groups.
@@ -124,6 +141,7 @@ public class DescriptionTest extends XMLTestCase {
   /**
    * Test enrichment of ring.
    */
+  @Test
   public void testRing() {
     this.compareEnrichedMolecule("book1-012-00");
   }
@@ -132,6 +150,7 @@ public class DescriptionTest extends XMLTestCase {
   /**
    * Test enrichment of ring with functional groups.
    */
+  @Test
   public void testRingFunctional() {
     this.compareEnrichedMolecule("aspirin");
   }
@@ -140,6 +159,7 @@ public class DescriptionTest extends XMLTestCase {
   /**
    * Test enrichment of complex molecule with multiple systems..
    */
+  @Test
   public void testComplex() {
     this.compareEnrichedMolecule("US06358966-20020319-C00001");
   }
@@ -148,6 +168,7 @@ public class DescriptionTest extends XMLTestCase {
   /**
    * Test enrichment of large fused ring system.
    */
+  @Test
   public void testFused() {
     this.compareEnrichedMolecule("ovalene");
   }
