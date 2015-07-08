@@ -60,7 +60,6 @@ public class SpeechVisitor implements XmlVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
-  private Integer id = 0;
   private boolean shortDescription = false;
 
 

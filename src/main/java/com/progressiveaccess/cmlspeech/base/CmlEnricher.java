@@ -36,7 +36,7 @@ import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
-import com.progressiveaccess.cmlspeech.sre.SreSpeech;
+import com.progressiveaccess.cmlspeech.sre.SreStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
@@ -54,7 +54,6 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
-import com.progressiveaccess.cmlspeech.sre.SreStructure;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
