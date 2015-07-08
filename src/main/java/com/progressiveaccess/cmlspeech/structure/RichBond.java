@@ -80,19 +80,6 @@ public class RichBond extends RichChemObject {
   }
 
 
-  @Override
-  public String shortSimpleDescription() {
-    return this.getName();
-  }
-
-
-  // TODO (sorge) Implement long description.
-  @Override
-  public String longSimpleDescription() {
-    return "";
-  }
-
-
   /**
    * @return The order of the bond.
    */
