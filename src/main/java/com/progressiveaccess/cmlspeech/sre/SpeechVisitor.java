@@ -166,11 +166,11 @@ public class SpeechVisitor implements XmlVisitor {
 
   @Override
   public void visit(final ConnectingBond bond) {
+    this.shortDescription = true;
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     // TODO (sorge) The past tense here is problematic!
     this.modSpeech("ed");
     this.addSpeech("to");
-    this.shortDescription = true;
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);

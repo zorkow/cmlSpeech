@@ -42,6 +42,7 @@ import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
+import com.progressiveaccess.cmlspeech.structure.RichBond;
 import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
@@ -110,6 +111,16 @@ public class StructureVisitor implements XmlVisitor {
       this.context = RichStructureHelper.getRichAtomSet(parent);
       this.atomStructure(atom);
     }
+  }
+
+
+  @Override
+  public void visit(final RichBond bond) {
+    this.context = null;
+    this.addStructure(bond);
+    this.addComponents(bond.getComponents());
+    this.addSpeech(bond);
+    this.element.appendChild(new SreElement(SreNamespace.Tag.NEIGHBOURS));
   }
 
 
