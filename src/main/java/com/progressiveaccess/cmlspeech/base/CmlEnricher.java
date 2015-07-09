@@ -198,7 +198,9 @@ public class CmlEnricher {
     if (Cli.hasOption("struct")) {
       SreStructure sreStructure = new SreStructure();
       SreElement annotation = sreStructure.getAnnotations();
-      HydrogenAdder.reattach(this.doc, annotation);
+      if (!Cli.hasOption("nh")) {
+        HydrogenAdder.reattach(this.doc, annotation);
+      }
       this.doc.getRootElement().appendChild(annotation);
     }
   }
@@ -208,7 +210,6 @@ public class CmlEnricher {
    * Removes explicit hydrogens from the CML representation.
    */
   private void removeExplicitHydrogens() {
-    // TODO (sorge) These should be reattached at the end!
     this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
   }
 
