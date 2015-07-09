@@ -47,7 +47,7 @@ public class SimpleSpeechTest extends AnnotationTest {
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r0", "-nn"};
+    final String[] parameters = {"-ao", "-t", "-r0", "-nn", "-nh"};
     return parameters;
   }
 

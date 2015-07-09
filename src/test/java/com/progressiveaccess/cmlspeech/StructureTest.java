@@ -48,7 +48,7 @@ public class StructureTest extends AnnotationTest {
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-nn"};
+    final String[] parameters = {"-ao", "-t", "-nn", "-nh"};
     return parameters;
   }
 

@@ -48,7 +48,7 @@ public class DescriptionTest extends AnnotationTest {
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r", "-nn"};
+    final String[] parameters = {"-ao", "-t", "-r", "-nn", "-nh"};
     return parameters;
   }
 
