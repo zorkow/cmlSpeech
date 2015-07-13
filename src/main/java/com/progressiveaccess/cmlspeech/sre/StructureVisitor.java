@@ -277,6 +277,7 @@ public class StructureVisitor implements XmlVisitor {
           SreNamespace.Attribute.LOCATION,
           internalConnections.contains(connection) ? "internal" : "external"));
     }
+    this.internal = false;
   }
 
 
