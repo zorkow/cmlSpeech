@@ -31,6 +31,7 @@ import com.progressiveaccess.cmlspeech.analysis.MolecularFormula;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.analysis.StructuralAnalysis;
 import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
+import com.progressiveaccess.cmlspeech.cactus.Cactus;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
@@ -107,6 +108,7 @@ public class CmlEnricher {
           + "\n");
       e.printStackTrace();
     }
+    Cactus.callSpider(this.molecule);
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
