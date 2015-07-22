@@ -35,6 +35,7 @@ import com.progressiveaccess.cmlspeech.cactus.Cactus;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
+import com.progressiveaccess.cmlspeech.cactus.Spider;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
@@ -56,6 +57,8 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
+import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
+import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -66,6 +69,7 @@ public class CmlEnricher {
   private Document doc;
   private IAtomContainer molecule;
   private final CactusExecutor executor = new CactusExecutor();
+  private final SpiderExecutor sexecutor = new SpiderExecutor();
 
 
   /**
@@ -108,7 +112,6 @@ public class CmlEnricher {
           + "\n");
       e.printStackTrace();
     }
-    Cactus.callSpider(this.molecule);
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
@@ -157,9 +160,12 @@ public class CmlEnricher {
     MolecularFormula.set(RichStructureHelper.getAtomSets());
     if (!Cli.hasOption("no_nih")) {
       this.executor.execute();
-      this.executor.addResults(this.doc);
+      this.executor.addResults();
       this.executor.shutdown();
     }
+    this.sexecutor.execute();
+    this.sexecutor.addResults();
+    this.sexecutor.shutdown();
     new StructuralFormula();
   }
 
@@ -173,6 +179,7 @@ public class CmlEnricher {
   private void nameAtomSet(final RichAtomSet set) {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
+      this.sexecutor.register(new SpiderCallable(set.getId(), newcontainer));
       this.executor.register(new CactusCallable(set.getId(),
           (final String name) -> {
           set.setIupac(name);

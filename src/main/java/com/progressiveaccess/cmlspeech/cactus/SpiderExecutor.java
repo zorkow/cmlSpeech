@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   CactusExector.java
+ * @file   SpiderExector.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Mon Apr 28 01:41:35 2014
+ * @date   Tue Jul 21 20:12:00 2015
  *
- * @brief  Class for multi-threaded Cactus call.
+ * @brief  Class for multi-threaded Spider call.
  *
  */
 
@@ -38,18 +38,17 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 /**
- * Executes Cactus calls and collects their results.
+ * Executes Spider calls and collects their results.
  */
 
-public class CactusExecutor {
+public class SpiderExecutor {
 
-  /** Pool of callables for Cactus. */
-  private final List<CactusCallable> pool = new ArrayList<>();
-  /** Registry for futures expecting results from Cactus calls. */
-  private final Multimap<CactusCallable, Future<String>> registry =
+  /** Pool of callables for Spider. */
+  private final List<SpiderCallable> pool = new ArrayList<>();
+  /** Registry for futures expecting results from Spider calls. */
+  private final Multimap<SpiderCallable, Future<SpiderNames>> registry =
       HashMultimap.create();
   /** The executor service that runs the callables. */
   private ExecutorService executor;
@@ -61,7 +60,7 @@ public class CactusExecutor {
    * @param callable
    *          A callable to register.
    */
-  public void register(final CactusCallable callable) {
+  public void register(final SpiderCallable callable) {
     this.pool.add(callable);
   }
 
@@ -74,17 +73,18 @@ public class CactusExecutor {
       try {
         time = Integer.parseInt(Cli.getOptionValue("time_nih"));
       } catch (NumberFormatException e) {
-        Logger.error("Cactus Error: Illegal time format.\n");
+        Logger.error("Spider Error: Illegal time format.\n");
       }
     }
-    for (final CactusCallable callable : this.pool) {
-      final Future<String> future = this.executor.submit(callable);
+    for (final SpiderCallable callable : this.pool) {
+      final Future<SpiderNames> future = this.executor.submit(callable);
       this.registry.put(callable, future);
+      System.out.println(callable.getId());
       if (time != null) {
         try {
           Thread.sleep(time);
         } catch (final Throwable e) {
-          Logger.error("Cactus Error: " + e.getMessage() + "\n");
+          Logger.error("Spider Error: " + e.getMessage() + "\n");
         }
       }
     }
@@ -92,25 +92,24 @@ public class CactusExecutor {
 
 
   /**
-   * Adds attributes from returned by all current Cactus futures to CML elements
-   * by calling the appropriate consumers.
+   * Adds attributes from returned by all current Spider futures to a document.
    */
   public void addResults() {
-    for (final Map.Entry<CactusCallable, Future<String>> entry : this.registry
-        .entries()) {
-      final Consumer<String> consumer = entry.getKey().getSetter();
-      final Future<String> future = entry.getValue();
+    System.out.println("Adding results!");
+    for (final Map.Entry<SpiderCallable, Future<SpiderNames>> entry
+           : this.registry.entries()) {
+      final Future<SpiderNames> future = entry.getValue();
       try {
-        consumer.accept(future.get());
+        System.out.println(future.get());
       } catch (final Throwable e) {
-        Logger.error("Cactus Error: " + e.getMessage() + "\n");
+        Logger.error("Spider Error: " + e.getMessage() + "\n");
         continue;
       }
     }
   }
 
 
-  /** Shut down the Cactus executor. */
+  /** Shut down the Spider executor. */
   public void shutdown() {
     this.executor.shutdown();
   }
