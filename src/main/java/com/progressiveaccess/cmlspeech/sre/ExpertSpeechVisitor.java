@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   SpeechVisitor.java
+ * @file   ExpertSpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 30 14:46:54 2015
@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * Produces the basic speech for structures.
  */
 
-public class SpeechVisitor implements XmlVisitor {
+public class ExpertSpeechVisitor implements XmlVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();

@@ -73,7 +73,8 @@ public class StructureVisitor implements XmlVisitor {
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
-  private final SpeechVisitor speechVisitor = new SpeechVisitor();
+  private final ExpertSpeechVisitor expertSpeechVisitor =
+      new ExpertSpeechVisitor();
   private final SimpleSpeechVisitor simpleSpeechVisitor =
       new SimpleSpeechVisitor();
   private boolean internal = false;
@@ -481,7 +482,7 @@ public class StructureVisitor implements XmlVisitor {
   private void addSpeechAttribute(final SreElement structure) {
     structure.addAttribute(
         new SreAttribute(SreNamespace.Attribute.SPEECH,
-            this.speechVisitor.getSpeech()));
+            this.expertSpeechVisitor.getSpeech()));
   }
 
 
@@ -509,8 +510,8 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void addSpeech(final XmlVisitable visitable) {
     if (Cli.hasOption("r")) {
-      this.speechVisitor.setContextPositions(this.positions);
-      visitable.accept(this.speechVisitor);
+      this.expertSpeechVisitor.setContextPositions(this.positions);
+      visitable.accept(this.expertSpeechVisitor);
       this.addSpeechAttribute(this.element);
     }
     if (Cli.hasOption("r0")) {
