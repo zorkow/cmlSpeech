@@ -30,7 +30,6 @@ package com.progressiveaccess.cmlspeech.structure;
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
-import com.progressiveaccess.cmlspeech.sre.SpeechAnnotations;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlAnnotations;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
@@ -49,7 +48,7 @@ import java.util.stream.Collectors;
  */
 
 public abstract class AbstractRichStructure<S> implements RichStructure<S>,
-    XmlAnnotations, XmlVisitable, SpeechAnnotations {
+    XmlAnnotations, XmlVisitable {
 
   private final S structure;
   private String name = "";
@@ -169,12 +168,5 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
   @Override
   public abstract void accept(final XmlVisitor visitor);
-
-
-  // TODO (sorge) Refactor into speech visitor.
-  @Override
-  public String shortSimpleDescription() {
-    return "";
-  }
 
 }
