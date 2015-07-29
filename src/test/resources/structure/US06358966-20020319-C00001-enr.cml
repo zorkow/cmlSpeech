@@ -1751,14 +1751,14 @@
                     <sre:atomSet sre:type="Aliphatic chain">as9</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b17</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>3</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour>
                     <sre:atomSet sre:type="Isolated ring">as8</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b33</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
@@ -1892,7 +1892,7 @@
                     <sre:atomSet sre:type="Aliphatic chain">as9</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b37</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
@@ -1937,7 +1937,7 @@
                     <sre:atomSet sre:type="Fused ring">as4</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b33</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
@@ -1968,14 +1968,14 @@
                     <sre:atomSet sre:type="Fused ring">as4</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b17</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour>
                     <sre:atomSet sre:type="Isolated ring">as7</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b37</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>4</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
