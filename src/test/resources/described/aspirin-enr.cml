@@ -551,7 +551,7 @@
                     <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b10</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
@@ -579,7 +579,7 @@
                     <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b10</sre:bond>
-                        <sre:position>0</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
