@@ -1,4 +1,4 @@
-<molecule id="m1" title="Molfile book1-012-00.tif" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema"> 
+<molecule id="m1" title="Molfile book1-012-00.tif" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema">
     <sre:annotations>
         <sre:annotation>
             <sre:atom>a1</sre:atom>
