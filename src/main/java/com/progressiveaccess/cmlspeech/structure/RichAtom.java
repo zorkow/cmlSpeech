@@ -32,6 +32,7 @@ import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
+import com.progressiveaccess.cmlspeech.sre.Language;
 
 /**
  * Atoms with admin information.
@@ -46,7 +47,7 @@ public class RichAtom extends RichChemObject {
    */
   public RichAtom(final IAtom structure) {
     super(structure);
-    this.setName(AtomTable.lookup(this));
+    this.setName(Language.getAtomTable().lookup(this));
   }
 
 

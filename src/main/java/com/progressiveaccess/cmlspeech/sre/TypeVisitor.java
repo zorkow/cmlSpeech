@@ -51,7 +51,7 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 public class TypeVisitor implements XmlVisitor {
 
   private String type = "";
-
+  private AtomTable atomTable = AtomTableFactory.getAtomTable("english");
 
   /**
    * @return The computed type.
@@ -63,7 +63,7 @@ public class TypeVisitor implements XmlVisitor {
 
   @Override
   public void visit(final RichAtom atom) {
-    this.type = AtomTable.lookup(atom);
+    this.type = atomTable.lookup(atom);
   }
 
 

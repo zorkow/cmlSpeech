@@ -77,7 +77,6 @@ public final class Cli {
     options.addOption("d", "debug", false, "Debug mode");
     options.addOption("v", "verbose", false, "Verbose mode");
     // File Handling
-    // options.addOption("i", "input", true, "Input File");
     options.addOption("o", "output", true, "Output file addition");
     options.addOption("l", "log", true, "Log File");
     options.addOption("x", "error", true, "Debug File");
@@ -118,6 +117,8 @@ public final class Cli {
         "Comparison heuristics for molecules given as a comma"
                       + "separated list. Currently available heuristics:"
                       + " type, weight, size");
+    // Internationlisation
+    options.addOption("i", "int", true, "Language name; defaults to english");
 
     final CommandLineParser parser = new BasicParser();
     try {

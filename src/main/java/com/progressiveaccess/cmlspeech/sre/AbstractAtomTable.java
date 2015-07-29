@@ -13,18 +13,17 @@
 // limitations under the License.
 
 /**
- * @file   AtomTable.java
+ * @file   AbstractAtomTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jun 20 02:00:25 2014
  *
- * @brief  Singleton class to translate atom names.
+ * @brief  Abstract class for the localised atom tables.
  *
  *
  */
 
 //
-
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
@@ -35,41 +34,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Maps atom identifiers to their proper names.
+ * Localised atom tables.
  */
 
-public interface AtomTable {
+public class AbstractAtomTable extends HashMap<String, String>
+    implements AtomTable {
 
-  /**
-   * Gets the name of an atom given its chemical symbol.
-   *
-   * @param name
-   *          The atom symbol.
-   *
-   * @return The atom name.
-   */
-  String lookup(final String name);
+  private static final long serialVersionUID = 1L;
 
-
-  /**
-   * Gets the name of an atom.
-   *
-   * @param atom
-   *          The atom.
-   *
-   * @return The atom name.
-   */
-   String lookup(final IAtom atom);
+  @Override
+  public String lookup(final String name) {
+    final String result = this.get(name);
+    if (result == null) {
+      return "";
+    }
+    return result;
+  }
 
 
-  /**
-   * Gets the name of an rich atom.
-   *
-   * @param atom
-   *          The rich atom.
-   *
-   * @return The atom name.
-   */
-   String lookup(final RichAtom atom);
+  @Override
+  public String lookup(final IAtom atom) {
+    return lookup(atom.getSymbol());
+  }
+
+
+  @Override
+  public String lookup(final RichAtom atom) {
+    return lookup(atom.getStructure());
+  }
 
 }
