@@ -38,9 +38,23 @@ public final class Language {
   private static String language = Cli.hasOption("int") ?
       Cli.getOptionValue("int") : "english";
   private static AtomTable atomTable = AtomTableFactory.getAtomTable(language);
+  private static SpeechVisitor simpleSpeechVisitor =
+      SimpleSpeechVisitorFactory.getSpeechVisitor(language);
+  private static SpeechVisitor expertSpeechVisitor =
+      ExpertSpeechVisitorFactory.getSpeechVisitor(language);
 
   public static AtomTable getAtomTable() {
     return Language.atomTable;
   }
   
+
+  public static SpeechVisitor getSimpleSpeechVisitor() {
+    return Language.simpleSpeechVisitor;
+  }
+  
+
+  public static SpeechVisitor getExpertSpeechVisitor() {
+    return Language.expertSpeechVisitor;
+  }
+
 }

@@ -73,10 +73,10 @@ public class StructureVisitor implements XmlVisitor {
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
-  private final ExpertSpeechVisitor expertSpeechVisitor =
-      new ExpertSpeechVisitor();
-  private final SimpleSpeechVisitor simpleSpeechVisitor =
-      new SimpleSpeechVisitor();
+  private final SpeechVisitor expertSpeechVisitor =
+      Language.getExpertSpeechVisitor();
+  private final SpeechVisitor simpleSpeechVisitor =
+      Language.getSimpleSpeechVisitor();
   private boolean internal = false;
 
 
