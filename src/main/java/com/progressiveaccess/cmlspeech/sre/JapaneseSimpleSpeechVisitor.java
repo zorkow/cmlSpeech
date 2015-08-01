@@ -34,7 +34,6 @@ import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
-import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -60,9 +59,8 @@ import java.util.TreeSet;
  * Produces the simple speech for structures.
  */
 
-public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
+public class JapaneseSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
-  private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
   private boolean shortDescription = false;
   private boolean subject = true;
@@ -77,11 +75,6 @@ public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
   }
 
 
-  public void setContextPositions(final ComponentsPositions positions) {
-    this.contextPositions = positions;
-  }
-
-
   @Override
   public void visit(final RichBond bond) {
     this.addSpeech(bondMap.get(bond.orderDescription()));
@@ -91,7 +84,7 @@ public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
 
   @Override
   public void visit(final RichAtom atom) {
-    Integer position = this.contextPositions.getPosition(atom.getId());
+    Integer position = this.getContextPositions().getPosition(atom.getId());
     // TODO (sorge) Maybe take the supersystem of the atom outside the context.
     if (position == null) {
       this.describeSuperSystem(atom);
@@ -189,11 +182,11 @@ public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
        RichStructureHelper.getRichStructure(set)).accept(this);
       i++;
       if (i == 1) {
-        this.speech.removeLast();
+        this.remSpeech();
         this.addSpeech("と、"); // and Punctuation
       }
     }
-    this.speech.removeLast();
+    this.remSpeech();
     this.addSpeech("で構成された分子");  // Molecule consisting of
     this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
@@ -269,31 +262,10 @@ public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
   }
 
 
-  private void modSpeech(final String msg) {
-    String last = this.speech.removeLast();
-    this.speech.offerLast(last + msg);
-  }
-
-
-  private void addSpeech(final String msg) {
-    if (!msg.equals("")) {
-      this.speech.add(msg);
-    }
-  }
-
-
-  private void addSpeech(final Integer num) {
-    this.addSpeech(num.toString());
-  }
-
-
   public String getSpeech() {
-    if (this.speech.size() == 0) {
-      return "";
-    }
     final Joiner joiner = Joiner.on("");
-    String result = joiner.join(this.speech);
-    this.speech.clear();
+    String result = joiner.join(this.retrieveSpeech());
+    this.clearSpeech();
     return result;
   }
 
@@ -360,7 +332,7 @@ public class JapaneseSimpleSpeechVisitor implements SpeechVisitor {
           this.addSpeech("位"); // position
           this.addSpeech("と"); // and
         }
-        this.speech.removeLast();
+        this.remSpeech();
         this.addSpeech("で"); // at
         this.addSpeech("置換"); // Substitution
         this.addSpeech("、"); // Punctuation

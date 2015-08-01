@@ -47,10 +47,7 @@ import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
-import com.google.common.base.Joiner;
-
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -58,16 +55,9 @@ import java.util.TreeSet;
  * Produces the simple speech for structures.
  */
 
-public class EnglishSimpleSpeechVisitor implements SpeechVisitor {
+public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
-  private ComponentsPositions contextPositions = null;
-  private LinkedList<String> speech = new LinkedList<String>();
   private boolean shortDescription = false;
-
-
-  public void setContextPositions(final ComponentsPositions positions) {
-    this.contextPositions = positions;
-  }
 
 
   @Override
@@ -78,7 +68,7 @@ public class EnglishSimpleSpeechVisitor implements SpeechVisitor {
 
   @Override
   public void visit(final RichAtom atom) {
-    Integer position = this.contextPositions.getPosition(atom.getId());
+    Integer position = this.getContextPositions().getPosition(atom.getId());
     // TODO (sorge) Maybe take the supersystem of the atom outside the context.
     if (position == null) {
       this.describeSuperSystem(atom);
@@ -166,7 +156,7 @@ public class EnglishSimpleSpeechVisitor implements SpeechVisitor {
        RichStructureHelper.getRichStructure(set)).accept(this);
       this.addSpeech("and");
     }
-    this.speech.removeLast();
+    this.remSpeech();
     this.shortDescription = false;
   }
 
@@ -235,35 +225,6 @@ public class EnglishSimpleSpeechVisitor implements SpeechVisitor {
   }
 
 
-  private void modSpeech(final String msg) {
-    String last = this.speech.removeLast();
-    this.speech.offerLast(last + msg);
-  }
-
-
-  private void addSpeech(final String msg) {
-    if (!msg.equals("")) {
-      this.speech.add(msg);
-    }
-  }
-
-
-  private void addSpeech(final Integer num) {
-    this.addSpeech(num.toString());
-  }
-
-
-  public String getSpeech() {
-    if (this.speech.size() == 0) {
-      return "";
-    }
-    final Joiner joiner = Joiner.on(" ");
-    String result = joiner.join(this.speech);
-    this.speech.clear();
-    return result + ".";
-  }
-
-
   // TODO (sorge) For the following utility functions, see if they can be
   // refactored with walk methods, etc.
   private void describeReplacements(final RichAtomSet system) {
@@ -325,7 +286,7 @@ public class EnglishSimpleSpeechVisitor implements SpeechVisitor {
           this.addSpeech(position);
           this.addSpeech("and");
         }
-        this.speech.removeLast();
+        this.remSpeech();
     }
   }
 

@@ -49,7 +49,6 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 import com.google.common.base.Joiner;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -58,10 +57,8 @@ import java.util.TreeSet;
  * Produces the basic speech for structures.
  */
 
-public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
+public class JapaneseExpertSpeechVisitor extends AbstractSpeechVisitor {
 
-  private ComponentsPositions contextPositions = null;
-  private LinkedList<String> speech = new LinkedList<String>();
   private boolean shortDescription = false;
   private boolean subject = true;
   private static Map<String, String> bondMap =
@@ -72,12 +69,6 @@ public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
     bondMap.put("double", "二重");
     bondMap.put("triple", "三重");
     bondMap.put("quadruple", "四重");
-  }
-  
-
-
-  public void setContextPositions(final ComponentsPositions positions) {
-    this.contextPositions = positions;
   }
 
 
@@ -90,7 +81,7 @@ public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
 
   @Override
   public void visit(final RichAtom atom) {
-    Integer position = this.contextPositions.getPosition(atom.getId());
+    Integer position = this.getContextPositions().getPosition(atom.getId());
     // TODO (sorge) Maybe take the supersystem of the atom outside the context.
     if (position == null) {
       this.describeSuperSystem(atom);
@@ -233,24 +224,6 @@ public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
   }
 
 
-  private void modSpeech(final String msg) {
-    String last = this.speech.removeLast();
-    this.speech.offerLast(last + msg);
-  }
-
-
-  private void addSpeech(final String msg) {
-    if (!msg.equals("")) {
-      this.speech.add(msg);
-    }
-  }
-
-
-  private void addSpeech(final Integer num) {
-    this.addSpeech(num.toString());
-  }
-
-
   // TODO (sorge) Do something about all upper case names without destroying
   // important upper cases. E.g.: WordUtils.capitalizeFully.
   private void addName(final RichAtomSet atomset) {
@@ -268,8 +241,8 @@ public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
 
   public String getSpeech() {
     final Joiner joiner = Joiner.on("");
-    String result = joiner.join(this.speech);
-    this.speech.clear();
+    String result = joiner.join(this.retrieveSpeech());
+    this.clearSpeech();
     return result;
   }
 
@@ -291,7 +264,7 @@ public class JapaneseExpertSpeechVisitor implements SpeechVisitor {
           this.addSpeech("位"); // position
           this.addSpeech("と"); // and
         }
-        this.speech.removeLast();
+        this.remSpeech();
         this.addSpeech("で"); // at
         this.addSpeech("置換"); // Substitution
         this.addSpeech("、"); // Punctuation
