@@ -69,7 +69,7 @@ public class TypeVisitor implements XmlVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.type = bond.getStructure().getOrder().toString().toLowerCase();
+    this.type = bond.orderDescription();
   }
 
 
