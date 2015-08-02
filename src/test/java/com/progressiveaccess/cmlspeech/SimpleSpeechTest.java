@@ -14,7 +14,7 @@
 
 
 /**
- * @file StructureTest.java
+ * @file StructureVisitorTest.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jul  8 16:11:07 2015

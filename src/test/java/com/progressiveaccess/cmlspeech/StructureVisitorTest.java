@@ -14,12 +14,12 @@
 
 
 /**
- * @file DescriptionTest.java
+ * @file StructureVisitorTest.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date Thu Feb 26 17:30:05 2015
+ * @date Tue Jul  7 22:24:52 2015
  *
- * @brief Full blown tests for enrichment of some standard molecules.
+ * @brief Functional tests for structure generation of some standard molecules.
  *
  *
  */
@@ -30,10 +30,10 @@ package com.progressiveaccess.cmlspeech;
 
 
 /**
- * Full functional test for the enricher.
+ * Functional test for structure annotations.
  */
 
-public class DescriptionTest extends AnnotationTest {
+public class StructureVisitorTest extends AnnotationTest {
 
   /**
    * Create the test case.
@@ -41,21 +41,21 @@ public class DescriptionTest extends AnnotationTest {
    * @param testName
    *          Name of the test case.
    */
-  public DescriptionTest(final String testName) {
+  public StructureVisitorTest(final String testName) {
     super(testName);
   }
 
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r", "-nn", "-nh"};
+    final String[] parameters = {"-ao", "-t", "-nn", "-nh"};
     return parameters;
   }
 
 
   @Override
   public String expectedDirectory() {
-    return "described";
+    return "structureVisitor";
   }
 
 }

@@ -14,7 +14,7 @@
 
 
 /**
- * @file EnrichTest.java
+ * @file ExpertSpeechTest.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date Thu Feb 26 17:30:05 2015
@@ -33,7 +33,7 @@ package com.progressiveaccess.cmlspeech;
  * Full functional test for the enricher.
  */
 
-public class EnrichTest extends AnnotationTest {
+public class ExpertSpeechTest extends AnnotationTest {
 
   /**
    * Create the test case.
@@ -41,21 +41,21 @@ public class EnrichTest extends AnnotationTest {
    * @param testName
    *          Name of the test case.
    */
-  public EnrichTest(final String testName) {
+  public ExpertSpeechTest(final String testName) {
     super(testName);
   }
 
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-a", "-nn"};
+    final String[] parameters = {"-ao", "-t", "-r", "-nn", "-nh"};
     return parameters;
   }
 
 
   @Override
   public String expectedDirectory() {
-    return "enriched";
+    return "expertSpeech";
   }
 
 }
