@@ -95,4 +95,12 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
     this.addName(molecule);
   }
 
+
+  @Override
+  protected final void describeReplacements(final RichAtomSet system) { }
+
+  
+  @Override
+  protected final void describeMultiBonds(final RichAtomSet system) { }
+
 }

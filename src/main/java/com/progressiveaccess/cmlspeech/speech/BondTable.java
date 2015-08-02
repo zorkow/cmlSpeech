@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   BondTable.java
- * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Sun Aug  2 12:58:22 2015
+ * @file BondTable.java
+ * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
+ *         Sorge</a>
+ * @date Sun Aug 2 12:58:22 2015
  *
- * @brief  Singleton class to translate bond names.
+ * @brief Singleton class to translate bond names.
  *
  *
  */
@@ -56,7 +56,7 @@ public interface BondTable {
    *
    * @return The bond name.
    */
-   String order(final IBond bond);
+  String order(final IBond bond);
 
 
   /**
@@ -67,7 +67,7 @@ public interface BondTable {
    *
    * @return The bond name.
    */
-   String order(final RichBond bond);
+  String order(final RichBond bond);
 
 
   /**
@@ -89,7 +89,7 @@ public interface BondTable {
    *
    * @return The bond name.
    */
-   String stereo(final IBond bond);
+  String stereo(final IBond bond);
 
 
   /**
@@ -100,6 +100,6 @@ public interface BondTable {
    *
    * @return The bond name.
    */
-   String stereo(final RichBond bond);
+  String stereo(final RichBond bond);
 
 }

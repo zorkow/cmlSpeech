@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   Language.java
- * @author Volker Sorge
- *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Thu Jul 30 05:04:37 2015
+ * @file Language.java
+ * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
+ *         Sorge</a>
+ * @date Thu Jul 30 05:04:37 2015
  *
- * @brief  Abstract Factory that holds localisable visitors, etc.
+ * @brief Abstract Factory that holds localisable visitors, etc.
  *
  *
  */
@@ -27,7 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.base.Cli;
 
 /**
  * Holds the visitors producing speech output.
@@ -35,7 +34,6 @@ import com.progressiveaccess.cmlspeech.base.Cli;
 
 public final class Language {
 
-  private static String language;
   private static AtomTable atomTable;
   private static BondTable bondTable;
   private static SpeechVisitor simpleSpeechVisitor;
@@ -62,8 +60,7 @@ public final class Language {
   }
 
 
-  public static void reset(String language) {
-    language = language == null ? "english" : language;
+  public static void reset(final String language) {
     atomTable = AtomTableFactory.getAtomTable(language);
     bondTable = BondTableFactory.getBondTable(language);
     simpleSpeechVisitor = SimpleSpeechVisitorFactory.getSpeechVisitor(language);

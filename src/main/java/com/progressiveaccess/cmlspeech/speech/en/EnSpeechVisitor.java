@@ -73,31 +73,6 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
-  /**
-   * Adds description of hydrogen bonds of an atom.
-   *
-   * @param atom
-   *          The atom to describe.
-   */
-  private void describeHydrogenBonds(final RichAtom atom) {
-    final Integer count = atom.getStructure().getImplicitHydrogenCount();
-    switch (count) {
-      case 0:
-        return;
-      case 1:
-        this.addSpeech("bonded to");
-        this.addSpeech(count.toString());
-        this.addSpeech("hydrogen");
-        return;
-      default:
-        this.addSpeech("bonded to");
-        this.addSpeech(count.toString());
-        this.addSpeech("hydrogens");
-        return;
-    }
-  }
-
-
   @Override
   public void visit(final SpiroAtom spiroAtom) {
     this.setFlag("short", true);
@@ -162,8 +137,27 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
-  // TODO (sorge) For the following utility functions, see if they can be
-  // refactored with walk methods, etc.
+  @Override
+  protected void describeHydrogenBonds(final RichAtom atom) {
+    final Integer count = atom.getStructure().getImplicitHydrogenCount();
+    switch (count) {
+      case 0:
+        return;
+      case 1:
+        this.addSpeech("bonded to");
+        this.addSpeech(count.toString());
+        this.addSpeech("hydrogen");
+        return;
+      default:
+        this.addSpeech("bonded to");
+        this.addSpeech(count.toString());
+        this.addSpeech("hydrogens");
+        return;
+    }
+  }
+
+
+  @Override
   protected void describeSubstitutions(final RichAtomSet system) {
     final SortedSet<Integer> subst = new TreeSet<Integer>();
     for (final String atom : system.getConnectingAtoms()) {

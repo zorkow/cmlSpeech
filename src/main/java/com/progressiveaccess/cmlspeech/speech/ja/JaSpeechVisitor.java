@@ -49,7 +49,7 @@ import java.util.TreeSet;
  * Basic visitor functionality for Japanese speech generation.
  */
 
-public class JaSpeechVisitor extends AbstractSpeechVisitor {
+public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
@@ -110,8 +110,6 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     this.addSpeech("に"); // to
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     this.addSpeech("、"); // Punctuation
-    // TODO (sorge) The past tense here is problematic!
-    // this.modSpeech("して"); // ed (modifier)
     this.setFlag("short", false);
     this.setFlag("subject", true);
   }
@@ -149,13 +147,8 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
-  /**
-   * Adds description of hydrogen bonds of an atom.
-   *
-   * @param atom
-   *          The atom to describe.
-   */
-  private void describeHydrogenBonds(final RichAtom atom) {
+  @Override
+  protected void describeHydrogenBonds(final RichAtom atom) {
     final Integer count = atom.getStructure().getImplicitHydrogenCount();
     switch (count) {
       case 0:
@@ -164,15 +157,13 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
       default:
         this.addSpeech("水素");  // hydrogen (and hydrogens)
         this.addSpeech(count.toString());
-        // this.addSpeech("に結合しており、"); // bonded to
         this.addSpeech("に結合、"); // bonded to
         return;
     }
   }
 
 
-  // TODO (sorge) For the following utility functions, see if they can be
-  // refactored with walk methods, etc.
+  @Override
   protected void describeSubstitutions(final RichAtomSet system) {
     final SortedSet<Integer> subst = new TreeSet<Integer>();
     for (final String atom : system.getConnectingAtoms()) {

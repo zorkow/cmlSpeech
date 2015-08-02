@@ -14,12 +14,12 @@
 
 
 /**
- * @file   AbstractSpeechVisitor.java
- * @author Volker Sorge
- *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Sat Aug  1 19:14:46 2015
+ * @file AbstractSpeechVisitor.java
+ * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
+ *         Sorge</a>
+ * @date Sat Aug 1 19:14:46 2015
  *
- * @brief  Abstract class for speech visitors.
+ * @brief Abstract class for speech visitors.
  *
  *
  */
@@ -36,9 +36,9 @@ import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 import com.google.common.base.Joiner;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Basic functionality shared by all speech visitors.
@@ -47,15 +47,15 @@ import java.util.HashMap;
 public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
-  private LinkedList<String> speech = new LinkedList<String>();
-  private Map<String, Boolean> flags = new HashMap<String, Boolean>();
+  private final LinkedList<String> speech = new LinkedList<String>();
+  private final Map<String, Boolean> flags = new HashMap<String, Boolean>();
 
 
   public AbstractSpeechVisitor() {
     this.init();
   }
 
-  
+
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
     this.contextPositions = positions;
@@ -74,7 +74,7 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
 
   protected void modSpeech(final String msg) {
-    String last = this.speech.removeLast();
+    final String last = this.speech.removeLast();
     this.speech.offerLast(last + msg);
   }
 
@@ -101,12 +101,63 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
   }
 
 
+  @Override
+  public String getSpeech() {
+    final Joiner joiner = Joiner.on(" ");
+    final String result = joiner.join(this.retrieveSpeech());
+    this.clearSpeech();
+    return result + ".";
+  }
+
+
+  /**
+   * Sets a flag to either true or false.
+   *
+   * @param flag
+   *          The flag to be set.
+   * @param value
+   *          The binary value fo the flag.
+   */
+  protected final void setFlag(final String flag, final boolean value) {
+    this.flags.put(flag, value);
+  }
+
+
+  /**
+   * Returns the value of a given flag. If the flag does not exist it simply
+   * returns false.
+   *
+   * @param flag
+   *          The name of the flag.
+   *
+   * @return The boolean value of the flag.
+   */
+  protected final boolean getFlag(final String flag) {
+    final Boolean value = this.flags.get(flag);
+    return value == null ? false : value;
+  }
+
+
+  /**
+   * Any initialisations that need to be done before the visitor is called. For
+   * example, some flags might need to be set.
+   */
+  protected void init() {
+  }
+
+
+  /**
+   * Adds description of the supersystem an atom belongs to.
+   *
+   * @param atom
+   *          The original atom.
+   */
   protected void describeSuperSystem(final RichAtom atom) {
     this.setFlag("short", true);
-    for (String context : atom.getContexts()) {
+    for (final String context : atom.getContexts()) {
       if (RichStructureHelper.isAtomSet(context)) {
-        RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
-        RichSetType type = set.getType();
+        final RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
+        final RichSetType type = set.getType();
         if (type == RichSetType.FUNCGROUP
             || type == RichSetType.ISOLATED
             || type == RichSetType.FUSED
@@ -119,62 +170,62 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
   }
 
 
-  // TODO (sorge) Do something about all upper case names without destroying
-  // important upper cases. E.g.: WordUtils.capitalizeFully.
+  /**
+   * Adds description of hydrogen bonds of an atom.
+   *
+   * @param atom
+   *          The atom to describe.
+   */
+  protected abstract void describeHydrogenBonds(final RichAtom atom);
+
+
+  /**
+   * Adds description of external substitutions for atom sets.
+   *
+   * @param system
+   *          The atom set to describe.
+   */
+  protected abstract void describeSubstitutions(final RichAtomSet system);
+
+
+  /**
+   * Adds description of internal replacements for an atom set.
+   *
+   * @param system
+   *          The ring system to describe.
+   */
+  protected abstract void describeReplacements(final RichAtomSet system);
+
+
+  /**
+   * Describes multi bonds in rings and chains.
+   *
+   * @param system
+   *          The atom set to describe.
+   */
+  // TODO (sorge) Sort those bonds. Maybe combine with a more stateful walk.
+  protected abstract void describeMultiBonds(final RichAtomSet system);
+
+
+  /**
+   * Adds the name of an atom set.
+   *
+   * @param atomset
+   *          The atom set.
+   */
   protected void addName(final RichAtomSet atomset) {
+    // TODO (sorge) Replace this function with language specific naming.
+    // Do something about all upper case names without destroying
+    // important upper cases. E.g.: WordUtils.capitalizeFully.
     if (!atomset.getName().equals("")) {
-      addSpeech(atomset.getName());
+      this.addSpeech(atomset.getName());
       return;
     }
     if (!atomset.getIupac().equals("")) {
-      addSpeech(atomset.getIupac());
+      this.addSpeech(atomset.getIupac());
       return;
     }
-    addSpeech(atomset.getMolecularFormula());
+    this.addSpeech(atomset.getMolecularFormula());
   }
 
-
-  @Override
-  public String getSpeech() {
-    final Joiner joiner = Joiner.on(" ");
-    String result = joiner.join(this.retrieveSpeech());
-    this.clearSpeech();
-    return result + ".";
-  }
-
-
-  /** 
-   * Sets a flag to either true or false.
-   * 
-   * @param flag
-   *          The flag to be set.
-   * @param value
-   *          The binary value fo the flag.
-   */
-  protected final void setFlag(String flag, boolean value) {
-    this.flags.put(flag, value);
-  };
-  
-
-  /** 
-   * Returns the value of a given flag. If the flag does not exist it simply
-   * returns false.
-   * 
-   * @param flag
-   *          The name of the flag.
-   * 
-   * @return The boolean value of the flag.
-   */
-  protected final boolean getFlag(String flag) {
-    Boolean value = this.flags.get(flag);
-    return value == null ? false : value;
-  };
-
-
-  /** 
-   * Any initialisations that need to be done before the visitor is called.
-   * For example, some flags might need to be set.
-   */
-  protected void init() { };
-  
 }

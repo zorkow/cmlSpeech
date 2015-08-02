@@ -35,6 +35,7 @@ import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
+
 /**
  * Produces the expert speech for structures in Japanese.
  */
@@ -97,5 +98,13 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
   public void visit(final RichMolecule molecule) {
     this.addName(molecule);
   }
+
+
+  @Override
+  protected final void describeReplacements(final RichAtomSet system) { }
+
+
+  @Override
+  protected final void describeMultiBonds(final RichAtomSet system) { }
 
 }

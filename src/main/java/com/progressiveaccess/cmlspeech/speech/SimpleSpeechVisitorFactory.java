@@ -14,15 +14,17 @@
 
 /**
  * @file   SimpleSpeechVisitorFactory.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 05:33:44 2015
- * 
+ *
  * @brief  Factory for generating atom tables.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.speech.en.EnSimpleSpeechVisitor;
@@ -38,27 +40,27 @@ import java.util.Map;
 
 public class SimpleSpeechVisitorFactory {
 
-  private static Map<String, SpeechVisitor> VISITORS;
+  private static Map<String, SpeechVisitor> visitors;
 
   static {
-    VISITORS = new HashMap<String, SpeechVisitor>();
-    VISITORS.put("english", new EnSimpleSpeechVisitor());
+    visitors = new HashMap<String, SpeechVisitor>();
+    visitors.put("english", new EnSimpleSpeechVisitor());
   }
-  
-  public static SpeechVisitor getSpeechVisitor(String language) {
-    SpeechVisitor visitor = VISITORS.get(language);
+
+  public static SpeechVisitor getSpeechVisitor(final String language) {
+    SpeechVisitor visitor = visitors.get(language);
     if (visitor != null) {
       return visitor;
     }
     switch (language) {
-    case "japanese":
-      visitor = new JaSimpleSpeechVisitor(); 
-      break;
-    default:
-      return VISITORS.get("english");
+      case "japanese":
+        visitor = new JaSimpleSpeechVisitor();
+        break;
+      default:
+        return visitors.get("english");
     }
-    VISITORS.put(language, visitor);
+    visitors.put(language, visitor);
     return visitor;
   }
-  
+
 }

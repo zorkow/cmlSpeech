@@ -15,15 +15,17 @@
 
 /**
  * @file   SpeechVisitor.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 19:12:08 2015
- * 
+ *
  * @brief  Interface for all speech visitors.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
@@ -35,29 +37,25 @@ import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 
 public interface SpeechVisitor extends XmlVisitor {
 
-  /** 
+  /**
    * Sets the components position mapping to be used in the given
    * translation.
-   * 
+   *
    * @param positions
    *          The components to positions mappings.
    */
-  public void setContextPositions(final ComponentsPositions positions);
+  void setContextPositions(final ComponentsPositions positions);
 
 
-  /** 
-   * Sets the components position mapping to be used in the given
-   * translation.
-   * 
-   * @param positions
-   *          The components to positions mappings.
+  /**
+   * @return The position mapping currently in use.
    */
-  public ComponentsPositions getContextPositions();
+  ComponentsPositions getContextPositions();
 
 
-  /** 
+  /**
    * @return The computed speech string.
    */
-  public String getSpeech();
-  
+  String getSpeech();
+
 }

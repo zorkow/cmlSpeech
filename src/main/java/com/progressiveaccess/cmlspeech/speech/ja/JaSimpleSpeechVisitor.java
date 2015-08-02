@@ -139,9 +139,8 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
   }
 
 
-  // TODO (sorge) For the following utility functions, see if they can be
-  // refactored with walk methods, etc.
-  private void describeReplacements(final RichAtomSet system) {
+  @Override
+  protected final void describeReplacements(final RichAtomSet system) {
     final Iterator<String> iterator = system.iterator();
     while (iterator.hasNext()) {
       final String value = iterator.next();
@@ -157,8 +156,8 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
   }
 
 
-  //TODO (sorge) Sort those bonds. Maybe combine with a more stateful walk.
-  private void describeMultiBonds(final RichAtomSet system) {
+  @Override
+  protected final void describeMultiBonds(final RichAtomSet system) {
     for (final String component : system.getComponents()) {
       if (!RichStructureHelper.isBond(component)) {
         continue;

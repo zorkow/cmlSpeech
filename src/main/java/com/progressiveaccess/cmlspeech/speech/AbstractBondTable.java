@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,18 @@
 // limitations under the License.
 
 /**
- * @file   AbstractBondTable.java
+ * @file AbstractBondTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Sun Aug  2 12:58:22 2015
+ * @date Sun Aug 2 12:58:22 2015
  *
- * @brief  Abstract class for the localised bond tables.
+ * @brief Abstract class for the localised bond tables.
  *
  *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.structure.RichBond;
@@ -53,13 +54,13 @@ public class AbstractBondTable extends HashMap<String, String>
 
   @Override
   public String order(final IBond bond) {
-    return order(bond.getOrder().toString().toLowerCase());
+    return this.order(bond.getOrder().toString().toLowerCase());
   }
 
 
   @Override
   public String order(final RichBond bond) {
-    return order(bond.getStructure());
+    return this.order(bond.getStructure());
   }
 
 
@@ -75,13 +76,13 @@ public class AbstractBondTable extends HashMap<String, String>
 
   @Override
   public String stereo(final IBond bond) {
-    return order(bond.getStereo().toString().toLowerCase());
+    return this.order(bond.getStereo().toString().toLowerCase());
   }
 
 
   @Override
   public String stereo(final RichBond bond) {
-    return order(bond.getStructure());
+    return this.order(bond.getStructure());
   }
 
 }
