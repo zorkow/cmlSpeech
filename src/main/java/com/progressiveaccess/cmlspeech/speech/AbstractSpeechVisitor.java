@@ -119,6 +119,21 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
   }
 
 
+  // TODO (sorge) Do something about all upper case names without destroying
+  // important upper cases. E.g.: WordUtils.capitalizeFully.
+  protected void addName(final RichAtomSet atomset) {
+    if (!atomset.getName().equals("")) {
+      addSpeech(atomset.getName());
+      return;
+    }
+    if (!atomset.getIupac().equals("")) {
+      addSpeech(atomset.getIupac());
+      return;
+    }
+    addSpeech(atomset.getMolecularFormula());
+  }
+
+
   @Override
   public String getSpeech() {
     final Joiner joiner = Joiner.on(" ");
