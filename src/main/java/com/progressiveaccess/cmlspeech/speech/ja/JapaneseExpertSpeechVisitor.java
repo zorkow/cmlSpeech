@@ -25,7 +25,7 @@
 
 //
 
-package com.progressiveaccess.cmlspeech.speech;
+package com.progressiveaccess.cmlspeech.speech.ja;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
@@ -34,6 +34,7 @@ import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
+import com.progressiveaccess.cmlspeech.speech.AbstractSpeechVisitor;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;

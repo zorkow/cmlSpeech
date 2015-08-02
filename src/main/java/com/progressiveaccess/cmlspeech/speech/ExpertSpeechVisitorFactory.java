@@ -25,6 +25,9 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
+import com.progressiveaccess.cmlspeech.speech.en.EnglishExpertSpeechVisitor;
+import com.progressiveaccess.cmlspeech.speech.ja.JapaneseExpertSpeechVisitor;
+
 import java.util.HashMap;
 import java.util.Map;
 

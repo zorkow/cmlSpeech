@@ -25,6 +25,9 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
+import com.progressiveaccess.cmlspeech.speech.en.EnglishAtomTable;
+import com.progressiveaccess.cmlspeech.speech.ja.JapaneseAtomTable;
+
 import java.util.HashMap;
 import java.util.Map;
 

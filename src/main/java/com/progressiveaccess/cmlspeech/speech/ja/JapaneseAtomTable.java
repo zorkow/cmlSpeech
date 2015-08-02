@@ -25,7 +25,9 @@
 
 //
 
-package com.progressiveaccess.cmlspeech.speech;
+package com.progressiveaccess.cmlspeech.speech.ja;
+
+import com.progressiveaccess.cmlspeech.speech.AbstractAtomTable;
 
 
 /**
