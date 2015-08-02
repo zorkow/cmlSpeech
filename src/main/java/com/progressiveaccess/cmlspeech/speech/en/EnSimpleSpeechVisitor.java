@@ -46,14 +46,15 @@ import java.util.Iterator;
  * Produces the simple speech for structures.
  */
 
+@SuppressWarnings("serial")
 public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
-    this.addSpeech("Ring");
-    this.addSpeech("with");
-    this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("elements");
+    this.push("Ring");
+    this.push("with");
+    this.push(ring.getComponentsPositions().size());
+    this.push("elements");
     if (this.getFlag("short")) {
       return;
     }
@@ -65,10 +66,10 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichFusedRing ring) {
-    this.addSpeech("Fused ring system");
-    this.addSpeech("with");
-    this.addSpeech(ring.getSubSystems().size());
-    this.addSpeech("subrings");
+    this.push("Fused ring system");
+    this.push("with");
+    this.push(ring.getSubSystems().size());
+    this.push("subrings");
     if (this.getFlag("short")) {
       return;
     }
@@ -78,10 +79,10 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichSubRing ring) {
-    this.addSpeech("Subring");
-    this.addSpeech("with");
-    this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("elements");
+    this.push("Subring");
+    this.push("with");
+    this.push(ring.getComponentsPositions().size());
+    this.push("elements");
     if (this.getFlag("short")) {
       return;
     }
@@ -92,9 +93,9 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichAliphaticChain chain) {
-    this.addSpeech("Aliphatic chain");
-    this.addSpeech("of length");
-    this.addSpeech(chain.getComponentsPositions().size());
+    this.push("Aliphatic chain");
+    this.push("of length");
+    this.push(chain.getComponentsPositions().size());
     if (this.getFlag("short")) {
       return;
     }
@@ -106,22 +107,22 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichFunctionalGroup group) {
-    this.addSpeech("Functional group");
-    this.addSpeech(group.getStructuralFormula());
+    this.push("Functional group");
+    this.push(group.getStructuralFormula());
   }
 
 
   @Override
   public void visit(final RichMolecule molecule) {
-    this.addSpeech("Molecule");
-    this.addSpeech("consisting of");
+    this.push("Molecule");
+    this.push("consisting of");
     this.setFlag("short", true);
     for (String set : molecule.getPath()) {
       ((RichChemObject)
        RichStructureHelper.getRichStructure(set)).accept(this);
-      this.addSpeech("and");
+      this.push("and");
     }
-    this.remSpeech();
+    this.pop();
     this.setFlag("short", false);
   }
 
@@ -133,10 +134,10 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
       final String value = iterator.next();
       final RichAtom atom = RichStructureHelper.getRichAtom(value);
       if (!atom.isCarbon()) {
-        this.addSpeech("with");
-        this.addSpeech(Language.getAtomTable().lookup(atom));
-        this.addSpeech("at position");
-        this.addSpeech(system.getPosition(value));
+        this.push("with");
+        this.push(Language.getAtomTable().lookup(atom));
+        this.push("at position");
+        this.push(system.getPosition(value));
       }
     }
   }
@@ -160,10 +161,10 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
         atomA ^= atomB;
       }
       bond.accept(this);
-      this.addSpeech("between positions");
-      this.addSpeech(atomA);
-      this.addSpeech("and");
-      this.addSpeech(atomB);
+      this.push("between positions");
+      this.push(atomA);
+      this.push("and");
+      this.push(atomB);
     }
   }
 

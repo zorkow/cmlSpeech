@@ -38,7 +38,7 @@ import java.util.Map;
  * Factory for generating language specific atom tables.
  */
 
-public class AtomTableFactory {
+public final class AtomTableFactory {
 
   private static Map<String, AtomTable> atomTables;
 
@@ -47,6 +47,21 @@ public class AtomTableFactory {
     atomTables.put("english", new EnAtomTable());
   }
 
+
+  /** Dummy constructor. */
+  private AtomTableFactory() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
+
+  /**
+   * Constructs the atom table for the current language.
+   *
+   * @param language
+   *          A language string.
+   *
+   * @return The atom table for the given language.
+   */
   public static AtomTable getAtomTable(final String language) {
     AtomTable table = atomTables.get(language);
     if (table != null) {

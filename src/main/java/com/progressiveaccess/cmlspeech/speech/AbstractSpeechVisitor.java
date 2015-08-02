@@ -37,20 +37,24 @@ import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.google.common.base.Joiner;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Basic functionality shared by all speech visitors.
  */
 
-public abstract class AbstractSpeechVisitor implements SpeechVisitor {
+@SuppressWarnings("serial")
+public abstract class AbstractSpeechVisitor extends Stack<String>
+    implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
-  private final LinkedList<String> speech = new LinkedList<String>();
   private final Map<String, Boolean> flags = new HashMap<String, Boolean>();
 
 
+  /**
+   * Constructor automatically calls the initialisation method.
+   */
   public AbstractSpeechVisitor() {
     this.init();
   }
@@ -68,44 +72,33 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
   }
 
 
-  protected void remSpeech() {
-    this.speech.removeLast();
+  /**
+   * Modifies the last element on the speech stack by adding the message.
+   *
+   * @param msg
+   *          The message string.
+   */
+  protected void modLast(final String msg) {
+    this.push(this.pop() + msg);
   }
 
 
-  protected void modSpeech(final String msg) {
-    final String last = this.speech.removeLast();
-    this.speech.offerLast(last + msg);
-  }
-
-
-  protected void addSpeech(final String msg) {
-    if (!msg.equals("")) {
-      this.speech.add(msg);
-    }
-  }
-
-
-  protected void addSpeech(final Integer num) {
-    this.addSpeech(num.toString());
-  }
-
-
-  protected LinkedList<String> retrieveSpeech() {
-    return this.speech;
-  }
-
-
-  protected void clearSpeech() {
-    this.speech.clear();
+  /**
+   * Pushes the string version of a number onto the speech string.
+   *
+   * @param num
+   *          The number.
+   */
+  protected void push(final Integer num) {
+    this.push(num.toString());
   }
 
 
   @Override
   public String getSpeech() {
     final Joiner joiner = Joiner.on(" ");
-    final String result = joiner.join(this.retrieveSpeech());
-    this.clearSpeech();
+    final String result = joiner.join(this);
+    this.clear();
     return result + ".";
   }
 
@@ -218,14 +211,14 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
     // Do something about all upper case names without destroying
     // important upper cases. E.g.: WordUtils.capitalizeFully.
     if (!atomset.getName().equals("")) {
-      this.addSpeech(atomset.getName());
+      this.push(atomset.getName());
       return;
     }
     if (!atomset.getIupac().equals("")) {
-      this.addSpeech(atomset.getIupac());
+      this.push(atomset.getIupac());
       return;
     }
-    this.addSpeech(atomset.getMolecularFormula());
+    this.push(atomset.getMolecularFormula());
   }
 
 }

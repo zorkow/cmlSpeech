@@ -54,6 +54,14 @@ public final class BondTableFactory {
   }
 
 
+  /**
+   * Constructs the bond table for the current language.
+   *
+   * @param language
+   *          A language string.
+   *
+   * @return The bond table for the given language.
+   */
   public static BondTable getBondTable(final String language) {
     BondTable table = bondTables.get(language);
     if (table != null) {

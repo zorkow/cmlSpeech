@@ -38,7 +38,7 @@ import java.util.Map;
  * Factory for generating language specific atom visitors.
  */
 
-public class ExpertSpeechVisitorFactory {
+public final class ExpertSpeechVisitorFactory {
 
   private static Map<String, SpeechVisitor> visitors;
 
@@ -47,6 +47,21 @@ public class ExpertSpeechVisitorFactory {
     visitors.put("english", new EnExpertSpeechVisitor());
   }
 
+
+  /** Dummy constructor. */
+  private ExpertSpeechVisitorFactory() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
+
+  /**
+   * Constructs the expert speech visitor for the current language.
+   *
+   * @param language
+   *          A language string.
+   *
+   * @return The expert speech visitor for the given language.
+   */
   public static SpeechVisitor getSpeechVisitor(final String language) {
     SpeechVisitor visitor = visitors.get(language);
     if (visitor != null) {

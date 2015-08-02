@@ -47,12 +47,13 @@ import java.util.TreeSet;
  * Basic visitor functionality for English speech generation.
  */
 
+@SuppressWarnings("serial")
 public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(Language.getBondTable().order(bond));
-    this.addSpeech("bond");
+    this.push(Language.getBondTable().order(bond));
+    this.push("bond");
   }
 
 
@@ -64,8 +65,8 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(Language.getAtomTable().lookup(atom));
-    this.addSpeech(position);
+    this.push(Language.getAtomTable().lookup(atom));
+    this.push(position);
     if (this.getFlag("short")) {
       return;
     }
@@ -76,9 +77,9 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final SpiroAtom spiroAtom) {
     this.setFlag("short", true);
-    this.addSpeech("spiro atom");
+    this.push("spiro atom");
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
-    this.addSpeech("to");
+    this.push("to");
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
     this.setFlag("short", false);
   }
@@ -86,7 +87,7 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final BridgeAtom bridgeAtom) {
-    this.addSpeech("bridge atom");
+    this.push("bridge atom");
     RichStructureHelper.getRichAtom(bridgeAtom.getConnector()).accept(this);
   }
 
@@ -96,8 +97,8 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
     this.setFlag("short", true);
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     // TODO (sorge) The past tense here is problematic!
-    this.modSpeech("ed");
-    this.addSpeech("to");
+    this.modLast("ed");
+    this.push("to");
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);
@@ -111,9 +112,9 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final SharedAtom sharedAtom) {
     this.setFlag("short", true);
-    this.addSpeech("shared atom");
+    this.push("shared atom");
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
-    this.addSpeech("with");
+    this.push("with");
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
     this.setFlag("short", false);
   }
@@ -121,7 +122,7 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final SharedBond sharedBond) {
-    this.addSpeech("shared");
+    this.push("shared");
     RichStructureHelper.getRichBond(sharedBond.getConnector()).accept(this);
   }
 
@@ -129,9 +130,9 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final Bridge bridge) {
     this.setFlag("short", true);
-    this.addSpeech("fused with");
+    this.push("fused with");
     RichStructureHelper.getRichAtomSet(bridge.getConnected()).accept(this);
-    this.addSpeech("via");
+    this.push("via");
     bridge.getBridges().forEach(c -> c.accept(this));
     this.setFlag("short", false);
   }
@@ -144,14 +145,14 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
-        this.addSpeech("bonded to");
-        this.addSpeech(count.toString());
-        this.addSpeech("hydrogen");
+        this.push("bonded to");
+        this.push(count.toString());
+        this.push("hydrogen");
         return;
       default:
-        this.addSpeech("bonded to");
-        this.addSpeech(count.toString());
-        this.addSpeech("hydrogens");
+        this.push("bonded to");
+        this.push(count.toString());
+        this.push("hydrogens");
         return;
     }
   }
@@ -167,16 +168,16 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
-        this.addSpeech("Substitution at position");
-        this.addSpeech(subst.iterator().next());
+        this.push("Substitution at position");
+        this.push(subst.iterator().next());
         return;
       default:
-        this.addSpeech("Substitutions at positions");
+        this.push("Substitutions at positions");
         for (final Integer position : subst) {
-          this.addSpeech(position);
-          this.addSpeech("and");
+          this.push(position);
+          this.push("and");
         }
-        this.remSpeech();
+        this.pop();
     }
   }
 

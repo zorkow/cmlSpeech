@@ -39,12 +39,13 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
  * Produces the basic speech for structures.
  */
 
+@SuppressWarnings("serial")
 public class EnExpertSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
     this.addName(ring);
-    this.addSpeech("ring");
+    this.push("ring");
     if (this.getFlag("short")) {
       return;
     }
@@ -54,21 +55,21 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichFusedRing ring) {
-    this.addSpeech("Fused ring system");
+    this.push("Fused ring system");
     this.addName(ring);
     if (this.getFlag("short")) {
       return;
     }
-    this.addSpeech("with");
-    this.addSpeech(ring.getSubSystems().size());
-    this.addSpeech("subrings");
+    this.push("with");
+    this.push(ring.getSubSystems().size());
+    this.push("subrings");
     this.describeSubstitutions(ring);
   }
 
 
   @Override
   public void visit(final RichSubRing ring) {
-    this.addSpeech("Subring");
+    this.push("Subring");
     this.addName(ring);
   }
 
@@ -85,7 +86,7 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
 
   @Override
   public void visit(final RichFunctionalGroup group) {
-    this.addSpeech("Functional group");
+    this.push("Functional group");
     this.addName(group);
   }
 
@@ -99,7 +100,7 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
   @Override
   protected final void describeReplacements(final RichAtomSet system) { }
 
-  
+
   @Override
   protected final void describeMultiBonds(final RichAtomSet system) { }
 

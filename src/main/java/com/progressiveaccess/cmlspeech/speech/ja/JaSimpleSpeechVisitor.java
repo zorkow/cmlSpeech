@@ -46,14 +46,15 @@ import java.util.Iterator;
  * Produces the simple speech for structures.
  */
 
+@SuppressWarnings("serial")
 public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
-    this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("員"); // Elements
-    this.addSpeech("環"); // Ring
-    this.addSpeech("、"); // Punctuation
+    this.push(ring.getComponentsPositions().size());
+    this.push("員"); // Elements
+    this.push("環"); // Ring
+    this.push("、"); // Punctuation
     if (this.getFlag("short")) {
       return;
     }
@@ -65,27 +66,27 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichFusedRing ring) {
-    this.addSpeech("縮合環系");  // Fused ring system
-    this.addSpeech("、"); // Punctuation
+    this.push("縮合環系");  // Fused ring system
+    this.push("、"); // Punctuation
     if (this.getFlag("short")) {
       return;
     }
-    this.addSpeech(ring.getSubSystems().size());
-    this.addSpeech("個の");
-    this.addSpeech("部分環"); // subrings
-    this.addSpeech("を");
-    this.addSpeech("含有"); // with
-    this.addSpeech("、"); // Punctuation
+    this.push(ring.getSubSystems().size());
+    this.push("個の");
+    this.push("部分環"); // subrings
+    this.push("を");
+    this.push("含有"); // with
+    this.push("、"); // Punctuation
     this.describeSubstitutions(ring);
   }
 
 
   @Override
   public void visit(final RichSubRing ring) {
-    this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("員"); // Elements
-    this.addSpeech("部分環"); // Subring
-    this.addSpeech("、"); // Punctuation
+    this.push(ring.getComponentsPositions().size());
+    this.push("員"); // Elements
+    this.push("部分環"); // Subring
+    this.push("、"); // Punctuation
     if (this.getFlag("short")) {
       return;
     }
@@ -96,12 +97,12 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichAliphaticChain chain) {
-    // this.addSpeech("脂肪鎖"); // Aliphatic chain
-    this.addSpeech("長さ"); // length
-    this.addSpeech(chain.getComponentsPositions().size());
-    this.addSpeech("の"); // of
-    this.addSpeech("直鎖"); // Chain
-    this.addSpeech("、"); // Punctuation
+    // this.push("脂肪鎖"); // Aliphatic chain
+    this.push("長さ"); // length
+    this.push(chain.getComponentsPositions().size());
+    this.push("の"); // of
+    this.push("直鎖"); // Chain
+    this.push("、"); // Punctuation
     if (this.getFlag("short")) {
       return;
     }
@@ -113,9 +114,9 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichFunctionalGroup group) {
-    this.addSpeech("官能基");
-    this.addSpeech(group.getStructuralFormula());
-    this.addSpeech("、"); // Punctuation
+    this.push("官能基");
+    this.push(group.getStructuralFormula());
+    this.push("、"); // Punctuation
   }
 
 
@@ -128,13 +129,13 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
        RichStructureHelper.getRichStructure(set)).accept(this);
       count++;
       if (count == 1) {
-        this.remSpeech();
-        this.addSpeech("と、"); // and Punctuation
+        this.pop();
+        this.push("と、"); // and Punctuation
       }
     }
-    this.remSpeech();
-    this.addSpeech("で構成された分子");  // Molecule consisting of
-    this.addSpeech("、"); // Punctuation
+    this.pop();
+    this.push("で構成された分子");  // Molecule consisting of
+    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
@@ -146,11 +147,11 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
       final String value = iterator.next();
       final RichAtom atom = RichStructureHelper.getRichAtom(value);
       if (!atom.isCarbon()) {
-        this.addSpeech(system.getPosition(value));
-        this.addSpeech("位"); // Position symbol
-        this.addSpeech("は"); // at
-        this.addSpeech(Language.getAtomTable().lookup(atom));
-        this.addSpeech("、"); // Punctuation
+        this.push(system.getPosition(value));
+        this.push("位"); // Position symbol
+        this.push("は"); // at
+        this.push(Language.getAtomTable().lookup(atom));
+        this.push("、"); // Punctuation
       }
     }
   }
@@ -173,14 +174,14 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
         atomB ^= atomA;
         atomA ^= atomB;
       }
-      this.addSpeech(atomA);
-      this.addSpeech("位"); // Position symbol
-      this.addSpeech("と"); // and
-      this.addSpeech(atomB);
-      this.addSpeech("位"); // Position symbol
-      this.addSpeech("の間は"); // between
+      this.push(atomA);
+      this.push("位"); // Position symbol
+      this.push("と"); // and
+      this.push(atomB);
+      this.push("位"); // Position symbol
+      this.push("の間は"); // between
       bond.accept(this);
-      this.addSpeech("、"); // Punctuation
+      this.push("、"); // Punctuation
     }
   }
 

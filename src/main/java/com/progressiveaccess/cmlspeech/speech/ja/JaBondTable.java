@@ -38,6 +38,9 @@ public final class JaBondTable extends AbstractBondTable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Japanese bond table.
+   */
   public JaBondTable() {
     this.put("single", "単");
     this.put("double", "二重");

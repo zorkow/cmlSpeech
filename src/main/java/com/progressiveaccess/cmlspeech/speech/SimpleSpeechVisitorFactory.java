@@ -38,7 +38,7 @@ import java.util.Map;
  * Factory for generating language specific atom tables.
  */
 
-public class SimpleSpeechVisitorFactory {
+public final class SimpleSpeechVisitorFactory {
 
   private static Map<String, SpeechVisitor> visitors;
 
@@ -47,6 +47,21 @@ public class SimpleSpeechVisitorFactory {
     visitors.put("english", new EnSimpleSpeechVisitor());
   }
 
+
+  /** Dummy constructor. */
+  private SimpleSpeechVisitorFactory() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
+
+  /**
+   * Constructs the simple speech visitor for the current language.
+   *
+   * @param language
+   *          A language string.
+   *
+   * @return The simple speech visitor for the given language.
+   */
   public static SpeechVisitor getSpeechVisitor(final String language) {
     SpeechVisitor visitor = visitors.get(language);
     if (visitor != null) {

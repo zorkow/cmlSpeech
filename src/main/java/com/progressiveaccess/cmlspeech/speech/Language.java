@@ -40,30 +40,56 @@ public final class Language {
   private static SpeechVisitor expertSpeechVisitor;
 
 
+
+  /** Dummy constructor. */
+  private Language() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
+
+  /**
+   * @return The atom table for the current language.
+   */
   public static AtomTable getAtomTable() {
     return Language.atomTable;
   }
 
 
+  /**
+   * @return The bond table for the current language.
+   */
   public static BondTable getBondTable() {
     return Language.bondTable;
   }
 
 
+  /**
+   * @return The simple speech visitor for the current language.
+   */
   public static SpeechVisitor getSimpleSpeechVisitor() {
     return Language.simpleSpeechVisitor;
   }
 
 
+  /**
+   * @return The expert speech visitor for the current language.
+   */
   public static SpeechVisitor getExpertSpeechVisitor() {
     return Language.expertSpeechVisitor;
   }
 
 
+  /**
+   * Resets the language object to a specific language.
+   *
+   * @param language
+   *          The new language.
+   */
   public static void reset(final String language) {
     atomTable = AtomTableFactory.getAtomTable(language);
     bondTable = BondTableFactory.getBondTable(language);
     simpleSpeechVisitor = SimpleSpeechVisitorFactory.getSpeechVisitor(language);
     expertSpeechVisitor = ExpertSpeechVisitorFactory.getSpeechVisitor(language);
   }
+
 }

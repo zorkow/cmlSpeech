@@ -40,12 +40,13 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
  * Produces the expert speech for structures in Japanese.
  */
 
+@SuppressWarnings("serial")
 public class JaExpertSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
     this.addName(ring);
-    this.addSpeech("環"); // ring
+    this.push("環"); // ring
     if (this.getFlag("short")) {
       return;
     }
@@ -55,24 +56,24 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichFusedRing ring) {
-    this.addSpeech("縮合環系");  // Fused ring system
+    this.push("縮合環系");  // Fused ring system
     this.addName(ring);
     if (this.getFlag("short")) {
       return;
     }
-    this.addSpeech(ring.getSubSystems().size());
-    this.addSpeech("個の");
-    this.addSpeech("部分環"); // subrings
-    this.addSpeech("を");
-    this.addSpeech("含有"); // with
-    this.addSpeech("、"); // Punctuation
+    this.push(ring.getSubSystems().size());
+    this.push("個の");
+    this.push("部分環"); // subrings
+    this.push("を");
+    this.push("含有"); // with
+    this.push("、"); // Punctuation
     this.describeSubstitutions(ring);
   }
 
 
   @Override
   public void visit(final RichSubRing ring) {
-    this.addSpeech("部分環"); // Subring
+    this.push("部分環"); // Subring
     this.addName(ring);
   }
 
@@ -89,7 +90,7 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichFunctionalGroup group) {
-    this.addSpeech("官能基");
+    this.push("官能基");
     this.addName(group);
   }
 

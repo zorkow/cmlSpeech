@@ -49,12 +49,13 @@ import java.util.TreeSet;
  * Basic visitor functionality for Japanese speech generation.
  */
 
+@SuppressWarnings("serial")
 public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(Language.getBondTable().order(bond));
-    this.addSpeech("結合"); // bond
+    this.push(Language.getBondTable().order(bond));
+    this.push("結合"); // bond
   }
 
 
@@ -66,10 +67,10 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(Language.getAtomTable().lookup(atom));
-    this.addSpeech(position);
+    this.push(Language.getAtomTable().lookup(atom));
+    this.push(position);
     if (this.getFlag("subject")) {
-      this.addSpeech("は、"); // Separator (only after subject).
+      this.push("は、"); // Separator (only after subject).
     }
     if (this.getFlag("short")) {
       return;
@@ -82,10 +83,10 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   public void visit(final SpiroAtom spiroAtom) {
     this.setFlag("short", true);
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
-    this.addSpeech("スピロ原子"); // spiro atom
-    this.addSpeech("に"); // to
+    this.push("スピロ原子"); // spiro atom
+    this.push("に"); // to
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
-    this.addSpeech("、"); // Punctuation
+    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
@@ -93,7 +94,7 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final BridgeAtom bridgeAtom) {
     RichStructureHelper.getRichAtom(bridgeAtom.getConnector()).accept(this);
-    this.addSpeech("橋頭原子");  // bridge atom
+    this.push("橋頭原子");  // bridge atom
   }
 
 
@@ -107,9 +108,9 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
     } else {
       RichStructureHelper.getRichAtomSet(connected).accept(this);
     }
-    this.addSpeech("に"); // to
+    this.push("に"); // to
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
-    this.addSpeech("、"); // Punctuation
+    this.push("、"); // Punctuation
     this.setFlag("short", false);
     this.setFlag("subject", true);
   }
@@ -119,11 +120,11 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   public void visit(final SharedAtom sharedAtom) {
     this.setFlag("short", true);
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
-    this.addSpeech("共有原子"); // shared atom
+    this.push("共有原子"); // shared atom
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
-    this.remSpeech();
-    this.addSpeech("含有"); // with
-    this.addSpeech("、"); // Punctuation
+    this.pop();
+    this.push("含有"); // with
+    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
@@ -131,7 +132,7 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final SharedBond sharedBond) {
     RichStructureHelper.getRichBond(sharedBond.getConnector()).accept(this);
-    this.addSpeech("共有"); // shared
+    this.push("共有"); // shared
   }
 
 
@@ -139,10 +140,10 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   public void visit(final Bridge bridge) {
     this.setFlag("short", true);
     RichStructureHelper.getRichAtomSet(bridge.getConnected()).accept(this);
-    this.addSpeech("縮合");  // fused ??
+    this.push("縮合");  // fused ??
     bridge.getBridges().forEach(c -> c.accept(this));
-    this.addSpeech("に");  // at or via ??
-    this.addSpeech("、"); // Punctuation
+    this.push("に");  // at or via ??
+    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
@@ -155,9 +156,9 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
         return;
       case 1:
       default:
-        this.addSpeech("水素");  // hydrogen (and hydrogens)
-        this.addSpeech(count.toString());
-        this.addSpeech("に結合、"); // bonded to
+        this.push("水素");  // hydrogen (and hydrogens)
+        this.push(count.toString());
+        this.push("に結合、"); // bonded to
         return;
     }
   }
@@ -175,14 +176,14 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
       case 1:
       default:
         for (final Integer position : subst) {
-          this.addSpeech(position);
-          this.addSpeech("位"); // position
-          this.addSpeech("と"); // and
+          this.push(position);
+          this.push("位"); // position
+          this.push("と"); // and
         }
-        this.remSpeech();
-        this.addSpeech("で"); // at
-        this.addSpeech("置換"); // Substitution
-        this.addSpeech("、"); // Punctuation
+        this.pop();
+        this.push("で"); // at
+        this.push("置換"); // Substitution
+        this.push("、"); // Punctuation
         return;
     }
   }
@@ -197,8 +198,8 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public String getSpeech() {
     final Joiner joiner = Joiner.on("");
-    String result = joiner.join(this.retrieveSpeech());
-    this.clearSpeech();
+    String result = joiner.join(this);
+    this.clear();
     return result;
   }
 

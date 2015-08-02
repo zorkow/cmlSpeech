@@ -38,6 +38,9 @@ public final class JaAtomTable extends AbstractAtomTable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Japanese atom table.
+   */
   public JaAtomTable() {
     this.put("Ac", "アクチニウム");
     this.put("Al", "アルミニウム");

@@ -38,6 +38,9 @@ public final class EnAtomTable extends AbstractAtomTable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * English atom table.
+   */
   public EnAtomTable() {
     this.put("Ac", "Actinium");
     this.put("Al", "Aluminum");

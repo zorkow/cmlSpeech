@@ -40,6 +40,9 @@ public final class EnBondTable extends AbstractBondTable {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * English bond table.
+   */
   public EnBondTable() {
     for (IBond.Order order : IBond.Order.values()) {
       String name = order.toString().toLowerCase();
