@@ -73,7 +73,7 @@ public class EnExpertSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(atom.getName());
+    super.visit(atom);
     this.addSpeech(position);
     if (this.shortDescription) {
       return;

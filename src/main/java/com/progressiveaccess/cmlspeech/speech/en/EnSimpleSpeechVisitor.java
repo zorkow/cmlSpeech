@@ -75,7 +75,7 @@ public class EnSimpleSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(atom.getName());
+    super.visit(atom);
     this.addSpeech(position);
     if (this.shortDescription) {
       return;
@@ -235,7 +235,7 @@ public class EnSimpleSpeechVisitor extends AbstractSpeechVisitor {
       final RichAtom atom = RichStructureHelper.getRichAtom(value);
       if (!atom.isCarbon()) {
         this.addSpeech("with");
-        this.addSpeech(atom.getName());
+        super.visit(atom);
         this.addSpeech("at position");
         this.addSpeech(system.getPosition(value));
       }

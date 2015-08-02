@@ -89,7 +89,7 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(atom.getName());
+    super.visit(atom);
     this.addSpeech(position);
     if (this.subject) {
       this.addSpeech("は、"); // Separator (only after subject).
@@ -280,7 +280,7 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
         this.addSpeech(system.getPosition(value));
         this.addSpeech("位"); // Position symbol
         this.addSpeech("は"); // at 
-        this.addSpeech(atom.getName());
+        super.visit(atom);
         this.addSpeech("、"); // Punctuation
       }
     }

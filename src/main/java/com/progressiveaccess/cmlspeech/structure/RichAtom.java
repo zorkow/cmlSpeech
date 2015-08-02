@@ -27,7 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
@@ -46,7 +45,7 @@ public class RichAtom extends RichChemObject {
    */
   public RichAtom(final IAtom structure) {
     super(structure);
-    this.setName(Language.getAtomTable().lookup(this));
+    this.setName(this.getStructure().getSymbol());
   }
 
 

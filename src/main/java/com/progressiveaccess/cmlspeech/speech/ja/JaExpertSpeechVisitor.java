@@ -87,7 +87,7 @@ public class JaExpertSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(atom.getName());
+    super.visit(atom);
     this.addSpeech(position);
     if (this.subject) {
       this.addSpeech("は、"); // Separator (only after subject).
