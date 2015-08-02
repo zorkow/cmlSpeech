@@ -28,10 +28,12 @@
 package com.progressiveaccess.cmlspeech.analysis;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,9 +45,11 @@ import java.util.Set;
 public final class SmartsPatterns {
 
   private static volatile SmartsPatterns instance = null;
+  private static final String SMARTS_PATH = "src/main/resources/smarts";
   private static final String[] SMARTS_FILES = {
-    "src/main/resources/smarts/daylight-pattern.txt",
-    "src/main/resources/smarts/smarts-pattern.txt" };
+    "daylight-pattern.txt",
+    "smarts-pattern.txt"
+  };
   private static final Map<String, String> SMARTS_PATTERNS =
       new HashMap<String, String>();
   private static boolean loaded = false;
@@ -99,9 +103,20 @@ public final class SmartsPatterns {
    *          The name of the file to load.
    */
   private static void loadSmartsFile(final String file) {
+    loadSmartsFile(FileSystems.getDefault().getPath(SMARTS_PATH, file));
+  }
+
+
+  /**
+   * Loads a single smarts patterns file.
+   *
+   * @param file
+   *          The name of the file to load.
+   */
+  private static void loadSmartsFile(final Path file) {
     try {
-      final BufferedReader br = new BufferedReader(new FileReader(
-          new File(file)));
+      final BufferedReader br = Files.newBufferedReader(file,
+          StandardCharsets.UTF_8);
       String line;
       while ((line = br.readLine()) != null) {
         final int colonIndex = line.indexOf(":");
