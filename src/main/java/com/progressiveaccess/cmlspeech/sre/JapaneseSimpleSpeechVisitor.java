@@ -48,9 +48,8 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
 import com.google.common.base.Joiner;
 
-import java.util.Iterator;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -61,7 +60,6 @@ import java.util.TreeSet;
 
 public class JapaneseSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
-  private LinkedList<String> speech = new LinkedList<String>();
   private boolean shortDescription = false;
   private boolean subject = true;
   private static Map<String, String> bondMap =

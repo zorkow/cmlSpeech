@@ -32,10 +32,6 @@ import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import nu.xom.Element;
 import nu.xom.Nodes;
 
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IBond;
-
 import java.util.SortedMap;
 import java.util.TreeMap;
 

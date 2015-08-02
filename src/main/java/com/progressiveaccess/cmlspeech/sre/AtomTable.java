@@ -31,9 +31,6 @@ import com.progressiveaccess.cmlspeech.structure.RichAtom;
 
 import org.openscience.cdk.interfaces.IAtom;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Maps atom identifiers to their proper names.
  */

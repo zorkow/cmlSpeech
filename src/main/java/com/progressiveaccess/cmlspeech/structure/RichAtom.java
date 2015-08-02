@@ -27,12 +27,11 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.progressiveaccess.cmlspeech.sre.AtomTable;
+import com.progressiveaccess.cmlspeech.sre.Language;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtom;
-import com.progressiveaccess.cmlspeech.sre.Language;
 
 /**
  * Atoms with admin information.

@@ -31,7 +31,6 @@ import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import org.openscience.cdk.interfaces.IAtom;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Localised atom tables.
