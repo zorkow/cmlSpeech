@@ -44,7 +44,7 @@ public final class AtomTableFactory {
 
   static {
     atomTables = new HashMap<String, AtomTable>();
-    atomTables.put("english", new EnAtomTable());
+    atomTables.put("en", new EnAtomTable());
   }
 
 
@@ -68,11 +68,11 @@ public final class AtomTableFactory {
       return table;
     }
     switch (language) {
-      case "japanese":
+      case "ja":
         table = new JaAtomTable();
         break;
       default:
-        return atomTables.get("english");
+        return atomTables.get("en");
     }
     atomTables.put(language, table);
     return table;

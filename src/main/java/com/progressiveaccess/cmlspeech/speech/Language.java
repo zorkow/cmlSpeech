@@ -34,6 +34,7 @@ package com.progressiveaccess.cmlspeech.speech;
 
 public final class Language {
 
+  private static String currentLanguage = "en";
   private static AtomTable atomTable;
   private static BondTable bondTable;
   private static SpeechVisitor simpleSpeechVisitor;
@@ -86,10 +87,14 @@ public final class Language {
    *          The new language.
    */
   public static void reset(final String language) {
-    atomTable = AtomTableFactory.getAtomTable(language);
-    bondTable = BondTableFactory.getBondTable(language);
-    simpleSpeechVisitor = SimpleSpeechVisitorFactory.getSpeechVisitor(language);
-    expertSpeechVisitor = ExpertSpeechVisitorFactory.getSpeechVisitor(language);
+    currentLanguage = IsoTable.lookup(language);
+    System.out.println(currentLanguage);
+    atomTable = AtomTableFactory.getAtomTable(currentLanguage);
+    bondTable = BondTableFactory.getBondTable(currentLanguage);
+    simpleSpeechVisitor =
+        SimpleSpeechVisitorFactory.getSpeechVisitor(currentLanguage);
+    expertSpeechVisitor =
+        ExpertSpeechVisitorFactory.getSpeechVisitor(currentLanguage);
   }
 
 }

@@ -44,7 +44,7 @@ public final class BondTableFactory {
 
   static {
     bondTables = new HashMap<String, BondTable>();
-    bondTables.put("english", new EnBondTable());
+    bondTables.put("en", new EnBondTable());
   }
 
 
@@ -68,11 +68,11 @@ public final class BondTableFactory {
       return table;
     }
     switch (language) {
-      case "japanese":
+      case "ja":
         table = new JaBondTable();
         break;
       default:
-        return bondTables.get("english");
+        return bondTables.get("en");
     }
     bondTables.put(language, table);
     return table;

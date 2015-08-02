@@ -44,7 +44,7 @@ public final class SimpleSpeechVisitorFactory {
 
   static {
     visitors = new HashMap<String, SpeechVisitor>();
-    visitors.put("english", new EnSimpleSpeechVisitor());
+    visitors.put("en", new EnSimpleSpeechVisitor());
   }
 
 
@@ -68,11 +68,11 @@ public final class SimpleSpeechVisitorFactory {
       return visitor;
     }
     switch (language) {
-      case "japanese":
+      case "ja":
         visitor = new JaSimpleSpeechVisitor();
         break;
       default:
-        return visitors.get("english");
+        return visitors.get("en");
     }
     visitors.put(language, visitor);
     return visitor;
