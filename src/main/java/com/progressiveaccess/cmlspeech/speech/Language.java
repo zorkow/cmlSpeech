@@ -17,10 +17,10 @@
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 05:04:37 2015
- * 
+ *
  * @brief  Abstract Factory that holds localisable visitors, etc.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -47,17 +47,17 @@ public final class Language {
   public static AtomTable getAtomTable() {
     return Language.atomTable;
   }
-  
+
 
   public static BondTable getBondTable() {
     return Language.bondTable;
   }
-  
+
 
   public static SpeechVisitor getSimpleSpeechVisitor() {
     return Language.simpleSpeechVisitor;
   }
-  
+
 
   public static SpeechVisitor getExpertSpeechVisitor() {
     return Language.expertSpeechVisitor;

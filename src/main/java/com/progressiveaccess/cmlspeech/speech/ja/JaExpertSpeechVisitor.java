@@ -62,8 +62,8 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
     this.addSpeech(ring.getSubSystems().size());
     this.addSpeech("個の");
     this.addSpeech("部分環"); // subrings
-    this.addSpeech("を"); 
-    this.addSpeech("含有"); // with 
+    this.addSpeech("を");
+    this.addSpeech("含有"); // with
     this.addSpeech("、"); // Punctuation
     this.describeSubstitutions(ring);
   }

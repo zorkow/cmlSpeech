@@ -14,12 +14,13 @@
 
 /**
  * @file   ExpertSpeechVisitorFactory.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 05:33:44 2015
- * 
+ *
  * @brief  Factory for generating atom visitors.
- * 
- * 
+ *
+ *
  */
 
 //
@@ -44,7 +45,7 @@ public class ExpertSpeechVisitorFactory {
     VISITORS = new HashMap<String, SpeechVisitor>();
     VISITORS.put("english", new EnExpertSpeechVisitor());
   }
-  
+
   public static SpeechVisitor getSpeechVisitor(String language) {
     SpeechVisitor visitor = VISITORS.get(language);
     if (visitor != null) {
@@ -52,7 +53,7 @@ public class ExpertSpeechVisitorFactory {
     }
     switch (language) {
     case "japanese":
-      visitor = new JaExpertSpeechVisitor(); 
+      visitor = new JaExpertSpeechVisitor();
       break;
     default:
       return VISITORS.get("english");
@@ -60,5 +61,5 @@ public class ExpertSpeechVisitorFactory {
     VISITORS.put(language, visitor);
     return visitor;
   }
-  
+
 }

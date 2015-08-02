@@ -73,8 +73,8 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
     this.addSpeech(ring.getSubSystems().size());
     this.addSpeech("個の");
     this.addSpeech("部分環"); // subrings
-    this.addSpeech("を"); 
-    this.addSpeech("含有"); // with 
+    this.addSpeech("を");
+    this.addSpeech("含有"); // with
     this.addSpeech("、"); // Punctuation
     this.describeSubstitutions(ring);
   }
@@ -122,12 +122,12 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
   @Override
   public void visit(final RichMolecule molecule) {
     this.shortDescription = true;
-    Integer i = 0;
+    Integer count = 0;
     for (String set : molecule.getPath()) {
       ((RichChemObject)
        RichStructureHelper.getRichStructure(set)).accept(this);
-      i++;
-      if (i == 1) {
+      count++;
+      if (count == 1) {
         this.remSpeech();
         this.addSpeech("と、"); // and Punctuation
       }
@@ -149,7 +149,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
       if (!atom.isCarbon()) {
         this.addSpeech(system.getPosition(value));
         this.addSpeech("位"); // Position symbol
-        this.addSpeech("は"); // at 
+        this.addSpeech("は"); // at
         this.addSpeech(Language.getAtomTable().lookup(atom));
         this.addSpeech("、"); // Punctuation
       }

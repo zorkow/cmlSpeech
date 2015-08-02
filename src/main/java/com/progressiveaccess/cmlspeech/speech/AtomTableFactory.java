@@ -14,15 +14,17 @@
 
 /**
  * @file   AtomTableFactory.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 05:33:44 2015
- * 
+ *
  * @brief  Factory for generating atom tables.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.speech.en.EnAtomTable;
@@ -38,27 +40,27 @@ import java.util.Map;
 
 public class AtomTableFactory {
 
-  private static Map<String, AtomTable> ATOM_TABLES;
+  private static Map<String, AtomTable> atomTables;
 
   static {
-    ATOM_TABLES = new HashMap<String, AtomTable>();
-    ATOM_TABLES.put("english", new EnAtomTable());
+    atomTables = new HashMap<String, AtomTable>();
+    atomTables.put("english", new EnAtomTable());
   }
-  
+
   public static AtomTable getAtomTable(String language) {
-    AtomTable table = ATOM_TABLES.get(language);
+    AtomTable table = atomTables.get(language);
     if (table != null) {
       return table;
     }
     switch (language) {
-    case "japanese":
-      table = new JaAtomTable(); 
-      break;
-    default:
-      return ATOM_TABLES.get("english");
+      case "japanese":
+        table = new JaAtomTable();
+        break;
+      default:
+        return atomTables.get("english");
     }
-    ATOM_TABLES.put(language, table);
+    atomTables.put(language, table);
     return table;
   }
-  
+
 }

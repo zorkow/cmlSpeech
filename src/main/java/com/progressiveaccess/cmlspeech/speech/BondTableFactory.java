@@ -14,15 +14,17 @@
 
 /**
  * @file   BondTableFactory.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug  2 12:58:22 2015
- * 
+ *
  * @brief  Factory for generating bond tables.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.speech.en.EnBondTable;
@@ -36,29 +38,36 @@ import java.util.Map;
  * Factory for generating language specific bond tables.
  */
 
-public class BondTableFactory {
+public final class BondTableFactory {
 
-  private static Map<String, BondTable> BOND_TABLES;
+  private static Map<String, BondTable> bondTables;
 
   static {
-    BOND_TABLES = new HashMap<String, BondTable>();
-    BOND_TABLES.put("english", new EnBondTable());
+    bondTables = new HashMap<String, BondTable>();
+    bondTables.put("english", new EnBondTable());
   }
-  
-  public static BondTable getBondTable(String language) {
-    BondTable table = BOND_TABLES.get(language);
+
+
+  /** Dummy constructor. */
+  private BondTableFactory() {
+    throw new AssertionError("Instantiating utility class...");
+  }
+
+
+  public static BondTable getBondTable(final String language) {
+    BondTable table = bondTables.get(language);
     if (table != null) {
       return table;
     }
     switch (language) {
-    case "japanese":
-      table = new JaBondTable(); 
-      break;
-    default:
-      return BOND_TABLES.get("english");
+      case "japanese":
+        table = new JaBondTable();
+        break;
+      default:
+        return bondTables.get("english");
     }
-    BOND_TABLES.put(language, table);
+    bondTables.put(language, table);
     return table;
   }
-  
+
 }

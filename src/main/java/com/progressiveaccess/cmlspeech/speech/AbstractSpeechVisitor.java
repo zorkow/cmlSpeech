@@ -15,20 +15,19 @@
 
 /**
  * @file   AbstractSpeechVisitor.java
- * @author Volker Sorge <sorge@zorkstomp>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sat Aug  1 19:14:46 2015
- * 
+ *
  * @brief  Abstract class for speech visitors.
- * 
- * 
+ *
+ *
  */
 
 //
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
-import com.progressiveaccess.cmlspeech.structure.RichAtom;
-import com.progressiveaccess.cmlspeech.structure.RichBond;
 
 import com.google.common.base.Joiner;
 
@@ -42,7 +41,7 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
-  
+
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
     this.contextPositions = positions;
@@ -54,7 +53,7 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
     return this.contextPositions;
   }
 
-  
+
   protected void remSpeech() {
     this.speech.removeLast();
   }

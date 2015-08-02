@@ -69,7 +69,7 @@ public interface BondTable {
    */
    String order(final RichBond bond);
 
-  
+
   /**
    * Gets the name of an bond given its chemical symbol.
    *

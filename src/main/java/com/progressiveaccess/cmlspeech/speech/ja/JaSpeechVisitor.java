@@ -89,7 +89,7 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     this.shortDescription = true;
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
     this.addSpeech("スピロ原子"); // spiro atom
-    this.addSpeech("に"); // to 
+    this.addSpeech("に"); // to
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
     this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
@@ -113,7 +113,7 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     } else {
       RichStructureHelper.getRichAtomSet(connected).accept(this);
     }
-    this.addSpeech("に"); // to 
+    this.addSpeech("に"); // to
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     this.addSpeech("、"); // Punctuation
     // TODO (sorge) The past tense here is problematic!
@@ -130,7 +130,7 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     this.addSpeech("共有原子"); // shared atom
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
     this.remSpeech();
-    this.addSpeech("含有"); // with 
+    this.addSpeech("含有"); // with
     this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
   }
@@ -155,13 +155,13 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
-  /** 
+  /**
    * Adds description of hydrogen bonds of an atom.
-   * 
+   *
    * @param atom
    *          The atom to describe.
    */
-  private void describeHydrogenBonds(RichAtom atom) {
+  private void describeHydrogenBonds(final RichAtom atom) {
     final Integer count = atom.getStructure().getImplicitHydrogenCount();
     switch (count) {
       case 0:
@@ -231,16 +231,16 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
 }
 
-// ring	環
-// aliphatic chain	脂肪鎖
-// fused ring system	縮合環系
-// subring	部分環
-// lsolated ring	孤立環
-// functional group	官能基
-// bridge atom	橋頭原子
-// spiro	atom	スピロ原子
-// shared atom	共有原子
-// shared bond	共有結合
-// bridge	橋
-// bridged bond	橋状結合
+// ring 環
+// aliphatic chain 脂肪鎖
+// fused ring system 縮合環系
+// subring 部分環
+// lsolated ring 孤立環
+// functional group 官能基
+// bridge atom 橋頭原子
+// spiro atom スピロ原子
+// shared atom 共有原子
+// shared bond 共有結合
+// bridge 橋
+// bridged bond 橋状結合
 // chain 直鎖
