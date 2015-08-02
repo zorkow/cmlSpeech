@@ -42,8 +42,6 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
-  private AtomTable atomTable = Language.getAtomTable();
-  private BondTable bondTable = Language.getBondTable();
   
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
@@ -95,18 +93,6 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
     String result = joiner.join(this.retrieveSpeech());
     this.clearSpeech();
     return result + ".";
-  }
-
-
-  @Override
-  public void visit(RichAtom atom) {
-    this.addSpeech(this.atomTable.lookup(atom.getName()));
-  }
-
-
-  @Override
-  public void visit(RichBond bond) {
-    this.addSpeech(this.bondTable.order(bond));
   }
 
 }

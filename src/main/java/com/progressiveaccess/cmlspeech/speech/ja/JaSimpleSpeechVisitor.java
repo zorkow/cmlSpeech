@@ -35,6 +35,7 @@ import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
 import com.progressiveaccess.cmlspeech.speech.AbstractSpeechVisitor;
+import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -49,9 +50,7 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
 import com.google.common.base.Joiner;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -67,7 +66,7 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    super.visit(bond);
+    this.addSpeech(Language.getBondTable().order(bond));
     this.addSpeech("結合"); // bond
   }
 
@@ -80,7 +79,7 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    super.visit(atom);
+    this.addSpeech(Language.getAtomTable().lookup(atom));
     this.addSpeech(position);
     if (this.subject) {
       this.addSpeech("は、"); // Separator (only after subject).
@@ -271,7 +270,7 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
         this.addSpeech(system.getPosition(value));
         this.addSpeech("位"); // Position symbol
         this.addSpeech("は"); // at 
-        super.visit(atom);
+        this.addSpeech(Language.getAtomTable().lookup(atom));
         this.addSpeech("、"); // Punctuation
       }
     }
