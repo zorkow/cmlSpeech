@@ -38,6 +38,8 @@ import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
+import com.progressiveaccess.cmlspeech.speech.Language;
+import com.progressiveaccess.cmlspeech.speech.SpeechVisitor;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;

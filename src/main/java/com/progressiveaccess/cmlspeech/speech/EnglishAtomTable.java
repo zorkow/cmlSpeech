@@ -25,7 +25,7 @@
 
 //
 
-package com.progressiveaccess.cmlspeech.sre;
+package com.progressiveaccess.cmlspeech.speech;
 
 
 /**

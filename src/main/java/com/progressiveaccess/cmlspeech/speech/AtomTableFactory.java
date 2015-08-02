@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   SimpleSpeechVisitorFactory.java
+ * @file   AtomTableFactory.java
  * @author Volker Sorge <sorge@zorkstomp>
  * @date   Thu Jul 30 05:33:44 2015
  * 
@@ -23,7 +23,7 @@
  */
 
 //
-package com.progressiveaccess.cmlspeech.sre;
+package com.progressiveaccess.cmlspeech.speech;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,29 +33,29 @@ import java.util.Map;
  * Factory for generating language specific atom tables.
  */
 
-public class SimpleSpeechVisitorFactory {
+public class AtomTableFactory {
 
-  private static Map<String, SpeechVisitor> VISITORS;
+  private static Map<String, AtomTable> ATOM_TABLES;
 
   static {
-    VISITORS = new HashMap<String, SpeechVisitor>();
-    VISITORS.put("english", new EnglishSimpleSpeechVisitor());
+    ATOM_TABLES = new HashMap<String, AtomTable>();
+    ATOM_TABLES.put("english", new EnglishAtomTable());
   }
   
-  public static SpeechVisitor getSpeechVisitor(String language) {
-    SpeechVisitor visitor = VISITORS.get(language);
-    if (visitor != null) {
-      return visitor;
+  public static AtomTable getAtomTable(String language) {
+    AtomTable table = ATOM_TABLES.get(language);
+    if (table != null) {
+      return table;
     }
     switch (language) {
     case "japanese":
-      visitor = new JapaneseSimpleSpeechVisitor(); 
+      table = new JapaneseAtomTable(); 
       break;
     default:
-      return VISITORS.get("english");
+      return ATOM_TABLES.get("english");
     }
-    VISITORS.put(language, visitor);
-    return visitor;
+    ATOM_TABLES.put(language, table);
+    return table;
   }
   
 }

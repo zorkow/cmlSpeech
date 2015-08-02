@@ -27,7 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.structure;
 
-import com.progressiveaccess.cmlspeech.sre.Language;
+import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 

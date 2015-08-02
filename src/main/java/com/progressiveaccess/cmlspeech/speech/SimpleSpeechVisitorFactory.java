@@ -13,33 +13,33 @@
 // limitations under the License.
 
 /**
- * @file   ExpertSpeechVisitorFactory.java
+ * @file   SimpleSpeechVisitorFactory.java
  * @author Volker Sorge <sorge@zorkstomp>
  * @date   Thu Jul 30 05:33:44 2015
  * 
- * @brief  Factory for generating atom visitors.
+ * @brief  Factory for generating atom tables.
  * 
  * 
  */
 
 //
-package com.progressiveaccess.cmlspeech.sre;
+package com.progressiveaccess.cmlspeech.speech;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 /**
- * Factory for generating language specific atom visitors.
+ * Factory for generating language specific atom tables.
  */
 
-public class ExpertSpeechVisitorFactory {
+public class SimpleSpeechVisitorFactory {
 
   private static Map<String, SpeechVisitor> VISITORS;
 
   static {
     VISITORS = new HashMap<String, SpeechVisitor>();
-    VISITORS.put("english", new EnglishExpertSpeechVisitor());
+    VISITORS.put("english", new EnglishSimpleSpeechVisitor());
   }
   
   public static SpeechVisitor getSpeechVisitor(String language) {
@@ -49,7 +49,7 @@ public class ExpertSpeechVisitorFactory {
     }
     switch (language) {
     case "japanese":
-      visitor = new JapaneseExpertSpeechVisitor(); 
+      visitor = new JapaneseSimpleSpeechVisitor(); 
       break;
     default:
       return VISITORS.get("english");

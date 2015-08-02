@@ -24,7 +24,7 @@
  */
 
 //
-package com.progressiveaccess.cmlspeech.sre;
+package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 
