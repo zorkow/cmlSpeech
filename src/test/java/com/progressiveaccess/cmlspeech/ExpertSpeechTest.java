@@ -28,7 +28,6 @@
 
 package com.progressiveaccess.cmlspeech;
 
-import com.progressiveaccess.cmlspeech.speech.Language;
 
 
 /**
@@ -50,8 +49,8 @@ public class ExpertSpeechTest extends AnnotationTest {
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r", "-nn", "-nh"};
-    Language.reset("english");
+    final String[] parameters =
+        {"-ao", "-t", "-r", "-i", "english", "-nn", "-nh"};
     return parameters;
   }
 

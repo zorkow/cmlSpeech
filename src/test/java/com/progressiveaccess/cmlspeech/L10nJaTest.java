@@ -28,7 +28,6 @@
 
 package com.progressiveaccess.cmlspeech;
 
-import com.progressiveaccess.cmlspeech.speech.Language;
 
 
 /**
@@ -50,8 +49,8 @@ public class L10nJaTest extends AnnotationTest {
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r", "-r0", "-nn"};
-    Language.reset("japanese");
+    final String[] parameters =
+        {"-ao", "-t", "-r", "-r0", "-i", "japanese", "-nn"};    
     return parameters;
   }
 

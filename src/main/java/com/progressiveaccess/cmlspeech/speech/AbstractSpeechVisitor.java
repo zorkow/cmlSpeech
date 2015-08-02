@@ -27,7 +27,11 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
+import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import com.progressiveaccess.cmlspeech.structure.RichAtom;
+import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
+import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 import com.google.common.base.Joiner;
 
@@ -41,6 +45,9 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
+  // TODO
+  protected boolean shortDescription = false;
+
 
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
@@ -84,6 +91,24 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   protected void clearSpeech() {
     this.speech.clear();
+  }
+
+
+  protected void describeSuperSystem(final RichAtom atom) {
+    this.shortDescription = true;
+    for (String context : atom.getContexts()) {
+      if (RichStructureHelper.isAtomSet(context)) {
+        RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
+        RichSetType type = set.getType();
+        if (type == RichSetType.FUNCGROUP
+            || type == RichSetType.ISOLATED
+            || type == RichSetType.FUSED
+            || type == RichSetType.ALIPHATIC) {
+          set.accept(this);
+        }
+      }
+    }
+    this.shortDescription = false;
   }
 
 

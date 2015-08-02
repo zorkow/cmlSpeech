@@ -55,6 +55,7 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
+import com.progressiveaccess.cmlspeech.speech.Language;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.
@@ -90,6 +91,7 @@ public class CmlEnricher {
     this.analyseMolecule();
     this.nameAtomSets();
     this.appendAtomSets();
+    Language.reset(Cli.getOptionValue("int"));
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().getPrefix(),

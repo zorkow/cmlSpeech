@@ -41,10 +41,7 @@ public final class Language {
   private static SpeechVisitor simpleSpeechVisitor;
   private static SpeechVisitor expertSpeechVisitor;
 
-  static {
-    reset(Cli.getOptionValue("int"));
-  }
-  
+
   public static AtomTable getAtomTable() {
     return Language.atomTable;
   }

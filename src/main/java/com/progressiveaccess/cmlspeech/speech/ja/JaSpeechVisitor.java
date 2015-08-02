@@ -39,7 +39,6 @@ import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
-import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 import com.google.common.base.Joiner;
 
@@ -54,7 +53,6 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   // TODO
   protected boolean subject = true;
-  protected boolean shortDescription = false;
 
 
   @Override
@@ -174,24 +172,6 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
         this.addSpeech("に結合、"); // bonded to
         return;
     }
-  }
-
-
-  private void describeSuperSystem(final RichAtom atom) {
-    this.shortDescription = true;
-    for (String context : atom.getContexts()) {
-      if (RichStructureHelper.isAtomSet(context)) {
-        RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
-        RichSetType type = set.getType();
-        if (type == RichSetType.FUNCGROUP
-            || type == RichSetType.ISOLATED
-            || type == RichSetType.FUSED
-            || type == RichSetType.ALIPHATIC) {
-          set.accept(this);
-        }
-      }
-    }
-    this.shortDescription = false;
   }
 
 
