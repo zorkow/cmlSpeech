@@ -28,6 +28,8 @@
 
 package com.progressiveaccess.cmlspeech;
 
+import com.progressiveaccess.cmlspeech.speech.Language;
+
 /**
  * Functional test for simple speech annotations.
  */
@@ -48,6 +50,7 @@ public class SimpleSpeechTest extends AnnotationTest {
   @Override
   public String[] getParameters() {
     final String[] parameters = {"-ao", "-t", "-r0", "-nn", "-nh"};
+    Language.reset("english");
     return parameters;
   }
 

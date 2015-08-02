@@ -35,15 +35,16 @@ import com.progressiveaccess.cmlspeech.base.Cli;
 
 public final class Language {
 
-  private static String language = Cli.hasOption("int") ?
-      Cli.getOptionValue("int") : "english";
-  private static AtomTable atomTable = AtomTableFactory.getAtomTable(language);
-  private static BondTable bondTable = BondTableFactory.getBondTable(language);
-  private static SpeechVisitor simpleSpeechVisitor =
-      SimpleSpeechVisitorFactory.getSpeechVisitor(language);
-  private static SpeechVisitor expertSpeechVisitor =
-      ExpertSpeechVisitorFactory.getSpeechVisitor(language);
+  private static String language;
+  private static AtomTable atomTable;
+  private static BondTable bondTable;
+  private static SpeechVisitor simpleSpeechVisitor;
+  private static SpeechVisitor expertSpeechVisitor;
 
+  static {
+    reset(Cli.getOptionValue("int"));
+  }
+  
   public static AtomTable getAtomTable() {
     return Language.atomTable;
   }
@@ -63,4 +64,12 @@ public final class Language {
     return Language.expertSpeechVisitor;
   }
 
+
+  public static void reset(String language) {
+    language = language == null ? "english" : language;
+    atomTable = AtomTableFactory.getAtomTable(language);
+    bondTable = BondTableFactory.getBondTable(language);
+    simpleSpeechVisitor = SimpleSpeechVisitorFactory.getSpeechVisitor(language);
+    expertSpeechVisitor = ExpertSpeechVisitorFactory.getSpeechVisitor(language);
+  }
 }

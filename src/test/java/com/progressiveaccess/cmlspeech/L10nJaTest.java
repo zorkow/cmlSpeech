@@ -14,12 +14,12 @@
 
 
 /**
- * @file ExpertSpeechTest.java
+ * @file L10nJaTest.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date Thu Feb 26 17:30:05 2015
+ * @date   Sun Aug  2 15:29:49 2015
  *
- * @brief Full blown tests for enrichment of some standard molecules.
+ * @brief  Full speech test for Japanese localisation.
  *
  *
  */
@@ -32,10 +32,10 @@ import com.progressiveaccess.cmlspeech.speech.Language;
 
 
 /**
- * Full functional test for the enricher.
+ * Full functional test for Japanese localisation.
  */
 
-public class ExpertSpeechTest extends AnnotationTest {
+public class L10nJaTest extends AnnotationTest {
 
   /**
    * Create the test case.
@@ -43,22 +43,22 @@ public class ExpertSpeechTest extends AnnotationTest {
    * @param testName
    *          Name of the test case.
    */
-  public ExpertSpeechTest(final String testName) {
+  public L10nJaTest(final String testName) {
     super(testName);
   }
 
 
   @Override
   public String[] getParameters() {
-    final String[] parameters = {"-ao", "-t", "-r", "-nn", "-nh"};
-    Language.reset("english");
+    final String[] parameters = {"-ao", "-t", "-r", "-r0", "-nn"};
+    Language.reset("japanese");
     return parameters;
   }
 
 
   @Override
   public String expectedDirectory() {
-    return "expertSpeech";
+    return "l10n/ja";
   }
 
 }
