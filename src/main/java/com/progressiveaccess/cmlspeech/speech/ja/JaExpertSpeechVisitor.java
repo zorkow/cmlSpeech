@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   JapaneseExpertSpeechVisitor.java
+ * @file   JaExpertSpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 30 14:46:54 2015
@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * Produces the basic speech for structures.
  */
 
-public class JapaneseExpertSpeechVisitor extends AbstractSpeechVisitor {
+public class JaExpertSpeechVisitor extends AbstractSpeechVisitor {
 
   private boolean shortDescription = false;
   private boolean subject = true;

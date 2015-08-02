@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   JapaneseAtomTable.java
+ * @file   JaAtomTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jun 20 02:00:25 2014
@@ -34,11 +34,11 @@ import com.progressiveaccess.cmlspeech.speech.AbstractAtomTable;
  * Maps atom identifiers to their proper names.
  */
 
-public final class JapaneseAtomTable extends AbstractAtomTable {
+public final class JaAtomTable extends AbstractAtomTable {
 
   private static final long serialVersionUID = 1L;
 
-  public JapaneseAtomTable() {
+  public JaAtomTable() {
     this.put("Ac", "アクチニウム");
     this.put("Al", "アルミニウム");
     this.put("Am", "アメリシウム");

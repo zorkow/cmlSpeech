@@ -25,8 +25,8 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnglishExpertSpeechVisitor;
-import com.progressiveaccess.cmlspeech.speech.ja.JapaneseExpertSpeechVisitor;
+import com.progressiveaccess.cmlspeech.speech.en.EnExpertSpeechVisitor;
+import com.progressiveaccess.cmlspeech.speech.ja.JaExpertSpeechVisitor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class ExpertSpeechVisitorFactory {
 
   static {
     VISITORS = new HashMap<String, SpeechVisitor>();
-    VISITORS.put("english", new EnglishExpertSpeechVisitor());
+    VISITORS.put("english", new EnExpertSpeechVisitor());
   }
   
   public static SpeechVisitor getSpeechVisitor(String language) {
@@ -52,7 +52,7 @@ public class ExpertSpeechVisitorFactory {
     }
     switch (language) {
     case "japanese":
-      visitor = new JapaneseExpertSpeechVisitor(); 
+      visitor = new JaExpertSpeechVisitor(); 
       break;
     default:
       return VISITORS.get("english");

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   EnglishSimpleSpeechVisitor.java
+ * @file   JaSimpleSpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Wed Jul  8 09:07:00 2015
@@ -25,7 +25,7 @@
 
 //
 
-package com.progressiveaccess.cmlspeech.speech.en;
+package com.progressiveaccess.cmlspeech.speech.ja;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
@@ -47,7 +47,11 @@ import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
+import com.google.common.base.Joiner;
+
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -55,14 +59,25 @@ import java.util.TreeSet;
  * Produces the simple speech for structures.
  */
 
-public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
+public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   private boolean shortDescription = false;
+  private boolean subject = true;
+  private static Map<String, String> bondMap =
+      new HashMap<String, String>();
+
+  static {
+    bondMap.put("single", "単");
+    bondMap.put("double", "二重");
+    bondMap.put("triple", "三重");
+    bondMap.put("quadruple", "四重");
+  }
 
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(bond.getName());
+    this.addSpeech(bondMap.get(bond.orderDescription()));
+    this.addSpeech("結合"); // bond
   }
 
 
@@ -74,8 +89,11 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.addSpeech(atom.getName());
+    this.addSpeech(atom.getName()); // Done below
     this.addSpeech(position);
+    if (this.subject) {
+      this.addSpeech("は、"); // Separator (only after subject).
+    }
     if (this.shortDescription) {
       return;
     }
@@ -85,10 +103,10 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
-    this.addSpeech("Ring");
-    this.addSpeech("with");
     this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("elements");
+    this.addSpeech("員"); // Elements
+    this.addSpeech("環"); // Ring
+    this.addSpeech("、"); // Punctuation
     if (this.shortDescription) {
       return;
     }
@@ -100,23 +118,27 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichFusedRing ring) {
-    this.addSpeech("Fused ring system");
-    this.addSpeech("with");
-    this.addSpeech(ring.getSubSystems().size());
-    this.addSpeech("subrings");
+    this.addSpeech("縮合環系");  // Fused ring system
+    this.addSpeech("、"); // Punctuation
     if (this.shortDescription) {
       return;
     }
+    this.addSpeech(ring.getSubSystems().size());
+    this.addSpeech("個の");
+    this.addSpeech("部分環"); // subrings
+    this.addSpeech("を"); 
+    this.addSpeech("含有"); // with 
+    this.addSpeech("、"); // Punctuation
     this.describeSubstitutions(ring);
   }
 
 
   @Override
   public void visit(final RichSubRing ring) {
-    this.addSpeech("Subring");
-    this.addSpeech("with");
     this.addSpeech(ring.getComponentsPositions().size());
-    this.addSpeech("elements");
+    this.addSpeech("員"); // Elements
+    this.addSpeech("部分環"); // Subring
+    this.addSpeech("、"); // Punctuation
     if (this.shortDescription) {
       return;
     }
@@ -127,9 +149,12 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichAliphaticChain chain) {
-    this.addSpeech("Aliphatic chain");
-    this.addSpeech("of length");
+    // this.addSpeech("脂肪鎖"); // Aliphatic chain
+    this.addSpeech("長さ"); // length
     this.addSpeech(chain.getComponentsPositions().size());
+    this.addSpeech("の"); // of
+    this.addSpeech("直鎖"); // Chain
+    this.addSpeech("、"); // Punctuation
     if (this.shortDescription) {
       return;
     }
@@ -141,22 +166,28 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichFunctionalGroup group) {
-    this.addSpeech("Functional group");
+    this.addSpeech("官能基");
     this.addSpeech(group.getStructuralFormula());
+    this.addSpeech("、"); // Punctuation
   }
 
 
   @Override
   public void visit(final RichMolecule molecule) {
-    this.addSpeech("Molecule");
-    this.addSpeech("consisting of");
     this.shortDescription = true;
+    Integer i = 0;
     for (String set : molecule.getPath()) {
       ((RichChemObject)
        RichStructureHelper.getRichStructure(set)).accept(this);
-      this.addSpeech("and");
+      i++;
+      if (i == 1) {
+        this.remSpeech();
+        this.addSpeech("と、"); // and Punctuation
+      }
     }
     this.remSpeech();
+    this.addSpeech("で構成された分子");  // Molecule consisting of
+    this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
   }
 
@@ -164,53 +195,58 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final SpiroAtom spiroAtom) {
     this.shortDescription = true;
-    this.addSpeech("spiro atom");
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
-    this.addSpeech("to");
+    this.addSpeech("スピロ原子"); // spiro atom
+    this.addSpeech("に"); // to 
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
+    this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
   }
 
 
   @Override
   public void visit(final BridgeAtom bridgeAtom) {
-    this.addSpeech("bridge atom");
     RichStructureHelper.getRichAtom(bridgeAtom.getConnector()).accept(this);
+    this.addSpeech("橋頭原子");  // bridge atom
   }
 
 
   @Override
   public void visit(final ConnectingBond bond) {
-    RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
-    // TODO (sorge) The past tense here is problematic!
-    this.modSpeech("ed");
-    this.addSpeech("to");
     this.shortDescription = true;
+    this.subject = false;
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);
     } else {
       RichStructureHelper.getRichAtomSet(connected).accept(this);
     }
+    this.addSpeech("に"); // to 
+    RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
+    this.addSpeech("、"); // Punctuation
+    // TODO (sorge) The past tense here is problematic!
+    // this.modSpeech("して"); // ed (modifier)
     this.shortDescription = false;
+    this.subject = true;
   }
 
 
   @Override
   public void visit(final SharedAtom sharedAtom) {
     this.shortDescription = true;
-    this.addSpeech("shared atom");
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
-    this.addSpeech("with");
+    this.addSpeech("共有原子"); // shared atom
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
+    this.addSpeech("含有"); // with 
+    this.addSpeech("、"); // Punctuation
     this.shortDescription = false;
   }
 
 
   @Override
   public void visit(final SharedBond sharedBond) {
-    this.addSpeech("shared");
     RichStructureHelper.getRichBond(sharedBond.getConnector()).accept(this);
+    this.addSpeech("共有"); // shared
   }
 
 
@@ -225,6 +261,14 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
+  public String getSpeech() {
+    final Joiner joiner = Joiner.on("");
+    String result = joiner.join(this.retrieveSpeech());
+    this.clearSpeech();
+    return result;
+  }
+
+
   // TODO (sorge) For the following utility functions, see if they can be
   // refactored with walk methods, etc.
   private void describeReplacements(final RichAtomSet system) {
@@ -233,10 +277,11 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
       final String value = iterator.next();
       final RichAtom atom = RichStructureHelper.getRichAtom(value);
       if (!atom.isCarbon()) {
-        this.addSpeech("with");
-        this.addSpeech(atom.getName());
-        this.addSpeech("at position");
         this.addSpeech(system.getPosition(value));
+        this.addSpeech("位"); // Position symbol
+        this.addSpeech("は"); // at 
+        this.addSpeech(atom.getName());
+        this.addSpeech("、"); // Punctuation
       }
     }
   }
@@ -259,11 +304,14 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
         atomB ^= atomA;
         atomA ^= atomB;
       }
-      bond.accept(this);
-      this.addSpeech("between positions");
       this.addSpeech(atomA);
-      this.addSpeech("and");
+      this.addSpeech("位"); // Position symbol
+      this.addSpeech("と"); // and
       this.addSpeech(atomB);
+      this.addSpeech("位"); // Position symbol
+      this.addSpeech("の間は"); // between
+      bond.accept(this);
+      this.addSpeech("、"); // Punctuation
     }
   }
 
@@ -277,16 +325,17 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
-        this.addSpeech("Substitution at position");
-        this.addSpeech(subst.iterator().next());
-        return;
       default:
-        this.addSpeech("Substitutions at positions");
         for (final Integer position : subst) {
           this.addSpeech(position);
-          this.addSpeech("and");
+          this.addSpeech("位"); // position
+          this.addSpeech("と"); // and
         }
         this.remSpeech();
+        this.addSpeech("で"); // at
+        this.addSpeech("置換"); // Substitution
+        this.addSpeech("、"); // Punctuation
+        return;
     }
   }
 
@@ -303,14 +352,11 @@ public class EnglishSimpleSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
-        this.addSpeech("bonded to");
-        this.addSpeech(count.toString());
-        this.addSpeech("hydrogen");
-        return;
       default:
-        this.addSpeech("bonded to");
+        this.addSpeech("水素");  // hydrogen (and hydrogens)
         this.addSpeech(count.toString());
-        this.addSpeech("hydrogens");
+        // this.addSpeech("に結合しており、"); // bonded to
+        this.addSpeech("に結合、"); // bonded to
         return;
     }
   }

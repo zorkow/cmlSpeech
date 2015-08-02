@@ -25,8 +25,8 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnglishAtomTable;
-import com.progressiveaccess.cmlspeech.speech.ja.JapaneseAtomTable;
+import com.progressiveaccess.cmlspeech.speech.en.EnAtomTable;
+import com.progressiveaccess.cmlspeech.speech.ja.JaAtomTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class AtomTableFactory {
 
   static {
     ATOM_TABLES = new HashMap<String, AtomTable>();
-    ATOM_TABLES.put("english", new EnglishAtomTable());
+    ATOM_TABLES.put("english", new EnAtomTable());
   }
   
   public static AtomTable getAtomTable(String language) {
@@ -52,7 +52,7 @@ public class AtomTableFactory {
     }
     switch (language) {
     case "japanese":
-      table = new JapaneseAtomTable(); 
+      table = new JaAtomTable(); 
       break;
     default:
       return ATOM_TABLES.get("english");

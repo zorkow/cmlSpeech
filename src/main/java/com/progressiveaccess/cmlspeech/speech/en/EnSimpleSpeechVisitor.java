@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file   EnglishExpertSpeechVisitor.java
+ * @file   EnSimpleSpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
- * @date   Tue Jun 30 14:46:54 2015
+ * @date   Wed Jul  8 09:07:00 2015
  *
- * @brief  Simple speech visitor.
+ *a @brief  Visitor for simple speech descriptions.
  *
  *
  */
@@ -39,6 +39,7 @@ import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
+import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
@@ -46,14 +47,15 @@ import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Produces the basic speech for structures.
+ * Produces the simple speech for structures.
  */
 
-public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
+public class EnSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   private boolean shortDescription = false;
 
@@ -83,11 +85,15 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
-    this.addName(ring);
-    this.addSpeech("ring");
+    this.addSpeech("Ring");
+    this.addSpeech("with");
+    this.addSpeech(ring.getComponentsPositions().size());
+    this.addSpeech("elements");
     if (this.shortDescription) {
       return;
     }
+    this.describeReplacements(ring);
+    this.describeMultiBonds(ring);
     this.describeSubstitutions(ring);
   }
 
@@ -95,13 +101,12 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final RichFusedRing ring) {
     this.addSpeech("Fused ring system");
-    this.addName(ring);
-    if (this.shortDescription) {
-      return;
-    }
     this.addSpeech("with");
     this.addSpeech(ring.getSubSystems().size());
     this.addSpeech("subrings");
+    if (this.shortDescription) {
+      return;
+    }
     this.describeSubstitutions(ring);
   }
 
@@ -109,16 +114,27 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final RichSubRing ring) {
     this.addSpeech("Subring");
-    this.addName(ring);
+    this.addSpeech("with");
+    this.addSpeech(ring.getComponentsPositions().size());
+    this.addSpeech("elements");
+    if (this.shortDescription) {
+      return;
+    }
+    this.describeReplacements(ring);
+    this.describeMultiBonds(ring);
   }
 
 
   @Override
   public void visit(final RichAliphaticChain chain) {
-    this.addName(chain);
+    this.addSpeech("Aliphatic chain");
+    this.addSpeech("of length");
+    this.addSpeech(chain.getComponentsPositions().size());
     if (this.shortDescription) {
       return;
     }
+    this.describeReplacements(chain);
+    this.describeMultiBonds(chain);
     this.describeSubstitutions(chain);
   }
 
@@ -126,13 +142,22 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final RichFunctionalGroup group) {
     this.addSpeech("Functional group");
-    this.addName(group);
+    this.addSpeech(group.getStructuralFormula());
   }
 
 
   @Override
   public void visit(final RichMolecule molecule) {
-    this.addName(molecule);
+    this.addSpeech("Molecule");
+    this.addSpeech("consisting of");
+    this.shortDescription = true;
+    for (String set : molecule.getPath()) {
+      ((RichChemObject)
+       RichStructureHelper.getRichStructure(set)).accept(this);
+      this.addSpeech("and");
+    }
+    this.remSpeech();
+    this.shortDescription = false;
   }
 
 
@@ -156,11 +181,11 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final ConnectingBond bond) {
-    this.shortDescription = true;
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     // TODO (sorge) The past tense here is problematic!
     this.modSpeech("ed");
     this.addSpeech("to");
+    this.shortDescription = true;
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);
@@ -200,23 +225,49 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
   }
 
 
-  // TODO (sorge) Do something about all upper case names without destroying
-  // important upper cases. E.g.: WordUtils.capitalizeFully.
-  private void addName(final RichAtomSet atomset) {
-    if (!atomset.getName().equals("")) {
-      addSpeech(atomset.getName());
-      return;
+  // TODO (sorge) For the following utility functions, see if they can be
+  // refactored with walk methods, etc.
+  private void describeReplacements(final RichAtomSet system) {
+    final Iterator<String> iterator = system.iterator();
+    while (iterator.hasNext()) {
+      final String value = iterator.next();
+      final RichAtom atom = RichStructureHelper.getRichAtom(value);
+      if (!atom.isCarbon()) {
+        this.addSpeech("with");
+        this.addSpeech(atom.getName());
+        this.addSpeech("at position");
+        this.addSpeech(system.getPosition(value));
+      }
     }
-    if (!atomset.getIupac().equals("")) {
-      addSpeech(atomset.getIupac());
-      return;
-    }
-    addSpeech(atomset.getMolecularFormula());
   }
 
 
-  // TODO (sorge) For the following utility functions, see if they can be
-  // refactored with walk methods, etc.
+  //TODO (sorge) Sort those bonds. Maybe combine with a more stateful walk.
+  private void describeMultiBonds(final RichAtomSet system) {
+    for (final String component : system.getComponents()) {
+      if (!RichStructureHelper.isBond(component)) {
+        continue;
+      }
+      RichBond bond = RichStructureHelper.getRichBond(component);
+      if (bond.isSingle()) {
+        continue;
+      }
+      Integer atomA = system.getPosition(bond.getComponents().first());
+      Integer atomB = system.getPosition(bond.getComponents().last());
+      if (atomA > atomB) {
+        atomA ^= atomB;
+        atomB ^= atomA;
+        atomA ^= atomB;
+      }
+      bond.accept(this);
+      this.addSpeech("between positions");
+      this.addSpeech(atomA);
+      this.addSpeech("and");
+      this.addSpeech(atomB);
+    }
+  }
+
+
   private void describeSubstitutions(final RichAtomSet system) {
     final SortedSet<Integer> subst = new TreeSet<Integer>();
     for (final String atom : system.getConnectingAtoms()) {
@@ -239,13 +290,14 @@ public class EnglishExpertSpeechVisitor extends AbstractSpeechVisitor {
     }
   }
 
-  /**
+
+  /** 
    * Adds description of hydrogen bonds of an atom.
-   *
+   * 
    * @param atom
    *          The atom to describe.
    */
-  private void describeHydrogenBonds(final RichAtom atom) {
+  private void describeHydrogenBonds(RichAtom atom) {
     final Integer count = atom.getStructure().getImplicitHydrogenCount();
     switch (count) {
       case 0:
