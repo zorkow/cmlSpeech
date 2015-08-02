@@ -71,7 +71,7 @@ public class TypeVisitor implements XmlVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.type = bond.orderDescription();
+    this.type = bond.getName();
   }
 
 

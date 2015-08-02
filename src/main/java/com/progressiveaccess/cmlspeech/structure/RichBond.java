@@ -49,7 +49,7 @@ public class RichBond extends RichChemObject {
     for (final IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
-    this.setName(this.orderDescription() + " bond");
+    this.setName(this.getStructure().getOrder().toString().toLowerCase());
   }
 
 
@@ -77,14 +77,6 @@ public class RichBond extends RichChemObject {
    */
   public final Boolean isSingle() {
     return this.getStructure().getOrder() == IBond.Order.SINGLE;
-  }
-
-
-  /**
-   * @return The order of the bond.
-   */
-  public String orderDescription() {
-    return this.getStructure().getOrder().toString().toLowerCase();
   }
 
 }

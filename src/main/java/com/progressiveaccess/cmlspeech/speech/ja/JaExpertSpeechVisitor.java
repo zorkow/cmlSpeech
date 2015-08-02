@@ -74,7 +74,7 @@ public class JaExpertSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(bondMap.get(bond.orderDescription()));
+    this.addSpeech(bondMap.get(bond.getName()));
     this.addSpeech("結合"); // bond
   }
 
