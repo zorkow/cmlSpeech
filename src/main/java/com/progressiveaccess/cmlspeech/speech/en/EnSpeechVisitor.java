@@ -66,7 +66,7 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
     }
     this.addSpeech(Language.getAtomTable().lookup(atom));
     this.addSpeech(position);
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeHydrogenBonds(atom);
@@ -100,12 +100,12 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final SpiroAtom spiroAtom) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     this.addSpeech("spiro atom");
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
     this.addSpeech("to");
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
@@ -118,7 +118,7 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final ConnectingBond bond) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
     // TODO (sorge) The past tense here is problematic!
     this.modSpeech("ed");
@@ -129,18 +129,18 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
     } else {
       RichStructureHelper.getRichAtomSet(connected).accept(this);
     }
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
   @Override
   public void visit(final SharedAtom sharedAtom) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     this.addSpeech("shared atom");
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
     this.addSpeech("with");
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
@@ -153,12 +153,12 @@ public abstract class EnSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final Bridge bridge) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     this.addSpeech("fused with");
     RichStructureHelper.getRichAtomSet(bridge.getConnected()).accept(this);
     this.addSpeech("via");
     bridge.getBridges().forEach(c -> c.accept(this));
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 

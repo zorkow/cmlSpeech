@@ -45,7 +45,7 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
   public void visit(final RichIsolatedRing ring) {
     this.addName(ring);
     this.addSpeech("ring");
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeSubstitutions(ring);
@@ -56,7 +56,7 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
   public void visit(final RichFusedRing ring) {
     this.addSpeech("Fused ring system");
     this.addName(ring);
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.addSpeech("with");
@@ -76,7 +76,7 @@ public class EnExpertSpeechVisitor extends EnSpeechVisitor {
   @Override
   public void visit(final RichAliphaticChain chain) {
     this.addName(chain);
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeSubstitutions(chain);

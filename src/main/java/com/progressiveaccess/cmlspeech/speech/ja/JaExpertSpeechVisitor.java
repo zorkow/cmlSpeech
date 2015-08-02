@@ -45,7 +45,7 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
   public void visit(final RichIsolatedRing ring) {
     this.addName(ring);
     this.addSpeech("環"); // ring
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeSubstitutions(ring);
@@ -56,7 +56,7 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
   public void visit(final RichFusedRing ring) {
     this.addSpeech("縮合環系");  // Fused ring system
     this.addName(ring);
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.addSpeech(ring.getSubSystems().size());
@@ -79,7 +79,7 @@ public class JaExpertSpeechVisitor extends JaSpeechVisitor {
   @Override
   public void visit(final RichAliphaticChain chain) {
     this.addName(chain);
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeSubstitutions(chain);

@@ -25,6 +25,7 @@
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
@@ -36,6 +37,8 @@ import com.progressiveaccess.cmlspeech.structure.RichSetType;
 import com.google.common.base.Joiner;
 
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Basic functionality shared by all speech visitors.
@@ -45,10 +48,14 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
-  // TODO
-  protected boolean shortDescription = false;
+  private Map<String, Boolean> flags = new HashMap<String, Boolean>();
 
 
+  public AbstractSpeechVisitor() {
+    this.init();
+  }
+
+  
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
     this.contextPositions = positions;
@@ -95,7 +102,7 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
 
 
   protected void describeSuperSystem(final RichAtom atom) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     for (String context : atom.getContexts()) {
       if (RichStructureHelper.isAtomSet(context)) {
         RichAtomSet set = RichStructureHelper.getRichAtomSet(context);
@@ -108,10 +115,11 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
         }
       }
     }
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
+  @Override
   public String getSpeech() {
     final Joiner joiner = Joiner.on(" ");
     String result = joiner.join(this.retrieveSpeech());
@@ -119,4 +127,39 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
     return result + ".";
   }
 
+
+  /** 
+   * Sets a flag to either true or false.
+   * 
+   * @param flag
+   *          The flag to be set.
+   * @param value
+   *          The binary value fo the flag.
+   */
+  protected final void setFlag(String flag, boolean value) {
+    this.flags.put(flag, value);
+  };
+  
+
+  /** 
+   * Returns the value of a given flag. If the flag does not exist it simply
+   * returns false.
+   * 
+   * @param flag
+   *          The name of the flag.
+   * 
+   * @return The boolean value of the flag.
+   */
+  protected final boolean getFlag(String flag) {
+    Boolean value = this.flags.get(flag);
+    return value == null ? false : value;
+  };
+
+
+  /** 
+   * Any initialisations that need to be done before the visitor is called.
+   * For example, some flags might need to be set.
+   */
+  protected void init() { };
+  
 }

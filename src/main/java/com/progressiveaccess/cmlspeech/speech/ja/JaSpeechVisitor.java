@@ -51,10 +51,6 @@ import java.util.TreeSet;
 
 public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
-  // TODO
-  protected boolean subject = true;
-
-
   @Override
   public void visit(final RichBond bond) {
     this.addSpeech(Language.getBondTable().order(bond));
@@ -72,10 +68,10 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     }
     this.addSpeech(Language.getAtomTable().lookup(atom));
     this.addSpeech(position);
-    if (this.subject) {
+    if (this.getFlag("subject")) {
       this.addSpeech("は、"); // Separator (only after subject).
     }
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeHydrogenBonds(atom);
@@ -84,13 +80,13 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final SpiroAtom spiroAtom) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
     this.addSpeech("スピロ原子"); // spiro atom
     this.addSpeech("に"); // to
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
     this.addSpeech("、"); // Punctuation
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
@@ -103,8 +99,8 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final ConnectingBond bond) {
-    this.shortDescription = true;
-    this.subject = false;
+    this.setFlag("short", true);
+    this.setFlag("subject", false);
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);
@@ -116,21 +112,21 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
     this.addSpeech("、"); // Punctuation
     // TODO (sorge) The past tense here is problematic!
     // this.modSpeech("して"); // ed (modifier)
-    this.shortDescription = false;
-    this.subject = true;
+    this.setFlag("short", false);
+    this.setFlag("subject", true);
   }
 
 
   @Override
   public void visit(final SharedAtom sharedAtom) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
     this.addSpeech("共有原子"); // shared atom
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
     this.remSpeech();
     this.addSpeech("含有"); // with
     this.addSpeech("、"); // Punctuation
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
@@ -143,13 +139,13 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final Bridge bridge) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     RichStructureHelper.getRichAtomSet(bridge.getConnected()).accept(this);
     this.addSpeech("縮合");  // fused ??
     bridge.getBridges().forEach(c -> c.accept(this));
     this.addSpeech("に");  // at or via ??
     this.addSpeech("、"); // Punctuation
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
@@ -198,6 +194,12 @@ public class JaSpeechVisitor extends AbstractSpeechVisitor {
         this.addSpeech("、"); // Punctuation
         return;
     }
+  }
+
+
+  @Override
+  public void init() {
+    this.setFlag("subject", true);
   }
 
 

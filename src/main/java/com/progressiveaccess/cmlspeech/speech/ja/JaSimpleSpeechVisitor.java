@@ -54,7 +54,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
     this.addSpeech("員"); // Elements
     this.addSpeech("環"); // Ring
     this.addSpeech("、"); // Punctuation
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(ring);
@@ -67,7 +67,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
   public void visit(final RichFusedRing ring) {
     this.addSpeech("縮合環系");  // Fused ring system
     this.addSpeech("、"); // Punctuation
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.addSpeech(ring.getSubSystems().size());
@@ -86,7 +86,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
     this.addSpeech("員"); // Elements
     this.addSpeech("部分環"); // Subring
     this.addSpeech("、"); // Punctuation
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(ring);
@@ -102,7 +102,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
     this.addSpeech("の"); // of
     this.addSpeech("直鎖"); // Chain
     this.addSpeech("、"); // Punctuation
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(chain);
@@ -121,7 +121,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichMolecule molecule) {
-    this.shortDescription = true;
+    this.setFlag("short", true);
     Integer count = 0;
     for (String set : molecule.getPath()) {
       ((RichChemObject)
@@ -135,7 +135,7 @@ public class JaSimpleSpeechVisitor extends JaSpeechVisitor {
     this.remSpeech();
     this.addSpeech("で構成された分子");  // Molecule consisting of
     this.addSpeech("、"); // Punctuation
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 

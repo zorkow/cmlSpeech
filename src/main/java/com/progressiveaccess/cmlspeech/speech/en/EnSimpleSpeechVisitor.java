@@ -54,7 +54,7 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
     this.addSpeech("with");
     this.addSpeech(ring.getComponentsPositions().size());
     this.addSpeech("elements");
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(ring);
@@ -69,7 +69,7 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
     this.addSpeech("with");
     this.addSpeech(ring.getSubSystems().size());
     this.addSpeech("subrings");
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeSubstitutions(ring);
@@ -82,7 +82,7 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
     this.addSpeech("with");
     this.addSpeech(ring.getComponentsPositions().size());
     this.addSpeech("elements");
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(ring);
@@ -95,7 +95,7 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
     this.addSpeech("Aliphatic chain");
     this.addSpeech("of length");
     this.addSpeech(chain.getComponentsPositions().size());
-    if (this.shortDescription) {
+    if (this.getFlag("short")) {
       return;
     }
     this.describeReplacements(chain);
@@ -115,14 +115,14 @@ public class EnSimpleSpeechVisitor extends EnSpeechVisitor {
   public void visit(final RichMolecule molecule) {
     this.addSpeech("Molecule");
     this.addSpeech("consisting of");
-    this.shortDescription = true;
+    this.setFlag("short", true);
     for (String set : molecule.getPath()) {
       ((RichChemObject)
        RichStructureHelper.getRichStructure(set)).accept(this);
       this.addSpeech("and");
     }
     this.remSpeech();
-    this.shortDescription = false;
+    this.setFlag("short", false);
   }
 
 
