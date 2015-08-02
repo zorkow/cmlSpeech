@@ -27,11 +27,12 @@
 package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import com.progressiveaccess.cmlspeech.structure.RichAtom;
+import com.progressiveaccess.cmlspeech.structure.RichBond;
 
 import com.google.common.base.Joiner;
 
 import java.util.LinkedList;
-import com.progressiveaccess.cmlspeech.structure.RichAtom;
 
 /**
  * Basic functionality shared by all speech visitors.
@@ -42,6 +43,7 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
   private ComponentsPositions contextPositions = null;
   private LinkedList<String> speech = new LinkedList<String>();
   private AtomTable atomTable = Language.getAtomTable();
+  private BondTable bondTable = Language.getBondTable();
   
   @Override
   public void setContextPositions(final ComponentsPositions positions) {
@@ -95,9 +97,16 @@ public abstract class AbstractSpeechVisitor implements SpeechVisitor {
     return result + ".";
   }
 
+
   @Override
   public void visit(RichAtom atom) {
     this.addSpeech(this.atomTable.lookup(atom.getName()));
+  }
+
+
+  @Override
+  public void visit(RichBond bond) {
+    this.addSpeech(this.bondTable.order(bond));
   }
 
 }

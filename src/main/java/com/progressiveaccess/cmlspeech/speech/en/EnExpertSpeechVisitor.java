@@ -60,7 +60,7 @@ public class EnExpertSpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(bond.getName());
+    super.visit(bond);
     this.addSpeech("bond");
   }
 

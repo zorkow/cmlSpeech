@@ -63,20 +63,11 @@ public class JaSimpleSpeechVisitor extends AbstractSpeechVisitor {
 
   private boolean shortDescription = false;
   private boolean subject = true;
-  private static Map<String, String> bondMap =
-      new HashMap<String, String>();
-
-  static {
-    bondMap.put("single", "単");
-    bondMap.put("double", "二重");
-    bondMap.put("triple", "三重");
-    bondMap.put("quadruple", "四重");
-  }
 
 
   @Override
   public void visit(final RichBond bond) {
-    this.addSpeech(bondMap.get(bond.getName()));
+    super.visit(bond);
     this.addSpeech("結合"); // bond
   }
 
