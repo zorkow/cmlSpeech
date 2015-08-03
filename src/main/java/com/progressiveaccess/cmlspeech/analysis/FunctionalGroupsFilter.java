@@ -62,7 +62,7 @@ public class FunctionalGroupsFilter {
 
   private final Integer minimalOverlap = 1;
 
-  
+
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
       final Map<String, IAtomContainer> groups) {
     this.existingSets = existing.stream()

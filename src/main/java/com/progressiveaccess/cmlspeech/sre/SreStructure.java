@@ -14,15 +14,17 @@
 
 /**
  * @file   SreStructure.java
- * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Apr 26 12:25:01 2015
- * 
+ *
  * @brief  Generates the exploration structure.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
@@ -40,7 +42,7 @@ public class SreStructure {
     this.compute();
   }
 
-  
+
   /**
    * Computes the annotation.
    */
@@ -62,5 +64,5 @@ public class SreStructure {
     // annotations.complete();
     // return annotations;
   }
-  
+
 }

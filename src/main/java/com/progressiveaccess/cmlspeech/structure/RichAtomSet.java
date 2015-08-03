@@ -29,6 +29,7 @@ package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
+import com.progressiveaccess.cmlspeech.cactus.SpiderNames;
 import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
@@ -49,7 +50,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import com.progressiveaccess.cmlspeech.cactus.SpiderNames;
 
 /**
  * Base class for all atom sets with admin information.
@@ -352,11 +352,11 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   }
 
 
-  /** 
+  /**
    * @return The naming structure.
    */
   public SpiderNames getNames() {
     return this.names;
-  };
+  }
 
 }
