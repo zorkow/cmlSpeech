@@ -31,13 +31,13 @@ import com.progressiveaccess.cmlspeech.analysis.MolecularFormula;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.analysis.StructuralAnalysis;
 import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
-import com.progressiveaccess.cmlspeech.cactus.Cactus;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
-import com.progressiveaccess.cmlspeech.cactus.Spider;
-import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
+import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
+import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
 import com.progressiveaccess.cmlspeech.sre.SreStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -57,8 +57,6 @@ import org.xmlcml.cml.element.CMLAtomSet;
 
 import java.io.IOException;
 import java.util.List;
-import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
-import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
 
 /**
  * The basic loop for semantically enriching chemical diagrams.

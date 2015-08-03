@@ -92,8 +92,8 @@ public final class Cli {
     options.addOption("r", "descr", false,
         "Include speech descriptions in CML output (only with option t)");
     options.addOption("r0", "descr0", false,
-        "Include also simple speech descriptions in CML output" +
-        " (only with option t)");
+        "Include also simple speech descriptions in CML output"
+                      + " (only with option t)");
     options.addOption("t", "struct", false,
         "Include exploration structure in CML output");
     options.addOption("nn", "no_nih", false,
