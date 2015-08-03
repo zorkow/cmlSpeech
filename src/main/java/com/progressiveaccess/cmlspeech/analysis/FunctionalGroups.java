@@ -52,10 +52,17 @@ public class FunctionalGroups {
 
   private final IAtomContainer molecule;
 
+  /**
+   * Constructor for functional group computations.
+   *
+   * @param molecule
+   *          The atom container of the molecule to consider.
+   */
   public FunctionalGroups(final IAtomContainer molecule) {
     this.molecule = molecule;
     this.compute();
   }
+
 
   /**
    * Goes through the file of smarts patterns and checks each pattern against
@@ -72,6 +79,7 @@ public class FunctionalGroups {
       }
     }
   }
+
 
   /**
    * Checks a pattern against a molecule and puts them in atom sets.
@@ -107,6 +115,7 @@ public class FunctionalGroups {
     }
   }
 
+
   /**
    * Retrieves matched atoms from the molecule container by position and adds
    * them to the functional group container.
@@ -131,6 +140,7 @@ public class FunctionalGroups {
     }
   }
 
+
   /**
    * Retrieves the necessary bonds for a functional group from the molecule
    * container and adds them to the functional group container.
@@ -150,6 +160,11 @@ public class FunctionalGroups {
     }
   }
 
+
+  /**
+   * Logger output for functional groups computation.
+   */
+  @Deprecated
   public void logGroups() {
     for (final Map.Entry<String, IAtomContainer> entry
            : this.groups.entrySet()) {
@@ -159,7 +174,12 @@ public class FunctionalGroups {
     }
   }
 
+
+  /**
+   * @return The mapping of functional groups.
+   */
   public Map<String, IAtomContainer> getGroups() {
     return this.groups;
   }
+
 }

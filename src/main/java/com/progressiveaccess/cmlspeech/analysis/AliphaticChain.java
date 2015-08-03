@@ -276,8 +276,6 @@ public class AliphaticChain {
    * particular sphere, which usually consists of one start atom, and searches
    * for a pi system.
    *
-   * @param container
-   *          The AtomContainer to be searched
    * @param sphere
    *          A sphere of atoms to start the search with
    * @param path
@@ -285,8 +283,8 @@ public class AliphaticChain {
    * @throws CDKException
    *          Description of the Exception
    */
-  private void breadthFirstSearch(final List<IAtom> sphere, final List<IAtom> path)
-      throws CDKException {
+  private void breadthFirstSearch(final List<IAtom> sphere,
+      final List<IAtom> path) throws CDKException {
     IAtom nextAtom;
     final List<IAtom> newSphere = new ArrayList<IAtom>();
     for (final IAtom atom : sphere) {

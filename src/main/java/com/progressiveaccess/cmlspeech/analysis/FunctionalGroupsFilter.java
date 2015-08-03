@@ -59,10 +59,17 @@ public class FunctionalGroupsFilter {
   // The set that is reduced to distill the interesting functional groups.
   private final SortedSet<RichFunctionalGroup> workingSets =
       new TreeSet<RichFunctionalGroup>(new SizeAndNameComparator());
-
   private final Integer minimalOverlap = 1;
 
 
+  /**
+   * Provides a functional group filter.
+   *
+   * @param existing
+   *          The list of already existing atom sets, i.e., rings and chains.
+   * @param groups
+   *          The mapping of potential functional groups.
+   */
   FunctionalGroupsFilter(final List<RichAtomSet> existing,
       final Map<String, IAtomContainer> groups) {
     this.existingSets = existing.stream()
@@ -71,6 +78,17 @@ public class FunctionalGroupsFilter {
     this.newSets = groups;
   }
 
+
+  /**
+   * Predicate that considers overlap of a functional group with other atoms
+   * sets.
+   *
+   * @param container
+   *          The functional group to consider.
+   *
+   * @return True if the overlap with other sets is at most one atom per set and
+   *      it has at least one atom without overlap.
+   */
   // Heuristics to implement:
   // + largest group subsumes subsets
   // - minimal overlap with others.
@@ -85,7 +103,6 @@ public class FunctionalGroupsFilter {
   //
   // - At least one elements not in another container.
   //
-
   private boolean considerOverlap(final IAtomContainer container) {
     for (final RichAtomSet old : this.existingSets) {
       Integer count = 0;
@@ -106,6 +123,10 @@ public class FunctionalGroupsFilter {
   }
 
 
+  /**
+   * Comparison by size of structures and length of names, prefering groups with
+   * short names.
+   */
   private class SizeAndNameComparator extends DefaultComparator {
 
     private final Comparator<RichStructure<?>> sizeComparator =
@@ -129,6 +150,14 @@ public class FunctionalGroupsFilter {
     }
   }
 
+
+  /**
+   * The actual filter for the map of functional groups. It maintains a list of
+   * potential functional groups ordered by size, as to guarantee that the
+   * larger ones subsume the smaller ones.
+   *
+   * @return The cleaned map.
+   */
   public Map<String, IAtomContainer> filter() {
     for (final Map.Entry<String, IAtomContainer> entry : this.newSets
         .entrySet()) {
