@@ -164,8 +164,6 @@ public class CmlEnricher {
       this.executor.shutdown();
     }
     this.sexecutor.execute();
-    this.sexecutor.addResults();
-    this.sexecutor.shutdown();
     new StructuralFormula();
   }
 
@@ -179,7 +177,8 @@ public class CmlEnricher {
   private void nameAtomSet(final RichAtomSet set) {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
-      this.sexecutor.register(new SpiderCallable(set.getId(), newcontainer));
+      this.sexecutor.register(new SpiderCallable(set.getId(), newcontainer,
+                                                 set.getNames()));
       this.executor.register(new CactusCallable(set.getId(),
           (final String name) -> {
           set.setIupac(name);
@@ -253,6 +252,7 @@ public class CmlEnricher {
   private void appendAtomSets() {
     final List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
     for (final RichAtomSet richSet : richSets) {
+      System.out.println(richSet.getNames());
       final CMLAtomSet set = richSet.getCml(this.doc);
       this.doc.getRootElement().appendChild(set);
     }

@@ -57,15 +57,17 @@ public final class Spider {
    *
    * @param input
    *          String with input structure.
+   * @param names
+   *          The naming structure.
    *
    * @return List of names if any.
    *
    * @throws CactusException
    *          If error in Cactus call occurs.
    */
-  private static SpiderNames getNames(final String input)
+  private static SpiderNames getNames(final String input,
+                                      final SpiderNames names)
       throws CactusException {
-    SpiderNames names = new SpiderNames();
     URL url = null;
     try {
       url = new URL("http://www.chemspider.com/Search.aspx?q=" + input);
@@ -89,12 +91,15 @@ public final class Spider {
    *
    * @param molecule
    *          The molecule to name.
+   * @param names
+   *          The naming structure.
    *
    * @return The name structure.
    */
-  public static SpiderNames getNames(final IAtomContainer molecule) {
+  public static SpiderNames getNames(final IAtomContainer molecule,
+                                     final SpiderNames names) {
     final String inchi = Cactus.translate(molecule);
-    return Spider.getNames(inchi);
+    return Spider.getNames(inchi, names);
   }
 
 
@@ -113,6 +118,7 @@ public final class Spider {
     }
     SpiderName name = new SpiderName(Spider.getContent(nameNode),
                                      "name", "English");
+    System.out.println("Adding: " + name.toString());
     names.add(name);
   }
 

@@ -30,15 +30,15 @@ import com.progressiveaccess.cmlspeech.base.Logger;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 
-import java.util.concurrent.Callable;
 
 /**
  * Callables for Spider Futures.
  */
-public class SpiderCallable implements Callable<SpiderNames> {
+public class SpiderCallable implements Runnable {
 
   private final String id;
   private final IAtomContainer container;
+  private final SpiderNames names;
 
   /**
    * Constructs a thread for calls to Cactus web service.
@@ -47,11 +47,15 @@ public class SpiderCallable implements Callable<SpiderNames> {
    *          Name of the thread.
    * @param container
    *          Atom container for query.
+   * @param names
+   *          The naming structure.
    */
-  public SpiderCallable(final String id, final IAtomContainer container) {
+  public SpiderCallable(final String id, final IAtomContainer container,
+                        final SpiderNames names) {
     super();
     this.id = id;
     this.container = container;
+    this.names = names;
   }
 
 
@@ -64,9 +68,9 @@ public class SpiderCallable implements Callable<SpiderNames> {
 
 
   @Override
-  public SpiderNames call() throws CactusException {
+  public void run() throws CactusException {
     Logger.logging("Executing Spider call for " + this.id + "\n");
-    return Spider.getNames(this.container);
+    Spider.getNames(this.container, this.names);
   }
 
 }

@@ -35,9 +35,8 @@ import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Executes Spider calls and collects their results.
@@ -47,11 +46,11 @@ public class SpiderExecutor {
 
   /** Pool of callables for Spider. */
   private final List<SpiderCallable> pool = new ArrayList<>();
-  /** Registry for futures expecting results from Spider calls. */
-  private final Multimap<SpiderCallable, Future<SpiderNames>> registry =
+  /** Registry for threads expecting results from Spider calls. */
+  private final Multimap<SpiderCallable, Thread> registry =
       HashMultimap.create();
   /** The executor service that runs the callables. */
-  private ExecutorService executor;
+  private ThreadFactory executor;
 
 
   /**
@@ -67,7 +66,7 @@ public class SpiderExecutor {
 
   /** Execute all callables currently in the pool. */
   public void execute() {
-    this.executor = Executors.newFixedThreadPool(this.pool.size());
+    this.executor = Executors.defaultThreadFactory();
     Integer time = null;
     if (Cli.hasOption("time_nih")) {
       try {
@@ -77,9 +76,9 @@ public class SpiderExecutor {
       }
     }
     for (final SpiderCallable callable : this.pool) {
-      final Future<SpiderNames> future = this.executor.submit(callable);
-      this.registry.put(callable, future);
-      System.out.println(callable.getId());
+      final Thread thread = this.executor.newThread(callable);
+      this.registry.put(callable, thread);
+      thread.start();
       if (time != null) {
         try {
           Thread.sleep(time);
@@ -88,30 +87,24 @@ public class SpiderExecutor {
         }
       }
     }
+    this.awaitResults();
   }
 
 
   /**
-   * Adds attributes from returned by all current Spider futures to a document.
+   * Awaits all the threads of the Spider naming service to complete.
    */
-  public void addResults() {
-    System.out.println("Adding results!");
-    for (final Map.Entry<SpiderCallable, Future<SpiderNames>> entry
+  private void awaitResults() {
+    for (final Map.Entry<SpiderCallable, Thread> entry
            : this.registry.entries()) {
-      final Future<SpiderNames> future = entry.getValue();
+      final Thread thread = entry.getValue();
       try {
-        System.out.println(future.get());
+        thread.join();
       } catch (final Throwable e) {
         Logger.error("Spider Error: " + e.getMessage() + "\n");
         continue;
       }
     }
-  }
-
-
-  /** Shut down the Spider executor. */
-  public void shutdown() {
-    this.executor.shutdown();
   }
 
 }

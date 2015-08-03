@@ -49,6 +49,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import com.progressiveaccess.cmlspeech.cactus.SpiderNames;
 
 /**
  * Base class for all atom sets with admin information.
@@ -67,6 +68,8 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   private String iupac = "";
   private String molecularFormula = "";
   private String structuralFormula = "";
+
+  private final SpiderNames names = new SpiderNames();
 
   /**
    * Constructor for rich atom sets.
@@ -347,5 +350,13 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOMSET;
   }
+
+
+  /** 
+   * @return The naming structure.
+   */
+  public SpiderNames getNames() {
+    return this.names;
+  };
 
 }
