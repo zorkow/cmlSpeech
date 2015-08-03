@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   JaBondTable.java
+ * @file   BondTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug  2 12:58:22 2015
@@ -34,14 +34,14 @@ import com.progressiveaccess.cmlspeech.speech.AbstractBondTable;
  * Maps bond identifiers to their proper names.
  */
 
-public final class JaBondTable extends AbstractBondTable {
+public final class BondTable extends AbstractBondTable {
 
   private static final long serialVersionUID = 1L;
 
   /**
    * Japanese bond table.
    */
-  public JaBondTable() {
+  public BondTable() {
     this.put("single", "単");
     this.put("double", "二重");
     this.put("triple", "三重");

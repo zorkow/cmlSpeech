@@ -27,8 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnBondTable;
-import com.progressiveaccess.cmlspeech.speech.ja.JaBondTable;
+import com.progressiveaccess.cmlspeech.sre.SreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,42 +39,17 @@ import java.util.Map;
 
 public final class BondTableFactory {
 
-  private static Map<String, BondTable> bondTables;
-
-  static {
-    bondTables = new HashMap<String, BondTable>();
-    bondTables.put("en", new EnBondTable());
-  }
-
-
+  private static final LanguageFactory<BondTable> table =
+      new LanguageFactory<BondTable>("BondTable");
+  
   /** Dummy constructor. */
   private BondTableFactory() {
     throw new AssertionError("Instantiating utility class...");
   }
+  
 
-
-  /**
-   * Constructs the bond table for the current language.
-   *
-   * @param language
-   *          A language string.
-   *
-   * @return The bond table for the given language.
-   */
-  public static BondTable getBondTable(final String language) {
-    BondTable table = bondTables.get(language);
-    if (table != null) {
-      return table;
-    }
-    switch (language) {
-      case "ja":
-        table = new JaBondTable();
-        break;
-      default:
-        return bondTables.get("en");
-    }
-    bondTables.put(language, table);
-    return table;
+  public static final BondTable getBondTable(String language) {
+    return table.getLanguageVisitor(language);
   }
 
 }

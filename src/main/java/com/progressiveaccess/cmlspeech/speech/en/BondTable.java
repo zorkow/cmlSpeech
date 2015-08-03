@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   EnBondTable.java
+ * @file   BondTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug  2 12:58:22 2015
@@ -36,14 +36,14 @@ import org.openscience.cdk.interfaces.IBond;
  * Maps bond identifiers to their proper names.
  */
 
-public final class EnBondTable extends AbstractBondTable {
+public final class BondTable extends AbstractBondTable {
 
   private static final long serialVersionUID = 1L;
 
   /**
    * English bond table.
    */
-  public EnBondTable() {
+  public BondTable() {
     for (IBond.Order order : IBond.Order.values()) {
       String name = order.toString().toLowerCase();
       this.put(name, name);
