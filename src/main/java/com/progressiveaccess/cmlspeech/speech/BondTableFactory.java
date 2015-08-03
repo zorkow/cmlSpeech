@@ -27,11 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.sre.SreException;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * Factory for generating language specific bond tables.

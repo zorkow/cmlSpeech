@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   EnAtomTable.java
+ * @file   AtomTable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Fri Jun 20 02:00:25 2014
@@ -34,14 +34,14 @@ import com.progressiveaccess.cmlspeech.speech.AbstractAtomTable;
  * Maps atom identifiers to their proper names.
  */
 
-public final class EnAtomTable extends AbstractAtomTable {
+public final class AtomTable extends AbstractAtomTable {
 
   private static final long serialVersionUID = 1L;
 
   /**
    * English atom table.
    */
-  public EnAtomTable() {
+  public AtomTable() {
     this.put("Ac", "Actinium");
     this.put("Al", "Aluminum");
     this.put("Am", "Americium");

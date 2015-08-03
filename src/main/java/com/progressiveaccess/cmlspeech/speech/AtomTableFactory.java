@@ -27,12 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnAtomTable;
-import com.progressiveaccess.cmlspeech.speech.ja.JaAtomTable;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * Factory for generating language specific atom tables.
@@ -40,42 +34,17 @@ import java.util.Map;
 
 public final class AtomTableFactory {
 
-  private static Map<String, AtomTable> atomTables;
-
-  static {
-    atomTables = new HashMap<String, AtomTable>();
-    atomTables.put("en", new EnAtomTable());
-  }
-
-
+  private static final LanguageFactory<AtomTable> table =
+      new LanguageFactory<AtomTable>("AtomTable");
+  
   /** Dummy constructor. */
   private AtomTableFactory() {
     throw new AssertionError("Instantiating utility class...");
   }
+  
 
-
-  /**
-   * Constructs the atom table for the current language.
-   *
-   * @param language
-   *          A language string.
-   *
-   * @return The atom table for the given language.
-   */
-  public static AtomTable getAtomTable(final String language) {
-    AtomTable table = atomTables.get(language);
-    if (table != null) {
-      return table;
-    }
-    switch (language) {
-      case "ja":
-        table = new JaAtomTable();
-        break;
-      default:
-        return atomTables.get("en");
-    }
-    atomTables.put(language, table);
-    return table;
+  public static final AtomTable getAtomTable(String language) {
+    return table.getLanguageVisitor(language);
   }
 
 }

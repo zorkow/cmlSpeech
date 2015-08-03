@@ -29,12 +29,17 @@ package com.progressiveaccess.cmlspeech.speech;
 
 import com.progressiveaccess.cmlspeech.sre.SreException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 
 /**
- * Factory for generating single instances of language specific tables and visitors.
+ * Factory for generating single instances of language specific tables and
+ * visitors.
+ *
+ * @param <K>
+ *          Generic parameter for singleton objects in the l10n folders.
  */
 
 public class LanguageFactory<K> {
@@ -43,14 +48,44 @@ public class LanguageFactory<K> {
   private static final String PKG = "com.progressiveaccess.cmlspeech.speech";
   private String className;
 
-  /** Dummy constructor. */
-  LanguageFactory(String className) {
+  /**
+   * Constructs a factory for language translation objects.
+   *
+   * @param className
+   *          The class name of the objects to create.
+   */
+  LanguageFactory(final String className) {
     this.className = className;
   }
 
 
+  /**
+   * Retrieves a translation object for the given language.
+   *
+   * @param language
+   *          The current language.
+   *
+   * @return A translation object.
+   *
+   * @throws ClassNotFoundException
+   *          If the language is not implemented.
+   * @throws SecurityException
+   *          From class constructor call.
+   * @throws NoSuchMethodException
+   *          From class constructor call.
+   * @throws InvocationTargetException
+   *          From class constructor call.
+   * @throws IllegalArgumentException
+   *          From class constructor call.
+   * @throws IllegalAccessException
+   *          From class constructor call.
+   * @throws InstantiationException
+   *          From class constructor call.
+   */
   @SuppressWarnings("unchecked")
-  private K retrieve(final String language) throws Exception {
+  private K retrieve(final String language) throws ClassNotFoundException,
+      InstantiationException, IllegalAccessException, IllegalArgumentException,
+      InvocationTargetException, NoSuchMethodException, SecurityException {
     K table = tables.get(language);
     if (table != null) {
       return table;
@@ -62,7 +97,7 @@ public class LanguageFactory<K> {
     return table;
   }
 
-  
+
   /**
    * Constructs the bond table for the current language.
    *
@@ -77,7 +112,7 @@ public class LanguageFactory<K> {
     } catch (Exception e) {
       System.out.println("Language class does not exist!");
       try {
-        return this.retrieve("en");      
+        return this.retrieve("en");
       } catch (Exception f) {
         throw new SreException("Default language English does not exist!");
       }
