@@ -101,7 +101,7 @@ public final class Cactus {
    * @throws CactusException
    *          If error in Cactus call occurs.
    */
-  private static String translate(final IAtomContainer molecule)
+  public static String translate(final IAtomContainer molecule)
       throws CactusException {
     try {
       final InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
@@ -166,4 +166,5 @@ public final class Cactus {
     }
     return alpha.get(0);
   }
+
 }

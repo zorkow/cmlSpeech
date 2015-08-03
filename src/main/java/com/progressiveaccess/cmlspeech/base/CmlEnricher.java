@@ -34,8 +34,10 @@ import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
-import com.progressiveaccess.cmlspeech.sre.SreNamespace;
+import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
+import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
+import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
 import com.progressiveaccess.cmlspeech.sre.SreStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -66,6 +68,7 @@ public class CmlEnricher {
   private Document doc;
   private IAtomContainer molecule;
   private final CactusExecutor executor = new CactusExecutor();
+  private final SpiderExecutor sexecutor = new SpiderExecutor();
 
 
   /**
@@ -157,9 +160,10 @@ public class CmlEnricher {
     MolecularFormula.set(RichStructureHelper.getAtomSets());
     if (!Cli.hasOption("no_nih")) {
       this.executor.execute();
-      this.executor.addResults(this.doc);
+      this.executor.addResults();
       this.executor.shutdown();
     }
+    this.sexecutor.execute();
     new StructuralFormula();
   }
 
@@ -173,6 +177,8 @@ public class CmlEnricher {
   private void nameAtomSet(final RichAtomSet set) {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
+      this.sexecutor.register(new SpiderCallable(set.getId(), newcontainer,
+                                                 set.getNames()));
       this.executor.register(new CactusCallable(set.getId(),
           (final String name) -> {
           set.setIupac(name);
@@ -246,6 +252,7 @@ public class CmlEnricher {
   private void appendAtomSets() {
     final List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
     for (final RichAtomSet richSet : richSets) {
+      System.out.println(richSet.getNames());
       final CMLAtomSet set = richSet.getCml(this.doc);
       this.doc.getRootElement().appendChild(set);
     }
