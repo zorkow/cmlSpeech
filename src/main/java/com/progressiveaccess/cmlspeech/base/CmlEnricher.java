@@ -160,10 +160,8 @@ public class CmlEnricher {
     MolecularFormula.set(RichStructureHelper.getAtomSets());
     if (!Cli.hasOption("no_nih")) {
       this.executor.execute();
-      this.executor.addResults();
-      this.executor.shutdown();
+      this.sexecutor.execute();
     }
-    this.sexecutor.execute();
     new StructuralFormula();
   }
 
@@ -252,7 +250,6 @@ public class CmlEnricher {
   private void appendAtomSets() {
     final List<RichAtomSet> richSets = RichStructureHelper.getAtomSets();
     for (final RichAtomSet richSet : richSets) {
-      System.out.println(richSet.getNames());
       final CMLAtomSet set = richSet.getCml(this.doc);
       this.doc.getRootElement().appendChild(set);
     }

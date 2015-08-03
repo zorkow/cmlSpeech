@@ -118,7 +118,6 @@ public final class Spider {
     }
     SpiderName name = new SpiderName(Spider.getContent(nameNode),
                                      "name", "English");
-    System.out.println("Adding: " + name.toString());
     names.add(name);
   }
 
