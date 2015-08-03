@@ -29,7 +29,6 @@ package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.base.Cli;
-import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
@@ -52,8 +51,6 @@ import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
 import com.progressiveaccess.cmlspeech.structure.RichMolecule;
 import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 import com.progressiveaccess.cmlspeech.structure.RichSuperSet;
-
-import com.google.common.collect.TreeMultimap;
 
 import java.util.ArrayList;
 import java.util.Comparator;

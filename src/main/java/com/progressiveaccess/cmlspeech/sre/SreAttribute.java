@@ -28,41 +28,38 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 import nu.xom.Attribute;
-import nu.xom.Element;
+
 
 /**
  * Attribute structure.
  */
 public class SreAttribute extends Attribute {
 
+  /**
+   * Constructs an SRE attribute.
+   *
+   * @param localName
+   *          The local name of the attribute.
+   * @param value
+   *          The attribute value.
+   */
   public SreAttribute(final String localName, final String value) {
     super(SreNamespace.getInstance().getPrefix() + ":" + localName, SreNamespace
         .getInstance().getUri(), value);
   }
 
+
+  /**
+   * Constructs a new SRE attribute from a given one.
+   *
+   * @param attr
+   *          An SRE attribute.
+   * @param value
+   *          The new attribute value.
+   */
   public SreAttribute(final SreNamespace.Attribute attr, final String value) {
     super(SreNamespace.getInstance().getPrefix() + ":" + attr.getAttribute(),
         SreNamespace.getInstance().getUri(), value);
-  }
-
-  public void addValue(final String value) {
-    if (this.getValue() == "") {
-      this.setValue(value);
-    } else {
-      this.setValue(this.getValue() + " " + value);
-    }
-  }
-
-  public void addValue(final Element node) {
-    final String localName = this.getLocalName();
-    final String namespace = this.getNamespaceURI();
-    final SreAttribute oldAttr = (SreAttribute) node.getAttribute(localName,
-        namespace);
-    if (oldAttr == null) {
-      node.addAttribute(this);
-    } else {
-      oldAttr.setValue(oldAttr.getValue() + " " + this.getValue());
-    }
   }
 
 }

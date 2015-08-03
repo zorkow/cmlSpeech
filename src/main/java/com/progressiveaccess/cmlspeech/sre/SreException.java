@@ -35,12 +35,14 @@ public class SreException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Exception for sre element and attribute creation.
+   *
+   * @param message
+   *          The error message.
+   */
   public SreException(final String message) {
     super(message);
-  }
-
-  public SreException(final String message, final Throwable throwable) {
-    super(message, throwable);
   }
 
 }

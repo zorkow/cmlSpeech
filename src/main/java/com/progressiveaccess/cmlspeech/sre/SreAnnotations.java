@@ -43,6 +43,10 @@ public class SreAnnotations extends SreElement {
   private final TreeMultimap<String, SreElement> annotations;
 
 
+  /**
+   * Constructor of annotations. Elements are held in a multimap until they are
+   * combined.
+   */
   SreAnnotations() {
     super(SreNamespace.Tag.ANNOTATIONS);
     this.annotations =
@@ -62,11 +66,23 @@ public class SreAnnotations extends SreElement {
   }
 
 
+  /**
+   * Register a new annotation element by its id.
+   *
+   * @param id
+   *          The id of the new element.
+   * @param element
+   *          The actual element.
+   */
   public void registerAnnotation(final String id, final SreElement element) {
     this.annotations.put(id, element);
   }
 
 
+  /**
+   * Completes the annotation element by combining the single elements held in
+   * the multimap.
+   */
   public void complete() {
     for (final String key : this.annotations.keySet()) {
       for (final SreElement value : this.annotations.get(key)) {
