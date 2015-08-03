@@ -28,15 +28,12 @@
 // intention is to get the actual chains out, not just a number for the longest
 // chain.
 //
-// TODO (sorge): This file is badly in need of refactoring!
-//
 
 package com.progressiveaccess.cmlspeech.analysis;
 
 import com.google.common.collect.Lists;
 
 import org.openscience.cdk.CDKConstants;
-import org.openscience.cdk.annotations.TestMethod;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.exception.NoSuchAtomException;
 import org.openscience.cdk.graph.SpanningTree;
@@ -45,12 +42,6 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IRingSet;
-import org.openscience.cdk.qsar.AbstractMolecularDescriptor;
-import org.openscience.cdk.qsar.DescriptorSpecification;
-import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.qsar.IMolecularDescriptor;
-import org.openscience.cdk.qsar.result.IDescriptorResult;
-import org.openscience.cdk.qsar.result.IntegerResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +50,8 @@ import java.util.List;
  * Class that returns a list of aliphatic chains in a given container.
  *
  */
-// TODO (sorge): Refactor this to return the chains rather than a descriptor.
-public class AliphaticChain extends AbstractMolecularDescriptor implements
-    IMolecularDescriptor {
+public class AliphaticChain {
 
-  private boolean checkRingSystem = true;
-  private static final String[] NAMES = {"allLAC"};
   private static final Integer FLOYD_MAX = 999999999;
 
   // Containers of chains.
@@ -88,90 +75,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
   }
 
   /**
-   * Returns a <code>Map</code> which specifies which descriptor is implemented
-   * by this class.
-   *
-   * <p>
-   * These fields are used in the map:
-   * <ul>
-   * <li>Specification-Reference: refers to an entry in a unique dictionary
-   * <li>Implementation-Title: anything
-   * <li>Implementation-Identifier: a unique identifier for this version of this
-   * class
-   * <li>Implementation-Vendor: CDK, JOELib, or anything else
-   * </ul>
-   * </p>
-   *
-   * @return An object containing the descriptor specification
-   */
-  @Override
-  @TestMethod("testGetSpecification")
-  public DescriptorSpecification getSpecification() {
-    return new DescriptorSpecification(
-        "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/"
-        + "#longestAliphaticChain",
-        this.getClass().getName(), "The Chemistry Development Kit");
-  }
-
-  /**
-   * Sets the parameters attribute of the LongestAliphaticChainDescriptor
-   * object.
-   *
-   * <p>
-   * This descriptor takes one parameter, which should be Boolean to indicate
-   * whether aromaticity has been checked (TRUE) or not (FALSE).
-   * </p>
-   *
-   * @param params
-   *          The new parameters value
-   * @exception CDKException
-   *              if more than one parameter or a non-Boolean parameter is
-   *              specified
-   * @see #getParameters
-   */
-  @Override
-  @TestMethod("testSetParameters_arrayObject")
-  public void setParameters(final Object[] params) throws CDKException {
-    if (params.length > 1) {
-      throw new CDKException(
-          "AliphaticChainDescriptor only expects one parameter");
-    }
-    if (!(params[0] instanceof Boolean)) {
-      throw new CDKException("Both parameters must be of type Boolean");
-    }
-    // ok, all should be fine
-    this.checkRingSystem = (Boolean) params[0];
-  }
-
-  /**
-   * Gets the parameters attribute of the AliphaticChainDescriptor object.
-   *
-   * @return The parameters value
-   * @see #setParameters
-   */
-  @Override
-  @TestMethod("testGetParameters")
-  public Object[] getParameters() {
-    // return the parameters as used for the descriptor calculation
-    final Object[] params = new Object[1];
-    params[0] = this.checkRingSystem;
-    return params;
-  }
-
-  @Override
-  @TestMethod(value = "testNamesConsistency")
-  public String[] getDescriptorNames() {
-    return NAMES;
-  }
-
-  private DescriptorValue getDummyDescriptorValue(final Exception exception) {
-    return new DescriptorValue(this.getSpecification(),
-        this.getParameterNames(),
-        this.getParameters(), new IntegerResult((int) Double.NaN),
-        this.getDescriptorNames(), exception);
-  }
-
-  /**
    * Calculate the count of atoms of the longest aliphatic chain in the supplied
    * {@link IAtomContainer}.
    *
@@ -187,22 +90,18 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
    *         AtomContainer
    * @see #setParameters
    */
-  @Override
-  @TestMethod("testCalculate_IAtomContainer")
-  public DescriptorValue calculate(final IAtomContainer atomContainer) {
+  public void calculate(final IAtomContainer atomContainer) {
 
     final IAtomContainer container = atomContainer;
     IRingSet rs;
-    if (this.checkRingSystem) {
-      try {
-        rs = new SpanningTree(container).getBasicRings();
-      } catch (final NoSuchAtomException e) {
-        return this.getDummyDescriptorValue(e);
-      }
-      for (int i = 0; i < container.getAtomCount(); i++) {
-        if (rs.contains(container.getAtom(i))) {
-          container.getAtom(i).setFlag(CDKConstants.ISINRING, true);
-        }
+    try {
+      rs = new SpanningTree(container).getBasicRings();
+    } catch (final NoSuchAtomException e) {
+      return;
+    }
+    for (int i = 0; i < container.getAtomCount(); i++) {
+      if (rs.contains(container.getAtom(i))) {
+        container.getAtom(i).setFlag(CDKConstants.ISINRING, true);
       }
     }
 
@@ -232,7 +131,7 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         try {
           this.breadthFirstSearch(container, startSphere, path);
         } catch (final CDKException e) {
-          return this.getDummyDescriptorValue(e);
+          return;
         }
         final IAtomContainer aliphaticChain = this.createAtomContainerFromPath(
             container,
@@ -259,11 +158,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
         }
       }
     }
-
-    return new DescriptorValue(this.getSpecification(),
-        this.getParameterNames(),
-        this.getParameters(), new IntegerResult(longestChainAtomsCount),
-        this.getDescriptorNames());
   }
 
   private List<IAtom> longestPath(final Integer[][] pathMatrix,
@@ -314,26 +208,6 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
       }
     }
     return distMatrix;
-  }
-
-  /**
-   * Returns the specific type of the DescriptorResult object.
-   * <p/>
-   * The return value from this method really indicates what type of result will
-   * be obtained from the {@link org.openscience.cdk.qsar.DescriptorValue}
-   * object. Note that the same result can be achieved by interrogating the
-   * {@link org.openscience.cdk.qsar.DescriptorValue} object; this method allows
-   * you to do the same thing, without actually calculating the descriptor.
-   *
-   * @return an object that implements the
-   *         {@link org.openscience.cdk.qsar.result.IDescriptorResult} interface
-   *         indicating the actual type of values returned by the descriptor in
-   *         the {@link org.openscience.cdk.qsar.DescriptorValue} object
-   */
-  @Override
-  @TestMethod("testGetDescriptorResultType")
-  public IDescriptorResult getDescriptorResultType() {
-    return new IntegerResult(1);
   }
 
   private void printAtomMatrix(final IAtom[][] matrix) {
@@ -464,29 +338,4 @@ public class AliphaticChain extends AbstractMolecularDescriptor implements
     }
   }
 
-  /**
-   * Gets the parameterNames attribute of the AliphaticChainDescriptor object.
-   *
-   * @return The parameterNames value
-   */
-  @Override
-  @TestMethod("testGetParameterNames")
-  public String[] getParameterNames() {
-    final String[] params = new String[1];
-    params[0] = "checkRingSystem";
-    return params;
-  }
-
-  /**
-   * Gets the parameterType attribute of the AliphaticChainDescriptor object.
-   *
-   * @param name
-   *          Description of the Parameter
-   * @return An Object of class equal to that of the parameter being requested
-   */
-  @Override
-  @TestMethod("testGetParameterType_String")
-  public Object getParameterType(final String name) {
-    return true;
-  }
 }
