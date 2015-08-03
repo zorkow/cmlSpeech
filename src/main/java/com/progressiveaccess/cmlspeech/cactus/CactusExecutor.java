@@ -88,6 +88,8 @@ public class CactusExecutor {
         }
       }
     }
+    this.addResults();
+    this.executor.shutdown();
   }
 
 
@@ -95,7 +97,7 @@ public class CactusExecutor {
    * Adds attributes from returned by all current Cactus futures to CML elements
    * by calling the appropriate consumers.
    */
-  public void addResults() {
+  private void addResults() {
     for (final Map.Entry<CactusCallable, Future<String>> entry : this.registry
         .entries()) {
       final Consumer<String> consumer = entry.getKey().getSetter();
@@ -107,12 +109,6 @@ public class CactusExecutor {
         continue;
       }
     }
-  }
-
-
-  /** Shut down the Cactus executor. */
-  public void shutdown() {
-    this.executor.shutdown();
   }
 
 }
