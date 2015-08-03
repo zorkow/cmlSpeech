@@ -243,6 +243,9 @@ public final class IsoTable {
    * @return The Iso code of the language or en.
    */
   public static String lookup(final String language) {
+    if (language == null) {
+      return "en";
+    }
     if (ISO_TABLE.containsKey(language)) {
       return ISO_TABLE.get(language.toLowerCase());
     }

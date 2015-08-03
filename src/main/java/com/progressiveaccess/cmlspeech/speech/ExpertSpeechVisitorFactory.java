@@ -14,8 +14,8 @@
 
 /**
  * @file ExpertSpeechVisitorFactory.java
- * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
- *         Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date Thu Jul 30 05:33:44 2015
  *
  * @brief Factory for generating expert speech visitors.
@@ -34,9 +34,9 @@ package com.progressiveaccess.cmlspeech.speech;
 
 public final class ExpertSpeechVisitorFactory {
 
-  private static final LanguageFactory<SpeechVisitor> table =
+  private static final LanguageFactory<SpeechVisitor> TABLE =
       new LanguageFactory<SpeechVisitor>("ExpertSpeechVisitor");
-  
+
   /** Dummy constructor. */
   private ExpertSpeechVisitorFactory() {
     throw new AssertionError("Instantiating utility class...");
@@ -52,7 +52,7 @@ public final class ExpertSpeechVisitorFactory {
    * @return The expert speech visitor for the given language.
    */
   public static SpeechVisitor getSpeechVisitor(final String language) {
-    return table.getLanguageVisitor(language);
+    return TABLE.getLanguageVisitor(language);
   }
 
 }

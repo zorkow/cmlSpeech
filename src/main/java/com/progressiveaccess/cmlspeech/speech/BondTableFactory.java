@@ -14,8 +14,8 @@
 
 /**
  * @file BondTableFactory.java
- * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
- *         Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date Sun Aug 2 12:58:22 2015
  *
  * @brief Factory for generating bond tables.
@@ -34,17 +34,25 @@ package com.progressiveaccess.cmlspeech.speech;
 
 public final class BondTableFactory {
 
-  private static final LanguageFactory<BondTable> table =
+  private static final LanguageFactory<BondTable> TABLE =
       new LanguageFactory<BondTable>("BondTable");
-  
+
   /** Dummy constructor. */
   private BondTableFactory() {
     throw new AssertionError("Instantiating utility class...");
   }
-  
 
-  public static final BondTable getBondTable(String language) {
-    return table.getLanguageVisitor(language);
+
+  /**
+   * Retrieve bond table for language. Default English.
+   *
+   * @param language
+   *          The current language.
+   *
+   * @return The bond table.
+   */
+  public static BondTable getBondTable(final String language) {
+    return TABLE.getLanguageVisitor(language);
   }
 
 }

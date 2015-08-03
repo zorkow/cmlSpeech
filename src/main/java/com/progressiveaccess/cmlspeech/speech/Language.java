@@ -88,7 +88,6 @@ public final class Language {
    */
   public static void reset(final String language) {
     currentLanguage = IsoTable.lookup(language);
-    System.out.println(currentLanguage);
     atomTable = AtomTableFactory.getAtomTable(currentLanguage);
     bondTable = BondTableFactory.getBondTable(currentLanguage);
     simpleSpeechVisitor =

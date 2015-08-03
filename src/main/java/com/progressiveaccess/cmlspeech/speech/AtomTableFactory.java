@@ -14,8 +14,8 @@
 
 /**
  * @file AtomTableFactory.java
- * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
- *         Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date Thu Jul 30 05:33:44 2015
  *
  * @brief Factory for generating atom tables.
@@ -34,17 +34,25 @@ package com.progressiveaccess.cmlspeech.speech;
 
 public final class AtomTableFactory {
 
-  private static final LanguageFactory<AtomTable> table =
+  private static final LanguageFactory<AtomTable> TABLE =
       new LanguageFactory<AtomTable>("AtomTable");
-  
+
   /** Dummy constructor. */
   private AtomTableFactory() {
     throw new AssertionError("Instantiating utility class...");
   }
-  
 
-  public static final AtomTable getAtomTable(String language) {
-    return table.getLanguageVisitor(language);
+
+  /**
+   * Retrieve atom table for language. Default English.
+   *
+   * @param language
+   *          The current language.
+   *
+   * @return The atom table.
+   */
+  public static AtomTable getAtomTable(final String language) {
+    return TABLE.getLanguageVisitor(language);
   }
 
 }

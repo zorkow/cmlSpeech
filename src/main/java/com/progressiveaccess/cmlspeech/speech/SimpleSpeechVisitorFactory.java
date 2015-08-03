@@ -34,9 +34,9 @@ package com.progressiveaccess.cmlspeech.speech;
 
 public final class SimpleSpeechVisitorFactory {
 
-  private static final LanguageFactory<SpeechVisitor> table =
+  private static final LanguageFactory<SpeechVisitor> TABLE =
       new LanguageFactory<SpeechVisitor>("SimpleSpeechVisitor");
-  
+
   /** Dummy constructor. */
   private SimpleSpeechVisitorFactory() {
     throw new AssertionError("Instantiating utility class...");
@@ -52,7 +52,7 @@ public final class SimpleSpeechVisitorFactory {
    * @return The simple speech visitor for the given language.
    */
   public static SpeechVisitor getSpeechVisitor(final String language) {
-    return table.getLanguageVisitor(language);
+    return TABLE.getLanguageVisitor(language);
   }
 
 }
