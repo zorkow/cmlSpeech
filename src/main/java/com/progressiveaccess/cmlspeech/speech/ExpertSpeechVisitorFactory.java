@@ -18,7 +18,7 @@
  *         Sorge</a>
  * @date Thu Jul 30 05:33:44 2015
  *
- * @brief Factory for generating atom visitors.
+ * @brief Factory for generating expert speech visitors.
  *
  *
  */
@@ -27,27 +27,16 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnExpertSpeechVisitor;
-import com.progressiveaccess.cmlspeech.speech.ja.JaExpertSpeechVisitor;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
- * Factory for generating language specific atom visitors.
+ * Factory for generating language specific expert speech visitors.
  */
 
 public final class ExpertSpeechVisitorFactory {
 
-  private static Map<String, SpeechVisitor> visitors;
-
-  static {
-    visitors = new HashMap<String, SpeechVisitor>();
-    visitors.put("en", new EnExpertSpeechVisitor());
-  }
-
-
+  private static final LanguageFactory<SpeechVisitor> table =
+      new LanguageFactory<SpeechVisitor>("ExpertSpeechVisitor");
+  
   /** Dummy constructor. */
   private ExpertSpeechVisitorFactory() {
     throw new AssertionError("Instantiating utility class...");
@@ -63,19 +52,7 @@ public final class ExpertSpeechVisitorFactory {
    * @return The expert speech visitor for the given language.
    */
   public static SpeechVisitor getSpeechVisitor(final String language) {
-    SpeechVisitor visitor = visitors.get(language);
-    if (visitor != null) {
-      return visitor;
-    }
-    switch (language) {
-      case "ja":
-        visitor = new JaExpertSpeechVisitor();
-        break;
-      default:
-        return visitors.get("en");
-    }
-    visitors.put(language, visitor);
-    return visitor;
+    return table.getLanguageVisitor(language);
   }
 
 }

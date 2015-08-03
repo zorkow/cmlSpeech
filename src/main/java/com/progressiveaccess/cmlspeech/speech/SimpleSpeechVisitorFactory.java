@@ -18,7 +18,7 @@
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Thu Jul 30 05:33:44 2015
  *
- * @brief  Factory for generating atom tables.
+ * @brief  Factory for generating simple speech visitors.
  *
  *
  */
@@ -27,27 +27,16 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.speech.en.EnSimpleSpeechVisitor;
-import com.progressiveaccess.cmlspeech.speech.ja.JaSimpleSpeechVisitor;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
- * Factory for generating language specific atom tables.
+ * Factory for generating language specific simple speech visitors.
  */
 
 public final class SimpleSpeechVisitorFactory {
 
-  private static Map<String, SpeechVisitor> visitors;
-
-  static {
-    visitors = new HashMap<String, SpeechVisitor>();
-    visitors.put("en", new EnSimpleSpeechVisitor());
-  }
-
-
+  private static final LanguageFactory<SpeechVisitor> table =
+      new LanguageFactory<SpeechVisitor>("SimpleSpeechVisitor");
+  
   /** Dummy constructor. */
   private SimpleSpeechVisitorFactory() {
     throw new AssertionError("Instantiating utility class...");
@@ -63,19 +52,7 @@ public final class SimpleSpeechVisitorFactory {
    * @return The simple speech visitor for the given language.
    */
   public static SpeechVisitor getSpeechVisitor(final String language) {
-    SpeechVisitor visitor = visitors.get(language);
-    if (visitor != null) {
-      return visitor;
-    }
-    switch (language) {
-      case "ja":
-        visitor = new JaSimpleSpeechVisitor();
-        break;
-      default:
-        return visitors.get("en");
-    }
-    visitors.put(language, visitor);
-    return visitor;
+    return table.getLanguageVisitor(language);
   }
 
 }

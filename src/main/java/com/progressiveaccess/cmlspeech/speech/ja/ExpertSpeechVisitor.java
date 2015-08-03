@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   JaExpertSpeechVisitor.java
+ * @file   ExpertSpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Tue Jun 30 14:46:54 2015
@@ -41,7 +41,7 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
  */
 
 @SuppressWarnings("serial")
-public class JaExpertSpeechVisitor extends JaSpeechVisitor {
+public class ExpertSpeechVisitor extends JaSpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
