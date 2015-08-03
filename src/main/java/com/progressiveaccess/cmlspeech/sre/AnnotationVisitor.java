@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file SreOutput.java
+ * @file AnnotationVisitor.java
  * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
  *         Sorge</a>
  * @date Thu Jun 19 16:34:40 2014
  *
- * @brief Class to handle SRE annotations.
+ * @brief Visitor to construct the analysis structure.
  *
  *
  */

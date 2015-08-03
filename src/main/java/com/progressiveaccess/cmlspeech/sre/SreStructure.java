@@ -59,10 +59,10 @@ public class SreStructure {
   /**
    * @return The annotation.
    */
-  public SreElement getAnnotations() {
-    return visitor.getAnnotations();
-    // annotations.complete();
-    // return annotations;
+  public SreAnnotations getAnnotations() {
+    SreAnnotations annotations = visitor.getAnnotations();
+    annotations.complete();
+    return annotations;
   }
 
 }

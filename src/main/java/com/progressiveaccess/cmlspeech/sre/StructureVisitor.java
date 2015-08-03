@@ -69,8 +69,7 @@ import java.util.stream.Collectors;
 
 public class StructureVisitor implements XmlVisitor {
 
-  private final TreeMultimap<String, SreElement> annotations =
-      TreeMultimap.create(new CmlNameComparator(), new SreComparator());
+  private final SreAnnotations annotations = new SreAnnotations();
   private SreElement element = null;
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
@@ -97,14 +96,8 @@ public class StructureVisitor implements XmlVisitor {
   /**
    * @return The annotation the visitor computes.
    */
-  public SreElement getAnnotations() {
-    final SreElement annotation = new SreElement(SreNamespace.Tag.ANNOTATIONS);
-    for (final String key : this.annotations.keySet()) {
-      for (final SreElement value : this.annotations.get(key)) {
-        annotation.appendChild(value);
-      }
-    }
-    return annotation;
+  public SreAnnotations getAnnotations() {
+    return this.annotations;
   }
 
 
@@ -293,7 +286,7 @@ public class StructureVisitor implements XmlVisitor {
   private void addStructure(final RichChemObject structure) {
     final String id = structure.getId();
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
-    this.annotations.put(id, this.element);
+    this.annotations.registerAnnotation(id, this.element);
     final SreElement structureElement = new SreElement(structure.tag(), id);
     this.element.appendChild(structureElement);
     structure.accept(this.typeVisitor);
