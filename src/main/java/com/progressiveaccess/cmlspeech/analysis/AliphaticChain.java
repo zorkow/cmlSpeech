@@ -53,46 +53,31 @@ import java.util.List;
 public class AliphaticChain {
 
   private static final Integer FLOYD_MAX = 999999999;
-
-  // Containers of chains.
-  private final List<IAtomContainer> chain = new ArrayList<>();
-  // Minimum length of aliphatic chain to extract.
+  private final List<IAtomContainer> chains = new ArrayList<>();
   private Integer minLength = 2;
+  private IAtomContainer molecule;
 
   /**
    * Constructor for the AliphaticChainDescriptor object.
+   *
+   * @param molecule
+   *          The atom container of the molecule to consider.
+   * @param length
+   *          Minimum length of chains to consider.
    */
-  public AliphaticChain() {
+  public AliphaticChain(final IAtomContainer molecule, final Integer length) {
+    this.molecule = molecule;
+    this.minLength = length;
+    this.calculate();
   }
 
-  public AliphaticChain(final Integer minLength) {
-    this.minLength = minLength;
-  }
-
-  // The longest chain container.
-  public List<IAtomContainer> extract() {
-    return this.chain;
-  }
 
   /**
-   * Calculate the count of atoms of the longest aliphatic chain in the supplied
-   * {@link IAtomContainer}.
-   *
-   * <p>
-   * The method require one parameter: if checkRingSyste is true the
-   * CDKConstant.ISINRING will be set
-   * </p>
-   *
-   * @param atomContainer
-   *          The {@link IAtomContainer} for which this descriptor is to be
-   *          calculated
-   * @return the number of atoms in the longest aliphatic chain of this
-   *         AtomContainer
-   * @see #setParameters
+   * Calculate the aliphatic chains in the given atom container.
    */
-  public void calculate(final IAtomContainer atomContainer) {
+  private void calculate() {
 
-    final IAtomContainer container = atomContainer;
+    final IAtomContainer container = this.molecule;
     IRingSet rs;
     try {
       rs = new SpanningTree(container).getBasicRings();
@@ -103,63 +88,64 @@ public class AliphaticChain {
       if (rs.contains(container.getAtom(i))) {
         container.getAtom(i).setFlag(CDKConstants.ISINRING, true);
       }
+      container.getAtom(i).setFlag(CDKConstants.VISITED, false);
     }
 
-    int longestChainAtomsCount = 0;
-    int tmpLongestChainAtomCount;
     List<IAtom> startSphere;
     List<IAtom> path;
 
     for (int i = 0; i < container.getAtomCount(); i++) {
-      container.getAtom(i).setFlag(CDKConstants.VISITED, false);
-    }
-
-    for (int i = 0; i < container.getAtomCount(); i++) {
       final IAtom atomi = container.getAtom(i);
-      if (atomi.getSymbol().equals("H")) {
+      if (atomi.getSymbol().equals("H")
+          || atomi.getFlag(CDKConstants.ISAROMATIC)
+          || atomi.getFlag(CDKConstants.ISINRING)
+          || !atomi.getSymbol().equals("C")
+          || atomi.getFlag(CDKConstants.VISITED)) {
         continue;
       }
 
-      if (!atomi.getFlag(CDKConstants.ISAROMATIC)
-          && !atomi.getFlag(CDKConstants.ISINRING)
-          && atomi.getSymbol().equals("C")
-          && !atomi.getFlag(CDKConstants.VISITED)) {
-
-        startSphere = new ArrayList<IAtom>();
-        path = new ArrayList<IAtom>();
-        startSphere.add(atomi);
-        try {
-          this.breadthFirstSearch(container, startSphere, path);
-        } catch (final CDKException e) {
-          return;
-        }
-        final IAtomContainer aliphaticChain = this.createAtomContainerFromPath(
-            container,
-            path);
-        if (aliphaticChain.getAtomCount() >= this.minLength) {
-          final double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
-          final Integer[][] pathMatrix =
-              new Integer[conMat.length][conMat.length];
-          final int[][] apsp = this.computeFloydApsp(conMat, pathMatrix);
-          final int[] pathCoordinates = new int[] {0, 0};
-          tmpLongestChainAtomCount = this.getLongestChainPath(apsp,
-              pathCoordinates);
-          final IAtomContainer longestAliphaticChain = this
-              .createAtomContainerFromPath(
-                  aliphaticChain,
-                  this.longestPath(pathMatrix, pathCoordinates[0],
-                      pathCoordinates[1],
-                      aliphaticChain));
-          // The longest chain container.
-          this.chain.add(longestAliphaticChain);
-          if (tmpLongestChainAtomCount >= longestChainAtomsCount) {
-            longestChainAtomsCount = tmpLongestChainAtomCount;
-          }
-        }
+      startSphere = new ArrayList<IAtom>();
+      path = new ArrayList<IAtom>();
+      startSphere.add(atomi);
+      try {
+        this.breadthFirstSearch(startSphere, path);
+      } catch (final CDKException e) {
+        return;
       }
+      final IAtomContainer aliphaticChain =
+          this.createAtomContainerFromPath(container, path);
+      if (aliphaticChain.getAtomCount() < this.minLength) {
+        continue;
+      }
+      final double[][] conMat = ConnectionMatrix.getMatrix(aliphaticChain);
+      final Integer[][] pathMatrix = new Integer[conMat.length][conMat.length];
+      final int[][] apsp = this.computeFloydApsp(conMat, pathMatrix);
+      final int[] pathCoordinates = this.getLongestChainPath(apsp);
+      final IAtomContainer longestAliphaticChain =
+          this.createAtomContainerFromPath(aliphaticChain,
+               this.longestPath(pathMatrix, pathCoordinates[0],
+                                pathCoordinates[1], aliphaticChain));
+      // The longest chain container.
+      this.chains.add(longestAliphaticChain);
     }
   }
 
+
+  /**
+   * Computes the longest path in the current path matrix for potential
+   * aliphatic chain.
+   *
+   * @param pathMatrix
+   *          The path matrix.
+   * @param pathStart
+   *          The start position of the path.
+   * @param pathEnd
+   *          The end position of the path.
+   * @param container
+   *          The atom container of the chain under consideration.
+   *
+   * @return The path for the aliphatc chain.
+   */
   private List<IAtom> longestPath(final Integer[][] pathMatrix,
         final int pathStart, final int pathEnd,
         final IAtomContainer container) {
@@ -178,11 +164,20 @@ public class AliphaticChain {
   }
 
 
+  /**
+   * Floyd Warshall all pair shortest path algorithm.
+   *
+   * @param costMatrix
+   *          The cost Matrix.
+   * @param pathMatrix
+   *          The path Matrix.
+   *
+   * @return The computed distance matrix.
+   */
   public int[][] computeFloydApsp(final double[][] costMatrix,
       final Integer[][] pathMatrix) {
     final int nrow = costMatrix.length;
     final int[][] distMatrix = new int[nrow][nrow];
-    // logger.debug("Matrix size: " + n);
     for (int i = 0; i < nrow; i++) {
       for (int j = 0; j < nrow; j++) {
         if (costMatrix[i][j] == 0) {
@@ -210,50 +205,17 @@ public class AliphaticChain {
     return distMatrix;
   }
 
-  private void printAtomMatrix(final IAtom[][] matrix) {
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[i].length; j++) {
-        if (matrix[i][j] != null) {
-          System.out.println("i,j: " + i + "," + j + ": "
-              + matrix[i][j].getID());
-        }
-      }
-    }
-  }
 
-  private void printIntMatrix(final int[][] matrix) {
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[i].length; j++) {
-        System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
-      }
-    }
-  }
-
-  private void printIntMatrix(final Integer[][] matrix) {
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[i].length; j++) {
-        System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
-      }
-    }
-  }
-
-  private void printDoubMatrix(final double[][] matrix) {
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[i].length; j++) {
-        System.out.println("i,j: " + i + "," + j + ": " + matrix[i][j]);
-      }
-    }
-  }
-
-  private void printAtomList(final List<IAtom> atoms) {
-    int count = 0;
-    for (final IAtom atom : atoms) {
-      System.out.println("Atom " + count + ": " + atom.getID());
-      count++;
-    }
-  }
-
-  private int getLongestChainPath(final int[][] apsp, final int[] path) {
+  /**
+   * Computes the longest path in the all pair shortest path distance matrix.
+   *
+   * @param apsp
+   *          The distance matrix.
+   *
+   * @return The longest path from the distance matrix.
+   */
+  private int[] getLongestChainPath(final int[][] apsp) {
+    final int[] path = new int[] {0, 0};
     int longestPath = 0;
     for (int i = 0; i < apsp.length; i++) {
       for (int j = 0; j < apsp.length; j++) {
@@ -264,9 +226,20 @@ public class AliphaticChain {
         }
       }
     }
-    return longestPath;
+    return path;
   }
 
+
+  /**
+   * Creates a new atom containers for an aliphatic chain.
+   *
+   * @param container
+   *          The original container of the molecule.
+   * @param path
+   *          The path in the molecule representing the chain.
+   *
+   * @return The newly created container for the alephatic chain.
+   */
   private IAtomContainer createAtomContainerFromPath(
       final IAtomContainer container,
       final List<IAtom> path) {
@@ -280,22 +253,23 @@ public class AliphaticChain {
       for (int j = 1; j < path.size(); j++) {
         final IAtom secondAtom = path.get(j);
         final IBond bond = container.getBond(firstAtom, secondAtom);
-        if (bond != null) {
-          if (!aliphaticChain.contains(secondAtom)) {
-            aliphaticChain.addAtom(secondAtom);
-          }
-          if (!aliphaticChain.contains(bond)) {
-            aliphaticChain.addBond(bond);
-          }
+        if (bond == null) {
+          continue;
+        }
+        if (!aliphaticChain.contains(secondAtom)) {
+          aliphaticChain.addAtom(secondAtom);
+        }
+        if (!aliphaticChain.contains(bond)) {
+          aliphaticChain.addBond(bond);
         }
       }
     }
-
     if (aliphaticChain.getBondCount() == 0) {
       aliphaticChain.removeAllElements();
     }
     return aliphaticChain;
   }
+
 
   /**
    * Performs a breadthFirstSearch in an AtomContainer starting with a
@@ -311,13 +285,12 @@ public class AliphaticChain {
    * @throws CDKException
    *          Description of the Exception
    */
-  private void breadthFirstSearch(final IAtomContainer container,
-      final List<IAtom> sphere,
-      final List<IAtom> path) throws CDKException {
+  private void breadthFirstSearch(final List<IAtom> sphere, final List<IAtom> path)
+      throws CDKException {
     IAtom nextAtom;
     final List<IAtom> newSphere = new ArrayList<IAtom>();
     for (final IAtom atom : sphere) {
-      final List<IBond> bonds = container.getConnectedBondsList(atom);
+      final List<IBond> bonds = this.molecule.getConnectedBondsList(atom);
       for (final IBond bond : bonds) {
         nextAtom = bond.getConnectedAtom(atom);
         if ((!nextAtom.getFlag(CDKConstants.ISAROMATIC) && !nextAtom
@@ -325,7 +298,7 @@ public class AliphaticChain {
             & !nextAtom.getFlag(CDKConstants.VISITED)) {
           path.add(nextAtom);
           nextAtom.setFlag(CDKConstants.VISITED, true);
-          if (container.getConnectedBondsCount(nextAtom) > 1) {
+          if (this.molecule.getConnectedBondsCount(nextAtom) > 1) {
             newSphere.add(nextAtom);
           }
         } else {
@@ -334,8 +307,17 @@ public class AliphaticChain {
       }
     }
     if (newSphere.size() > 0) {
-      this.breadthFirstSearch(container, newSphere, path);
+      this.breadthFirstSearch(newSphere, path);
     }
+  }
+
+
+  /**
+   * @return All aliphatic chains of the molecule that are at least as long as
+   *          the given minimum length.
+   */
+  public List<IAtomContainer> getChains() {
+    return this.chains;
   }
 
 }

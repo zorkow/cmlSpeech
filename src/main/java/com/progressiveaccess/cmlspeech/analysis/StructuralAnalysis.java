@@ -192,9 +192,8 @@ public class StructuralAnalysis {
     if (this.molecule == null) {
       return;
     }
-    final AliphaticChain chain = new AliphaticChain(3);
-    chain.calculate(this.molecule);
-    for (final IAtomContainer set : chain.extract()) {
+    final AliphaticChain chain = new AliphaticChain(this.molecule, 3);
+    for (final IAtomContainer set : chain.getChains()) {
       RichStructureHelper.setRichAtomSet(new RichAliphaticChain(set, this
           .getAtomSetId()));
     }
