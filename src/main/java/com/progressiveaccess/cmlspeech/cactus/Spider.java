@@ -27,6 +27,7 @@
 
 package com.progressiveaccess.cmlspeech.cactus;
 
+import com.progressiveaccess.cmlspeech.speech.IsoTable;
 
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
@@ -117,7 +118,7 @@ public final class Spider {
       return;
     }
     SpiderName name = new SpiderName(Spider.getContent(nameNode),
-                                     "name", "English");
+                                     "name", "en");
     names.add(name);
   }
 
@@ -150,6 +151,9 @@ public final class Spider {
   private static void getSynonym(final TagNode node, final SpiderNames names) {
     String name = Spider.getContent(node.getChildTagList().iterator().next());
     String language = Spider.getLanguage(node);
+    String[] result = Spider.splitOffLanguage(new String[] {name, language});
+    name = result[0];
+    language = result[1];
     String[] sources = Spider.getSources(node);
     String type = Spider.getType(sources, language);
     if (sources.length == 0) {
@@ -157,6 +161,33 @@ public final class Spider {
     } else {
       names.add(new SpiderName(name, type, language, sources));
     }
+  }
+
+
+  /**
+   * Splits a potential language indication off of the name of a molecule.
+   *
+   * @param arguments
+   *          An array with two strings: the original name and the already
+   *          computed language.
+   *
+   * @return Similar array with the rewritten name and language.
+   */
+  private static String[] splitOffLanguage(final String[] arguments) {
+    String name = arguments[0];
+    String language = arguments[1];
+    Integer index = name.lastIndexOf(" [");
+    if (index <= 0) {
+      return arguments;
+    }
+    String lang = Spider.removeBrackets(name.substring(index + 1));
+    if (IsoTable.exists(lang)) {
+      if (language.equals("")) {
+        language = IsoTable.lookup(lang);
+      }
+      name = name.substring(0, index);
+    }
+    return new String[] {name, language};
   }
 
 
@@ -171,7 +202,7 @@ public final class Spider {
   private static String getLanguage(final TagNode node) {
     TagNode language = node.findElementByAttValue(
         "class", "synonym_language", true, false);
-    return language == null ? "" : Spider.getContent(language);
+    return language == null ? "" : IsoTable.lookup(Spider.getContent(language));
   }
 
 
@@ -229,12 +260,21 @@ public final class Spider {
    */
   private static String getContent(final TagNode node) {
     String content = node.getText().toString().trim();
-    while (content.matches("^\\[.+")) {
-      content = content.substring(1);
-    }
-    Integer length = content.length();
-    while (content.matches(".+\\]$")) {
-      content = content.substring(0, --length);
+    return Spider.removeBrackets(content);
+  }
+
+
+  /**
+   * Removes square brackets from around a string if there are any.
+   *
+   * @param content
+   *          The content string.
+   *
+   * @return The input string with a pair of surrounding brackets removed.
+   */
+  private static String removeBrackets(final String content) {
+    if (content.matches("^\\[.+") && content.matches(".+\\]$")) {
+      return content.substring(1, content.length() - 1);
     }
     return content;
   }
