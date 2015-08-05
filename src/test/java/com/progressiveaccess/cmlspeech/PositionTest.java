@@ -261,7 +261,7 @@ public class PositionTest {
     this.comparePaths("molecule/book1-004-05.mol", "as3",
         new String[] {"as1", "as2"});
     this.comparePaths("molecule/book1-006-03.mol", "as4",
-        new String[] {"as1", "as3", "as2"});
+        new String[] {"as1", "as2", "as3"});
     this.comparePaths("molecule/book1-012-00.mol", "as5",
         new String[] {"as1", "as4", "as2", "as3"});
     this.comparePaths("molecule/aspirin.mol", "as4",

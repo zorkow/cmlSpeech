@@ -3,7 +3,7 @@
         <sre:annotation sre:speech2="Bromine 2.">
             <sre:atom sre:type="Bromine">a1</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:position>2</sre:position>
             <sre:component>
@@ -48,7 +48,7 @@
         <sre:annotation sre:speech2="Carbon 1 bonded to 2 hydrogens.">
             <sre:atom sre:type="Carbon">a2</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:component>
@@ -74,7 +74,7 @@
         <sre:annotation sre:speech2="Chlorine 2.">
             <sre:atom sre:type="Chlorine">a3</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>2</sre:position>
             <sre:component>
@@ -173,7 +173,7 @@
         <sre:annotation sre:speech2="Carbon 1 bonded to 1 hydrogen.">
             <sre:atom sre:type="Carbon">a12</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:component>
@@ -276,14 +276,14 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech2="shared atom Carbon 1 with Functional group C H2 Cl.">
-                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a2</sre:atom>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour sre:speech2="shared atom Carbon 2 with Functional group C H Br.">
-                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a12</sre:atom>
                         <sre:position>2</sre:position>
@@ -291,33 +291,8 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech2="Functional group C H2 Cl.">
-            <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
-            <sre:parents>
-                <sre:atomSet>as4</sre:atomSet>
-            </sre:parents>
-            <sre:position>3</sre:position>
-            <sre:children>
-                <sre:atom>a2</sre:atom>
-                <sre:atom>a3</sre:atom>
-            </sre:children>
-            <sre:component>
-                <sre:atom>a2</sre:atom>
-                <sre:atom>a3</sre:atom>
-                <sre:bond>b1</sre:bond>
-            </sre:component>
-            <sre:neighbours>
-                <sre:neighbour sre:speech2="shared atom Carbon 1 with Aliphatic chain of length 4.">
-                    <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
-                    <sre:via sre:type="Shared atom">
-                        <sre:atom sre:type="Carbon">a2</sre:atom>
-                        <sre:position>1</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-            </sre:neighbours>
-        </sre:annotation>
         <sre:annotation sre:speech2="Functional group C H Br.">
-            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+            <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
@@ -336,6 +311,31 @@
                     <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a12</sre:atom>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech2="Functional group C H2 Cl.">
+            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as4</sre:atomSet>
+            </sre:parents>
+            <sre:position>3</sre:position>
+            <sre:children>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+                <sre:bond>b1</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech2="shared atom Carbon 1 with Aliphatic chain of length 4.">
+                    <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
+                    <sre:via sre:type="Shared atom">
+                        <sre:atom sre:type="Carbon">a2</sre:atom>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
