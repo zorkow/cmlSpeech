@@ -53,7 +53,6 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
 import com.progressiveaccess.cmlspeech.structure.RichSuperSet;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -76,18 +75,6 @@ public class StructureVisitor implements XmlVisitor {
   private final SpeechVisitor simpleSpeechVisitor =
       Language.getSimpleSpeechVisitor();
   private boolean internal = false;
-
-
-  /**
-   * Dummy comparator for the tree multi map.
-   */
-  private class SreComparator implements Comparator<SreElement> {
-
-    @Override
-    public int compare(final SreElement element1, final SreElement element2) {
-      return 1;
-    }
-  }
 
 
   /**
