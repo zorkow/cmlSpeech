@@ -3,7 +3,7 @@
         <sre:annotation sre:speech="臭素2は、" sre:speech2="臭素2は、">
             <sre:atom sre:type="Bromine">a1</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:position>2</sre:position>
             <sre:component>
@@ -50,7 +50,7 @@
         <sre:annotation sre:speech="炭素1は、水素2に結合、" sre:speech2="炭素1は、水素2に結合、">
             <sre:atom sre:type="Carbon">a2</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:component>
@@ -78,7 +78,7 @@
         <sre:annotation sre:speech="塩素2は、" sre:speech2="塩素2は、">
             <sre:atom sre:type="Chlorine">a3</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>2</sre:position>
             <sre:component>
@@ -183,7 +183,7 @@
         <sre:annotation sre:speech="炭素1は、水素1に結合、" sre:speech2="炭素1は、水素1に結合、">
             <sre:atom sre:type="Carbon">a12</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:component>
@@ -303,14 +303,14 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="炭素1は、共有原子官能基含有、" sre:speech2="炭素1は、共有原子官能基C H2 Cl含有、">
-                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a2</sre:atom>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour sre:speech="炭素2は、共有原子官能基含有、" sre:speech2="炭素2は、共有原子官能基C H Br含有、">
-                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a12</sre:atom>
                         <sre:position>2</sre:position>
@@ -318,8 +318,35 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Alkylchloride" sre:speech2="官能基C H2 Cl、">
+        <sre:annotation sre:speech="官能基Alkylbromide" sre:speech2="官能基C H Br、">
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as4</sre:atomSet>
+            </sre:parents>
+            <sre:position>2</sre:position>
+            <sre:children>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a12</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a12</sre:atom>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:atom>a6</sre:atom>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素1は、共有原子含有、" sre:speech2="炭素1は、共有原子長さ4の直鎖含有、">
+                    <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
+                    <sre:via sre:type="Shared atom">
+                        <sre:atom sre:type="Carbon">a12</sre:atom>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="官能基Alkylchloride" sre:speech2="官能基C H2 Cl、">
+            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>
             </sre:parents>
@@ -342,33 +369,6 @@
                     <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
                     <sre:via sre:type="Shared atom">
                         <sre:atom sre:type="Carbon">a2</sre:atom>
-                        <sre:position>1</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-            </sre:neighbours>
-        </sre:annotation>
-        <sre:annotation sre:speech="官能基Alkylbromide" sre:speech2="官能基C H Br、">
-            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
-            <sre:parents>
-                <sre:atomSet>as4</sre:atomSet>
-            </sre:parents>
-            <sre:position>2</sre:position>
-            <sre:children>
-                <sre:atom>a1</sre:atom>
-                <sre:atom>a12</sre:atom>
-            </sre:children>
-            <sre:component>
-                <sre:atom>a1</sre:atom>
-                <sre:atom>a12</sre:atom>
-                <sre:bond>b11</sre:bond>
-                <sre:bond>b10</sre:bond>
-                <sre:atom>a6</sre:atom>
-            </sre:component>
-            <sre:neighbours>
-                <sre:neighbour sre:speech="炭素1は、共有原子含有、" sre:speech2="炭素1は、共有原子長さ4の直鎖含有、">
-                    <sre:atomSet sre:type="Aliphatic chain">as1</sre:atomSet>
-                    <sre:via sre:type="Shared atom">
-                        <sre:atom sre:type="Carbon">a12</sre:atom>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
@@ -438,7 +438,7 @@
         <sre:annotation>
             <sre:atom sre:type="Hydrogen">a4</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>0</sre:position>
             <sre:component>
@@ -554,7 +554,7 @@
         <sre:annotation>
             <sre:atom sre:type="Hydrogen">a6</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
             <sre:position>0</sre:position>
             <sre:component>
@@ -607,7 +607,7 @@
         <sre:annotation>
             <sre:atom sre:type="Hydrogen">a14</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>0</sre:position>
             <sre:component>

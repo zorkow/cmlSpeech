@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * Filtering functions to restrict ourselves to the most interesting functional
@@ -55,7 +56,7 @@ public class FunctionalGroupsFilter {
   private final List<RichAtomSet> existingSets;
   private final Map<String, IAtomContainer> newSets;
   private final Map<String, IAtomContainer> resultSets =
-      new HashMap<String, IAtomContainer>();
+      new TreeMap<String, IAtomContainer>();
   // The set that is reduced to distill the interesting functional groups.
   private final SortedSet<RichFunctionalGroup> workingSets =
       new TreeSet<RichFunctionalGroup>(new SizeAndNameComparator());
