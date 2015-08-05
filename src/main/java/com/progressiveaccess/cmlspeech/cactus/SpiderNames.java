@@ -28,7 +28,7 @@
 package com.progressiveaccess.cmlspeech.cactus;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
+
 
 /**
  * Collection of SpiderNames.
@@ -37,7 +37,15 @@ public class SpiderNames extends ArrayList<SpiderName> {
 
   private static final long serialVersionUID = 1L;
 
-  public final String computeName(String language) {
+  /**
+   * Retrieves a name with respect to language.
+   *
+   * @param language
+   *          The iso language string.
+   *
+   * @return The nam if an appropriate entry exists.
+   */
+  public final String computeName(final String language) {
     String name = this.computeName(language, "name");
     if (!name.equals("")) {
       return name;
@@ -46,7 +54,17 @@ public class SpiderNames extends ArrayList<SpiderName> {
   }
 
 
-  private final String computeName(String language, String type) {
+  /**
+   * Retrieves a name with respect to language and type.
+   *
+   * @param language
+   *          The iso language string.
+   * @param type
+   *          The type, e.g., name, iupac.
+   *
+   * @return The nam if an appropriate entry exists.
+   */
+  private String computeName(final String language, final String type) {
     SpiderName name = this.find(language, type);
     if (name == null) {
       return "";
@@ -55,7 +73,17 @@ public class SpiderNames extends ArrayList<SpiderName> {
   }
 
 
-  private SpiderName find(String language, String type) {
+  /**
+   * Finds a naming entry with respect to language and type.
+   *
+   * @param language
+   *          The iso language string.
+   * @param type
+   *          The type, e.g., name, iupac.
+   *
+   * @return The naming entry if one exists.
+   */
+  private SpiderName find(final String language, final String type) {
     for (SpiderName name : this) {
       if (name.getLanguage().equals(language)
           && name.getType().equals(type)) {

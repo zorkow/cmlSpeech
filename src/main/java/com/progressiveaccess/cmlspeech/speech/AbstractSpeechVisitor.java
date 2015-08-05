@@ -209,7 +209,7 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
    *          The atom set.
    */
   protected void addName(final RichAtomSet atomset) {
-    // TODO (sorge) 
+    // TODO (sorge)
     // Do something about all upper case names without destroying
     // important upper cases. E.g.: WordUtils.capitalizeFully.
     String name = atomset.getNames().computeName(Language.getLanguage());
@@ -253,7 +253,7 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
   protected void addName(final RichBond bond) {
     this.push(Language.getBondTable().order(bond));
   }
-  
+
 
   /**
    * Adds the name of an atom.
@@ -264,5 +264,5 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
   protected void addName(final RichAtom atom) {
     this.push(Language.getAtomTable().lookup(atom));
   }
-  
+
 }

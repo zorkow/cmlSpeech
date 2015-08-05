@@ -37,8 +37,8 @@ public final class FunctionalGroupTable extends AbstractFunctionalGroupTable {
   private static final long serialVersionUID = 1L;
 
   @Override
-  public String lookup(String name) {
+  public String lookup(final String name) {
     return name;
   }
-  
+
 }

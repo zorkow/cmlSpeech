@@ -27,8 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
-import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
-
 
 /**
  * Maps functional group identifiers to their proper names.
