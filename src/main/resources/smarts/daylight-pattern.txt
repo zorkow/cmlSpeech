@@ -97,7 +97,7 @@ Azide group: [$(*-[NX2-]-[NX2+]#[NX1]),$(*-[NX2]=[NX2+]=[NX1-])]
 Azide ion: [$([NX1-]=[NX2+]=[NX1-]),$([NX1]#[NX2+]-[NX1-2])]
 Nitrogen: [#7]
 Azo Nitrogen. Low specificity: [NX2]=N
-Azo Nitrogen.diazene: [NX2]=[NX2]
+Azo Nitrogen. Diazene: [NX2]=[NX2]
 Azoxy Nitrogen: [$([NX2]=[NX3+]([O-])[#6]),$([NX2]=[NX3+0](=[O])[#6])]
 
 Diazo Nitrogen: [$([#6]=[N+]=[N-]),$([#6-]-[N+]#[N])]
@@ -209,5 +209,5 @@ Sulfenate: [#16X2][OX2H0]
 
 Any carbon attached to any halogen: [#6][F,Cl,Br,I]
 Halogen: [F,Cl,Br,I]
-Three_halides groups: [F,Cl,Br,I].[F,Cl,Br,I].[F,Cl,Br,I]
+Three halides groups: [F,Cl,Br,I].[F,Cl,Br,I].[F,Cl,Br,I]
 Acyl Halide: [CX3](=[OX1])[F,Cl,Br,I]
