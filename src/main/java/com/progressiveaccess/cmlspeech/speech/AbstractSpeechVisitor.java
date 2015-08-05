@@ -32,6 +32,8 @@ import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
+import com.progressiveaccess.cmlspeech.structure.RichBond;
+import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
 import com.google.common.base.Joiner;
@@ -39,12 +41,11 @@ import com.google.common.base.Joiner;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
+
 
 /**
  * Basic functionality shared by all speech visitors.
  */
-
 @SuppressWarnings("serial")
 public abstract class AbstractSpeechVisitor extends Stack<String>
     implements SpeechVisitor {
@@ -226,20 +227,42 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
 
 
   /**
-   * Adds the name of an atom set.
+   * Adds the name of a functional group.
    *
    * @param fg
-   *          The atom set.
+   *          The functional group.
    */
   protected void addName(final RichFunctionalGroup fg) {
     // TODO(sorge) The naming of functional groups is still dodgy. Sometimes we
     // would prefer the spider results as being more precise.
     // Example: Aspirin vs Paracetamol
     String name = Language.getFunctionalGroupTable().lookup(fg.getName());
-    if (name == null) {
+    if (name.equals("")) {
       this.push(fg.getName());
     }
     this.push(name);
   }
 
+
+  /**
+   * Adds the name of a bond. (Note we currently do not do stereo).
+   *
+   * @param bond
+   *          The bond.
+   */
+  protected void addName(final RichBond bond) {
+    this.push(Language.getBondTable().order(bond));
+  }
+  
+
+  /**
+   * Adds the name of an atom.
+   *
+   * @param atom
+   *          The atom.
+   */
+  protected void addName(final RichAtom atom) {
+    this.push(Language.getAtomTable().lookup(atom));
+  }
+  
 }

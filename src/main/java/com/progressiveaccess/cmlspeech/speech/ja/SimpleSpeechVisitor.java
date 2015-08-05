@@ -28,7 +28,6 @@
 package com.progressiveaccess.cmlspeech.speech.ja;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
-import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -150,7 +149,7 @@ public class SimpleSpeechVisitor extends SpeechVisitor {
         this.push(system.getPosition(value));
         this.push("位"); // Position symbol
         this.push("は"); // at
-        this.push(Language.getAtomTable().lookup(atom));
+        this.addName(atom);
         this.push("、"); // Punctuation
       }
     }

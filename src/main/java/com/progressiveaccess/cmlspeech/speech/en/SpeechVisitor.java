@@ -35,7 +35,6 @@ import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
 import com.progressiveaccess.cmlspeech.speech.AbstractSpeechVisitor;
-import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
@@ -52,7 +51,7 @@ public abstract class SpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
-    this.push(Language.getBondTable().order(bond));
+    this.addName(bond);
     this.push("bond");
   }
 
@@ -65,7 +64,7 @@ public abstract class SpeechVisitor extends AbstractSpeechVisitor {
       this.describeSuperSystem(atom);
       return;
     }
-    this.push(Language.getAtomTable().lookup(atom));
+    this.addName(atom);
     this.push(position);
     if (this.getFlag("short")) {
       return;

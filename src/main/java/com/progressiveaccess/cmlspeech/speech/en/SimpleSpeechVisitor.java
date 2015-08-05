@@ -28,7 +28,6 @@
 package com.progressiveaccess.cmlspeech.speech.en;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
-import com.progressiveaccess.cmlspeech.speech.Language;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
@@ -135,7 +134,7 @@ public class SimpleSpeechVisitor extends SpeechVisitor {
       final RichAtom atom = RichStructureHelper.getRichAtom(value);
       if (!atom.isCarbon()) {
         this.push("with");
-        this.push(Language.getAtomTable().lookup(atom));
+        this.addName(atom);
         this.push("at position");
         this.push(system.getPosition(value));
       }
