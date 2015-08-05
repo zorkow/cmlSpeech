@@ -568,7 +568,7 @@
                         <sre:position>3</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Arylfluorideに単結合、" sre:speech2="官能基C F、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基フッ化アリールに単結合、" sre:speech2="官能基C F、に単結合、" sre:location="external">
                     <sre:atom sre:type="Fluorine">a34</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b39</sre:bond>
@@ -1980,7 +1980,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Arylfluoride" sre:speech2="官能基C F、">
+        <sre:annotation sre:speech="官能基フッ化アリール" sre:speech2="官能基C F、">
             <sre:atomSet sre:type="Functional group">as10</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as11</sre:atomSet>

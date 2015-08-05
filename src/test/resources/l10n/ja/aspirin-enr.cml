@@ -187,7 +187,7 @@
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Carboxylic acidに単結合、" sre:speech2="官能基C O O H、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基カルボン酸に単結合、" sre:speech2="官能基C O O H、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a9</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b10</sre:bond>
@@ -221,7 +221,7 @@
                         <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Esterに単結合、" sre:speech2="官能基C O C O C H3、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基エスターに単結合、" sre:speech2="官能基C O C O C H3、に単結合、" sre:location="external">
                     <sre:atom sre:type="Oxygen">a13</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b11</sre:bond>
@@ -547,7 +547,7 @@
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Carboxylic acidに単結合、" sre:speech2="官能基C O O H、に単結合、">
+                <sre:neighbour sre:speech="官能基カルボン酸に単結合、" sre:speech2="官能基C O O H、に単結合、">
                     <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b10</sre:bond>
@@ -556,7 +556,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Carboxylic acid" sre:speech2="官能基C O O H、">
+        <sre:annotation sre:speech="官能基カルボン酸" sre:speech2="官能基C O O H、">
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>
@@ -584,7 +584,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Ester" sre:speech2="官能基C O C O C H3、">
+        <sre:annotation sre:speech="官能基エスター" sre:speech2="官能基C O C O C H3、">
             <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>

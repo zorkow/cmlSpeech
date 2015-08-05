@@ -84,7 +84,7 @@
                         <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Methylに単結合、" sre:speech2="官能基C H3、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基メチルに単結合、" sre:speech2="官能基C H3、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a1</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
@@ -244,7 +244,7 @@
                 <sre:atom>a15</sre:atom>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="官能基Methylに単結合、" sre:speech2="官能基C H3、に単結合、">
+                <sre:neighbour sre:speech="官能基メチルに単結合、" sre:speech2="官能基C H3、に単結合、">
                     <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
@@ -253,7 +253,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Methyl" sre:speech2="官能基C H3、">
+        <sre:annotation sre:speech="官能基メチル" sre:speech2="官能基C H3、">
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as3</sre:atomSet>

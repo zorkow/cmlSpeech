@@ -7,7 +7,7 @@
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:neighbours>
-                <sre:neighbour sre:speech="官能基Secondary amideに単結合、" sre:speech2="官能基C N H C O、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基二級アミドに単結合、" sre:speech2="官能基C N H C O、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a7</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
@@ -95,7 +95,7 @@
                         <sre:position>5</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Secondary amideに単結合、" sre:speech2="官能基C N H C O、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基二級アミドに単結合、" sre:speech2="官能基C N H C O、に単結合、" sre:location="external">
                     <sre:atom sre:type="Nitrogen">a10</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b9</sre:bond>
@@ -162,7 +162,7 @@
                         <sre:position>6</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Phenolに単結合、" sre:speech2="官能基C O H、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基フェノールに単結合、" sre:speech2="官能基C O H、に単結合、" sre:location="external">
                     <sre:atom sre:type="Oxygen">a9</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b8</sre:bond>
@@ -242,7 +242,7 @@
                 <sre:bond>b11</sre:bond>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="官能基Methylに単結合、" sre:speech2="官能基C H3、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基メチルに単結合、" sre:speech2="官能基C H3、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a1</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
@@ -512,7 +512,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Methyl" sre:speech2="官能基C H3、">
+        <sre:annotation sre:speech="官能基メチル" sre:speech2="官能基C H3、">
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as5</sre:atomSet>
@@ -525,7 +525,7 @@
                 <sre:atom>a1</sre:atom>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="官能基Secondary amideに単結合、" sre:speech2="官能基C N H C O、に単結合、">
+                <sre:neighbour sre:speech="官能基二級アミドに単結合、" sre:speech2="官能基C N H C O、に単結合、">
                     <sre:atomSet sre:type="Functional group">as4</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
@@ -534,7 +534,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Phenol" sre:speech2="官能基C O H、">
+        <sre:annotation sre:speech="官能基フェノール" sre:speech2="官能基C O H、">
             <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as5</sre:atomSet>
@@ -559,7 +559,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Secondary amide" sre:speech2="官能基C N H C O、">
+        <sre:annotation sre:speech="官能基二級アミド" sre:speech2="官能基C N H C O、">
             <sre:atomSet sre:type="Functional group">as4</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as5</sre:atomSet>
@@ -588,7 +588,7 @@
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Methylに単結合、" sre:speech2="官能基C H3、に単結合、">
+                <sre:neighbour sre:speech="官能基メチルに単結合、" sre:speech2="官能基C H3、に単結合、">
                     <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>

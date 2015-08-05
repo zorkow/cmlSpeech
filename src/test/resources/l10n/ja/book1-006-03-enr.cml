@@ -31,7 +31,7 @@
                 <sre:bond>b13</sre:bond>
             </sre:component>
             <sre:neighbours>
-                <sre:neighbour sre:speech="官能基Alkylchlorideに単結合、" sre:speech2="官能基C H2 Cl、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基塩化アルキルに単結合、" sre:speech2="官能基C H2 Cl、に単結合、" sre:location="external">
                     <sre:atom sre:type="Chlorine">a3</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b1</sre:bond>
@@ -66,7 +66,7 @@
                         <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="C4H8官能基Alkylbromideに単結合、" sre:speech2="長さ4の直鎖、官能基C H Br、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="C4H8官能基臭化アルキルに単結合、" sre:speech2="長さ4の直鎖、官能基C H Br、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a12</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b9</sre:bond>
@@ -171,7 +171,7 @@
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="官能基Alkylbromideに単結合、" sre:speech2="官能基C H Br、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="官能基臭化アルキルに単結合、" sre:speech2="官能基C H Br、に単結合、" sre:location="external">
                     <sre:atom sre:type="Bromine">a1</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b11</sre:bond>
@@ -198,7 +198,7 @@
                         <sre:position>0</sre:position>
                     </sre:via>
                 </sre:neighbour>
-                <sre:neighbour sre:speech="C4H8官能基Alkylchlorideに単結合、" sre:speech2="長さ4の直鎖、官能基C H2 Cl、に単結合、" sre:location="external">
+                <sre:neighbour sre:speech="C4H8官能基塩化アルキルに単結合、" sre:speech2="長さ4の直鎖、官能基C H2 Cl、に単結合、" sre:location="external">
                     <sre:atom sre:type="Carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b9</sre:bond>
@@ -318,7 +318,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Alkylbromide" sre:speech2="官能基C H Br、">
+        <sre:annotation sre:speech="官能基臭化アルキル" sre:speech2="官能基C H Br、">
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>
@@ -345,7 +345,7 @@
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
-        <sre:annotation sre:speech="官能基Alkylchloride" sre:speech2="官能基C H2 Cl、">
+        <sre:annotation sre:speech="官能基塩化アルキル" sre:speech2="官能基C H2 Cl、">
             <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as4</sre:atomSet>
