@@ -37,8 +37,9 @@ public final class Language {
   private static String currentLanguage = "en";
   private static AtomTable atomTable;
   private static BondTable bondTable;
-  private static SpeechVisitor simpleSpeechVisitor;
+  private static FunctionalGroupTable fgTable;
   private static SpeechVisitor expertSpeechVisitor;
+  private static SpeechVisitor simpleSpeechVisitor;
 
 
 
@@ -73,6 +74,14 @@ public final class Language {
 
 
   /**
+   * @return The functional group table for the current language.
+   */
+  public static FunctionalGroupTable getFunctionalGroupTable() {
+    return Language.fgTable;
+  }
+
+
+  /**
    * @return The simple speech visitor for the current language.
    */
   public static SpeechVisitor getSimpleSpeechVisitor() {
@@ -98,6 +107,8 @@ public final class Language {
     currentLanguage = IsoTable.lookup(language);
     atomTable = AtomTableFactory.getAtomTable(currentLanguage);
     bondTable = BondTableFactory.getBondTable(currentLanguage);
+    fgTable = FunctionalGroupTableFactory
+        .getFunctionalGroupTable(currentLanguage);
     simpleSpeechVisitor =
         SimpleSpeechVisitorFactory.getSpeechVisitor(currentLanguage);
     expertSpeechVisitor =
