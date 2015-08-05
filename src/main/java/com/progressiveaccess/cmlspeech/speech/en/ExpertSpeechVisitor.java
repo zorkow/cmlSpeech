@@ -40,7 +40,7 @@ import com.progressiveaccess.cmlspeech.structure.RichSubRing;
  */
 
 @SuppressWarnings("serial")
-public class ExpertSpeechVisitor extends EnSpeechVisitor {
+public class ExpertSpeechVisitor extends SpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {

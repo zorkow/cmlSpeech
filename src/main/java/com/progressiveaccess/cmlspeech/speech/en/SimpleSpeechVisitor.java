@@ -47,7 +47,7 @@ import java.util.Iterator;
  */
 
 @SuppressWarnings("serial")
-public class SimpleSpeechVisitor extends EnSpeechVisitor {
+public class SimpleSpeechVisitor extends SpeechVisitor {
 
   @Override
   public void visit(final RichIsolatedRing ring) {
