@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * @file   EnSpeechVisitor.java
+ * @file   SpeechVisitor.java
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug  2 15:29:49 2015
  *
- * @brief  Abstract visitor for Japanese speech output.
+ * @brief  Abstract visitor for English speech output.
  *
  *
  */
 
 //
 
-package com.progressiveaccess.cmlspeech.speech.ja;
+package com.progressiveaccess.cmlspeech.speech.en;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
@@ -40,22 +40,20 @@ import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
 
-import com.google.common.base.Joiner;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Basic visitor functionality for Japanese speech generation.
+ * Basic visitor functionality for English speech generation.
  */
 
 @SuppressWarnings("serial")
-public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
+public abstract class SpeechVisitor extends AbstractSpeechVisitor {
 
   @Override
   public void visit(final RichBond bond) {
     this.push(Language.getBondTable().order(bond));
-    this.push("結合"); // bond
+    this.push("bond");
   }
 
 
@@ -69,9 +67,6 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
     }
     this.push(Language.getAtomTable().lookup(atom));
     this.push(position);
-    if (this.getFlag("subject")) {
-      this.push("は、"); // Separator (only after subject).
-    }
     if (this.getFlag("short")) {
       return;
     }
@@ -82,68 +77,63 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
   @Override
   public void visit(final SpiroAtom spiroAtom) {
     this.setFlag("short", true);
+    this.push("spiro atom");
     RichStructureHelper.getRichAtom(spiroAtom.getConnector()).accept(this);
-    this.push("スピロ原子"); // spiro atom
-    this.push("に"); // to
+    this.push("to");
     RichStructureHelper.getRichAtomSet(spiroAtom.getConnected()).accept(this);
-    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
 
   @Override
   public void visit(final BridgeAtom bridgeAtom) {
+    this.push("bridge atom");
     RichStructureHelper.getRichAtom(bridgeAtom.getConnector()).accept(this);
-    this.push("橋頭原子");  // bridge atom
   }
 
 
   @Override
   public void visit(final ConnectingBond bond) {
     this.setFlag("short", true);
-    this.setFlag("subject", false);
+    RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
+    // TODO (sorge) The past tense here is problematic!
+    this.modLast("ed");
+    this.push("to");
     String connected = bond.getConnected();
     if (RichStructureHelper.isAtom(connected)) {
       RichStructureHelper.getRichAtom(connected).accept(this);
     } else {
       RichStructureHelper.getRichAtomSet(connected).accept(this);
     }
-    this.push("に"); // to
-    RichStructureHelper.getRichBond(bond.getConnector()).accept(this);
-    this.push("、"); // Punctuation
     this.setFlag("short", false);
-    this.setFlag("subject", true);
   }
 
 
   @Override
   public void visit(final SharedAtom sharedAtom) {
     this.setFlag("short", true);
+    this.push("shared atom");
     RichStructureHelper.getRichAtom(sharedAtom.getConnector()).accept(this);
-    this.push("共有原子"); // shared atom
+    this.push("with");
     RichStructureHelper.getRichAtomSet(sharedAtom.getConnected()).accept(this);
-    this.pop();
-    this.push("含有"); // with
-    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
 
   @Override
   public void visit(final SharedBond sharedBond) {
+    this.push("shared");
     RichStructureHelper.getRichBond(sharedBond.getConnector()).accept(this);
-    this.push("共有"); // shared
   }
 
 
   @Override
   public void visit(final Bridge bridge) {
     this.setFlag("short", true);
+    this.push("fused with");
     RichStructureHelper.getRichAtomSet(bridge.getConnected()).accept(this);
-    this.push("縮合");  // fused ??
+    this.push("via");
     bridge.getBridges().forEach(c -> c.accept(this));
-    this.push("に");  // at or via ??
-    this.push("、"); // Punctuation
     this.setFlag("short", false);
   }
 
@@ -155,10 +145,14 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
-      default:
-        this.push("水素");  // hydrogen (and hydrogens)
+        this.push("bonded to");
         this.push(count.toString());
-        this.push("に結合、"); // bonded to
+        this.push("hydrogen");
+        return;
+      default:
+        this.push("bonded to");
+        this.push(count.toString());
+        this.push("hydrogens");
         return;
     }
   }
@@ -174,47 +168,17 @@ public abstract class JaSpeechVisitor extends AbstractSpeechVisitor {
       case 0:
         return;
       case 1:
+        this.push("Substitution at position");
+        this.push(subst.iterator().next());
+        return;
       default:
+        this.push("Substitutions at positions");
         for (final Integer position : subst) {
           this.push(position);
-          this.push("位"); // position
-          this.push("と"); // and
+          this.push("and");
         }
         this.pop();
-        this.push("で"); // at
-        this.push("置換"); // Substitution
-        this.push("、"); // Punctuation
-        return;
     }
   }
 
-
-  @Override
-  public void init() {
-    this.setFlag("subject", true);
-  }
-
-
-  @Override
-  public String getSpeech() {
-    final Joiner joiner = Joiner.on("");
-    String result = joiner.join(this);
-    this.clear();
-    return result;
-  }
-
 }
-
-// ring 環
-// aliphatic chain 脂肪鎖
-// fused ring system 縮合環系
-// subring 部分環
-// lsolated ring 孤立環
-// functional group 官能基
-// bridge atom 橋頭原子
-// spiro atom スピロ原子
-// shared atom 共有原子
-// shared bond 共有結合
-// bridge 橋
-// bridged bond 橋状結合
-// chain 直鎖
