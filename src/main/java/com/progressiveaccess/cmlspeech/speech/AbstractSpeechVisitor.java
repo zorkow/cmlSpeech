@@ -210,15 +210,7 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
     // TODO (sorge) Replace this function with language specific naming.
     // Do something about all upper case names without destroying
     // important upper cases. E.g.: WordUtils.capitalizeFully.
-    if (!atomset.getName().equals("")) {
-      this.push(atomset.getName());
-      return;
-    }
-    if (!atomset.getIupac().equals("")) {
-      this.push(atomset.getIupac());
-      return;
-    }
-    this.push(atomset.getMolecularFormula());
+    this.push(atomset.getName());
   }
-
+    
 }

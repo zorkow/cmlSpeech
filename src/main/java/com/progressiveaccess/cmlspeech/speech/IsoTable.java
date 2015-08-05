@@ -242,17 +242,32 @@ public final class IsoTable {
    *
    * @return The Iso code of the language or en.
    */
-  public static String lookup(final String language) {
+  public static String lookup(String language) {
     if (language == null) {
       return "en";
     }
+    language = language.toLowerCase();
     if (ISO_TABLE.containsKey(language)) {
-      return ISO_TABLE.get(language.toLowerCase());
+      return ISO_TABLE.get(language);
     }
-    if (ISO_TABLE.containsValue(language.toLowerCase())) {
+    if (ISO_TABLE.containsValue(language)) {
       return language;
     }
     return "en";
+  }
+
+
+  /** 
+   * Checks if a given language exists.
+   * 
+   * @param language
+   *          The given language.
+   * 
+   * @return True if the language or its Iso code is in the table.
+   */
+  public static Boolean exists(String language) {
+    language = language.toLowerCase();
+    return ISO_TABLE.containsKey(language) || ISO_TABLE.containsValue(language);
   }
 
 }

@@ -50,6 +50,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import com.progressiveaccess.cmlspeech.speech.Language;
 
 /**
  * Base class for all atom sets with admin information.
@@ -309,7 +310,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
     this.attachAttribute("condensed", this.getStructuralFormula());
     this.attachAttribute("formula", this.getMolecularFormula());
-    this.attachAttribute("name", this.getName());
+    this.attachAttribute("name", super.getName());
     this.attachAttribute("iupac", this.getIupac());
     return this.cml;
   }
@@ -357,6 +358,33 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
    */
   public SpiderNames getNames() {
     return this.names;
+  }
+
+
+  @Override
+  public String getName() {
+    // TODO(sorge) The naming of functional groups is still dodgy. Sometimes we
+    // would prefer the spider results as being more precise.
+    // Example: Aspirin vs Paracetamol
+    if (Language.getLanguage() == "en"
+        && this.getType() == RichSetType.FUNCGROUP) {
+      return super.getName();
+    }
+    String localisedName = this.getNames().computeName();
+    if (localisedName.equals("")
+        && this.getType() == RichSetType.FUNCGROUP) {
+      return super.getName();
+    }
+    if (!localisedName.equals("")) {
+      return localisedName;
+    }
+    if (!super.getName().equals("")) {
+      return super.getName();
+    }
+    if (!this.getIupac().equals("")) {
+      return this.getIupac();
+    }
+    return this.getMolecularFormula();
   }
 
 }

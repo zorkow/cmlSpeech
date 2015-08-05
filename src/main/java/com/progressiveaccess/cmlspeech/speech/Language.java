@@ -49,6 +49,14 @@ public final class Language {
 
 
   /**
+   * @return The iso abbreviation for the current language.
+   */
+  public static String getLanguage() {
+    return Language.currentLanguage;
+  }
+
+
+  /**
    * @return The atom table for the current language.
    */
   public static AtomTable getAtomTable() {
