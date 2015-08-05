@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.stream.Collectors;
+import com.progressiveaccess.cmlspeech.speech.Language;
 
 /**
  * Atom sets that are rich functional groups.
@@ -114,5 +115,5 @@ public class RichFunctionalGroup extends RichAtomSet {
   public void accept(final XmlVisitor visitor) {
     visitor.visit(this);
   }
-
+  
 }

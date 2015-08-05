@@ -39,6 +39,7 @@ import com.google.common.base.Joiner;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 
 /**
  * Basic functionality shared by all speech visitors.
@@ -207,10 +208,38 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
    *          The atom set.
    */
   protected void addName(final RichAtomSet atomset) {
-    // TODO (sorge) Replace this function with language specific naming.
+    // TODO (sorge) 
     // Do something about all upper case names without destroying
     // important upper cases. E.g.: WordUtils.capitalizeFully.
-    this.push(atomset.getName());
+    String name = atomset.getNames().computeName(Language.getLanguage());
+    if (name.equals("")) {
+      name = atomset.getName();
+    }
+    if (name.equals("")) {
+      name = atomset.getIupac();
+    }
+    if (name.equals("")) {
+      name = atomset.getMolecularFormula();
+    }
+    this.push(name);
   }
-    
+
+
+  /**
+   * Adds the name of an atom set.
+   *
+   * @param fg
+   *          The atom set.
+   */
+  protected void addName(final RichFunctionalGroup fg) {
+    // TODO(sorge) The naming of functional groups is still dodgy. Sometimes we
+    // would prefer the spider results as being more precise.
+    // Example: Aspirin vs Paracetamol
+    String name = Language.getFunctionalGroupTable().lookup(fg.getName());
+    if (name == null) {
+      this.push(fg.getName());
+    }
+    this.push(name);
+  }
+
 }

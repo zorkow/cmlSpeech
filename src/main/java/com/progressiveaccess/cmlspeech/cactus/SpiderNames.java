@@ -28,7 +28,6 @@
 package com.progressiveaccess.cmlspeech.cactus;
 
 import java.util.ArrayList;
-import com.progressiveaccess.cmlspeech.speech.Language;
 import java.util.stream.Stream;
 
 /**
@@ -38,17 +37,7 @@ public class SpiderNames extends ArrayList<SpiderName> {
 
   private static final long serialVersionUID = 1L;
 
-  public final String computeName() {
-    String language = Language.getLanguage();
-    String name = this.computeName(language);
-    if (!name.equals("") || language.equals("en")) {
-      return name;
-    }
-    return this.computeName("en");
-  }
-
-
-  private final String computeName(String language) {
+  public final String computeName(String language) {
     String name = this.computeName(language, "name");
     if (!name.equals("")) {
       return name;
