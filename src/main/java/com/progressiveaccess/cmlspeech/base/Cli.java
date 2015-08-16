@@ -118,7 +118,9 @@ public final class Cli {
                       + "separated list. Currently available heuristics:"
                       + " type, weight, size");
     // Internationlisation
-    options.addOption("i", "int", true, "Language name; defaults to english");
+    options.addOption("i", "int", true, "Languages; a comma separated list of"
+                      + " iso-639 language. By default all available languages"
+                      + " will be created.");
 
     final CommandLineParser parser = new BasicParser();
     try {

@@ -28,6 +28,7 @@
 package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.speech.Languages;
 
 /**
  * Client for the structure visitor.
@@ -62,6 +63,7 @@ public class SreStructure {
   public SreAnnotations getAnnotations() {
     SreAnnotations annotations = visitor.getAnnotations();
     annotations.complete();
+    Languages.append(annotations);
     return annotations;
   }
 

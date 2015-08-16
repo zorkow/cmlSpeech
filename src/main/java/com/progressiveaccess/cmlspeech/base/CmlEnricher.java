@@ -36,7 +36,7 @@ import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
 import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
-import com.progressiveaccess.cmlspeech.speech.Language;
+import com.progressiveaccess.cmlspeech.speech.Languages;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
@@ -94,7 +94,7 @@ public class CmlEnricher {
     this.analyseMolecule();
     this.nameAtomSets();
     this.appendAtomSets();
-    Language.reset(Cli.getOptionValue("int"));
+    Languages.set(Cli.getOptionValue("int"));
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().getPrefix(),

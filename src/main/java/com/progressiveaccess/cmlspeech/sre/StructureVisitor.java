@@ -14,8 +14,8 @@
 
 /**
  * @file StructureVisitor.java
- * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker
- *         Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date Sat Apr 25 23:36:58 2015
  *
  * @brief Visitor to construct the exploration structure.
@@ -37,7 +37,7 @@ import com.progressiveaccess.cmlspeech.connection.ConnectionComparator;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
-import com.progressiveaccess.cmlspeech.speech.Language;
+import com.progressiveaccess.cmlspeech.speech.Languages;
 import com.progressiveaccess.cmlspeech.speech.SpeechVisitor;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
@@ -70,10 +70,6 @@ public class StructureVisitor implements XmlVisitor {
   private RichAtomSet context = null;
   private ComponentsPositions positions = null;
   private final TypeVisitor typeVisitor = new TypeVisitor();
-  private final SpeechVisitor expertSpeechVisitor =
-      Language.getExpertSpeechVisitor();
-  private final SpeechVisitor simpleSpeechVisitor =
-      Language.getSimpleSpeechVisitor();
   private boolean internal = false;
 
 
@@ -458,10 +454,12 @@ public class StructureVisitor implements XmlVisitor {
    * @param structure
    *          The structural element.
    */
-  private void addSpeechAttribute(final SreElement structure) {
-    structure.addAttribute(
-        new SreAttribute(SreNamespace.Attribute.SPEECH,
-            this.expertSpeechVisitor.getSpeech()));
+  private void addSpeechAttribute(final SreElement structure,
+                                  final String speech) {
+    if (speech != "") {
+      structure.addAttribute(
+          new SreAttribute(SreNamespace.Attribute.SPEECH, speech));
+    }
   }
 
 
@@ -471,8 +469,8 @@ public class StructureVisitor implements XmlVisitor {
    * @param structure
    *          The structural element.
    */
-  private void addSimpleSpeechAttribute(final SreElement structure) {
-    String speech = this.simpleSpeechVisitor.getSpeech();
+  private void addSimpleSpeechAttribute(final SreElement structure,
+                                        final String speech) {
     if (speech != "") {
       structure.addAttribute(
           new SreAttribute(SreNamespace.Attribute.SPEECH2,
@@ -489,14 +487,12 @@ public class StructureVisitor implements XmlVisitor {
    */
   private void addSpeech(final XmlVisitable visitable) {
     if (Cli.hasOption("r")) {
-      this.expertSpeechVisitor.setContextPositions(this.positions);
-      visitable.accept(this.expertSpeechVisitor);
-      this.addSpeechAttribute(this.element);
+      this.addSpeechAttribute(this.element,
+          Languages.expertSpeech(visitable, this.positions));
     }
     if (Cli.hasOption("r0")) {
-      this.simpleSpeechVisitor.setContextPositions(this.positions);
-      visitable.accept(this.simpleSpeechVisitor);
-      this.addSimpleSpeechAttribute(this.element);
+      this.addSimpleSpeechAttribute(this.element,
+          Languages.simpleSpeech(visitable, this.positions));
     }
   }
 
