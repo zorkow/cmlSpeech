@@ -25,28 +25,28 @@
 //
 package com.progressiveaccess.cmlspeech.speech;
 
-import java.util.HashMap;
-
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 import com.progressiveaccess.cmlspeech.sre.SreMessages;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 
+
 /**
  * Generates messages in all given languages and combines them in a final
  * message element.
  */
-
 public final class Languages {
 
   private static String MSG_PREFIX = "SRE_MSG_";
     
-  private static String[] languages = {};
+  private static PriorityQueue<String> languages = new PriorityQueue<>();
   // TODO: (sorge) This could be written as an object pool with reusing existing
   // hashmaps.
-  private static Map<String, SreMessages> messages = new HashMap<>();
+  private static Map<String, SreMessages> messages = new TreeMap<>();
   private static Integer msgCounter = 0;
   
   
@@ -59,16 +59,22 @@ public final class Languages {
   public static void set(String languages) {
     if (languages == null) {
       // Here get all existing languages!
-      Languages.languages = new String[]{IsoTable.lookup(languages)};
+      Languages.languages = IsoTable.existing();
     } else {
-      Languages.languages = languages.split(",");
+      for (String language : languages.split(",")) {
+        String iso = IsoTable.lookup(language);
+        if (IsoTable.implemented(iso)) {
+          Languages.languages.add(iso);
+        }
+      }
+    }
+    if (Languages.languages.size() == 0) {
+      Languages.languages.add("en");
+    }
+    for (String language : Languages.languages) {
+      Languages.messages.put(language, new SreMessages(language));
     }
     msgCounter = 0;
-    for (String language : Languages.languages) {
-      String iso = IsoTable.lookup(language);
-      // Reduce to existing languages only!
-      Languages.messages.put(iso, new SreMessages(iso));
-    }
   }
 
   
@@ -102,8 +108,8 @@ public final class Languages {
   
   // TODO: (sorge) Consolidate the same message values?
   public static void append(SreElement element) {
-    for (SreMessages value : Languages.messages.values()) {
-      element.appendChild(value.toXml());
+    for (String key : Languages.messages.keySet()) {
+      element.appendChild(Languages.messages.get(key).toXml());
     }
   }
   
