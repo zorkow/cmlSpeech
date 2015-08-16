@@ -14,25 +14,29 @@
 
 /**
  * @file   Languages.java
- * @author Volker Sorge<a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
+ * @author Volker Sorge
+ *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug 16 18:00:20 2015
- * 
+ *
  * @brief Class that takes care of the generation of messages in all languages.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.speech;
+
+import com.progressiveaccess.cmlspeech.base.Logger;
+import com.progressiveaccess.cmlspeech.sre.SreElement;
+import com.progressiveaccess.cmlspeech.sre.SreMessages;
+import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
+import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
-
-import com.progressiveaccess.cmlspeech.sre.SreMessages;
-import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
-import com.progressiveaccess.cmlspeech.sre.SreElement;
-import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
+import java.util.concurrent.Callable;
 
 
 /**
@@ -41,27 +45,30 @@ import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
  */
 public final class Languages {
 
-  private static String MSG_PREFIX = "SRE_MSG_";
-    
+  private static final String MSG_PREFIX = "SRE_MSG_";
+
   private static PriorityQueue<String> languages = new PriorityQueue<>();
-  // TODO: (sorge) This could be written as an object pool with reusing existing
-  // hashmaps.
   private static Map<String, SreMessages> messages = new TreeMap<>();
   private static Integer msgCounter = 0;
-  
-  
+
+
   /** Dummy constructor. */
   private Languages() {
     throw new AssertionError("Instantiating utility class...");
   }
 
 
-  public static void set(String languages) {
-    if (languages == null) {
-      // Here get all existing languages!
+  /**
+   * Sets the languages for which speech output will be creates.
+   *
+   * @param langs
+   *          A string with a comma seperated list of languages.
+   */
+  public static void set(final String langs) {
+    if (langs == null) {
       Languages.languages = IsoTable.existing();
     } else {
-      for (String language : languages.split(",")) {
+      for (String language : langs.split(",")) {
         String iso = IsoTable.lookup(language);
         if (IsoTable.implemented(iso)) {
           Languages.languages.add(iso);
@@ -77,13 +84,68 @@ public final class Languages {
     msgCounter = 0;
   }
 
-  
-  public static String expertSpeech(XmlVisitable visitable,
-                                    ComponentsPositions positions) {
+
+  /**
+   * Generates expert speech output.
+   *
+   * @param visitable
+   *          The element for which speech is produced.
+   * @param positions
+   *          The position of the context in which element lives.
+   *
+   * @return The abstract message string for the generated speech.
+   */
+  public static String expertSpeech(final XmlVisitable visitable,
+                                    final ComponentsPositions positions) {
+    return Languages.speech(visitable, positions,
+                            () -> { return Language.getExpertSpeechVisitor(); }
+                            );
+  }
+
+
+  /**
+   * Generates simple speech output.
+   *
+   * @param visitable
+   *          The element for which speech is produced.
+   * @param positions
+   *          The position of the context in which element lives.
+   *
+   * @return The abstract message string for the generated speech.
+   */
+  public static String simpleSpeech(final XmlVisitable visitable,
+                                    final ComponentsPositions positions) {
+    return Languages.speech(visitable, positions,
+                            () -> { return Language.getSimpleSpeechVisitor(); }
+                            );
+  }
+
+
+  /**
+   * Generates speech output.
+   *
+   * @param visitable
+   *          The element for which speech is produced.
+   * @param positions
+   *          The position of the context in which element lives.
+   * @param caller
+   *          A lambda expression that produces a speech visitor.
+   *
+   * @return The abstract message string for the generated speech.
+   */
+  private static String speech(final XmlVisitable visitable,
+                               final ComponentsPositions positions,
+                               final Callable<SpeechVisitor> caller) {
     String msg = MSG_PREFIX + msgCounter++;
     for (String language : Languages.messages.keySet()) {
+      SpeechVisitor visitor;
       Language.reset(language);
-      SpeechVisitor visitor = Language.getExpertSpeechVisitor();
+      try {
+        visitor = caller.call();
+      } catch (Exception e) {
+        Logger.error("Unknown visitor for language " + language);
+        continue;
+      }
       visitor.setContextPositions(positions);
       visitable.accept(visitor);
       Languages.messages.get(language).put(msg, visitor.getSpeech());
@@ -91,26 +153,18 @@ public final class Languages {
     return msg;
   }
 
-  
-  public static String simpleSpeech(XmlVisitable visitable,
-                                    ComponentsPositions positions) {
-    String msg = MSG_PREFIX + msgCounter++;
-    for (String language : Languages.messages.keySet()) {
-      Language.reset(language);
-      SpeechVisitor visitor = Language.getSimpleSpeechVisitor();
-      visitor.setContextPositions(positions);
-      visitable.accept(visitor);
-      Languages.messages.get(language).put(msg, visitor.getSpeech());
-    }
-    return msg;
-  }
 
-  
-  // TODO: (sorge) Consolidate the same message values?
-  public static void append(SreElement element) {
+  /**
+   * Appends the message nodes to the given element.
+   *
+   * @param element
+   *          Messages are appended as children to this element.
+   */
+  // TODO (sorge) Consolidate the same message values?
+  public static void append(final SreElement element) {
     for (String key : Languages.messages.keySet()) {
       element.appendChild(Languages.messages.get(key).toXml());
     }
   }
-  
+
 }

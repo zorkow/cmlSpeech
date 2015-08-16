@@ -38,7 +38,6 @@ import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
 import com.progressiveaccess.cmlspeech.speech.Languages;
-import com.progressiveaccess.cmlspeech.speech.SpeechVisitor;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
@@ -453,6 +452,8 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @param structure
    *          The structural element.
+   * @param speech
+   *          The speech string to add as attribute.
    */
   private void addSpeechAttribute(final SreElement structure,
                                   final String speech) {
@@ -468,6 +469,8 @@ public class StructureVisitor implements XmlVisitor {
    *
    * @param structure
    *          The structural element.
+   * @param speech
+   *          The speech string to add as attribute.
    */
   private void addSimpleSpeechAttribute(final SreElement structure,
                                         final String speech) {

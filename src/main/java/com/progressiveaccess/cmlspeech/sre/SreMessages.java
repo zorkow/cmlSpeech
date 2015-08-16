@@ -17,13 +17,14 @@
  * @author Volker Sorge
  *          <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun Aug 16 17:37:20 2015
- * 
+ *
  * @brief  Storage for language specific message components.
- * 
- * 
+ *
+ *
  */
 
 //
+
 package com.progressiveaccess.cmlspeech.sre;
 
 import java.util.TreeMap;
@@ -37,11 +38,20 @@ public class SreMessages extends TreeMap<String, String> {
 
   private String language;
 
-  public SreMessages(String language) {
+  /**
+   * Constructor for message tables.
+   *
+   * @param language
+   *          The language of the table.
+   */
+  public SreMessages(final String language) {
     this.language = language;
   }
 
 
+  /**
+   * @return Xml version of the table.
+   */
   public final SreElement toXml() {
     SreElement xml = new SreElement(SreNamespace.Tag.MESSAGES);
     xml.appendChild(new SreElement(SreNamespace.Tag.LANGUAGE, this.language));
@@ -52,5 +62,5 @@ public class SreMessages extends TreeMap<String, String> {
     }
     return xml;
   }
-  
+
 }

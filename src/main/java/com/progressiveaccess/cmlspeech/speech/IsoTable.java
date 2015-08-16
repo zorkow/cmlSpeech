@@ -292,8 +292,8 @@ public final class IsoTable {
     }
   }
 
-  
-  /** 
+
+  /**
    * @return A list of iso names for all existing languages.
    */
   public static PriorityQueue<String> existing() {
@@ -301,10 +301,10 @@ public final class IsoTable {
     Integer index = 0;
     for (String language : ISO_TABLE.values()) {
       if (IsoTable.implemented(language)) {
-      result.add(language);
+        result.add(language);
       }
     }
     return result;
   }
-  
+
 }
