@@ -78,6 +78,7 @@ public class StructuralFormula {
     }
   }
 
+
   // TODO (sorge) The complex formula for the molecule does not work properly.
   /**
    * Computes a structural formula using a Structural Analysis.
@@ -98,6 +99,7 @@ public class StructuralFormula {
       this.computeRichAtomSet(richAtomSet);
     }
   }
+
 
   /**
    * Computes the structural formula for a RichAtomSet.
@@ -130,6 +132,7 @@ public class StructuralFormula {
       }
     }
   }
+
 
   /**
    * Adds a substructure to the structuralFormula to be printed.
@@ -167,6 +170,7 @@ public class StructuralFormula {
 
   }
 
+
   /**
    * Method to print atoms which are in a subStructure and not part of a atom
    * set or connected to an atom set.
@@ -195,6 +199,7 @@ public class StructuralFormula {
       }
     }
   }
+
 
   /**
    * Adds the atom and its Hydrogens to the structuralFormula.
@@ -249,6 +254,7 @@ public class StructuralFormula {
       this.appendAtom(currentAtom);
     }
   }
+
 
   /**
    * Gets the subscript for the inserted number.

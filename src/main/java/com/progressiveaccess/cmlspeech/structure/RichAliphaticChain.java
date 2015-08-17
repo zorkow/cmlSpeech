@@ -118,7 +118,7 @@ public class RichAliphaticChain extends RichAtomSet {
       }
       final IAtom nextLeft = this.chooseNext(visited, currentLeft);
       final IAtom nextRight = this.chooseNext(visited, currentRight);
-      // TODO sorge Add stereo chemistry here!
+      // TODO sorge Add stereo chemistry here?
       if (internal == 0) {
         if (structure.getBond(currentLeft, nextLeft).getOrder()
             != IBond.Order.SINGLE) {

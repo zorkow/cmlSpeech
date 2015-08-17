@@ -110,8 +110,7 @@ public class FunctionalGroups {
       // patterns in the file
       Logger.error("SMARTS Error: " + name);
     } catch (final CDKException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Logger.error("CDK error when matching SMARTS: " + name);
     }
   }
 
