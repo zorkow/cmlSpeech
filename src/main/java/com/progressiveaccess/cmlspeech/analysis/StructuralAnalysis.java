@@ -215,7 +215,7 @@ public class StructuralAnalysis {
       RichStructureHelper.setRichAtomSet(set);
       set.setName(key.split("-")[0]);
       Logger.logging(set.getName() + ": " + container.getAtomCount() + " atoms "
-          + container.getBondCount() + " bonds");
+          + container.getBondCount() + " bonds\n");
     }
   }
 

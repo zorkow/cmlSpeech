@@ -146,7 +146,8 @@ public class FunctionalGroupsFilter {
       if (size != 0) {
         return size;
       }
-      return Integer.compare(name1.length(), name2.length());
+      size = Integer.compare(name1.length(), name2.length());
+      return size != 0 ? size : -1;
     }
   }
 
