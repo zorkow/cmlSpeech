@@ -3,7 +3,7 @@
         <sre:annotation>
             <sre:atom sre:type="Carbon">a1</sre:atom>
             <sre:parents>
-                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:neighbours>
@@ -172,39 +172,6 @@
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation>
-            <sre:atom sre:type="Carbon">a5</sre:atom>
-            <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
-            </sre:parents>
-            <sre:position>1</sre:position>
-            <sre:component>
-                <sre:bond>b8</sre:bond>
-            </sre:component>
-            <sre:neighbours>
-                <sre:neighbour sre:location="external">
-                    <sre:atom sre:type="Carbon">a2</sre:atom>
-                    <sre:via sre:type="Connecting bond">
-                        <sre:bond sre:type="single">b3</sre:bond>
-                        <sre:position>0</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:location="external">
-                    <sre:atom sre:type="Carbon">a6</sre:atom>
-                    <sre:via sre:type="Connecting bond">
-                        <sre:bond sre:type="double">b4</sre:bond>
-                        <sre:position>0</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-                <sre:neighbour sre:location="internal">
-                    <sre:atom sre:type="Oxygen">a9</sre:atom>
-                    <sre:via sre:type="Connecting bond">
-                        <sre:bond sre:type="single">b8</sre:bond>
-                        <sre:position>2</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-            </sre:neighbours>
-        </sre:annotation>
-        <sre:annotation>
             <sre:atom sre:type="Carbon">a6</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
@@ -295,18 +262,15 @@
         <sre:annotation>
             <sre:atom sre:type="Oxygen">a9</sre:atom>
             <sre:parents>
-                <sre:atomSet>as3</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
-            <sre:position>2</sre:position>
-            <sre:component>
-                <sre:bond>b8</sre:bond>
-            </sre:component>
+            <sre:position>1</sre:position>
             <sre:neighbours>
-                <sre:neighbour sre:location="internal">
+                <sre:neighbour sre:location="external">
                     <sre:atom sre:type="Carbon">a5</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b8</sre:bond>
-                        <sre:position>1</sre:position>
+                        <sre:position>0</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
@@ -504,9 +468,9 @@
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour>
-                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
-                    <sre:via sre:type="Shared atom">
-                        <sre:atom sre:type="Carbon">a5</sre:atom>
+                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b8</sre:bond>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
@@ -514,6 +478,28 @@
         </sre:annotation>
         <sre:annotation>
             <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as5</sre:atomSet>
+            </sre:parents>
+            <sre:position>4</sre:position>
+            <sre:children>
+                <sre:atom>a9</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a9</sre:atom>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour>
+                    <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b8</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation>
+            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
             <sre:parents>
                 <sre:atomSet>as5</sre:atomSet>
             </sre:parents>
@@ -529,31 +515,6 @@
                     <sre:atomSet sre:type="Functional group">as4</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
-                        <sre:position>1</sre:position>
-                    </sre:via>
-                </sre:neighbour>
-            </sre:neighbours>
-        </sre:annotation>
-        <sre:annotation>
-            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
-            <sre:parents>
-                <sre:atomSet>as5</sre:atomSet>
-            </sre:parents>
-            <sre:position>4</sre:position>
-            <sre:children>
-                <sre:atom>a5</sre:atom>
-                <sre:atom>a9</sre:atom>
-            </sre:children>
-            <sre:component>
-                <sre:atom>a5</sre:atom>
-                <sre:atom>a9</sre:atom>
-                <sre:bond>b8</sre:bond>
-            </sre:component>
-            <sre:neighbours>
-                <sre:neighbour>
-                    <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
-                    <sre:via sre:type="Shared atom">
-                        <sre:atom sre:type="Carbon">a5</sre:atom>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
@@ -589,7 +550,7 @@
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour>
-                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b5</sre:bond>
                         <sre:position>3</sre:position>
