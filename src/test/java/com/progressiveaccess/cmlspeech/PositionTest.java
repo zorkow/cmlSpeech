@@ -185,6 +185,8 @@ public class PositionTest {
         new String[] {"a7", "a3", "a5", "a2", "a4", "a6"});
     this.comparePositions("rings_ext/ring_ext7.mol", "as1",
         new String[] {"a6", "a7", "a3", "a5", "a2", "a4"});
+    this.comparePositions("rings_ext/ring_ext8.mol", "as1",
+        new String[] {"a6", "a3", "a2", "a1", "a9", "a8"});
   }
 
 
@@ -263,7 +265,7 @@ public class PositionTest {
     this.comparePaths("molecule/book1-006-03.mol", "as4",
         new String[] {"as1", "as2", "as3"});
     this.comparePaths("molecule/book1-012-00.mol", "as5",
-        new String[] {"as1", "as4", "as2", "as3"});
+        new String[] {"as1", "as4", "as3", "as2"});
     this.comparePaths("molecule/aspirin.mol", "as4",
         new String[] {"as1", "as3", "as2"});
     this.comparePaths("molecule/US06358966-20020319-C00001.mol", "as11",
