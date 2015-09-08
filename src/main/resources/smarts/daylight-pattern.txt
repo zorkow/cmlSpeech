@@ -146,9 +146,12 @@ N-Oxide: [$([#7+][OX1-]),$([#7v5]=[OX1]);!$([#7](~[O])~[O]);!$([#7]=[#7])]
 
 
 
-Hydroxyl: [OX2H]
+Hydroxyl: [O;H1]
+# Removed due to Phenol problem.
+# [OX2H]
 
-Hydroxyl in Alcohol: [#6][OX2H]
+# Removed due to Phenol problem.
+# Hydroxyl in Alcohol: [#6][OX2H]
 
 Hydroxyl in Carboxylic Acid: [OX2H][CX3]=[OX1]
 
@@ -158,7 +161,8 @@ Enol: [OX2H][#6X3]=[#6]
 
 Phenol: [OX2H][cX3]:[c]
 
-Enol or Phenol: [OX2H][$(C=C),$(cc)]
+# Removed due to Phenol problem.
+# Enol or Phenol: [OX2H][$(C=C),$(cc)]
 
 Hydroxyl Acidic: [$([OH]-*=[!#6])]
 Peroxide groups: [OX2,OX1-][OX2,OX1-]
