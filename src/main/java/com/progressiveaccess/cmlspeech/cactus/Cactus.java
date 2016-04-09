@@ -73,7 +73,7 @@ public final class Cactus {
     BufferedReader br = null;
     final List<String> lines = new ArrayList<>();
     try {
-      url = new URL("http://cactus.nci.nih.gov/chemical/structure/" + input
+      url = new URL("https://cactus.nci.nih.gov/chemical/structure/" + input
           + "/" + output);
       br = new BufferedReader(new InputStreamReader(url.openStream()));
       while (br.ready()) {
