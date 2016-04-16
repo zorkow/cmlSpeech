@@ -205,7 +205,9 @@ public class CmlEnricher {
     if (Cli.hasOption("struct")) {
       SreStructure sreStructure = new SreStructure();
       SreElement annotation = sreStructure.getAnnotations();
-      this.annotateLanguages(annotation);
+      if (Cli.hasOption("r") || Cli.hasOption("r0")) {
+        this.annotateLanguages(annotation);
+      }
       if (!Cli.hasOption("nh")) {
         HydrogenAdder.reattach(this.doc, annotation);
       }
