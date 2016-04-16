@@ -50,7 +50,7 @@ public class ExpertSpeechTest extends AnnotationTest {
   @Override
   public String[] getParameters() {
     final String[] parameters =
-        {"-ao", "-t", "-r", "-i", "english", "-nn", "-nh"};
+        {"-ao", "-t", "-r", "-i", "english", "-nn", "-nh", "-ia"};
     return parameters;
   }
 

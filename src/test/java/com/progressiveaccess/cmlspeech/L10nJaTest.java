@@ -50,7 +50,7 @@ public class L10nJaTest extends AnnotationTest {
   @Override
   public String[] getParameters() {
     final String[] parameters =
-        {"-ao", "-t", "-r", "-r0", "-i", "japanese", "-nn"};    
+        {"-ao", "-t", "-r", "-r0", "-i", "japanese", "-nn", "-ia"};
     return parameters;
   }
 
