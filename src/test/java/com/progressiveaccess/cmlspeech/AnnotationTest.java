@@ -110,7 +110,9 @@ public abstract class AnnotationTest extends XMLTestCase {
     }
     final String original = readFile("src/test/resources/"
         + this.expectedDirectory() + "/" + name + "-enr.cml");
+    System.out.println(original);
     final String revised = readFile(name + "-enr.cml");
+    System.out.println(revised);
     try {
       this.assertXMLEqual(name, original, revised);
     } catch (final Exception e) {
