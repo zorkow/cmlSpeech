@@ -67,23 +67,26 @@ public class CmlEnricher {
 
   private Document doc;
   private IAtomContainer molecule;
+  private String fileName;
   private final CactusExecutor executor = new CactusExecutor();
   private final SpiderExecutor sexecutor = new SpiderExecutor();
+  
 
-
+  public CmlEnricher(final String fileName) {
+    this.fileName = fileName;
+  }
+  
+  
   /**
    * Convenience method to enrich a CML file. Does all the error catching.
-   *
-   * @param fileName
-   *          File to enrich.
    */
-  public void enrichFile(final String fileName) {
-    this.loadMolecule(fileName);
+  public void enrichFile() {
+    this.loadMolecule();
     if (Cli.hasOption("c")) {
       try {
-        FileHandler.writeFile(this.doc, fileName, "simple");
+        FileHandler.writeFile(this.doc, this.fileName, "simple");
       } catch (final IOException e) {
-        Logger.error("IO error: Can't write " + fileName + "\n");
+        Logger.error("IO error: Can't write " + this.fileName + "\n");
         e.printStackTrace();
       } catch (final CDKException e) {
         Logger.error("Not a valid CDK structure to write: " + e.getMessage()
@@ -103,9 +106,10 @@ public class CmlEnricher {
       this.removeNonAnnotations();
     }
     try {
-      FileHandler.writeFile(this.doc, fileName, "enr");
+      FileHandler.writeFile(this.doc, this.fileName, "enr");
     } catch (final IOException e) {
-      Logger.error("IO error: Can't write enriched file " + fileName + "\n");
+      Logger.error("IO error: Can't write enriched file "
+                   + this.fileName + "\n");
       e.printStackTrace();
     } catch (final CDKException e) {
       Logger.error("Not a valid CDK structure to write: " + e.getMessage()
@@ -121,20 +125,17 @@ public class CmlEnricher {
     }
   }
 
-
+  
   /**
    * Loads a molecule and initiates the CML document.
-   *
-   * @param fileName
-   *          The input filename.
    */
-  public void loadMolecule(final String fileName) {
+  public void loadMolecule() {
     try {
-      this.molecule = FileHandler.readFile(fileName);
+      this.molecule = FileHandler.readFile(this.fileName);
       this.doc = FileHandler.buildXom(this.molecule);
     } catch (IOException | CDKException | ParsingException e) {
       Logger.error("IO error: " + e.getMessage() + " Can't load file "
-          + fileName + "\n");
+          + this.fileName + "\n");
       e.printStackTrace();
       System.exit(0);
     }
@@ -225,7 +226,7 @@ public class CmlEnricher {
       return;
     }
     if (Cli.hasOption("int_files")) {
-      Languages.toFile("testing");
+      Languages.toFile(this.fileName);
       if (!Cli.hasOption("int_msg")) {
         return;
       }
