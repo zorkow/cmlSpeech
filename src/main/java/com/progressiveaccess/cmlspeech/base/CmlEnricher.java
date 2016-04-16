@@ -111,7 +111,7 @@ public class CmlEnricher {
       Logger.error("Not a valid CDK structure to write: " + e.getMessage()
           + "\n");
       e.printStackTrace();
-    }
+    } 
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
@@ -204,11 +204,33 @@ public class CmlEnricher {
     if (Cli.hasOption("struct")) {
       SreStructure sreStructure = new SreStructure();
       SreElement annotation = sreStructure.getAnnotations();
+      this.annotateLanguages(annotation);
       if (!Cli.hasOption("nh")) {
         HydrogenAdder.reattach(this.doc, annotation);
       }
       this.doc.getRootElement().appendChild(annotation);
     }
+  }
+
+
+  /**
+   * Adds speech language annotations for the molecule.
+   *
+   * @param annotation
+   *          The annotation element.
+   */
+  public void annotateLanguages(final SreElement annotation) {
+    if (Cli.hasOption("int_attr")) {
+      Languages.replace(annotation);
+      return;
+    }
+    if (Cli.hasOption("int_files")) {
+      Languages.toFile("testing");
+      if (!Cli.hasOption("int_msg")) {
+        return;
+      }
+    }
+    Languages.append(annotation);
   }
 
 

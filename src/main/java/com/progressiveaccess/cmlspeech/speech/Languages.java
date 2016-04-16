@@ -27,12 +27,20 @@
 
 package com.progressiveaccess.cmlspeech.speech;
 
+import com.progressiveaccess.cmlspeech.base.FileHandler;
 import com.progressiveaccess.cmlspeech.base.Logger;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreMessages;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitable;
 import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 
+import nu.xom.Attribute;
+import nu.xom.Document;
+import nu.xom.Elements;
+import org.openscience.cdk.exception.CDKException;
+
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
@@ -164,6 +172,69 @@ public final class Languages {
   public static void append(final SreElement element) {
     for (String key : Languages.messages.keySet()) {
       element.appendChild(Languages.messages.get(key).toXml());
+    }
+  }
+
+
+  /**
+   * Replaces message statement in the element with the actual speech strings.
+   *
+   * @param element
+   *          The annotation element of the molecule.
+   */
+  public static void replace(final SreElement element) {
+    Iterator<SreMessages> iter = Languages.messages.values().iterator();
+    if (iter.hasNext()) {
+      SreMessages language = iter.next();
+      Languages.replace(element, language);
+    }
+  }
+
+
+  /**
+   * Replaces message statement in the element with the actual speech strings.
+   *
+   * @param element
+   *          The annotation element of the molecule.
+   * @param language
+   *          The language messages.
+   */
+  private static void replace(final SreElement element,
+                              final SreMessages language) {
+    for (Integer i = 0; i < element.getAttributeCount(); i++) {
+      Attribute attribute = element.getAttribute(i);
+      String value = language.get(attribute.getValue());
+      if (value != null) {
+        attribute.setValue(value);
+      }
+    }
+    Elements elements = element.getChildElements();
+    for (Integer i = 0; i < elements.size(); i++) {
+      Languages.replace((SreElement) elements.get(i), language);
+    }
+  }
+
+
+  /**
+   * Writes localised messages to separate output files with iso language
+   * extension.
+   *
+   * @param fileName
+   *          The base filename.
+   */
+  public static void toFile(final String fileName) {
+    for (String key : Languages.messages.keySet()) {
+      Document xml = new Document(Languages.messages.get(key).toXml());
+      try {
+        FileHandler.writeFile(xml, fileName, key);
+      } catch (final IOException e) {
+        Logger.error("IO error: Can't write " + fileName + "-" + key + "\n");
+        e.printStackTrace();
+      } catch (final CDKException e) {
+        Logger.error("Not a valid Message structure to write: " + e.getMessage()
+            + "\n");
+        e.printStackTrace();
+      }
     }
   }
 

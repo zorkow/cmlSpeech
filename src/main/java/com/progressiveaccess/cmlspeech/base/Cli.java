@@ -121,6 +121,13 @@ public final class Cli {
     options.addOption("i", "int", true, "Languages; a comma separated list of"
                       + " iso-639 language. By default all available languages"
                       + " will be created.");
+    options.addOption("if", "int_files", false, "Create one XML message file"
+                      + " per language.");
+    options.addOption("ia", "int_attr", false, "Inserts speech strings as"
+                      + " attributes into exploration structure. Will only use"
+                      + " the alphabetically first language.");
+    options.addOption("im", "int_msg", false, "Inserts all languages into"
+                      + " exploration structure. Default behaviour");
 
     final CommandLineParser parser = new BasicParser();
     try {
