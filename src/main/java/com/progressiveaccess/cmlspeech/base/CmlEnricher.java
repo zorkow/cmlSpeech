@@ -70,29 +70,26 @@ public class CmlEnricher {
   private String fileName;
   private final CactusExecutor executor = new CactusExecutor();
   private final SpiderExecutor sexecutor = new SpiderExecutor();
-  
 
+
+  /** 
+   * Constructor.
+   * 
+   * @param fileName
+   *          Name of file containing the molecule to be enriched.
+   */
   public CmlEnricher(final String fileName) {
     this.fileName = fileName;
   }
-  
-  
+
+
   /**
    * Convenience method to enrich a CML file. Does all the error catching.
    */
   public void enrichFile() {
     this.loadMolecule();
     if (Cli.hasOption("c")) {
-      try {
-        FileHandler.writeFile(this.doc, this.fileName, "simple");
-      } catch (final IOException e) {
-        Logger.error("IO error: Can't write " + this.fileName + "\n");
-        e.printStackTrace();
-      } catch (final CDKException e) {
-        Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-            + "\n");
-        e.printStackTrace();
-      }
+      FileHandler.writeXom(this.doc, this.fileName, "simple");
     }
     this.analyseMolecule();
     this.nameAtomSets();
@@ -105,17 +102,7 @@ public class CmlEnricher {
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }
-    try {
-      FileHandler.writeFile(this.doc, this.fileName, "enr");
-    } catch (final IOException e) {
-      Logger.error("IO error: Can't write enriched file "
-                   + this.fileName + "\n");
-      e.printStackTrace();
-    } catch (final CDKException e) {
-      Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-          + "\n");
-      e.printStackTrace();
-    } 
+    FileHandler.writeXom(this.doc, this.fileName, "enr");
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
@@ -125,7 +112,7 @@ public class CmlEnricher {
     }
   }
 
-  
+
   /**
    * Loads a molecule and initiates the CML document.
    */
