@@ -53,8 +53,8 @@ public final class Languages {
 
   private static final String MSG_PREFIX = "SRE_MSG_";
 
-  private static final PriorityQueue<String> languages = new PriorityQueue<>();
-  private static final Map<String, SreMessages> messages = new TreeMap<>();
+  private static final PriorityQueue<String> LANGUAGES = new PriorityQueue<>();
+  private static final Map<String, SreMessages> MESSAGES = new TreeMap<>();
   private static Integer msgCounter = 0;
 
 
@@ -68,11 +68,11 @@ public final class Languages {
    * Clears internal state.
    */
   public static void clear() {
-    Languages.messages.clear();
-    Languages.languages.clear();
+    Languages.MESSAGES.clear();
+    Languages.LANGUAGES.clear();
     Languages.msgCounter = 0;
   }
-  
+
 
   /**
    * Sets the languages for which speech output will be creates.
@@ -83,20 +83,20 @@ public final class Languages {
   public static void set(final String langs) {
     Languages.clear();
     if (langs == null) {
-      Languages.languages.addAll(IsoTable.existing());
+      Languages.LANGUAGES.addAll(IsoTable.existing());
     } else {
       for (String language : langs.split(",")) {
         String iso = IsoTable.lookup(language);
         if (IsoTable.implemented(iso)) {
-          Languages.languages.add(iso);
+          Languages.LANGUAGES.add(iso);
         }
       }
     }
-    if (Languages.languages.size() == 0) {
-      Languages.languages.add("en");
+    if (Languages.LANGUAGES.size() == 0) {
+      Languages.LANGUAGES.add("en");
     }
-    for (String language : Languages.languages) {
-      Languages.messages.put(language, new SreMessages(language));
+    for (String language : Languages.LANGUAGES) {
+      Languages.MESSAGES.put(language, new SreMessages(language));
     }
   }
 
@@ -153,7 +153,7 @@ public final class Languages {
                                final ComponentsPositions positions,
                                final Callable<SpeechVisitor> caller) {
     String msg = MSG_PREFIX + msgCounter++;
-    for (String language : Languages.messages.keySet()) {
+    for (String language : Languages.MESSAGES.keySet()) {
       SpeechVisitor visitor;
       Language.reset(language);
       try {
@@ -164,7 +164,7 @@ public final class Languages {
       }
       visitor.setContextPositions(positions);
       visitable.accept(visitor);
-      Languages.messages.get(language).put(msg, visitor.getSpeech());
+      Languages.MESSAGES.get(language).put(msg, visitor.getSpeech());
     }
     return msg;
   }
@@ -178,8 +178,8 @@ public final class Languages {
    */
   // TODO (sorge) Consolidate the same message values?
   public static void append(final SreElement element) {
-    for (String key : Languages.messages.keySet()) {
-      element.appendChild(Languages.messages.get(key).toXml());
+    for (String key : Languages.MESSAGES.keySet()) {
+      element.appendChild(Languages.MESSAGES.get(key).toXml());
     }
   }
 
@@ -191,7 +191,7 @@ public final class Languages {
    *          The annotation element of the molecule.
    */
   public static void replace(final SreElement element) {
-    Iterator<SreMessages> iter = Languages.messages.values().iterator();
+    Iterator<SreMessages> iter = Languages.MESSAGES.values().iterator();
     if (iter.hasNext()) {
       SreMessages language = iter.next();
       Languages.replace(element, language);
@@ -231,8 +231,8 @@ public final class Languages {
    *          The base filename.
    */
   public static void toFile(final String fileName) {
-    for (String key : Languages.messages.keySet()) {
-      Document xml = new Document(Languages.messages.get(key).toXml());
+    for (String key : Languages.MESSAGES.keySet()) {
+      Document xml = new Document(Languages.MESSAGES.get(key).toXml());
       FileHandler.writeXom(xml, fileName, key);
     }
   }

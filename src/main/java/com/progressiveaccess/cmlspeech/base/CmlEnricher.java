@@ -72,9 +72,9 @@ public class CmlEnricher {
   private final SpiderExecutor sexecutor = new SpiderExecutor();
 
 
-  /** 
+  /**
    * Constructor.
-   * 
+   *
    * @param fileName
    *          Name of file containing the molecule to be enriched.
    */
