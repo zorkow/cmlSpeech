@@ -37,9 +37,7 @@ import com.progressiveaccess.cmlspeech.structure.ComponentsPositions;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Elements;
-import org.openscience.cdk.exception.CDKException;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -55,8 +53,8 @@ public final class Languages {
 
   private static final String MSG_PREFIX = "SRE_MSG_";
 
-  private static PriorityQueue<String> languages = new PriorityQueue<>();
-  private static Map<String, SreMessages> messages = new TreeMap<>();
+  private static final PriorityQueue<String> languages = new PriorityQueue<>();
+  private static final Map<String, SreMessages> messages = new TreeMap<>();
   private static Integer msgCounter = 0;
 
 
@@ -67,14 +65,24 @@ public final class Languages {
 
 
   /**
+   * Clears internal state.
+   */
+  public static void clear() {
+    Languages.messages.clear();
+    Languages.languages.clear();
+    Languages.msgCounter = 0;
+  }
+  
+
+  /**
    * Sets the languages for which speech output will be creates.
    *
    * @param langs
-   *          A string with a comma seperated list of languages.
+   *          A string with a comma separated list of languages.
    */
   public static void set(final String langs) {
     if (langs == null) {
-      Languages.languages = IsoTable.existing();
+      Languages.languages.addAll(IsoTable.existing());
     } else {
       for (String language : langs.split(",")) {
         String iso = IsoTable.lookup(language);
@@ -89,7 +97,6 @@ public final class Languages {
     for (String language : Languages.languages) {
       Languages.messages.put(language, new SreMessages(language));
     }
-    msgCounter = 0;
   }
 
 
@@ -225,16 +232,7 @@ public final class Languages {
   public static void toFile(final String fileName) {
     for (String key : Languages.messages.keySet()) {
       Document xml = new Document(Languages.messages.get(key).toXml());
-      try {
-        FileHandler.writeFile(xml, fileName, key);
-      } catch (final IOException e) {
-        Logger.error("IO error: Can't write " + fileName + "-" + key + "\n");
-        e.printStackTrace();
-      } catch (final CDKException e) {
-        Logger.error("Not a valid Message structure to write: " + e.getMessage()
-            + "\n");
-        e.printStackTrace();
-      }
+      FileHandler.writeXom(xml, fileName, key);
     }
   }
 
