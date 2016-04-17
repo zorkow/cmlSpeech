@@ -81,6 +81,7 @@ public final class Languages {
    *          A string with a comma separated list of languages.
    */
   public static void set(final String langs) {
+    Languages.clear();
     if (langs == null) {
       Languages.languages.addAll(IsoTable.existing());
     } else {
