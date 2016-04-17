@@ -76,8 +76,9 @@ public class RingTest {
    *          Name of the input file.
    */
   private void loadMolecule(final String input) {
-    final CmlEnricher enricher = new CmlEnricher();
-    enricher.loadMolecule(Paths.get(RingTest.testSources, input).toString());
+    final CmlEnricher enricher = new CmlEnricher
+        (Paths.get(RingTest.testSources, input).toString());
+    enricher.loadMolecule();
     enricher.analyseMolecule();
   }
 
