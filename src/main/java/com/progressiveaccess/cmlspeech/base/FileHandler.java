@@ -137,24 +137,47 @@ public final class FileHandler {
    *          The output document.
    * @param fileName
    *          The base filename.
-   * @param extension
-   *          The additional extension.
    *
    * @throws IOException
    *           Problems with opening output file.
    * @throws CDKException
    *           Problems with writing the CML XOM.
    */
-  public static void writeFile(final Document doc, final String fileName,
-      final String extension)
+  public static void writeFile(final Document doc, final String fileName)
       throws IOException, CDKException {
-    final String basename = FilenameUtils.getBaseName(fileName);
     final OutputStream outFile = new BufferedOutputStream(new FileOutputStream(
-        basename + "-" + extension + ".cml"));
+        fileName + ".cml"));
     final PrintWriter output = new PrintWriter(outFile);
     output.write(XOMUtil.toPrettyXML(doc));
     output.flush();
     output.close();
+  }
+
+
+  /**
+   * Writes a document to a CML file.
+   *
+   * @param doc
+   *          The output document.
+   * @param fileName
+   *          The base filename.
+   * @param extension
+   *          The additional extension.
+   */
+  public static void writeXom(final Document doc, final String fileName,
+                              final String extension) {
+    final String basename = FilenameUtils.getBaseName(fileName);
+    final String file = basename + "-" + extension;
+    try {
+      FileHandler.writeFile(doc, file);
+    } catch (final IOException e) {
+      Logger.error("IO error: Can't write file " + file + "\n");
+      e.printStackTrace();
+    } catch (final CDKException e) {
+      Logger.error("Not a valid CDK structure to write: " + e.getMessage()
+          + "\n");
+      e.printStackTrace();
+    }
   }
 
 }

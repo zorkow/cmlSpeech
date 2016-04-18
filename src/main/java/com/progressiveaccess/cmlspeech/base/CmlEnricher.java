@@ -36,7 +36,7 @@ import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
 import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
-import com.progressiveaccess.cmlspeech.speech.Language;
+import com.progressiveaccess.cmlspeech.speech.Languages;
 import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
@@ -67,34 +67,34 @@ public class CmlEnricher {
 
   private Document doc;
   private IAtomContainer molecule;
+  private String fileName;
   private final CactusExecutor executor = new CactusExecutor();
   private final SpiderExecutor sexecutor = new SpiderExecutor();
 
 
   /**
-   * Convenience method to enrich a CML file. Does all the error catching.
+   * Constructor.
    *
    * @param fileName
-   *          File to enrich.
+   *          Name of file containing the molecule to be enriched.
    */
-  public void enrichFile(final String fileName) {
-    this.loadMolecule(fileName);
+  public CmlEnricher(final String fileName) {
+    this.fileName = fileName;
+  }
+
+
+  /**
+   * Convenience method to enrich a CML file. Does all the error catching.
+   */
+  public void enrichFile() {
+    this.loadMolecule();
     if (Cli.hasOption("c")) {
-      try {
-        FileHandler.writeFile(this.doc, fileName, "simple");
-      } catch (final IOException e) {
-        Logger.error("IO error: Can't write " + fileName + "\n");
-        e.printStackTrace();
-      } catch (final CDKException e) {
-        Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-            + "\n");
-        e.printStackTrace();
-      }
+      FileHandler.writeXom(this.doc, this.fileName, "simple");
     }
     this.analyseMolecule();
     this.nameAtomSets();
     this.appendAtomSets();
-    Language.reset(Cli.getOptionValue("int"));
+    Languages.set(Cli.getOptionValue("int"));
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().getPrefix(),
@@ -102,16 +102,7 @@ public class CmlEnricher {
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }
-    try {
-      FileHandler.writeFile(this.doc, fileName, "enr");
-    } catch (final IOException e) {
-      Logger.error("IO error: Can't write enriched file " + fileName + "\n");
-      e.printStackTrace();
-    } catch (final CDKException e) {
-      Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-          + "\n");
-      e.printStackTrace();
-    }
+    FileHandler.writeXom(this.doc, this.fileName, "enr");
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
@@ -124,17 +115,14 @@ public class CmlEnricher {
 
   /**
    * Loads a molecule and initiates the CML document.
-   *
-   * @param fileName
-   *          The input filename.
    */
-  public void loadMolecule(final String fileName) {
+  public void loadMolecule() {
     try {
-      this.molecule = FileHandler.readFile(fileName);
+      this.molecule = FileHandler.readFile(this.fileName);
       this.doc = FileHandler.buildXom(this.molecule);
     } catch (IOException | CDKException | ParsingException e) {
       Logger.error("IO error: " + e.getMessage() + " Can't load file "
-          + fileName + "\n");
+          + this.fileName + "\n");
       e.printStackTrace();
       System.exit(0);
     }
@@ -204,11 +192,35 @@ public class CmlEnricher {
     if (Cli.hasOption("struct")) {
       SreStructure sreStructure = new SreStructure();
       SreElement annotation = sreStructure.getAnnotations();
+      if (Cli.hasOption("r") || Cli.hasOption("r0")) {
+        this.annotateLanguages(annotation);
+      }
       if (!Cli.hasOption("nh")) {
         HydrogenAdder.reattach(this.doc, annotation);
       }
       this.doc.getRootElement().appendChild(annotation);
     }
+  }
+
+
+  /**
+   * Adds speech language annotations for the molecule.
+   *
+   * @param annotation
+   *          The annotation element.
+   */
+  public void annotateLanguages(final SreElement annotation) {
+    if (Cli.hasOption("int_attr")) {
+      Languages.replace(annotation);
+      return;
+    }
+    if (Cli.hasOption("int_files")) {
+      Languages.toFile(this.fileName);
+      if (!Cli.hasOption("int_msg")) {
+        return;
+      }
+    }
+    Languages.append(annotation);
   }
 
 

@@ -233,7 +233,7 @@ public abstract class AbstractSpeechVisitor extends Stack<String>
    *          The functional group.
    */
   protected void addName(final RichFunctionalGroup fg) {
-    // TODO(sorge) The naming of functional groups is still dodgy. Sometimes we
+    // TODO (sorge) The naming of functional groups is still dodgy. Sometimes we
     // would prefer the spider results as being more precise.
     // Example: Aspirin vs Paracetamol
     String name = Language.getFunctionalGroupTable().lookup(fg.getName());

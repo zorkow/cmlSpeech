@@ -29,6 +29,7 @@ package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.analysis.Heuristics;
 import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
+import com.progressiveaccess.cmlspeech.base.Cli;
 import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -142,7 +143,9 @@ public class RichMolecule extends RichAtomSet implements RichSuperSet {
     this.blocks.addAll(this.getSubSystems().stream()
         .map(RichStructureHelper::getRichStructure)
         .collect(Collectors.toList()));
-    Collections.sort(this.blocks, new Heuristics(""));
+    Collections.sort(this.blocks,
+                     new Heuristics(Cli.hasOption("molcom")
+                                    ? Cli.getOptionValue("molcom") : ""));
     final WalkDepthFirst dfs = new WalkDepthFirst(this.blocks);
     dfs.putPositions(this.path);
   }

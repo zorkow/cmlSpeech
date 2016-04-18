@@ -110,7 +110,11 @@ public class SreNamespace {
     PARENT("parent"),
     PARENTS("parents"),
     POSITION("position"),
-    VIA("via");
+    VIA("via"),
+    // Speech messages
+    LANGUAGE("language"),
+    MESSAGE("message"),
+    MESSAGES("messages");
 
     private final String tag;
 
@@ -140,15 +144,10 @@ public class SreNamespace {
    * Different Attributes for the SRE speech annotations.
    */
   public enum Attribute {
-    LEVEL("level"),
-    ELEMENTS("elements"),
-
+    LOCATION("location"),
+    MSG("msg"),
     SPEECH("speech"),
     SPEECH2("speech2"),
-    ORDER("order"),
-    ATOM("bond"),
-    BOND("bond"),
-    LOCATION("location"),
     TYPE("type");
 
     private final String attribute;

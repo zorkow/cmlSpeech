@@ -29,12 +29,12 @@ package com.progressiveaccess.cmlspeech.speech;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 
 /**
  * Lookup table for iso-639 language codes.
  */
-
 public final class IsoTable {
 
   private static final Map<String, String> ISO_TABLE = new HashMap<>();
@@ -268,6 +268,43 @@ public final class IsoTable {
   public static Boolean exists(final String language) {
     String lang = language.toLowerCase();
     return ISO_TABLE.containsKey(lang) || ISO_TABLE.containsValue(lang);
+  }
+
+
+  private static final String PKG = "com.progressiveaccess.cmlspeech.speech";
+  private static final String CLASS = "AtomTable";
+
+
+  /**
+   * Checks if a given language is implemented.
+   *
+   * @param iso
+   *          The iso code for the given language.
+   *
+   * @return True if the language is implemented.
+   */
+  public static Boolean implemented(final String iso) {
+    try {
+      Class.forName(PKG + "." + iso + "." + CLASS);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+
+  /**
+   * @return A list of iso names for all existing languages.
+   */
+  public static PriorityQueue<String> existing() {
+    PriorityQueue<String> result = new PriorityQueue<String>();
+    Integer index = 0;
+    for (String language : ISO_TABLE.values()) {
+      if (IsoTable.implemented(language)) {
+        result.add(language);
+      }
+    }
+    return result;
   }
 
 }
