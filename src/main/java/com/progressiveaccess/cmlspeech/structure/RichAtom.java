@@ -45,6 +45,7 @@ public class RichAtom extends RichChemObject {
    */
   public RichAtom(final IAtom structure) {
     super(structure);
+    this.setName(this.getStructure().getSymbol());
   }
 
 
@@ -66,6 +67,7 @@ public class RichAtom extends RichChemObject {
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOM;
   }
+
 
   @Override
   public void accept(final XmlVisitor visitor) {

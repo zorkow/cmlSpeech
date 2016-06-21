@@ -32,9 +32,9 @@ Carbamate: [NX3,NX4+][CX3](=[OX1])[OX2,OX1-]
 Carbamic ester: [NX3][CX3](=[OX1])[OX2H0]
 Carbamic acid: [NX3,NX4+][CX3](=[OX1])[OX2H,OX1-]
 Carboxylate Ion: [CX3](=O)[O-]
-Carbonic Acid or Carbonic Ester: [CX3](=[OX1])(O)O
-Carbonic Acid or Carbonic Acid-Ester: [CX3](=[OX1])([OX2])[OX2H,OX1H0-1]
-Carbonic Ester (carbonic acid diester): C[OX2][CX3](=[OX1])[OX2]C
+Carbonic acid: [CX3](=[OX1])(O)O
+Carbonic ester: [CX3](=[OX1])([OX2])[OX2H,OX1H0-1]
+Carbonic diester: C[OX2][CX3](=[OX1])[OX2]C
 Carboxylic acid: [CX3](=O)[OX2H1]
 Carboxylic acid or conjugate base: [CX3](=O)[OX1H0-,OX2H1]
 Cyanamide: [NX3][CX2]#[NX1]
@@ -57,47 +57,47 @@ Amine: [NX3;H2,H1;!$(NC=O)]
 Enamine: [NX3][CX3]=[CX3]
 Primary amine: [NX3;H2;!$(NC=[!#6]);!$(NC#[!#6])][#6]
 Two primary or secondary amines: [NX3;H2,H1;!$(NC=O)].[NX3;H2,H1;!$(NC=O)]
-Enamine or Aniline Nitrogen: [NX3][$(C=C),$(cc)]
+Enamine: [NX3][$(C=C),$(cc)]
 Generic amino acid low specificity: [NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]
 Dipeptide group. generic amino acid low specificity: [NX3H2,NH3X4+][CX4H]([*])[CX3](=[OX1])[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[OX2H,OX1-]
 Amino Acid: [$([NX3H2,NX4H3+]),$([NX3H](C)(C))][CX4H]([*])[CX3](=[OX1])[OX2H,OX1-,N]
-Alanine side chain: [CH3X4]
+Alanine: [CH3X4]
 
-Arginine side chain: [CH2X4][CH2X4][CH2X4][NHX3][CH0X3](=[NH2X3+,NHX2+0])[NH2X3]
-Aspargine side chain: [CH2X4][CX3](=[OX1])[NX3H2]
-Aspartate (or Aspartic acid) side chain: [CH2X4][CX3](=[OX1])[OH0-,OH]
-Cysteine side chain: [CH2X4][SX2H,SX1H0-]
-Glutamate (or Glutamic acid) side chain: [CH2X4][CH2X4][CX3](=[OX1])[OH0-,OH]
+Arginine: [CH2X4][CH2X4][CH2X4][NHX3][CH0X3](=[NH2X3+,NHX2+0])[NH2X3]
+Aspargine: [CH2X4][CX3](=[OX1])[NX3H2]
+Aspartate: [CH2X4][CX3](=[OX1])[OH0-,OH]
+Cysteine: [CH2X4][SX2H,SX1H0-]
+Glutamate: [CH2X4][CH2X4][CX3](=[OX1])[OH0-,OH]
 Glycine: [$([$([NX3H2,NX4H3+]),$([NX3H](C)(C))][CX4H2][CX3](=[OX1])[OX2H,OX1-,N])]
-Histidine side chain: [CH2X4][#6X3]1:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]1
-Isoleucine side chain: [CHX4]([CH3X4])[CH2X4][CH3X4]
+Histidine: [CH2X4][#6X3]1:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]:[$([#7X3H+,#7X2H0+0]:[#6X3H]:[#7X3H]),$([#7X3H])]:[#6X3H]1
+Isoleucine: [CHX4]([CH3X4])[CH2X4][CH3X4]
 
-Leucine side chain: [CH2X4][CHX4]([CH3X4])[CH3X4]
+Leucine: [CH2X4][CHX4]([CH3X4])[CH3X4]
 
-Lysine side chain: [CH2X4][CH2X4][CH2X4][CH2X4][NX4+,NX3+0]
-Methionine side chain: [CH2X4][CH2X4][SX2][CH3X4]
+Lysine: [CH2X4][CH2X4][CH2X4][CH2X4][NX4+,NX3+0]
+Methionine: [CH2X4][CH2X4][SX2][CH3X4]
 
-Phenylalanine side chain: [CH2X4][cX3]1[cX3H][cX3H][cX3H][cX3H][cX3H]1
+Phenylalanine: [CH2X4][cX3]1[cX3H][cX3H][cX3H][cX3H][cX3H]1
 
 Proline: [$([NX3H,NX4H2+]),$([NX3](C)(C)(C))]1[CX4H]([CH2][CH2][CH2]1)[CX3](=[OX1])[OX2H,OX1-,N]
 
-Serine side chain: [CH2X4][OX2H]
+Serine: [CH2X4][OX2H]
 
 Thioamide: [NX3][CX3]=[SX1]
 
-Threonine side chain: [CHX4]([CH3X4])[OX2H]
+Threonine: [CHX4]([CH3X4])[OX2H]
 
-Tryptophan side chain: [CH2X4][cX3]1[cX3H][nX3H][cX3]2[cX3H][cX3H][cX3H][cX3H][cX3]12
+Tryptophan: [CH2X4][cX3]1[cX3H][nX3H][cX3]2[cX3H][cX3H][cX3H][cX3H][cX3]12
 
-Tyrosine side chain: [CH2X4][cX3]1[cX3H][cX3H][cX3]([OHX2,OH0X1-])[cX3H][cX3H]1
-Valine side chain: [CHX4]([CH3X4])[CH3X4]
+Tyrosine: [CH2X4][cX3]1[cX3H][cX3H][cX3]([OHX2,OH0X1-])[cX3H][cX3H]1
+Valine: [CHX4]([CH3X4])[CH3X4]
 
 
 Azide group: [$(*-[NX2-]-[NX2+]#[NX1]),$(*-[NX2]=[NX2+]=[NX1-])]
 Azide ion: [$([NX1-]=[NX2+]=[NX1-]),$([NX1]#[NX2+]-[NX1-2])]
 Nitrogen: [#7]
 Azo Nitrogen. Low specificity: [NX2]=N
-Azo Nitrogen.diazene: [NX2]=[NX2]
+Azo Nitrogen. Diazene: [NX2]=[NX2]
 Azoxy Nitrogen: [$([NX2]=[NX3+]([O-])[#6]),$([NX2]=[NX3+0](=[O])[#6])]
 
 Diazo Nitrogen: [$([#6]=[N+]=[N-]),$([#6-]-[N+]#[N])]
@@ -146,9 +146,12 @@ N-Oxide: [$([#7+][OX1-]),$([#7v5]=[OX1]);!$([#7](~[O])~[O]);!$([#7]=[#7])]
 
 
 
-Hydroxyl: [OX2H]
+Hydroxyl: [O;H1]
+# Removed due to Phenol problem.
+# [OX2H]
 
-Hydroxyl in Alcohol: [#6][OX2H]
+# Removed due to Phenol problem.
+# Hydroxyl in Alcohol: [#6][OX2H]
 
 Hydroxyl in Carboxylic Acid: [OX2H][CX3]=[OX1]
 
@@ -158,7 +161,8 @@ Enol: [OX2H][#6X3]=[#6]
 
 Phenol: [OX2H][cX3]:[c]
 
-Enol or Phenol: [OX2H][$(C=C),$(cc)]
+# Removed due to Phenol problem.
+# Enol or Phenol: [OX2H][$(C=C),$(cc)]
 
 Hydroxyl Acidic: [$([OH]-*=[!#6])]
 Peroxide groups: [OX2,OX1-][OX2,OX1-]
@@ -209,5 +213,5 @@ Sulfenate: [#16X2][OX2H0]
 
 Any carbon attached to any halogen: [#6][F,Cl,Br,I]
 Halogen: [F,Cl,Br,I]
-Three_halides groups: [F,Cl,Br,I].[F,Cl,Br,I].[F,Cl,Br,I]
+Three halides groups: [F,Cl,Br,I].[F,Cl,Br,I].[F,Cl,Br,I]
 Acyl Halide: [CX3](=[OX1])[F,Cl,Br,I]

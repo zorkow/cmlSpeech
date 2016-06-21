@@ -73,7 +73,7 @@ public final class Cactus {
     BufferedReader br = null;
     final List<String> lines = new ArrayList<>();
     try {
-      url = new URL("http://cactus.nci.nih.gov/chemical/structure/" + input
+      url = new URL("https://cactus.nci.nih.gov/chemical/structure/" + input
           + "/" + output);
       br = new BufferedReader(new InputStreamReader(url.openStream()));
       while (br.ready()) {
@@ -101,7 +101,7 @@ public final class Cactus {
    * @throws CactusException
    *          If error in Cactus call occurs.
    */
-  private static String translate(final IAtomContainer molecule)
+  public static String translate(final IAtomContainer molecule)
       throws CactusException {
     try {
       final InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
@@ -166,4 +166,5 @@ public final class Cactus {
     }
     return alpha.get(0);
   }
+
 }

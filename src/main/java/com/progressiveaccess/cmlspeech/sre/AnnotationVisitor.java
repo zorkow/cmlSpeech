@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * @file SreOutput.java
+ * @file AnnotationVisitor.java
  * @author Volker Sorge <a href="mailto:V.Sorge@progressiveaccess.com">Volker
  *         Sorge</a>
  * @date Thu Jun 19 16:34:40 2014
  *
- * @brief Class to handle SRE annotations.
+ * @brief Visitor to construct the analysis structure.
  *
  *
  */
@@ -27,7 +27,6 @@
 
 package com.progressiveaccess.cmlspeech.sre;
 
-import com.progressiveaccess.cmlspeech.analysis.RichStructureHelper;
 import com.progressiveaccess.cmlspeech.connection.Bridge;
 import com.progressiveaccess.cmlspeech.connection.BridgeAtom;
 import com.progressiveaccess.cmlspeech.connection.ConnectingBond;
@@ -35,11 +34,11 @@ import com.progressiveaccess.cmlspeech.connection.Connection;
 import com.progressiveaccess.cmlspeech.connection.SharedAtom;
 import com.progressiveaccess.cmlspeech.connection.SharedBond;
 import com.progressiveaccess.cmlspeech.connection.SpiroAtom;
-import com.progressiveaccess.cmlspeech.structure.AbstractRichStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAliphaticChain;
 import com.progressiveaccess.cmlspeech.structure.RichAtom;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichBond;
+import com.progressiveaccess.cmlspeech.structure.RichChemObject;
 import com.progressiveaccess.cmlspeech.structure.RichFunctionalGroup;
 import com.progressiveaccess.cmlspeech.structure.RichFusedRing;
 import com.progressiveaccess.cmlspeech.structure.RichIsolatedRing;
@@ -135,11 +134,13 @@ public class AnnotationVisitor implements XmlVisitor {
 
   @Override
   public void visit(final ConnectingBond connectingBond) {
-    final String connected = connectingBond.getConnected();
-    final SreNamespace.Tag type = RichStructureHelper.isAtom(connected)
-        ? SreNamespace.Tag.ATOM
-        : SreNamespace.Tag.ATOMSET;
-    this.connectionAnnotation(connectingBond, SreNamespace.Tag.BOND, type);
+    final SreElement connection = new SreElement(connectingBond.tag());
+    connection.appendChild(new SreElement(SreNamespace.Tag.BOND,
+                                          connectingBond.getConnector()));
+    connection.appendChild(SreUtil.sreElement(connectingBond.getConnected()));
+    connection.appendChild(new SreElement(SreNamespace.Tag.ATOM,
+                                          connectingBond.getOrigin()));
+    this.element.appendChild(connection);
   }
 
 
@@ -179,7 +180,7 @@ public class AnnotationVisitor implements XmlVisitor {
    * @param structure
    *          The rich structure.
    */
-  private void structureAnnotation(final AbstractRichStructure<?> structure) {
+  private void structureAnnotation(final RichChemObject structure) {
     this.element = new SreElement(SreNamespace.Tag.ANNOTATION);
     this.annotations.registerAnnotation(structure.getId(), this.element);
     this.element
@@ -215,10 +216,10 @@ public class AnnotationVisitor implements XmlVisitor {
   /**
    * Computes annotations for a structure's connections.
    *
-   * @param structure The structure that is currently visited.
+   * @param structure
+   *          The structure that is currently visited.
    */
-  private void connectionsAnnotations(
-      final AbstractRichStructure<?> structure) {
+  private void connectionsAnnotations(final RichChemObject structure) {
     if (structure.getConnections().isEmpty()) {
       return;
     }

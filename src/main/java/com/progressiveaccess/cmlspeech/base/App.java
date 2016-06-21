@@ -51,8 +51,8 @@ public final class App {
     Cli.init(args);
     Logger.start();
     for (final String file : Cli.getFiles()) {
-      final CmlEnricher cmle = new CmlEnricher();
-      cmle.enrichFile(file);
+      final CmlEnricher cmle = new CmlEnricher(file);
+      cmle.enrichFile();
     }
     Logger.end();
   }

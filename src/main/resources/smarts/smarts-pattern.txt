@@ -171,7 +171,8 @@ Isothiocyanate: [NX2]=[CX2]=[SX1]
 Thiocyanate: [SX2][CX2]#[NX1]
 Carbodiimide: [NX2]=[CX2]=[NX2]
 Orthocarbonic derivatives: [CX4H0]([O,S,#7])([O,S,#7])([O,S,#7])[O,S,#7,F,Cl,Br,I]
-Phenol: [OX2H][c]
+# Removed due to Phenol problem.
+# Phenol: [OX2H][c]
 1,2-Diphenol: [OX2H][c][c][OX2H]
 Arylchloride: [Cl][c]
 Arylfluoride: [F][c]
@@ -291,5 +292,6 @@ Sugar pattern 2 alpha: [OX2;$([r5]1@[C@@](!@[OX2,NX3,SX2,FX1,ClX1,BrX1,IX1])@C@C
 Sugar pattern 2 beta: [OX2;$([r5]1@[C@](!@[OX2,NX3,SX2,FX1,ClX1,BrX1,IX1])@C@C@C1),$([r6]1@[C@](!@[OX2,NX3,SX2,FX1,ClX1,BrX1,IX1])@C@C@C@C1)]
 Mixed anhydrides: [$(*=O),$([#16,#14,#5]),$([#7]([#6]=[OX1]))][#8X2][$(*=O),$([#16,#14,#5]),$([#7]([#6]=[OX1]))]
 Halogen on hetero: [FX1,ClX1,BrX1,IX1][!#6]
-Halogen multi subst: [F,Cl,Br,I;!$([X1]);!$([X0-])]
+Halogen with multiple substitutions: [F,Cl,Br,I;!$([X1]);!$([X0-])]
 Trifluoromethyl: [FX1][CX4;!$([H0][Cl,Br,I]);!$([F][C]([F])([F])[F])]([FX1])([FX1])
+

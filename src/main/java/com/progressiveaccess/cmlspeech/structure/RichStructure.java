@@ -76,6 +76,19 @@ public interface RichStructure<S> {
   String getId();
 
   /**
+   * @return The name of the structure.
+   */
+  String getName();
+
+  /**
+   * Sets the name of the structure.
+   *
+   * @param name
+   *          The name of the set.
+   */
+  void setName(final String name);
+
+  /**
    * The structure embedded in this enriched object.
    *
    * @return Un-enriched structure.

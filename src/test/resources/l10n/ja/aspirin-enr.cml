@@ -1,0 +1,661 @@
+<molecule id="m1" xmlns="http://www.xml-cml.org/schema" xmlns:sre="http://www.chemaccess.org/sre-schema"> 
+    <sre:annotations>
+        <sre:annotation sre:speech="炭素5は、水素3に結合、" sre:speech2="炭素5は、水素3に結合、">
+            <sre:atom sre:type="Carbon">a1</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:parents>
+            <sre:position>5</sre:position>
+            <sre:component>
+                <sre:bond>b1</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素3に単結合、" sre:speech2="炭素3に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a6</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b1</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素4は、水素1に結合、" sre:speech2="炭素4は、水素1に結合、">
+            <sre:atom sre:type="Carbon">a2</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>4</sre:position>
+            <sre:component>
+                <sre:bond>b2</sre:bond>
+                <sre:bond>b3</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素5に二重結合、" sre:speech2="炭素5に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a3</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b2</sre:bond>
+                        <sre:position>5</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素3に単結合、" sre:speech2="炭素3に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a4</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b3</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素5は、水素1に結合、" sre:speech2="炭素5は、水素1に結合、">
+            <sre:atom sre:type="Carbon">a3</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>5</sre:position>
+            <sre:component>
+                <sre:bond>b2</sre:bond>
+                <sre:bond>b4</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素4に二重結合、" sre:speech2="炭素4に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a2</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b2</sre:bond>
+                        <sre:position>4</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素6に単結合、" sre:speech2="炭素6に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a5</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b4</sre:bond>
+                        <sre:position>6</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素3は、水素1に結合、" sre:speech2="炭素3は、水素1に結合、">
+            <sre:atom sre:type="Carbon">a4</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>3</sre:position>
+            <sre:component>
+                <sre:bond>b3</sre:bond>
+                <sre:bond>b5</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素4に単結合、" sre:speech2="炭素4に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a2</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b3</sre:bond>
+                        <sre:position>4</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素2に二重結合、" sre:speech2="炭素2に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a7</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b5</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素6は、水素1に結合、" sre:speech2="炭素6は、水素1に結合、">
+            <sre:atom sre:type="Carbon">a5</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>6</sre:position>
+            <sre:component>
+                <sre:bond>b4</sre:bond>
+                <sre:bond>b6</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素5に単結合、" sre:speech2="炭素5に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a3</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b4</sre:bond>
+                        <sre:position>5</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素1に二重結合、" sre:speech2="炭素1に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a8</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b6</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素3は、" sre:speech2="炭素3は、">
+            <sre:atom sre:type="Carbon">a6</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:parents>
+            <sre:position>3</sre:position>
+            <sre:component>
+                <sre:bond>b7</sre:bond>
+                <sre:bond>b8</sre:bond>
+                <sre:bond>b1</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素5に単結合、" sre:speech2="炭素5に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a1</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b1</sre:bond>
+                        <sre:position>5</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="酸素4に二重結合、" sre:speech2="酸素4に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Oxygen">a10</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b7</sre:bond>
+                        <sre:position>4</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="酸素2に単結合、" sre:speech2="酸素2に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Oxygen">a13</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b8</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素2は、" sre:speech2="炭素2は、">
+            <sre:atom sre:type="Carbon">a7</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>2</sre:position>
+            <sre:component>
+                <sre:bond>b5</sre:bond>
+                <sre:bond>b9</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素3に二重結合、" sre:speech2="炭素3に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a4</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b5</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素1に単結合、" sre:speech2="炭素1に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a8</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b9</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="官能基カルボン酸に単結合、" sre:speech2="官能基C O O H、に単結合、" sre:location="external">
+                    <sre:atom sre:type="Carbon">a9</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b10</sre:bond>
+                        <sre:position>0</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素1は、" sre:speech2="炭素1は、">
+            <sre:atom sre:type="Carbon">a8</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as1</sre:atomSet>
+            </sre:parents>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:bond>b6</sre:bond>
+                <sre:bond>b9</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素6に二重結合、" sre:speech2="炭素6に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a5</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b6</sre:bond>
+                        <sre:position>6</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素2に単結合、" sre:speech2="炭素2に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a7</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b9</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="官能基エスターに単結合、" sre:speech2="官能基C O C O C H3、に単結合、" sre:location="external">
+                    <sre:atom sre:type="Oxygen">a13</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b11</sre:bond>
+                        <sre:position>0</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素1は、" sre:speech2="炭素1は、">
+            <sre:atom sre:type="Carbon">a8</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:parents>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:bond>b11</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="C6H4環に二重結合、" sre:speech2="6員環、に二重結合、" sre:location="external">
+                    <sre:atom sre:type="Carbon">a5</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b6</sre:bond>
+                        <sre:position>0</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="C6H4環に単結合、" sre:speech2="6員環、に単結合、" sre:location="external">
+                    <sre:atom sre:type="Carbon">a7</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b9</sre:bond>
+                        <sre:position>0</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="酸素2に単結合、" sre:speech2="酸素2に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Oxygen">a13</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b11</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="炭素1は、" sre:speech2="炭素1は、">
+            <sre:atom sre:type="Carbon">a9</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as2</sre:atomSet>
+            </sre:parents>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:bond>b12</sre:bond>
+                <sre:bond>b13</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="C6H4環に単結合、" sre:speech2="6員環、に単結合、" sre:location="external">
+                    <sre:atom sre:type="Carbon">a7</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b10</sre:bond>
+                        <sre:position>0</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="酸素2に二重結合、" sre:speech2="酸素2に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Oxygen">a11</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b12</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="酸素3に単結合、" sre:speech2="酸素3に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Oxygen">a12</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b13</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="酸素4は、" sre:speech2="酸素4は、">
+            <sre:atom sre:type="Oxygen">a10</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:parents>
+            <sre:position>4</sre:position>
+            <sre:component>
+                <sre:bond>b7</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素3に二重結合、" sre:speech2="炭素3に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a6</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b7</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="酸素2は、" sre:speech2="酸素2は、">
+            <sre:atom sre:type="Oxygen">a11</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as2</sre:atomSet>
+            </sre:parents>
+            <sre:position>2</sre:position>
+            <sre:component>
+                <sre:bond>b12</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素1に二重結合、" sre:speech2="炭素1に二重結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a9</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="double">b12</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="酸素3は、水素1に結合、" sre:speech2="酸素3は、水素1に結合、">
+            <sre:atom sre:type="Oxygen">a12</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as2</sre:atomSet>
+            </sre:parents>
+            <sre:position>3</sre:position>
+            <sre:component>
+                <sre:bond>b13</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素1に単結合、" sre:speech2="炭素1に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a9</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b13</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="酸素2は、" sre:speech2="酸素2は、">
+            <sre:atom sre:type="Oxygen">a13</sre:atom>
+            <sre:parents>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:parents>
+            <sre:position>2</sre:position>
+            <sre:component>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b8</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素3に単結合、" sre:speech2="炭素3に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a6</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b8</sre:bond>
+                        <sre:position>3</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="炭素1に単結合、" sre:speech2="炭素1に単結合、" sre:location="internal">
+                    <sre:atom sre:type="Carbon">a8</sre:atom>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b11</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b1</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a6</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="二重結合" sre:speech2="二重結合">
+            <sre:bond sre:type="double">b2</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b3</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a4</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b4</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a3</sre:atom>
+                <sre:atom>a5</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="二重結合" sre:speech2="二重結合">
+            <sre:bond sre:type="double">b5</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a4</sre:atom>
+                <sre:atom>a7</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="二重結合" sre:speech2="二重結合">
+            <sre:bond sre:type="double">b6</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a5</sre:atom>
+                <sre:atom>a8</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="二重結合" sre:speech2="二重結合">
+            <sre:bond sre:type="double">b7</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a6</sre:atom>
+                <sre:atom>a10</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b8</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a6</sre:atom>
+                <sre:atom>a13</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b9</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a7</sre:atom>
+                <sre:atom>a8</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b10</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a7</sre:atom>
+                <sre:atom>a9</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b11</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a8</sre:atom>
+                <sre:atom>a13</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="二重結合" sre:speech2="二重結合">
+            <sre:bond sre:type="double">b12</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a9</sre:atom>
+                <sre:atom>a11</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="単結合" sre:speech2="単結合">
+            <sre:bond sre:type="single">b13</sre:bond>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:component>
+                <sre:atom>a9</sre:atom>
+                <sre:atom>a12</sre:atom>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+        <sre:annotation sre:speech="C6H4環1位と2位で置換、" sre:speech2="6員環、4位と5位の間は二重結合、2位と3位の間は二重結合、1位と6位の間は二重結合、1位と2位で置換、">
+            <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as4</sre:atomSet>
+            </sre:parents>
+            <sre:position>1</sre:position>
+            <sre:children>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+                <sre:atom>a4</sre:atom>
+                <sre:atom>a5</sre:atom>
+                <sre:atom>a7</sre:atom>
+                <sre:atom>a8</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+                <sre:atom>a4</sre:atom>
+                <sre:atom>a5</sre:atom>
+                <sre:atom>a7</sre:atom>
+                <sre:atom>a8</sre:atom>
+                <sre:bond>b2</sre:bond>
+                <sre:bond>b3</sre:bond>
+                <sre:bond>b4</sre:bond>
+                <sre:bond>b5</sre:bond>
+                <sre:bond>b6</sre:bond>
+                <sre:bond>b9</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素1は、共有原子官能基含有、" sre:speech2="炭素1は、共有原子官能基C O C O C H3含有、">
+                    <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+                    <sre:via sre:type="Shared atom">
+                        <sre:atom sre:type="Carbon">a8</sre:atom>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+                <sre:neighbour sre:speech="官能基カルボン酸に単結合、" sre:speech2="官能基C O O H、に単結合、">
+                    <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b10</sre:bond>
+                        <sre:position>2</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="官能基カルボン酸" sre:speech2="官能基C O O H、">
+            <sre:atomSet sre:type="Functional group">as2</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as4</sre:atomSet>
+            </sre:parents>
+            <sre:position>3</sre:position>
+            <sre:children>
+                <sre:atom>a9</sre:atom>
+                <sre:atom>a11</sre:atom>
+                <sre:atom>a12</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a9</sre:atom>
+                <sre:atom>a11</sre:atom>
+                <sre:atom>a12</sre:atom>
+                <sre:bond>b12</sre:bond>
+                <sre:bond>b13</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="C6H4環に単結合、" sre:speech2="6員環、に単結合、">
+                    <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
+                    <sre:via sre:type="Connecting bond">
+                        <sre:bond sre:type="single">b10</sre:bond>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="官能基エスター" sre:speech2="官能基C O C O C H3、">
+            <sre:atomSet sre:type="Functional group">as3</sre:atomSet>
+            <sre:parents>
+                <sre:atomSet>as4</sre:atomSet>
+            </sre:parents>
+            <sre:position>2</sre:position>
+            <sre:children>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a6</sre:atom>
+                <sre:atom>a8</sre:atom>
+                <sre:atom>a10</sre:atom>
+                <sre:atom>a13</sre:atom>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a6</sre:atom>
+                <sre:atom>a8</sre:atom>
+                <sre:atom>a10</sre:atom>
+                <sre:atom>a13</sre:atom>
+                <sre:bond>b1</sre:bond>
+                <sre:bond>b7</sre:bond>
+                <sre:bond>b8</sre:bond>
+                <sre:bond>b11</sre:bond>
+            </sre:component>
+            <sre:neighbours>
+                <sre:neighbour sre:speech="炭素1は、共有原子C6H4含有、" sre:speech2="炭素1は、共有原子6員環含有、">
+                    <sre:atomSet sre:type="Isolated ring">as1</sre:atomSet>
+                    <sre:via sre:type="Shared atom">
+                        <sre:atom sre:type="Carbon">a8</sre:atom>
+                        <sre:position>1</sre:position>
+                    </sre:via>
+                </sre:neighbour>
+            </sre:neighbours>
+        </sre:annotation>
+        <sre:annotation sre:speech="C9H8O4" sre:speech2="6員環と、官能基C O C O C H3、官能基C O O Hで構成された分子、">
+            <sre:atomSet sre:type="Molecule">as4</sre:atomSet>
+            <sre:parents/>
+            <sre:position>1</sre:position>
+            <sre:children>
+                <sre:atomSet>as1</sre:atomSet>
+                <sre:atomSet>as2</sre:atomSet>
+                <sre:atomSet>as3</sre:atomSet>
+            </sre:children>
+            <sre:component>
+                <sre:atom>a1</sre:atom>
+                <sre:atom>a2</sre:atom>
+                <sre:atom>a3</sre:atom>
+                <sre:atom>a4</sre:atom>
+                <sre:atom>a5</sre:atom>
+                <sre:atom>a6</sre:atom>
+                <sre:atom>a7</sre:atom>
+                <sre:atom>a8</sre:atom>
+                <sre:atom>a9</sre:atom>
+                <sre:atom>a10</sre:atom>
+                <sre:atom>a11</sre:atom>
+                <sre:atom>a12</sre:atom>
+                <sre:atom>a13</sre:atom>
+                <sre:bond>b1</sre:bond>
+                <sre:bond>b2</sre:bond>
+                <sre:bond>b3</sre:bond>
+                <sre:bond>b4</sre:bond>
+                <sre:bond>b5</sre:bond>
+                <sre:bond>b6</sre:bond>
+                <sre:bond>b7</sre:bond>
+                <sre:bond>b8</sre:bond>
+                <sre:bond>b9</sre:bond>
+                <sre:bond>b10</sre:bond>
+                <sre:bond>b11</sre:bond>
+                <sre:bond>b12</sre:bond>
+                <sre:bond>b13</sre:bond>
+            </sre:component>
+            <sre:neighbours/>
+        </sre:annotation>
+    </sre:annotations>
+</molecule>

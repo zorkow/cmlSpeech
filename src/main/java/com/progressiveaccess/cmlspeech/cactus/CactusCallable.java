@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * @file   Cactus.java
+ * @file   CactusCallable.java
  * @author Volker Sorge
  *         <a href="mailto:V.Sorge@progressiveaccess.com">Volker Sorge</a>
  * @date   Sun May  4 13:22:37 2014
@@ -76,7 +76,7 @@ public class CactusCallable implements Callable<String> {
   @Override
   public String call() throws CactusException {
     Logger.logging("Executing Cactus call for " + this.id
-                   + " " + this.type.getTag());
+                   + " " + this.type.getTag() + "\n");
     final String result = this.type.getCaller().apply(this.container);
     //this.setter.accept(result);
     return result;

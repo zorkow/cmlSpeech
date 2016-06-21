@@ -50,12 +50,33 @@ public final class SreUtil {
   }
 
 
+  /**
+   * Retrieves an element from the document by its ID.
+   *
+   * @param doc
+   *          The document.
+   * @param id
+   *          The id string.
+   *
+   * @return The element with that id, if it exists.
+   */
   public static Element getElementById(final Document doc, final String id) {
     final String query = "//*[@id='" + id + "']";
     final Nodes nodes = doc.query(query);
     return (Element) nodes.get(0);
   }
 
+
+  /**
+   * Runs an xpath query on an element, returning all hits.
+   *
+   * @param element
+   *          The element.
+   * @param query
+   *          The query string.
+   *
+   * @return The list of nodes the query produces.
+   */
   public static Nodes xpathQuery(final Element element, final String query) {
     final XPathContext xc = XPathContext.makeNamespaceContext(element);
     xc.addNamespace(SreNamespace.getInstance().getPrefix(),
@@ -64,6 +85,17 @@ public final class SreUtil {
     return element.query(query, xc);
   }
 
+
+  /**
+   * Runs an xpath query on an element, returning the first hit.
+   *
+   * @param element
+   *          The element.
+   * @param query
+   *          The query string.
+   *
+   * @return The first node the query produces.
+   */
   public static Node xpathQueryElement(final Element element,
                                        final String query) {
     Node node;
@@ -75,14 +107,18 @@ public final class SreUtil {
     return node;
   }
 
-  public static String xpathValue(final Element element, final String query) {
-    final Nodes names = SreUtil.xpathQuery(element, query);
-    if (names.size() != 0) {
-      return names.get(0).getValue();
-    }
-    return "";
-  }
 
+  /**
+   * Runs an xpath query on an element, returning all values that correspond to
+   * the query.
+   *
+   * @param element
+   *          The element.
+   * @param query
+   *          The query string.
+   *
+   * @return The list of values the query produces.
+   */
   public static List<String> xpathValueList(final Element element,
       final String query) {
     final Nodes nodes = SreUtil.xpathQuery(element, query);
@@ -93,6 +129,38 @@ public final class SreUtil {
     return result;
   }
 
+
+  /**
+   * Runs an xpath query on an element, returning the first value that
+   * correspond to the query.
+   *
+   * @param element
+   *          The element.
+   * @param query
+   *          The query string.
+   *
+   * @return The first value the query produces.
+   */
+  public static String xpathValue(final Element element, final String query) {
+    final Nodes names = SreUtil.xpathQuery(element, query);
+    if (names.size() != 0) {
+      return names.get(0).getValue();
+    }
+    return "";
+  }
+
+
+  /**
+   * Produces sre element of a given tag with a set of rich element tags as
+   * children.
+   *
+   * @param tag
+   *          The outer element tag.
+   * @param elements
+   *          A list of names of rich structures.
+   *
+   * @return Sre element with tagged node and a children.
+   */
   public static SreElement sreSet(final SreNamespace.Tag tag,
       final Collection<String> elements) {
     if (elements.isEmpty()) {
@@ -103,6 +171,15 @@ public final class SreUtil {
     return element;
   }
 
+
+  /**
+   * Wraps a name of a rich structure into the corresponding Sre tag.
+   *
+   * @param name
+   *          The name of the structure.
+   *
+   * @return The sre element for the structure.
+   */
   public static SreElement sreElement(final String name) {
     if (RichStructureHelper.isAtom(name)) {
       return new SreElement(SreNamespace.Tag.ATOM, name);
@@ -115,4 +192,5 @@ public final class SreUtil {
     }
     return new SreElement(SreNamespace.Tag.UNKNOWN, name);
   }
+
 }

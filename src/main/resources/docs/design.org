@@ -131,6 +131,38 @@ c c c o c    O is 1 but at position 4.
 **** We should at least be able to do some simple cyclic rings:
 ***** Benzene, Cyclo-X-ane, Pyridine
 
+* Speech
+** Atoms can be described
+*** short and long
+*** in context of an atom set
+*** in context with direction, depending on the incoming connection.
+
+** XML structure for elements:
+*** Notes:
+**** the set should be complete and some might be empty.
+**** Components are uniquely identified by their name/type, their parent and position.
+*** XML Components:
+**** Component
+***** For atom sets: all its atoms and bonds
+***** Special case of fused rings: All its subrings
+***** For atoms: its bonds wrt to the current context
+***** Bonds: do we need bonds?
+**** Position (in the context of the parent)
+**** Parent
+**** Children
+**** Speech: This contains all the descriptions.
+**** Neighbours: 
+     Note that an atom has up to two neighbours. Left neighbour with position
+     n-1, right neighbour with position n+1.
+     
+     An atom set has multiple neighbours given in the order in which they can be
+     explored with right and left.
+
+***** Connection
+***** Via: Element making up the connection such as shared bonds, bridge atoms.
+***** Position: The position of the neighbour in context of Parent.
+***** Speech: Description of the connection.
 
 * Refactoring notes [TEMPORARY]
-** RichRing and RichAlephaticChain both contain a chooseNext method.
+
+** Combine SRE annotations again once the speech output is refactored into a visitor.

@@ -49,6 +49,7 @@ public class RichBond extends RichChemObject {
     for (final IAtom atom : structure.atoms()) {
       this.getComponents().add(atom.getID());
     }
+    this.setName(this.getStructure().getOrder().toString().toLowerCase());
   }
 
 
@@ -67,6 +68,15 @@ public class RichBond extends RichChemObject {
   @Override
   public void accept(final XmlVisitor visitor) {
     visitor.visit(this);
+  }
+
+
+  // TODO (sorge) Refactor into speech visitor.
+  /**
+   * @return True if structure is single bond.
+   */
+  public final Boolean isSingle() {
+    return this.getStructure().getOrder() == IBond.Order.SINGLE;
   }
 
 }

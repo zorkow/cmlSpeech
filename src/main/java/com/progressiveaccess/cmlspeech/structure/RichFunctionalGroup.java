@@ -47,16 +47,17 @@ import java.util.stream.Collectors;
 public class RichFunctionalGroup extends RichAtomSet {
 
   /**
-   * Generates the rich functional group.
+   * Constructor for rich functional groups.
    *
    * @param container
-   *          The atom container of the group.
+   *          The atom container of the functional group.
    * @param id
-   *          The name of the structure.
+   *          The atom set id of the functional group.
    */
   public RichFunctionalGroup(final IAtomContainer container, final String id) {
     super(container, id, RichSetType.FUNCGROUP);
   }
+
 
   @Override
   protected final void walk() {

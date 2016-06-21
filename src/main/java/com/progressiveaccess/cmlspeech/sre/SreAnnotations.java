@@ -29,15 +29,9 @@ package com.progressiveaccess.cmlspeech.sre;
 
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 
-import nu.xom.Element;
-import nu.xom.Nodes;
+import com.google.common.collect.TreeMultimap;
 
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IBond;
-
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Comparator;
 
 /**
  * Basic class to add annotations like speech and structural representations to
@@ -46,105 +40,65 @@ import java.util.TreeMap;
 
 public class SreAnnotations extends SreElement {
 
-  private SortedMap<String, Element> annotationNodes;
+  private final TreeMultimap<String, SreElement> annotations;
 
+
+  /**
+   * Constructor of annotations. Elements are held in a multimap until they are
+   * combined.
+   */
   SreAnnotations() {
     super(SreNamespace.Tag.ANNOTATIONS);
-    this.annotationNodes = new TreeMap<>(new CmlNameComparator());
+    this.annotations =
+      TreeMultimap.create(new CmlNameComparator(), new SreComparator());
   }
 
-  SreAnnotations(final IAtomContainer molecule) {
-    super(SreNamespace.Tag.ANNOTATIONS);
-    for (final IAtom atom : molecule.atoms()) {
-      this.getNodeToAnnotate(atom.getID(), SreNamespace.Tag.ATOM);
-    }
-    for (final IBond bond : molecule.bonds()) {
-      this.getNodeToAnnotate(bond.getID(), SreNamespace.Tag.BOND);
+
+  /**
+   * Dummy comparator for the tree multi map.
+   */
+  private class SreComparator implements Comparator<SreElement> {
+
+    @Override
+    public int compare(final SreElement element1, final SreElement element2) {
+      return 1;
     }
   }
 
-  // Careful, this sets directly!
+
+  /**
+   * Register a new annotation element by its id.
+   *
+   * @param id
+   *          The id of the new element.
+   * @param element
+   *          The actual element.
+   */
   public void registerAnnotation(final String id, final SreElement element) {
-    this.annotationNodes.put(id, element);
+    this.annotations.put(id, element);
   }
 
-  public void registerAnnotation(final String id, final SreNamespace.Tag tag) {
-    this.getNodeToAnnotate(id, tag);
-  }
 
-  public void registerAnnotation(final String id, final SreNamespace.Tag tag,
-      final SreAttribute attr) {
-    final Element element = this.getNodeToAnnotate(id, tag);
-    element.addAttribute(attr);
-  }
-
-  public void appendAnnotation(final String annotate,
-      final SreNamespace.Tag tag,
-      final Element entry) {
-    this.appendAnnotation(
-        this.getNodeToAnnotate(annotate, SreNamespace.Tag.UNKNOWN), tag, entry);
-  }
-
-  public void appendAnnotation(final Element annotate,
-      final SreNamespace.Tag tag,
-      final Element entry) {
-    final Nodes nodes = SreUtil.xpathQuery(annotate, "//" + tag.getTag());
-    Element node = null;
-    if (nodes.size() == 0) {
-      node = new SreElement(tag);
-      annotate.appendChild(node);
-    } else {
-      node = (Element) nodes.get(0);
-    }
-    node.appendChild(entry);
-  }
-
-  public void addAttribute(final String id, final SreAttribute attr) {
-    final Element element = this.getNodeToAnnotate(id);
-    if (element == null) {
-      throw new SreException("Annotation element " + id
-          + " does not exist. Attribute cannot be added!");
-    }
-    element.addAttribute(attr);
-  }
-
-  private Element getNodeToAnnotate(final String id) {
-    return this.annotationNodes.get(id);
-  }
-
-  private Element getNodeToAnnotate(final String id,
-                                    final SreNamespace.Tag tag) {
-    final Element element = this.getNodeToAnnotate(id);
-    if (element != null) {
-      return element;
-    }
-    final Element annotation = new SreElement(SreNamespace.Tag.ANNOTATION);
-    final Element node = new SreElement(tag, id);
-    annotation.appendChild(node);
-    this.annotationNodes.put(id, annotation);
-    return annotation;
-  }
-
-  public SreElement retrieveAnnotation(final String id,
-      final SreNamespace.Tag tag) {
-    final Element element = this.annotationNodes.get(id);
-    if (element == null) {
-      return null;
-    }
-    return (SreElement) SreUtil.xpathQuery(element, "//" + tag.getTag()).get(0);
-  }
-
+  /**
+   * Completes the annotation element by combining the single elements held in
+   * the multimap.
+   */
   public void complete() {
-    for (final String key : this.annotationNodes.keySet()) {
-      this.appendChild(this.annotationNodes.get(key));
+    for (final String key : this.annotations.keySet()) {
+      for (final SreElement value : this.annotations.get(key)) {
+        this.appendChild(value);
+      }
     }
   }
+
 
   @Override
   public String toString() {
     String result = "";
-    for (final String key : this.annotationNodes.keySet()) {
-      result += key + ": " + this.annotationNodes.get(key).toXML() + "\n";
+    for (final String key : this.annotations.keySet()) {
+      for (final SreElement value : this.annotations.get(key)) {
+        result += key + ": " + value.toXML() + "\n";
+      }
     }
     return result;
   }

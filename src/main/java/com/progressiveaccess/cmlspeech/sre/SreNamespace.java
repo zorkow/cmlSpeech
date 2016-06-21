@@ -72,7 +72,7 @@ public class SreNamespace {
    * </p>
    *
    * <p>
-   * Connecting bonds -- Bonds that are external, but not internal to any other
+   * Connecting bond -- A Bond that is external, but not internal to any other
    * structures, i.e. the truely connect it to another structure or atom.
    * </p>
    *
@@ -83,45 +83,38 @@ public class SreNamespace {
   public enum Tag {
     ANNOTATIONS("annotations"),
     ANNOTATION("annotation"),
-
-    CONTEXT("context"),
-    COMPONENT("component"),
-
-    SUBSYSTEM("subSystem"),
-    SUPERSYSTEM("superSystem"),
-
-    INTERNALBONDS("internalBonds"),
-    EXTERNALBONDS("externalBonds"),
-    CONNECTINGBONDS("connectingBonds"),
-    CONNECTINGATOMS("connectingAtoms"),
-
+    // Object tags
     ATOM("atom"),
     ATOMSET("atomSet"),
     BOND("bond"),
-    UNKNOWN("unknown"),
-
-    CONNECTIONS("connections"),
     BRIDGE("bridge"),
-    SHAREDBOND("sharedBond"),
     BRIDGEATOM("bridgeAtom"),
-    SHAREDATOM("sharedAtom"),
-    SPIROATOM("spiroAtom"),
     CONNECTINGBOND("connectingBond"),
-
-    DESCRIPTIONS("descriptions"),
-    DESC("desc"),
-    SUBDESC("subdesc"),
-    CONTENT("content"),
-
-    PARENTS("parents"),
-    PARENT("parent"),
+    SHAREDATOM("sharedAtom"),
+    SHAREDBOND("sharedBond"),
+    SPIROATOM("spiroAtom"),
+    UNKNOWN("unknown"),
+    // Annotation tags
+    COMPONENT("component"),
+    CONNECTINGATOMS("connectingAtoms"),
+    CONNECTIONS("connections"),
+    CONTEXT("context"),
+    EXTERNALBONDS("externalBonds"),
+    INTERNALBONDS("internalBonds"),
+    SUBSYSTEM("subSystem"),
+    SUPERSYSTEM("superSystem"),
+    // Structure tags
     CHILDREN("children"),
-    CHILD("child"),
-    NEIGHBOURS("neighbours"),
     NEIGHBOUR("neighbour"),
-    POSITIONS("positions"),
+    NEIGHBOURS("neighbours"),
+    PARENT("parent"),
+    PARENTS("parents"),
     POSITION("position"),
-    VIA("via");
+    VIA("via"),
+    // Speech messages
+    LANGUAGE("language"),
+    MESSAGE("message"),
+    MESSAGES("messages");
 
     private final String tag;
 
@@ -151,13 +144,10 @@ public class SreNamespace {
    * Different Attributes for the SRE speech annotations.
    */
   public enum Attribute {
-    LEVEL("level"),
-    ELEMENTS("elements"),
-
+    LOCATION("location"),
+    MSG("msg"),
     SPEECH("speech"),
-    ORDER("order"),
-    ATOM("bond"),
-    BOND("bond"),
+    SPEECH2("speech2"),
     TYPE("type");
 
     private final String attribute;

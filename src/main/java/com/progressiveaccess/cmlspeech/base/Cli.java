@@ -77,7 +77,6 @@ public final class Cli {
     options.addOption("d", "debug", false, "Debug mode");
     options.addOption("v", "verbose", false, "Verbose mode");
     // File Handling
-    // options.addOption("i", "input", true, "Input File");
     options.addOption("o", "output", true, "Output file addition");
     options.addOption("l", "log", true, "Log File");
     options.addOption("x", "error", true, "Debug File");
@@ -87,8 +86,15 @@ public final class Cli {
     options.addOption("a", "ann", false, "Include annotations in CML output");
     options.addOption("ao", "annonly", false,
         "Annotations only output. Omits the original CML output");
+    options.addOption("nh", "no_hydro", false,
+        "Do not reattach explicit hydrogenes");
     options.addOption("r", "descr", false,
-        "Include speech descriptions in CML output");
+        "Include speech descriptions in CML output (only with option t)");
+    options.addOption("r0", "descr0", false,
+        "Include also simple speech descriptions in CML output"
+                      + " (only with option t)");
+    options.addOption("t", "struct", false,
+        "Include exploration structure in CML output");
     options.addOption("nn", "no_nih", false,
         "Do not use the NIH naming service");
     options.addOption("tn", "time_nih", true,
@@ -111,6 +117,17 @@ public final class Cli {
         "Comparison heuristics for molecules given as a comma"
                       + "separated list. Currently available heuristics:"
                       + " type, weight, size");
+    // Internationlisation
+    options.addOption("i", "int", true, "Languages; a comma separated list of"
+                      + " iso-639 language. By default all available languages"
+                      + " will be created.");
+    options.addOption("if", "int_files", false, "Create one XML message file"
+                      + " per language.");
+    options.addOption("ia", "int_attr", false, "Inserts speech strings as"
+                      + " attributes into exploration structure. Will only use"
+                      + " the alphabetically first language.");
+    options.addOption("im", "int_msg", false, "Inserts all languages into"
+                      + " exploration structure. Default behaviour");
 
     final CommandLineParser parser = new BasicParser();
     try {

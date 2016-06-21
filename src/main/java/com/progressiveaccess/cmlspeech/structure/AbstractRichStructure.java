@@ -46,10 +46,12 @@ import java.util.stream.Collectors;
  *
  * @param <S> The embedded structure.
  */
+
 public abstract class AbstractRichStructure<S> implements RichStructure<S>,
     XmlAnnotations, XmlVisitable {
 
   private final S structure;
+  private String name = "";
 
 
   /**
@@ -71,6 +73,19 @@ public abstract class AbstractRichStructure<S> implements RichStructure<S>,
 
   private final SortedSet<String> components = new TreeSet<String>(
       new CmlNameComparator());
+
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
+
+
+  @Override
+  public void setName(final String name) {
+    this.name = name;
+  }
+
 
   @Override
   public SortedSet<String> getComponents() {

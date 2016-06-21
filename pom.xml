@@ -57,7 +57,12 @@
       <artifactId>commons-cli</artifactId>
       <version>1.2</version>
       </dependency>
-    <dependency>
+      <dependency>
+	<groupId>net.sourceforge.htmlcleaner</groupId>
+	<artifactId>htmlcleaner</artifactId>
+	<version>2.13</version>
+      </dependency>
+      <dependency>
       <groupId>org.openscience.cdk</groupId>
       <artifactId>cdk-bundle</artifactId>
       <version>1.5.7</version>
@@ -104,14 +109,24 @@
           <showDeprecation>true</showDeprecation>
 	</configuration>
     </plugin>
-    <!-- <plugin> -->
-    <!--   <groupId>org.apache.maven.plugins</groupId> -->
-    <!--   <artifactId>maven-surefire-plugin</artifactId> -->
-    <!--   <version>2.10</version> -->
-    <!--   <configuration> -->
-    <!--     <skipTests>true</skipTests> -->
-    <!--   </configuration> -->
-    <!-- </plugin> -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>2.10</version>
+      <configuration>
+        <!-- <skipTests>true</skipTests> -->
+        <excludes>
+          <!-- <exclude>**/AnnotationVisitorTest.java</exclude> -->
+          <!-- <exclude>**/AppTest.java</exclude> -->
+          <!-- <exclude>**/ExpertSpeechTest.java</exclude> -->
+          <!-- <exclude>**/L10nJaTest.java</exclude> -->
+          <!-- <exclude>**/PositionTest.java</exclude> -->
+          <!-- <exclude>**/RingTest.java</exclude> -->
+          <!-- <exclude>**/SimpleSpeechTest.java</exclude> -->
+          <!-- <exclude>**/StructureVisitorTest.java</exclude> -->
+        </excludes>
+      </configuration>
+    </plugin>
     <plugin>
       <groupId>org.codehaus.mojo</groupId>
       <artifactId>appassembler-maven-plugin</artifactId>

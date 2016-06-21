@@ -192,9 +192,8 @@ public class StructuralAnalysis {
     if (this.molecule == null) {
       return;
     }
-    final AliphaticChain chain = new AliphaticChain(3);
-    chain.calculate(this.molecule);
-    for (final IAtomContainer set : chain.extract()) {
+    final AliphaticChain chain = new AliphaticChain(this.molecule, 3);
+    for (final IAtomContainer set : chain.getChains()) {
       RichStructureHelper.setRichAtomSet(new RichAliphaticChain(set, this
           .getAtomSetId()));
     }
@@ -216,7 +215,7 @@ public class StructuralAnalysis {
       RichStructureHelper.setRichAtomSet(set);
       set.setName(key.split("-")[0]);
       Logger.logging(set.getName() + ": " + container.getAtomCount() + " atoms "
-          + container.getBondCount() + " bonds");
+          + container.getBondCount() + " bonds\n");
     }
   }
 
@@ -276,8 +275,8 @@ public class StructuralAnalysis {
         // We assume each bond has two atoms only!
         this.addSetConnections(id, first, last);
       }
-      this.addConnectingBond(first, id, last);
-      this.addConnectingBond(last, id, first);
+      this.addConnectingBond(first, id, last, first);
+      this.addConnectingBond(last, id, first, last);
     }
   }
 
@@ -291,11 +290,13 @@ public class StructuralAnalysis {
    *          The connecting bond.
    * @param connected
    *          The structure the bond connects to.
+   * @param origin
+   *          The atom the bond originates in.
    */
   private void addConnectingBond(final String structure, final String bond,
-      final String connected) {
+                                 final String connected, final String origin) {
     RichStructureHelper.getRichStructure(structure).getConnections()
-      .add(new ConnectingBond(bond, connected));
+      .add(new ConnectingBond(bond, connected, origin));
   }
 
 
@@ -334,8 +335,8 @@ public class StructuralAnalysis {
     final Set<String> contextAtomB = this.contextCloud(atomB);
     for (final String contextA : contextAtomA) {
       for (final String contextB : contextAtomB) {
-        this.addConnectingBond(contextA, bond, contextB);
-        this.addConnectingBond(contextB, bond, contextA);
+        this.addConnectingBond(contextA, bond, contextB, atomA);
+        this.addConnectingBond(contextB, bond, contextA, atomB);
       }
     }
   }

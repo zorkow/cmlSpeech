@@ -29,6 +29,7 @@ package com.progressiveaccess.cmlspeech.structure;
 
 import com.progressiveaccess.cmlspeech.base.CmlNameComparator;
 import com.progressiveaccess.cmlspeech.base.Logger;
+import com.progressiveaccess.cmlspeech.cactus.SpiderNames;
 import com.progressiveaccess.cmlspeech.graph.StructuralGraph;
 import com.progressiveaccess.cmlspeech.sre.SreAttribute;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
@@ -50,10 +51,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+
 /**
  * Base class for all atom sets with admin information.
  */
-
 public abstract class RichAtomSet extends RichChemObject implements RichSet {
 
   private RichSetType type;
@@ -65,9 +66,10 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
       new CmlNameComparator());
 
   private String iupac = "";
-  private String name = "";
   private String molecularFormula = "";
   private String structuralFormula = "";
+
+  private final SpiderNames names = new SpiderNames();
 
   /**
    * Constructor for rich atom sets.
@@ -124,25 +126,6 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   @Override
   public SortedSet<String> getInternalBonds() {
     return this.internalBonds;
-  }
-
-
-  /**
-   * @return The name of the set.
-   */
-  public String getName() {
-    return this.name;
-  }
-
-
-  /**
-   * Sets the name of the atom set.
-   *
-   * @param name
-   *          The name of the set.
-   */
-  public void setName(final String name) {
-    this.name = name;
   }
 
 
@@ -326,7 +309,7 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
     }
     this.attachAttribute("condensed", this.getStructuralFormula());
     this.attachAttribute("formula", this.getMolecularFormula());
-    this.attachAttribute("name", this.getName());
+    this.attachAttribute("name", super.getName());
     this.attachAttribute("iupac", this.getIupac());
     return this.cml;
   }
@@ -366,6 +349,14 @@ public abstract class RichAtomSet extends RichChemObject implements RichSet {
   @Override
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.ATOMSET;
+  }
+
+
+  /**
+   * @return The naming structure.
+   */
+  public SpiderNames getNames() {
+    return this.names;
   }
 
 }

@@ -34,9 +34,13 @@ import com.progressiveaccess.cmlspeech.analysis.StructuralFormula;
 import com.progressiveaccess.cmlspeech.cactus.CactusCallable;
 import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
+import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
+import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
+import com.progressiveaccess.cmlspeech.speech.Languages;
+import com.progressiveaccess.cmlspeech.sre.SreElement;
 import com.progressiveaccess.cmlspeech.sre.SreNamespace;
 import com.progressiveaccess.cmlspeech.sre.SreOutput;
-import com.progressiveaccess.cmlspeech.sre.SreSpeech;
+import com.progressiveaccess.cmlspeech.sre.SreStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
@@ -63,34 +67,34 @@ public class CmlEnricher {
 
   private Document doc;
   private IAtomContainer molecule;
-  private SreOutput sreOutput;
-  private SreSpeech sreSpeech;
+  private String fileName;
   private final CactusExecutor executor = new CactusExecutor();
+  private final SpiderExecutor sexecutor = new SpiderExecutor();
+
+
+  /**
+   * Constructor.
+   *
+   * @param fileName
+   *          Name of file containing the molecule to be enriched.
+   */
+  public CmlEnricher(final String fileName) {
+    this.fileName = fileName;
+  }
 
 
   /**
    * Convenience method to enrich a CML file. Does all the error catching.
-   *
-   * @param fileName
-   *          File to enrich.
    */
-  public void enrichFile(final String fileName) {
-    this.loadMolecule(fileName);
+  public void enrichFile() {
+    this.loadMolecule();
     if (Cli.hasOption("c")) {
-      try {
-        FileHandler.writeFile(this.doc, fileName, "simple");
-      } catch (final IOException e) {
-        Logger.error("IO error: Can't write " + fileName + "\n");
-        e.printStackTrace();
-      } catch (final CDKException e) {
-        Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-            + "\n");
-        e.printStackTrace();
-      }
+      FileHandler.writeXom(this.doc, this.fileName, "simple");
     }
     this.analyseMolecule();
     this.nameAtomSets();
     this.appendAtomSets();
+    Languages.set(Cli.getOptionValue("int"));
     this.annotateMolecule();
     this.doc.getRootElement().addNamespaceDeclaration(
         SreNamespace.getInstance().getPrefix(),
@@ -98,16 +102,7 @@ public class CmlEnricher {
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }
-    try {
-      FileHandler.writeFile(this.doc, fileName, "enr");
-    } catch (final IOException e) {
-      Logger.error("IO error: Can't write enriched file " + fileName + "\n");
-      e.printStackTrace();
-    } catch (final CDKException e) {
-      Logger.error("Not a valid CDK structure to write: " + e.getMessage()
-          + "\n");
-      e.printStackTrace();
-    }
+    FileHandler.writeXom(this.doc, this.fileName, "enr");
     if (Cli.hasOption("vis")) {
       if (Cli.hasOption("vis_recursive")) {
         RichStructureHelper.getAtomSets().stream().forEach(a -> a.visualize());
@@ -120,17 +115,14 @@ public class CmlEnricher {
 
   /**
    * Loads a molecule and initiates the CML document.
-   *
-   * @param fileName
-   *          The input filename.
    */
-  public void loadMolecule(final String fileName) {
+  public void loadMolecule() {
     try {
-      this.molecule = FileHandler.readFile(fileName);
+      this.molecule = FileHandler.readFile(this.fileName);
       this.doc = FileHandler.buildXom(this.molecule);
     } catch (IOException | CDKException | ParsingException e) {
       Logger.error("IO error: " + e.getMessage() + " Can't load file "
-          + fileName + "\n");
+          + this.fileName + "\n");
       e.printStackTrace();
       System.exit(0);
     }
@@ -156,8 +148,7 @@ public class CmlEnricher {
     MolecularFormula.set(RichStructureHelper.getAtomSets());
     if (!Cli.hasOption("no_nih")) {
       this.executor.execute();
-      this.executor.addResults(this.doc);
-      this.executor.shutdown();
+      this.sexecutor.execute();
     }
     new StructuralFormula();
   }
@@ -172,6 +163,8 @@ public class CmlEnricher {
   private void nameAtomSet(final RichAtomSet set) {
     final IAtomContainer newcontainer = this.checkedClone(set.getStructure());
     if (newcontainer != null) {
+      this.sexecutor.register(new SpiderCallable(set.getId(), newcontainer,
+                                                 set.getNames()));
       this.executor.register(new CactusCallable(set.getId(),
           (final String name) -> {
           set.setIupac(name);
@@ -193,13 +186,41 @@ public class CmlEnricher {
    */
   public void annotateMolecule() {
     if (Cli.hasOption("ann")) {
-      this.sreOutput = new SreOutput();
-      this.doc.getRootElement().appendChild(this.sreOutput.getAnnotations());
+      SreOutput sreOutput = new SreOutput();
+      this.doc.getRootElement().appendChild(sreOutput.getAnnotations());
     }
-    if (Cli.hasOption("descr")) {
-      this.sreSpeech = new SreSpeech(this.doc);
-      this.doc.getRootElement().appendChild(this.sreSpeech.xmlAnnotations());
+    if (Cli.hasOption("struct")) {
+      SreStructure sreStructure = new SreStructure();
+      SreElement annotation = sreStructure.getAnnotations();
+      if (Cli.hasOption("r") || Cli.hasOption("r0")) {
+        this.annotateLanguages(annotation);
+      }
+      if (!Cli.hasOption("nh")) {
+        HydrogenAdder.reattach(this.doc, annotation);
+      }
+      this.doc.getRootElement().appendChild(annotation);
     }
+  }
+
+
+  /**
+   * Adds speech language annotations for the molecule.
+   *
+   * @param annotation
+   *          The annotation element.
+   */
+  public void annotateLanguages(final SreElement annotation) {
+    if (Cli.hasOption("int_attr")) {
+      Languages.replace(annotation);
+      return;
+    }
+    if (Cli.hasOption("int_files")) {
+      Languages.toFile(this.fileName);
+      if (!Cli.hasOption("int_msg")) {
+        return;
+      }
+    }
+    Languages.append(annotation);
   }
 
 
@@ -207,7 +228,6 @@ public class CmlEnricher {
    * Removes explicit hydrogens from the CML representation.
    */
   private void removeExplicitHydrogens() {
-    // TODO (sorge) These should be reattached at the end!
     this.molecule = AtomContainerManipulator.removeHydrogens(this.molecule);
   }
 

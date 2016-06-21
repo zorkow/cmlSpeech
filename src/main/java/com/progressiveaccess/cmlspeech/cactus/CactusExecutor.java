@@ -32,8 +32,6 @@ import com.progressiveaccess.cmlspeech.base.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import nu.xom.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,16 +88,16 @@ public class CactusExecutor {
         }
       }
     }
+    this.addResults();
+    this.executor.shutdown();
   }
 
 
   /**
-   * Adds attributes from returned by all current Cactus futures to a document.
-   *
-   * @param doc
-   *          The current document.
+   * Adds attributes from returned by all current Cactus futures to CML elements
+   * by calling the appropriate consumers.
    */
-  public void addResults(final Document doc) {
+  private void addResults() {
     for (final Map.Entry<CactusCallable, Future<String>> entry : this.registry
         .entries()) {
       final Consumer<String> consumer = entry.getKey().getSetter();
@@ -111,12 +109,6 @@ public class CactusExecutor {
         continue;
       }
     }
-  }
-
-
-  /** Shut down the Cactus executor. */
-  public void shutdown() {
-    this.executor.shutdown();
   }
 
 }

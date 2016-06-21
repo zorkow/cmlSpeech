@@ -36,14 +36,30 @@ import com.progressiveaccess.cmlspeech.sre.XmlVisitor;
 
 public class ConnectingBond extends Connection {
 
+  private String origin;
+
   /**
    * Constructs a connecting bond.
    *
-   * @param connector Name of connecting structure.
-   * @param connected Name of connected structure.
+   * @param connector
+   *          Name of connecting structure.
+   * @param connected
+   *          Name of connected structure.
+   * @param origin
+   *          Name of atom the bond originates in.
    */
-  public ConnectingBond(final String connector, final String connected) {
+  public ConnectingBond(final String connector, final String connected,
+                        final String origin) {
     super(connector, connected);
+    this.origin = origin;
+  }
+
+
+  /**
+   * @return The atom the bond originates in.
+   */
+  public String getOrigin() {
+    return this.origin;
   }
 
   @Override
@@ -55,6 +71,13 @@ public class ConnectingBond extends Connection {
   public SreNamespace.Tag tag() {
     return SreNamespace.Tag.CONNECTINGBOND;
   }
+
+  @Override
+  public String toString() {
+    return "\n" + this.getType() + ": " + this.getOrigin() + " -> "
+        + this.getConnector() + " -> " + this.getConnected();
+  }
+
 
   @Override
   public void accept(final XmlVisitor visitor) {
