@@ -1,3 +1,5 @@
+**This code is seriously outdated. Don't use.**
+
 cmlSpeech
 =========
 
