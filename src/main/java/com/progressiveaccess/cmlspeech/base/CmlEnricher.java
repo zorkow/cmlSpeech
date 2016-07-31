@@ -36,11 +36,6 @@ import com.progressiveaccess.cmlspeech.cactus.CactusExecutor;
 import com.progressiveaccess.cmlspeech.cactus.CactusType;
 import com.progressiveaccess.cmlspeech.cactus.SpiderCallable;
 import com.progressiveaccess.cmlspeech.cactus.SpiderExecutor;
-import com.progressiveaccess.cmlspeech.speech.Languages;
-import com.progressiveaccess.cmlspeech.sre.SreElement;
-import com.progressiveaccess.cmlspeech.sre.SreNamespace;
-import com.progressiveaccess.cmlspeech.sre.SreOutput;
-import com.progressiveaccess.cmlspeech.sre.SreStructure;
 import com.progressiveaccess.cmlspeech.structure.RichAtomSet;
 import com.progressiveaccess.cmlspeech.structure.RichSetType;
 
@@ -94,11 +89,6 @@ public class CmlEnricher {
     this.analyseMolecule();
     this.nameAtomSets();
     this.appendAtomSets();
-    Languages.set(Cli.getOptionValue("int"));
-    this.annotateMolecule();
-    this.doc.getRootElement().addNamespaceDeclaration(
-        SreNamespace.getInstance().getPrefix(),
-        SreNamespace.getInstance().getUri());
     if (Cli.hasOption("annonly")) {
       this.removeNonAnnotations();
     }
@@ -178,49 +168,6 @@ public class CmlEnricher {
             CactusType.NAME, newcontainer));
       }
     }
-  }
-
-
-  /**
-   * Appends annotations to the CML document.
-   */
-  public void annotateMolecule() {
-    if (Cli.hasOption("ann")) {
-      SreOutput sreOutput = new SreOutput();
-      this.doc.getRootElement().appendChild(sreOutput.getAnnotations());
-    }
-    if (Cli.hasOption("struct")) {
-      SreStructure sreStructure = new SreStructure();
-      SreElement annotation = sreStructure.getAnnotations();
-      if (Cli.hasOption("r") || Cli.hasOption("r0")) {
-        this.annotateLanguages(annotation);
-      }
-      if (!Cli.hasOption("nh")) {
-        HydrogenAdder.reattach(this.doc, annotation);
-      }
-      this.doc.getRootElement().appendChild(annotation);
-    }
-  }
-
-
-  /**
-   * Adds speech language annotations for the molecule.
-   *
-   * @param annotation
-   *          The annotation element.
-   */
-  public void annotateLanguages(final SreElement annotation) {
-    if (Cli.hasOption("int_attr")) {
-      Languages.replace(annotation);
-      return;
-    }
-    if (Cli.hasOption("int_files")) {
-      Languages.toFile(this.fileName);
-      if (!Cli.hasOption("int_msg")) {
-        return;
-      }
-    }
-    Languages.append(annotation);
   }
 
 
