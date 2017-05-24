@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="129.4993674176859" zoomAndPan="magnify" contentStyleType="text/css" height="90.67017642366422" preserveAspectRatio="xMidYMid meet" version="1.0">
+  <g>
+    <g>
+      <line x1="25.0" x2="58.49969419092076" y1="65.6701764236642" y2="65.49855913784995" class="bond" id="b1" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="58.49969419092076" x2="58.82732719111141" y1="65.49855913784995" y2="25.0" class="bond" id="b2" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="104.4993674176859" x2="58.49969419092076" y1="65.33006216632339" y2="65.49855913784995" class="bond" id="b3" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+    </g>
+    <g>
+      <g class="atom" id="a1">
+        <rect x="7.814697265625" y="56.4963482986642" fill="rgb(255, 255, 255)" width="34.37060546875" height="18.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="8.814697265625" font-size="15.0px" y="73.8440045486642" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">3</tspan>C</text>
+      </g>
+      <g class="atom" id="a2">
+        <rect x="46.08611997217076" y="58.82473101284995" fill="rgb(255, 255, 255)" width="24.8271484375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="47.08611997217076" font-size="15.0px" y="71.17238726284995" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">HC</text>
+      </g>
+      <g class="atom" id="a3">
+        <rect x="41.64202445673641" y="15.826171875" fill="rgb(255, 255, 255)" width="34.37060546875" height="18.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="42.64202445673641" font-size="15.0px" y="33.173828125" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">3</tspan>C</text>
+      </g>
+      <g class="atom" id="a4">
+        <rect x="87.3140646833109" y="56.15623404132339" fill="rgb(255, 255, 255)" width="34.37060546875" height="18.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="88.3140646833109" font-size="15.0px" y="73.50389029132339" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">3</tspan>C</text>
+      </g>
+    </g>
+  </g>
+</svg>

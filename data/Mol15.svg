@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="190.12290546513728" zoomAndPan="magnify" contentStyleType="text/css" height="188.5627669409681" preserveAspectRatio="xMidYMid meet" version="1.0">
+  <g>
+    <g>
+      <g id="b1">
+        <line x1="145.1631172423269" x2="165.1229054651373" y1="163.5153387298334" y2="128.8503088336143" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b2">
+        <line x1="145.08074192825075" x2="165.1229054651373" y1="94.23270714852998" y2="128.8503088336143" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b3">
+        <line x1="105.16366170426869" x2="145.1631172423269" y1="163.56276694096812" y2="163.5153387298334" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b4">
+        <line x1="105.08128639019253" x2="145.08074192825075" y1="94.2826315813034" y2="94.23270714852998" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b5">
+        <line x1="85.12149816738219" x2="105.16366170426869" y1="128.9451652558838" y2="163.56276694096812" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b6">
+        <line x1="85.12149816738219" x2="105.08128639019253" y1="128.9451652558838" y2="94.2826315813034" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <circle fill-opacity="0.0" fill="none" r="26.400482965766713" cx="125.1222018162598" cy="128.8981530816888" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <line x1="105.08128639019253" x2="85.03912285330608" y1="94.2826315813034" y2="59.66502989621907" class="bond" id="b7" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <g id="b8">
+        <line x1="85.04149429447477" x2="45.042038756416616" y1="61.665028490285266" y2="61.71245670142005" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <line x1="85.03675141213733" x2="45.03729587407912" y1="57.66503130215284" y2="57.71245951328763" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <line x1="104.99891107611643" x2="85.03912285330608" y1="25.0" y2="59.66502989621907" class="bond" id="b9" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="25.0" x2="45.03966731524787" y1="25.094856422269487" y2="59.712458107353825" class="bond" id="b10" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="25.08237531407616" x2="45.03966731524787" y1="94.37748800357286" y2="59.712458107353825" class="bond" id="b11" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+    </g>
+    <g>
+      <g class="atom" id="a7">
+        <rect x="79.17340019705608" y="52.99120177121907" fill="rgb(255, 255, 255)" width="11.7314453125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="80.17340019705608" font-size="15.0px" y="65.33885802121907" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">C</text>
+      </g>
+      <g class="atom" id="a8">
+        <rect x="39.17394465899787" y="53.038629982353825" fill="rgb(255, 255, 255)" width="11.7314453125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="40.17394465899787" font-size="15.0px" y="65.38628623235383" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">C</text>
+      </g>
+      <g class="atom" id="a9">
+        <rect x="98.28602045111643" y="18.53125" fill="rgb(255, 255, 255)" width="13.42578125" height="12.9375" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="99.28602045111643" font-size="15.0px" y="30.46875" fill="rgb(191, 191, 191)" font-family="Serif" stroke="rgb(191, 191, 191)" stroke-width="1.0">H</text>
+      </g>
+      <g class="atom" id="a10">
+        <rect x="18.287109375" y="18.626106422269487" fill="rgb(255, 255, 255)" width="13.42578125" height="12.9375" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="19.287109375" font-size="15.0px" y="30.563606422269487" fill="rgb(191, 191, 191)" font-family="Serif" stroke="rgb(191, 191, 191)" stroke-width="1.0">H</text>
+      </g>
+      <g class="atom" id="a11">
+        <rect x="18.36948468907616" y="87.90873800357286" fill="rgb(255, 255, 255)" width="13.42578125" height="12.9375" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="19.36948468907616" font-size="15.0px" y="99.84623800357286" fill="rgb(191, 191, 191)" font-family="Serif" stroke="rgb(191, 191, 191)" stroke-width="1.0">H</text>
+      </g>
+    </g>
+  </g>
+</svg>
