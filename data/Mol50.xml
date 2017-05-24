@@ -850,7 +850,7 @@
             <sre:message sre:msg="SRE_MSG_135">Functionele groep C H N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_136">gemeinsames atom Koolstof 1 met Butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_137">gemeinsames atom Koolstof 1 met Koolstofketen met lengte 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_138">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_138">dipeptide uit glycine en valine.</sre:message>
             <sre:message sre:msg="SRE_MSG_139">Molecuul bestaande uit een Koolstofketen met lengte 4 en Functionele groep C O N H en Functionele groep N H C H2 C O O H en Functionele groep C H N H2 en Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">enkele binding met Functionele groep Peptide C term.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">enkele binding met Functionele groep N H C H2 C O O H.</sre:message>

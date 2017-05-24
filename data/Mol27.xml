@@ -583,7 +583,7 @@
             <sre:message sre:msg="SRE_MSG_83">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_84">enkele binding met Buteen.</sre:message>
             <sre:message sre:msg="SRE_MSG_85">enkele binding met Koolstofketen met lengte 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_86">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_86">Isoprenylacetaat.</sre:message>
             <sre:message sre:msg="SRE_MSG_87">Molecuul bestaande uit een Koolstofketen met lengte 4 en Functionele groep C H2 O C O C H3 en Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">dubbele binding met Zuurstof 4.</sre:message>
         </sre:messages>

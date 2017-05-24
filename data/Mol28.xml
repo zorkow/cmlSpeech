@@ -2435,7 +2435,7 @@
             <sre:message sre:msg="SRE_MSG_299">enkele binding met Ring met 6 hoeken.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">enkele binding met Koolstof 8.</sre:message>
             <sre:message sre:msg="SRE_MSG_30">aromatische binding met Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_300">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_300">polystyreen.</sre:message>
             <sre:message sre:msg="SRE_MSG_301">Molecuul bestaande uit een Ring met 6 hoeken en Koolstofketen met lengte 8 en Ring met 6 hoeken en Ring met 6 hoeken en Ring met 6 hoeken.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">aromatische binding met Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Koolstof 3 met een gebonden waterstofatoom.</sre:message>

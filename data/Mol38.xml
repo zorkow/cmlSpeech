@@ -680,7 +680,7 @@
             <sre:message sre:msg="SRE_MSG_108">enkele binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_109">enkele binding met Ring met 6 hoeken.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">dubbele binding met Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_110">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_110">P-ftaalzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_111">Molecuul bestaande uit een Ring met 6 hoeken en Functionele groep C O H O en Functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Zuurstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Zuurstof 3.</sre:message>
