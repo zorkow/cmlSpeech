@@ -518,7 +518,7 @@
             <sre:message sre:msg="SRE_MSG_7">enkele binding met Koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_70">gemeinsames atom Koolstof 1 met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_71">gemeinsames atom Koolstof 1 met Koolstofketen met lengte 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_72">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_72">2-ainopropaanzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_73">Molecuul bestaande uit een Koolstofketen met lengte 3 en Functionele groep C O H O en Functionele groep C H N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_8">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">Koolstof 1 met een gebonden waterstofatoom.</sre:message>

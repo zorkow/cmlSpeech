@@ -396,7 +396,7 @@
             <sre:message sre:msg="SRE_MSG_55">Functionele groep C O O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">gemeinsames atom Koolstof 1 met Butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">gemeinsames atom Koolstof 1 met Koolstofketen met lengte 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_58">FAILURE.</sre:message>
+            <sre:message sre:msg="SRE_MSG_58">Butanozuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_59">Molecuul bestaande uit een Koolstofketen met lengte 4 en Functionele groep C O O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">enkele binding met Koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">enkele binding met Koolstof 2.</sre:message>
