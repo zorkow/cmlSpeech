@@ -15,7 +15,7 @@
     <atomSet title="Molecule" id="as3" size="4" sre:formula="C4H8">a1 a2 a3 a4</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="SRE_MSG_0" sre:speech2="SRE_MSG_1">
-            <sre:atom sre:type="Carbon">a1</sre:atom>
+            <sre:atom sre:type="carbon">a1</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
@@ -26,7 +26,7 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_2" sre:speech2="SRE_MSG_3" sre:location="internal">
-                    <sre:atom sre:type="Carbon">a2</sre:atom>
+                    <sre:atom sre:type="carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="double">b1</sre:bond>
                         <sre:position>2</sre:position>
@@ -35,7 +35,7 @@
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="SRE_MSG_4" sre:speech2="SRE_MSG_5">
-            <sre:atom sre:type="Carbon">a2</sre:atom>
+            <sre:atom sre:type="carbon">a2</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
@@ -47,21 +47,21 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_6" sre:speech2="SRE_MSG_7" sre:location="internal">
-                    <sre:atom sre:type="Carbon">a1</sre:atom>
+                    <sre:atom sre:type="carbon">a1</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="double">b1</sre:bond>
                         <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour sre:speech="SRE_MSG_8" sre:speech2="SRE_MSG_9" sre:location="internal">
-                    <sre:atom sre:type="Carbon">a3</sre:atom>
+                    <sre:atom sre:type="carbon">a3</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b2</sre:bond>
                         <sre:position>3</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour sre:speech="SRE_MSG_10" sre:speech2="SRE_MSG_11" sre:location="external">
-                    <sre:atom sre:type="Carbon">a4</sre:atom>
+                    <sre:atom sre:type="carbon">a4</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b3</sre:bond>
                         <sre:position>0</sre:position>
@@ -70,7 +70,7 @@
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="SRE_MSG_12" sre:speech2="SRE_MSG_13">
-            <sre:atom sre:type="Carbon">a3</sre:atom>
+            <sre:atom sre:type="carbon">a3</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
@@ -81,7 +81,7 @@
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_14" sre:speech2="SRE_MSG_15" sre:location="internal">
-                    <sre:atom sre:type="Carbon">a2</sre:atom>
+                    <sre:atom sre:type="carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b2</sre:bond>
                         <sre:position>2</sre:position>
@@ -90,7 +90,7 @@
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="SRE_MSG_16" sre:speech2="SRE_MSG_17">
-            <sre:atom sre:type="Carbon">a4</sre:atom>
+            <sre:atom sre:type="carbon">a4</sre:atom>
             <sre:parents>
                 <sre:atomSet>as2</sre:atomSet>
             </sre:parents>
@@ -99,7 +99,7 @@
             <sre:component/>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_18" sre:speech2="SRE_MSG_19" sre:location="external">
-                    <sre:atom sre:type="Carbon">a2</sre:atom>
+                    <sre:atom sre:type="carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b3</sre:bond>
                         <sre:position>0</sre:position>
@@ -213,40 +213,40 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">enkele binding met Functionele groep Methyl.</sre:message>
-            <sre:message sre:msg="SRE_MSG_11">enkele binding met Functionele groep C H3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_11">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_14">enkele binding met Koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_15">enkele binding met Koolstof 2.</sre:message>
+            <sre:message sre:msg="SRE_MSG_14">Enkele binding met koolstof 2.</sre:message>
+            <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_16">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_18">enkele binding met Propeen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_19">enkele binding met Koolstofketen met lengte 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_2">dubbele binding met Koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_20">dubbele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_21">dubbele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_22">enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_23">enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_24">enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_25">enkele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_18">Enkele binding met Propeen.</sre:message>
+            <sre:message sre:msg="SRE_MSG_19">Enkele binding met koolstofketen met lengte 3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_2">Dubbele binding met koolstof 2.</sre:message>
+            <sre:message sre:msg="SRE_MSG_20">Dubbele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_21">Dubbele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_22">Enkele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_23">Enkele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_24">Enkele binding.</sre:message>
+            <sre:message sre:msg="SRE_MSG_25">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_26">Propeen met substituent aan positie 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_27">Koolstofketen met lengte 3 dubbele binding tussen positie 1 en 2 met substituent aan positie 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_28">enkele binding met Functionele groep Methyl.</sre:message>
-            <sre:message sre:msg="SRE_MSG_29">enkele binding met Functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_3">dubbele binding met Koolstof 2.</sre:message>
+            <sre:message sre:msg="SRE_MSG_28">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_29">Enkele binding met functionele groep C H3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_3">Dubbele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_30">Functionele groep Methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_32">enkele binding met Propeen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_33">enkele binding met Koolstofketen met lengte 3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_32">Enkele binding met Propeen.</sre:message>
+            <sre:message sre:msg="SRE_MSG_33">Enkele binding met koolstofketen met lengte 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_34">Isobuteen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_35">Molecuul bestaande uit een Koolstofketen met lengte 3 en Functionele groep C H3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_35">Molecuul bestaande uit een koolstofketen met lengte 3 en functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_4">Koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_6">dubbele binding met Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_7">dubbele binding met Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_8">enkele binding met Koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_9">enkele binding met Koolstof 3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_6">Dubbele binding met koolstof 1.</sre:message>
+            <sre:message sre:msg="SRE_MSG_7">Dubbele binding met koolstof 1.</sre:message>
+            <sre:message sre:msg="SRE_MSG_8">Enkele binding met koolstof 3.</sre:message>
+            <sre:message sre:msg="SRE_MSG_9">Enkele binding met koolstof 3.</sre:message>
         </sre:messages>
     </sre:annotations>
 </molecule>
