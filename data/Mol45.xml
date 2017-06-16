@@ -460,7 +460,7 @@
             <sre:message sre:msg="SRE_MSG_1">Zuurstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_10">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_12">Enkele binding met propaan functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_12">Enkele binding met propaan functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met koolstofketen met lengte 3 functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met zuurstof 2.</sre:message>
@@ -471,7 +471,7 @@
             <sre:message sre:msg="SRE_MSG_2">Enkele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_20">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_21">Enkele binding met koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_22">Enkele binding met functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_22">Enkele binding met functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_23">Enkele binding met functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_24">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_25">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
@@ -491,7 +491,7 @@
             <sre:message sre:msg="SRE_MSG_38">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_39">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_4">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_40">Enkele binding met propaan functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_40">Enkele binding met propaan functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_41">Enkele binding met koolstofketen met lengte 3 functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_42">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_43">Enkele binding met zuurstof 2.</sre:message>
@@ -519,12 +519,12 @@
             <sre:message sre:msg="SRE_MSG_63">Koolstofketen met lengte 3 met substituent aan positie 1 en 2 en 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_64">Gedeeld atoom koolstof 1 met functionele groep serine.</sre:message>
             <sre:message sre:msg="SRE_MSG_65">Gedeeld atoom koolstof 1 met functionele groep C H2 O H.</sre:message>
-            <sre:message sre:msg="SRE_MSG_66">Gedeeld atoom koolstof 2 met functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_66">Gedeeld atoom koolstof 2 met functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_67">Gedeeld atoom koolstof 2 met functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_68">Gedeeld atoom koolstof 3 met functionele groep serine.</sre:message>
             <sre:message sre:msg="SRE_MSG_69">Gedeeld atoom koolstof 3 met functionele groep C H2 O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_70">Functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_70">Functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_71">Functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_72">Gedeeld atoom koolstof 1 met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_73">Gedeeld atoom koolstof 1 met koolstofketen met lengte 3.</sre:message>

@@ -223,21 +223,21 @@
             <sre:message sre:msg="SRE_MSG_17">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_18">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Enkele binding met zuurstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_2">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_2">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_20">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_21">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_22">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_23">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_24">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_25">Enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_26">Functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_26">Functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_27">Functionele groep C H2 O C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_28">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_28">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_29">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_30">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_30">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_32">Enkele binding met functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_32">Enkele binding met functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Enkele binding met functionele groep C H2 O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_34">Methoxyethaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_35">Molecuul bestaande uit een functionele groep C H2 O C H3 en functionele groep C H3.</sre:message>
@@ -245,7 +245,7 @@
             <sre:message sre:msg="SRE_MSG_5">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_8">Enkele binding met functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_8">Enkele binding met functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">Enkele binding met functionele groep C H2 O C H3.</sre:message>
         </sre:messages>
     </sre:annotations>

@@ -616,7 +616,7 @@
             <sre:message sre:msg="SRE_MSG_13">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Aromatische binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Aromatische binding met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_16">Aromatische binding met benzeen ring functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_16">Aromatische binding met benzeen ring functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Aromatische binding met ring met 6 hoeken functionele groep C O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_18">Enkele binding met broom 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Enkele binding met broom 2.</sre:message>
@@ -634,7 +634,7 @@
             <sre:message sre:msg="SRE_MSG_3">Enkele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_30">Aromatische binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Aromatische binding met koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_32">Enkele binding met functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_32">Enkele binding met functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Enkele binding met functionele groep C O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_34">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_35">Koolstof 1.</sre:message>
@@ -700,13 +700,13 @@
             <sre:message sre:msg="SRE_MSG_9">Aromatische binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_90">Gedeeld atoom koolstof 1 met functionele groep arylbromide.</sre:message>
             <sre:message sre:msg="SRE_MSG_91">Gedeeld atoom koolstof 1 met functionele groep C Br.</sre:message>
-            <sre:message sre:msg="SRE_MSG_92">Gedeeld atoom koolstof 2 met functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_92">Gedeeld atoom koolstof 2 met functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_93">Gedeeld atoom koolstof 2 met functionele groep C O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_94">Functionele groep arylbromide.</sre:message>
             <sre:message sre:msg="SRE_MSG_95">Functionele groep C Br.</sre:message>
             <sre:message sre:msg="SRE_MSG_96">Gedeeld atoom koolstof 1 met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_97">Gedeeld atoom koolstof 1 met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_98">Functionele groep Ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_98">Functionele groep ether.</sre:message>
             <sre:message sre:msg="SRE_MSG_99">Functionele groep C O C H3.</sre:message>
         </sre:messages>
     </sre:annotations>

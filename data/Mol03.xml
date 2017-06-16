@@ -410,7 +410,7 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
@@ -429,10 +429,10 @@
             <sre:message sre:msg="SRE_MSG_25">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_26">Propaan met substituent aan positie 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_27">Koolstofketen met lengte 3 met substituent aan positie 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_28">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_28">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_29">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">Enkele binding met koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_30">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_30">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Enkele binding met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Enkele binding met koolstofketen met lengte 3.</sre:message>

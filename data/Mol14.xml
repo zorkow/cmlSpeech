@@ -463,10 +463,10 @@
             <sre:message sre:msg="SRE_MSG_55">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">Benzeen ring met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Ring met 6 hoeken aromatische binding tussen positie 1 en 6 aromatische binding tussen positie 2 en 3 aromatische binding tussen positie 4 en 5 met substituent aan positie 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_58">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_58">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_59">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_6">Enkele binding met functionele groep Methyl.</sre:message>
-            <sre:message sre:msg="SRE_MSG_60">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_6">Enkele binding met functionele groep methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_60">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_61">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_62">Enkele binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_63">Enkele binding met ring met 6 hoeken.</sre:message>

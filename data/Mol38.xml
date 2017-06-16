@@ -669,13 +669,13 @@
             <sre:message sre:msg="SRE_MSG_0">Zuurstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Zuurstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_10">Dubbele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_100">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_100">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_101">Enkele binding met functionele groep C O H O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_102">Functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_102">Functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_103">Functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_104">Enkele binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_105">Enkele binding met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_106">Functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_106">Functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_107">Functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_108">Enkele binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_109">Enkele binding met ring met 6 hoeken.</sre:message>
@@ -697,7 +697,7 @@
             <sre:message sre:msg="SRE_MSG_23">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_24">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_25">Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_26">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_26">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_27">Enkele binding met functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_28">Aromatische binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_29">Aromatische binding met koolstof 2.</sre:message>
@@ -732,7 +732,7 @@
             <sre:message sre:msg="SRE_MSG_55">Aromatische binding met koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">Koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Koolstof 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_58">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_58">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_59">Enkele binding met functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Enkele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_60">Aromatische binding met koolstof 3.</sre:message>
@@ -776,7 +776,7 @@
             <sre:message sre:msg="SRE_MSG_95">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_96">Benzeen ring met substituent aan positie 1 en 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_97">Ring met 6 hoeken aromatische binding tussen positie 1 en 6 aromatische binding tussen positie 2 en 3 aromatische binding tussen positie 4 en 5 met substituent aan positie 1 en 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_98">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_98">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_99">Enkele binding met functionele groep C O H O.</sre:message>
         </sre:messages>
     </sre:annotations>

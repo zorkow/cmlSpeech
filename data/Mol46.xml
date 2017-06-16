@@ -1059,9 +1059,9 @@
             <sre:message sre:msg="SRE_MSG_161">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_162">(9Z) -9-octadeceen met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_163">Koolstofketen met lengte 18 dubbele binding tussen positie 9 en 10 met substituent aan positie 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_164">Gedeeld atoom koolstof 1 met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_164">Gedeeld atoom koolstof 1 met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_165">Gedeeld atoom koolstof 1 met functionele groep C O O H.</sre:message>
-            <sre:message sre:msg="SRE_MSG_166">Functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_166">Functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_167">Functionele groep C O O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_168">Gedeeld atoom koolstof 1 met (9Z) -9-octadeceen.</sre:message>
             <sre:message sre:msg="SRE_MSG_169">Gedeeld atoom koolstof 1 met koolstofketen met lengte 18.</sre:message>
@@ -1070,7 +1070,7 @@
             <sre:message sre:msg="SRE_MSG_171">Molecuul bestaande uit een koolstofketen met lengte 18 en functionele groep C O O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_18">Dubbele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Dubbele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_2">Dubbele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_2">Dubbele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_20">Zuurstof 3 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_21">Zuurstof 3 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_22">Enkele binding met koolstof 1.</sre:message>
@@ -1092,7 +1092,7 @@
             <sre:message sre:msg="SRE_MSG_37">Koolstof 4 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_38">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_39">Enkele binding met koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_40">Enkele binding met koolstof 5.</sre:message>
             <sre:message sre:msg="SRE_MSG_41">Enkele binding met koolstof 5.</sre:message>
             <sre:message sre:msg="SRE_MSG_42">Koolstof 5 met 2 gebonden waterstofatomen.</sre:message>

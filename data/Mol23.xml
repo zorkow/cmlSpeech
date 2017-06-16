@@ -450,7 +450,7 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 2 met een gebonden waterstofatoom.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">Enkele binding met propaan functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Enkele binding met propaan functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Enkele binding met koolstofketen met lengte 3 functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Enkele binding met stikstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met stikstof 2.</sre:message>
@@ -458,10 +458,10 @@
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstofketen met lengte 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_16">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_18">Enkele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_18">Enkele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Enkele binding met functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_2">Enkele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_20">Dubbele binding met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_20">Dubbele binding met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_21">Dubbele binding met functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_22">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_23">Enkele binding met koolstof 2.</sre:message>
@@ -472,7 +472,7 @@
             <sre:message sre:msg="SRE_MSG_28">Dubbele binding met zuurstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_29">Dubbele binding met zuurstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">Enkele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_30">Enkele binding met propaan functionele groep Primaire amine.</sre:message>
+            <sre:message sre:msg="SRE_MSG_30">Enkele binding met propaan functionele groep primaire amine.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Enkele binding met koolstofketen met lengte 3 functionele groep C H N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Zuurstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Zuurstof 2 met een gebonden waterstofatoom.</sre:message>
@@ -482,7 +482,7 @@
             <sre:message sre:msg="SRE_MSG_37">Zuurstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_38">Dubbele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_39">Dubbele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep Primaire amine.</sre:message>
+            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep primaire amine.</sre:message>
             <sre:message sre:msg="SRE_MSG_40">Stikstof 2 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_41">Stikstof 2 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_42">Enkele binding met koolstof 1.</sre:message>
@@ -505,15 +505,15 @@
             <sre:message sre:msg="SRE_MSG_58">Propaan met substituent aan positie 1 en 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_59">Koolstofketen met lengte 3 met substituent aan positie 1 en 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Enkele binding met koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_60">Gedeeld atoom koolstof 2 met functionele groep Primaire amine.</sre:message>
+            <sre:message sre:msg="SRE_MSG_60">Gedeeld atoom koolstof 2 met functionele groep primaire amine.</sre:message>
             <sre:message sre:msg="SRE_MSG_61">Gedeeld atoom koolstof 2 met functionele groep C H N H2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_62">Gedeeld atoom koolstof 1 met functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_62">Gedeeld atoom koolstof 1 met functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_63">Gedeeld atoom koolstof 1 met functionele groep C O H O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_64">Functionele groep Carbonzuur.</sre:message>
+            <sre:message sre:msg="SRE_MSG_64">Functionele groep carbonzuur.</sre:message>
             <sre:message sre:msg="SRE_MSG_65">Functionele groep C O H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_66">Gedeeld atoom koolstof 1 met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_67">Gedeeld atoom koolstof 1 met koolstofketen met lengte 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_68">Functionele groep Primaire amine.</sre:message>
+            <sre:message sre:msg="SRE_MSG_68">Functionele groep primaire amine.</sre:message>
             <sre:message sre:msg="SRE_MSG_69">Functionele groep C H N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_70">Gedeeld atoom koolstof 1 met propaan.</sre:message>

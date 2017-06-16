@@ -507,7 +507,7 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 2 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 2 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Enkele binding met functionele groep C O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Enkele binding met koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met koolstof 4.</sre:message>
@@ -546,9 +546,9 @@
             <sre:message sre:msg="SRE_MSG_43">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_44">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_45">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_46">Enkele binding met pentaan functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_46">Enkele binding met pentaan functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_47">Enkele binding met koolstofketen met lengte 5 functionele groep C O H.</sre:message>
-            <sre:message sre:msg="SRE_MSG_48">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_48">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Enkele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_50">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
@@ -573,18 +573,18 @@
             <sre:message sre:msg="SRE_MSG_68">Pentaan met substituent aan positie 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_69">Koolstofketen met lengte 5 met substituent aan positie 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_70">Gedeeld atoom koolstof 3 met functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_70">Gedeeld atoom koolstof 3 met functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_71">Gedeeld atoom koolstof 3 met functionele groep C O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_72">Enkele binding met functionele groep methyleen.</sre:message>
             <sre:message sre:msg="SRE_MSG_73">Enkele binding met functionele groep C H2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_74">Functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_74">Functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_75">Functionele groep C O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_76">Gedeeld atoom koolstof 1 met pentaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_77">Gedeeld atoom koolstof 1 met koolstofketen met lengte 5.</sre:message>
             <sre:message sre:msg="SRE_MSG_78">Enkele binding met functionele groep methyleen.</sre:message>
             <sre:message sre:msg="SRE_MSG_79">Enkele binding met functionele groep C H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_8">Enkele binding met koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_80">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_80">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_81">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_82">Enkele binding met functionele groep methyleen.</sre:message>
             <sre:message sre:msg="SRE_MSG_83">Enkele binding met functionele groep C H2.</sre:message>
@@ -592,10 +592,10 @@
             <sre:message sre:msg="SRE_MSG_85">Functionele groep C H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_86">Enkele binding met pentaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_87">Enkele binding met koolstofketen met lengte 5.</sre:message>
-            <sre:message sre:msg="SRE_MSG_88">Enkele binding met functionele groep Alcohol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_88">Enkele binding met functionele groep alcohol.</sre:message>
             <sre:message sre:msg="SRE_MSG_89">Enkele binding met functionele groep C O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">Enkele binding met koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_90">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_90">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_91">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_92">3-ethyl-3-pentanol.</sre:message>
             <sre:message sre:msg="SRE_MSG_93">Molecuul bestaande uit een koolstofketen met lengte 5 en functionele groep C O H en functionele groep C H2 en functionele groep C H3.</sre:message>

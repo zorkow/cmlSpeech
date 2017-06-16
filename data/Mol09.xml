@@ -376,9 +376,9 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 4 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 4 met een gebonden waterstofatoom.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_12">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_12">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstof 2.</sre:message>
@@ -422,16 +422,16 @@
             <sre:message sre:msg="SRE_MSG_5">Dubbele binding met koolstof 5.</sre:message>
             <sre:message sre:msg="SRE_MSG_50">1,4-pentadieen met substituent aan positie 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Koolstofketen met lengte 5 dubbele binding tussen positie 1 en 2 dubbele binding tussen positie 4 en 5 met substituent aan positie 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_52">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_52">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_53">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_54">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_54">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_55">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_56">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_56">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_58">Enkele binding met 1,4-pentadieen.</sre:message>
             <sre:message sre:msg="SRE_MSG_59">Enkele binding met koolstofketen met lengte 5.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_60">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_60">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_61">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_62">Enkele binding met 1,4-pentadieen.</sre:message>
             <sre:message sre:msg="SRE_MSG_63">Enkele binding met koolstofketen met lengte 5.</sre:message>

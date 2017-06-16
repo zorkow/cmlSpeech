@@ -539,7 +539,7 @@
             <sre:message sre:msg="SRE_MSG_43">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_44">Dubbele binding met koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_45">Dubbele binding met koolstof 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_46">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_46">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_47">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_48">Koolstof 4 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Koolstof 4 met 2 gebonden waterstofatomen.</sre:message>
@@ -572,14 +572,14 @@
             <sre:message sre:msg="SRE_MSG_73">Koolstofketen met lengte 4 dubbele binding tussen positie 3 en 4 met substituent aan positie 1 en 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_74">Gedeeld atoom koolstof 1 met functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_75">Gedeeld atoom koolstof 1 met functionele groep C H2 O C O C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_76">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_76">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_77">Enkele binding met functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_78">Functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_79">Functionele groep C H2 O C O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_8">Dubbele binding met zuurstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_80">Gedeeld atoom koolstof 1 met Buteen.</sre:message>
             <sre:message sre:msg="SRE_MSG_81">Gedeeld atoom koolstof 1 met koolstofketen met lengte 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_82">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_82">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_83">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_84">Enkele binding met Buteen.</sre:message>
             <sre:message sre:msg="SRE_MSG_85">Enkele binding met koolstofketen met lengte 4.</sre:message>

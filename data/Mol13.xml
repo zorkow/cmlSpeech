@@ -494,13 +494,13 @@
             <sre:message sre:msg="SRE_MSG_31">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Cyclopropaan ring met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Ring met 3 hoeken met substituent aan positie 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_34">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_34">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_35">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_36">Functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_36">Functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_37">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_38">Enkele binding met Cyclopropaan ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_39">Enkele binding met ring met 3 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep Methyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_4">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_40">Methylcyclopropaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_41">Molecuul bestaande uit een ring met 3 hoeken en functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Enkele binding met functionele groep C H3.</sre:message>
