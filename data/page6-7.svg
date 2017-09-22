@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="153.9245116707732" zoomAndPan="magnify" contentStyleType="text/css" height="129.9997687872251" preserveAspectRatio="xMidYMid meet" version="1.0">
+  <g>
+    <g>
+      <g id="b1">
+        <line x1="60.64345276231262" x2="25.9999438653183" y1="26.732083215729517" y2="46.73202541253568" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <line x1="58.64356503167596" x2="24.0000561346817" y1="23.267916784270483" y2="43.26785898107664" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <line x1="94.28100277377894" x2="59.64350889699426" y1="44.99994219680616" y2="25.0" class="bond" id="b2" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="94.28100277377894" x2="128.9245116707732" y1="44.99994219680616" y2="25.0" class="bond" id="b3" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="94.28100277377894" x2="59.64350889699426" y1="84.9998265904187" y2="104.9997687872251" class="bond" id="b4" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <g id="b5">
+        <line x1="92.28100277377894" x2="92.28100277377894" y1="84.9998265904187" y2="44.99994219680616" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <line x1="96.28100277377894" x2="96.28100277377894" y1="84.9998265904187" y2="44.99994219680616" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <g id="b6">
+        <line x1="58.64356503167596" x2="24.0000561346817" y1="106.73185200295461" y2="86.73190980614822" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+        <line x1="60.64345276231262" x2="25.9999438653183" y1="103.26768557149558" y2="83.26774337468919" class="bond" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      </g>
+      <line x1="25.0" x2="25.0" y1="84.9998265904187" y2="44.99994219680616" class="bond" id="b7" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+    </g>
+    <g>
+      <g class="atom" id="a6">
+        <rect x="116.0666015145232" y="18.326171875" fill="rgb(255, 255, 255)" width="25.7158203125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="117.0666015145232" font-size="15.0px" y="30.673828125" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">HO</text>
+      </g>
+    </g>
+  </g>
+</svg>
