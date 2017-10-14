@@ -157,9 +157,9 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 1 met 4 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 1 met 4 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_2">CH4.</sre:message>
+            <sre:message sre:msg="SRE_MSG_2">Methaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">Koolstofketen met lengte 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_4">CH4.</sre:message>
+            <sre:message sre:msg="SRE_MSG_4">Methaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Molecuul bestaande uit een koolstofketen met lengte 1.</sre:message>
         </sre:messages>
     </sre:annotations>
