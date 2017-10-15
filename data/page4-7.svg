@@ -18,31 +18,5 @@
       </g>
       <line x1="59.66427242015811" x2="25.01503742513455" y1="104.99910171579074" y2="85.01436371197758" class="bond" id="b6" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
     </g>
-    <g>
-      <g class="atom" id="a1">
-        <rect x="12.570945628259551" y="78.34053558697758" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.570945628259551" font-size="15.0px" y="90.68819183697758" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a2">
-        <rect x="12.555908203125" y="38.337977244055196" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.555908203125" font-size="15.0px" y="50.685633494055196" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a3">
-        <rect x="47.187098287987055" y="18.326171874999886" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.187098287987055" font-size="15.0px" y="30.673828124999886" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a4">
-        <rect x="81.83633328301062" y="38.30790239378621" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="82.83633328301062" font-size="15.0px" y="50.65555864378621" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a5">
-        <rect x="81.85437819317224" y="78.30745325168152" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="82.85437819317224" font-size="15.0px" y="90.65510950168152" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a6">
-        <rect x="47.22018062328311" y="98.32527359079074" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.22018062328311" font-size="15.0px" y="110.67292984079074" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-    </g>
   </g>
 </svg>

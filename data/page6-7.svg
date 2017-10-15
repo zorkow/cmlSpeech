@@ -20,33 +20,9 @@
       <line x1="25.0" x2="25.0" y1="84.9998265904187" y2="44.99994219680616" class="bond" id="b7" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
     </g>
     <g>
-      <g class="atom" id="a1">
-        <rect x="12.555908203125" y="38.32611407180616" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.555908203125" font-size="15.0px" y="50.67377032180616" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a2">
-        <rect x="47.19941710011926" y="18.326171875" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.19941710011926" font-size="15.0px" y="30.673828125" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a3">
-        <rect x="88.41528011752894" y="38.32611407180616" fill="rgb(255, 255, 255)" width="11.7314453125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="89.41528011752894" font-size="15.0px" y="50.67377032180616" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">C</text>
-      </g>
-      <g class="atom" id="a4">
-        <rect x="81.83691097690394" y="78.3259984654187" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="82.83691097690394" font-size="15.0px" y="90.6736547154187" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
-      <g class="atom" id="a5">
-        <rect x="47.19941710011926" y="98.3259406622251" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.19941710011926" font-size="15.0px" y="110.6735969122251" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
-      </g>
       <g class="atom" id="a6">
         <rect x="116.0702636238982" y="18.326171875" fill="rgb(255, 255, 255)" width="25.70849609375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
         <text x="117.0702636238982" font-size="15.0px" y="30.673828125" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
-      </g>
-      <g class="atom" id="a7">
-        <rect x="12.555908203125" y="78.3259984654187" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.555908203125" font-size="15.0px" y="90.6736547154187" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
       </g>
     </g>
   </g>
