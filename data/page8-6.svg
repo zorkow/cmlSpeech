@@ -13,7 +13,7 @@
     <g>
       <g class="atom" id="a1">
         <rect x="0.927001953125" y="52.21607875394261" fill="rgb(255, 255, 255)" width="34.14599609375" height="18.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="1.927001953125" font-size="15.0px" y="69.56373500394261" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">3</tspan>
+        <text x="1.927001953125" font-size="15.0px" y="69.56373500394261" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">3</tspan>C
         </text>
       </g>
       <g class="atom" id="a2">

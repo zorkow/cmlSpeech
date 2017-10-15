@@ -10,12 +10,12 @@
     <g>
       <g class="atom" id="a1">
         <rect x="0.107666015625028" y="55.934122591704124" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="1.107666015625028" font-size="15.0px" y="73.06693509170412" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
+        <text x="1.107666015625028" font-size="15.0px" y="73.06693509170412" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">2</tspan>C
         </text>
       </g>
       <g class="atom" id="a2">
         <rect x="0.109781438378349" y="10.933593750000114" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="1.109781438378349" font-size="15.0px" y="28.066406250000114" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
+        <text x="1.109781438378349" font-size="15.0px" y="28.066406250000114" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">H<tspan baseline-shift="-5px">2</tspan>C
         </text>
       </g>
       <g class="atom" id="a3">
