@@ -45,12 +45,12 @@
         <text x="82.83942432976386" font-size="15.0px" y="90.67340909027817" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
       </g>
       <g class="atom" id="a2">
-        <rect x="47.195666280412254" y="98.32561316203756" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.195666280412254" font-size="15.0px" y="110.67326941203756" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
+        <rect x="47.226183858537254" y="98.32561316203756" fill="rgb(255, 255, 255)" width="24.8271484375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="48.226183858537254" font-size="15.0px" y="110.67326941203756" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">HC</text>
       </g>
       <g class="atom" id="a3">
-        <rect x="47.195666280412254" y="138.32533380555634" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="48.195666280412254" font-size="15.0px" y="150.67299005555634" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
+        <rect x="47.226183858537254" y="138.32533380555634" fill="rgb(255, 255, 255)" width="24.8271484375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="48.226183858537254" font-size="15.0px" y="150.67299005555634" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">HC</text>
       </g>
       <g class="atom" id="a4">
         <rect x="81.83942432976386" y="158.32519412731574" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
@@ -69,12 +69,12 @@
         <text x="151.7087842343384" font-size="15.0px" y="170.67285037731574" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
       </g>
       <g class="atom" id="a8">
-        <rect x="12.14575195312499" y="158.32519412731574" fill="rgb(255, 255, 255)" width="25.70849609375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.14575195312499" font-size="15.0px" y="170.67285037731574" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
+        <rect x="12.14208984374999" y="158.32519412731574" fill="rgb(255, 255, 255)" width="25.7158203125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="13.14208984374999" font-size="15.0px" y="170.67285037731574" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">HO</text>
       </g>
       <g class="atom" id="a9">
-        <rect x="12.14575195312499" y="78.32575284027817" fill="rgb(255, 255, 255)" width="25.70849609375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.14575195312499" font-size="15.0px" y="90.67340909027817" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
+        <rect x="12.14208984374999" y="78.32575284027817" fill="rgb(255, 255, 255)" width="25.7158203125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="13.14208984374999" font-size="15.0px" y="90.67340909027817" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">HO</text>
       </g>
       <g class="atom" id="a10">
         <rect x="122.61321561017613" y="98.32561316203756" fill="rgb(255, 255, 255)" width="12.6201171875" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
@@ -86,8 +86,8 @@
         </text>
       </g>
       <g class="atom" id="a12">
-        <rect x="46.785510030412254" y="18.326171875000004" fill="rgb(255, 255, 255)" width="25.70849609375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="47.785510030412254" font-size="15.0px" y="30.673828125000004" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
+        <rect x="46.781847921037254" y="18.326171875000004" fill="rgb(255, 255, 255)" width="25.7158203125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="47.781847921037254" font-size="15.0px" y="30.673828125000004" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">HO</text>
       </g>
     </g>
   </g>

@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="223.20317652164948" zoomAndPan="magnify" contentStyleType="text/css" height="229.99914421085495" preserveAspectRatio="xMidYMid meet" version="1.0">
   <g>
     <g>
-      <polygon points="94.279671,144.999429 77.139890,169.329430 72.139780,160.669239" fill="rgb(0, 0, 0)" class="bond" id="b1" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <polygon points="94.279671,144.999429 62.139890,169.329430 57.139780,160.669239" fill="rgb(0, 0, 0)" class="bond" id="b1" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
       <line x1="128.91950592440026" x2="94.27967061626691" y1="164.99933438622054" y2="144.99942947390332" class="bond" id="b2" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
       <polygon points="128.919506,164.999334 133.919506,194.999192 123.919506,194.999192" fill="rgb(0, 0, 0)" class="bond" id="b3" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
       <line x1="163.5633412135162" x2="128.91950592440026" y1="144.99942947390332" y2="164.99933438622054" class="bond" id="b4" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
@@ -38,8 +38,8 @@
         <text x="82.83557881939191" font-size="15.0px" y="150.67325759890332" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
       </g>
       <g class="atom" id="a2">
-        <rect x="116.47541412752526" y="158.32550626122054" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="117.47541412752526" font-size="15.0px" y="170.67316251122054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
+        <rect x="116.50593170565026" y="158.32550626122054" fill="rgb(255, 255, 255)" width="24.8271484375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="117.50593170565026" font-size="15.0px" y="170.67316251122054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">HC</text>
       </g>
       <g class="atom" id="a3">
         <rect x="151.1192494166412" y="138.32560134890332" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
@@ -54,8 +54,8 @@
         <text x="186.34892847477454" font-size="15.0px" y="90.67354286195166" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
       </g>
       <g class="atom" id="a6">
-        <rect x="116.47541412752526" y="78.32588661195166" fill="rgb(255, 255, 255)" width="24.88818359375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="117.47541412752526" font-size="15.0px" y="90.67354286195166" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
+        <rect x="116.50593170565026" y="78.32588661195166" fill="rgb(255, 255, 255)" width="24.8271484375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="117.50593170565026" font-size="15.0px" y="90.67354286195166" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">HC</text>
       </g>
       <g class="atom" id="a7">
         <rect x="122.60944733065026" y="38.32607678731722" fill="rgb(255, 255, 255)" width="12.6201171875" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
@@ -78,13 +78,13 @@
         <text x="88.96961202251691" font-size="15.0px" y="110.67344777426888" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">O</text>
       </g>
       <g class="atom" id="a12">
-        <rect x="42.747501323758456" y="160.93292813622054" fill="rgb(255, 255, 255)" width="23.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="43.747501323758456" font-size="15.0px" y="178.06574063622054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
+        <rect x="42.747501323758456" y="155.93292813622054" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="43.747501323758456" font-size="15.0px" y="173.06574063622054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
         </text>
       </g>
       <g class="atom" id="a13">
-        <rect x="12.145751953125057" y="138.32560134890332" fill="rgb(255, 255, 255)" width="25.70849609375" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="13.145751953125057" font-size="15.0px" y="150.67325759890332" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">OH</text>
+        <rect x="12.142089843750057" y="138.32560134890332" fill="rgb(255, 255, 255)" width="25.7158203125" height="13.34765625" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="13.142089843750057" font-size="15.0px" y="150.67325759890332" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">HO</text>
       </g>
     </g>
   </g>
