@@ -335,18 +335,18 @@
             <sre:message sre:msg="SRE_MSG_41">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_42">Butaan met substituent aan positie 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_43">Koolstofketen met lengte 4 met substituent aan positie 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_44">Gedeeld atoom koolstof 2 met functionele groep Carbonyl .</sre:message>
+            <sre:message sre:msg="SRE_MSG_44">Gedeeld atoom koolstof 2 met functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_45">Gedeeld atoom koolstof 2 met functionele groep C O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_46">Functionele groep Carbonyl .</sre:message>
+            <sre:message sre:msg="SRE_MSG_46">Functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_47">Functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_48">Gedeeld atoom koolstof 1 met butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Gedeeld atoom koolstof 1 met koolstofketen met lengte 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_50">Ethylmethylketon.</sre:message>
+            <sre:message sre:msg="SRE_MSG_50">Butanon.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Molecuul bestaande uit een koolstofketen met lengte 4 en functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_8">Dubbele binding met functionele groep Carbonyl .</sre:message>
+            <sre:message sre:msg="SRE_MSG_8">Dubbele binding met functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">Dubbele binding met functionele groep C O.</sre:message>
         </sre:messages>
     </sre:annotations>
