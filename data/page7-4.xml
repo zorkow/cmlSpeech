@@ -15,7 +15,7 @@
         <bond id="b5" atomRefs2="a5 a6" order="S"/>
     </bondArray>
     <atomSet title="Aliphatic chain" id="as1" size="5" sre:condensed="C H3 C C H2 C H2 C H3" sre:formula="C5H10">a1 a2 a4 a5 a6</atomSet>
-    <atomSet title="Functional group" id="as2" size="2" sre:condensed="C O" sre:formula="CO" sre:name="Carbonyl group. Low specificity">a2 a3</atomSet>
+    <atomSet title="Functional group" id="as2" size="2" sre:condensed="C O" sre:formula="CO" sre:name="Carbonyl">a2 a3</atomSet>
     <atomSet title="Molecule" id="as3" size="6" sre:formula="C5H10O">a1 a2 a3 a4 a5 a6</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="SRE_MSG_0" sre:speech2="SRE_MSG_1">
@@ -344,7 +344,7 @@
             <sre:language>nl</sre:language>
             <sre:message sre:msg="SRE_MSG_0">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_1">Koolstof 1 met 3 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_10">Dubbele binding met functionele groep Carbonyl group. Low specificity .</sre:message>
+            <sre:message sre:msg="SRE_MSG_10">Dubbele binding met functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Dubbele binding met functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Koolstof 1.</sre:message>
@@ -390,9 +390,9 @@
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_50">Pentaan met substituent aan positie 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Koolstofketen met lengte 5 met substituent aan positie 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 2 met functionele groep Carbonyl group. Low specificity .</sre:message>
+            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 2 met functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_53">Gedeeld atoom koolstof 2 met functionele groep C O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_54">Functionele groep Carbonyl group. Low specificity .</sre:message>
+            <sre:message sre:msg="SRE_MSG_54">Functionele groep carbonyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_55">Functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">Gedeeld atoom koolstof 1 met pentaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Gedeeld atoom koolstof 1 met koolstofketen met lengte 5.</sre:message>
