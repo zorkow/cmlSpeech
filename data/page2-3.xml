@@ -201,9 +201,9 @@
             <sre:message sre:msg="SRE_MSG_23">Dubbele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_24">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_25">Enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_26">Buteen.</sre:message>
+            <sre:message sre:msg="SRE_MSG_26">But-1-een.</sre:message>
             <sre:message sre:msg="SRE_MSG_27">Koolstofketen met lengte 4 dubbele binding tussen positie 1 en 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_28">Buteen.</sre:message>
+            <sre:message sre:msg="SRE_MSG_28">But-1-een.</sre:message>
             <sre:message sre:msg="SRE_MSG_29">Molecuul bestaande uit een koolstofketen met lengte 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_3">Dubbele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_4">Koolstof 2 met een gebonden waterstofatoom.</sre:message>

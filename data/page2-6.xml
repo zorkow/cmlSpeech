@@ -412,7 +412,7 @@
             <sre:message sre:msg="SRE_MSG_48">Gedeeld atoom koolstof 1 met butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Gedeeld atoom koolstof 1 met koolstofketen met lengte 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2 met een gebonden waterstofatoom.</sre:message>
-            <sre:message sre:msg="SRE_MSG_50">(±)-2-Butanol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_50">Butaan-2-ol.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Molecuul bestaande uit een koolstofketen met lengte 4 en functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 3.</sre:message>
