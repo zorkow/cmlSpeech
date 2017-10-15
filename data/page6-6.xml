@@ -17,7 +17,7 @@
         <bond id="b6" atomRefs2="a5 a7" order="D"/>
         <bond id="b7" atomRefs2="a7 a1" order="S"/>
     </bondArray>
-    <atomSet title="Isolated ring" id="as1" size="6" sre:condensed="C C H C H C H C H C H" sre:formula="C6H5">a7 a1 a4 a2 a3 a5</atomSet>
+    <atomSet title="Isolated ring" id="as1" size="6" sre:condensed="C C H C H C H C H C H" sre:formula="C6H5">a2 a5 a7 a4 a1 a3</atomSet>
     <atomSet title="Functional group" id="as2" size="1" sre:condensed="C H3" sre:formula="CH3" sre:name="Methyl">a6</atomSet>
     <atomSet title="Molecule" id="as3" size="7" sre:formula="C7H8">a1 a2 a3 a4 a5 a6 a7</atomSet>
     <sre:annotations>
@@ -440,7 +440,7 @@
             <sre:message sre:msg="SRE_MSG_61">Functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_62">Enkele binding met benzeen ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_63">Enkele binding met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_64">Tolueen.</sre:message>
+            <sre:message sre:msg="SRE_MSG_64">Methylbenzeen.</sre:message>
             <sre:message sre:msg="SRE_MSG_65">Molecuul bestaande uit een ring met 6 hoeken en functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Koolstof 2 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_8">Dubbele binding met koolstof 3.</sre:message>
