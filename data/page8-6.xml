@@ -538,7 +538,7 @@
             <sre:message sre:msg="SRE_MSG_78">Enkele binding met hexaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_79">Enkele binding met koolstofketen met lengte 6.</sre:message>
             <sre:message sre:msg="SRE_MSG_8">Enkele binding met koolstof 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_80">3-methylhexaan-2-ol.</sre:message>
+            <sre:message sre:msg="SRE_MSG_80">Oefening 6.</sre:message>
             <sre:message sre:msg="SRE_MSG_81">Molecuul bestaande uit een koolstofketen met lengte 6 en functionele groep C H O H en functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_9">Enkele binding met koolstof 1.</sre:message>
         </sre:messages>

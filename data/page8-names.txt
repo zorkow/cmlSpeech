@@ -1,0 +1,11 @@
+page8-1.xml: Pentaan-1-amine
+page8-2.xml: 2-chloorhexaan
+page8-3.xml: Pentaanzuur
+page8-4.xml: Propaan-2-amine
+page8-5.xml: But-2-een-1-ol
+page8-6.xml: 3-methylhexaan-2-ol
+page8-7.xml: Pentaan-2-on
+page8-8.xml: 2-methoxyhex-3-yn
+page8-9.xml: Cyclopentanol
+page8-10.xml: Ethylpropanoaat 
+ 
