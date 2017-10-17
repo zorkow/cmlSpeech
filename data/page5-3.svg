@@ -47,8 +47,8 @@
         <text x="117.40391026351932" font-size="15.0px" y="98.44182946954979" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH</text>
       </g>
       <g class="atom" id="a6">
-        <rect x="149.99566883075124" y="71.34159484932141" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="150.99566883075124" font-size="15.0px" y="88.47440734932141" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
+        <rect x="144.99566883075124" y="61.34159484932141" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="145.99566883075124" font-size="15.0px" y="78.47440734932141" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
         </text>
       </g>
       <g class="atom" id="a7">
