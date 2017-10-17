@@ -78,8 +78,8 @@
         <text x="88.96961202251691" font-size="15.0px" y="110.67344777426888" fill="rgb(255, 13, 13)" font-family="Serif" stroke="rgb(255, 13, 13)" stroke-width="1.0">O</text>
       </g>
       <g class="atom" id="a12">
-        <rect x="42.747501323758456" y="165.93292813622054" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
-        <text x="43.747501323758456" font-size="15.0px" y="183.06574063622054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
+        <rect x="42.747501323758456" y="160.93292813622054" fill="rgb(255, 255, 255)" width="33.78466796875" height="18.1328125" stroke="rgb(255, 255, 255)" stroke-width="1.0"/>
+        <text x="43.747501323758456" font-size="15.0px" y="178.06574063622054" fill="rgb(144, 144, 144)" font-family="Serif" stroke="rgb(144, 144, 144)" stroke-width="1.0">CH<tspan baseline-shift="-5px">2</tspan>
         </text>
       </g>
       <g class="atom" id="a13">
