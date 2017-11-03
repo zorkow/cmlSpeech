@@ -16,7 +16,7 @@
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
-            <sre:position>1</sre:position>
+            <sre:position>3</sre:position>
             <sre:children/>
             <sre:component>
                 <sre:bond>b2</sre:bond>
@@ -64,7 +64,7 @@
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
-            <sre:position>3</sre:position>
+            <sre:position>1</sre:position>
             <sre:children/>
             <sre:component>
                 <sre:bond>b1</sre:bond>
