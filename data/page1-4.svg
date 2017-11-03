@@ -2,8 +2,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="text/ecmascript" width="150.0" zoomAndPan="magnify" contentStyleType="text/css" height="50.0" preserveAspectRatio="xMidYMid meet" version="1.0">
   <g>
     <g>
-      <line x1="75.73989541501743" x2="125.0" y1="25.0" y2="25.0" class="bond" id="b1" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
-      <line x1="75.73989541501743" x2="44.99999999999997" y1="25.0" y2="25.0" class="bond" id="b2" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="75.73989541501743" x2="125.0" y1="25.0" y2="25.0" class="bond" id="b2" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
+      <line x1="75.73989541501743" x2="44.99999999999997" y1="25.0" y2="25.0" class="bond" id="b1" stroke="rgb(0, 0, 0)" stroke-width="1.0"/>
     </g>
     <g>
       <g class="atom" id="a3">
