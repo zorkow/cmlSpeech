@@ -322,7 +322,7 @@
             <sre:message sre:msg="SRE_MSG_4">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_40">Enkele binding met functionele groep methyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_41">Enkele binding met functionele groep C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_42">Amide 1.</sre:message>
+            <sre:message sre:msg="SRE_MSG_42">N-methylethaanamide.</sre:message>
             <sre:message sre:msg="SRE_MSG_43">Molecuul bestaande uit een functionele groep C O N H C H3 en functionele groep C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Enkele binding met stikstof 3.</sre:message>
