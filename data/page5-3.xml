@@ -848,7 +848,7 @@
             <sre:message sre:msg="SRE_MSG_141">Functionele groep C H2 O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_142">Enkele binding met Tetrahydrofuraan ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_143">Enkele binding met ring met 5 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_144">Monosacharide 2.</sre:message>
+            <sre:message sre:msg="SRE_MSG_144">Fructose.</sre:message>
             <sre:message sre:msg="SRE_MSG_145">Molecuul bestaande uit een ring met 5 hoeken en functionele groep C H2 O H en functionele groep C H2 O H en functionele groep C H O H en functionele groep C H O H en functionele groep O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_16">Enkele binding met koolstof 4.</sre:message>

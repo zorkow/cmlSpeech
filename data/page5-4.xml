@@ -1898,7 +1898,7 @@
             <sre:message sre:msg="SRE_MSG_305">Functionele groep C H2 O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_306">Enkele binding met Tetrahydropyraan ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_307">Enkele binding met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_308">Disacharide.</sre:message>
+            <sre:message sre:msg="SRE_MSG_308">Sacharose.</sre:message>
             <sre:message sre:msg="SRE_MSG_309">Molecuul bestaande uit een ring met 6 hoeken en functionele groep C H O C H en ring met 6 hoeken en functionele groep C H2 O H en functionele groep C H O H en functionele groep C H O H en functionele groep O H en functionele groep C H2 O H en functionele groep C H O H en functionele groep C H O H en functionele groep C H O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Enkele binding met koolstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
