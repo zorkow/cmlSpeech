@@ -472,7 +472,7 @@
             <sre:message sre:msg="SRE_MSG_45">Functionele groep C H2 N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_46">Gedeeld atoom koolstof 1 met butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_47">Gedeeld atoom koolstof 1 met koolstofketen met lengte 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_48">1-aminobutaan.</sre:message>
+            <sre:message sre:msg="SRE_MSG_48">Butaan-1-amine.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Molecuul bestaande uit een koolstofketen met lengte 4 en functionele groep C H2 N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Enkele binding met functionele groep C H2 N H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_6">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>

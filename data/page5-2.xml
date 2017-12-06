@@ -897,7 +897,7 @@
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_150">Enkele binding met Tetrahydropyraan ring.</sre:message>
             <sre:message sre:msg="SRE_MSG_151">Enkele binding met ring met 6 hoeken.</sre:message>
-            <sre:message sre:msg="SRE_MSG_152">Glucose.</sre:message>
+            <sre:message sre:msg="SRE_MSG_152">Monosacharide 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_153">Molecuul bestaande uit een ring met 6 hoeken en functionele groep C H2 O H en functionele groep C H O H en functionele groep C H O H en functionele groep C H O H en functionele groep O H.</sre:message>
             <sre:message sre:msg="SRE_MSG_16">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Koolstof 1 met een gebonden waterstofatoom.</sre:message>
