@@ -12,20 +12,20 @@
     <atomSet title="Molecule" id="as2" size="3" sre:formula="C3H8">a1 a2 a3</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="SRE_MSG_0" sre:speech2="SRE_MSG_1">
-            <sre:atom sre:type="Carbon">a1</sre:atom>
+            <sre:atom sre:type="Carbon">a3</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
             <sre:position>3</sre:position>
             <sre:children/>
             <sre:component>
-                <sre:bond>b2</sre:bond>
+                <sre:bond>b1</sre:bond>
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_2" sre:speech2="SRE_MSG_3" sre:location="internal">
                     <sre:atom sre:type="Carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
-                        <sre:bond sre:type="single">b2</sre:bond>
+                        <sre:bond sre:type="single">b1</sre:bond>
                         <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
@@ -47,33 +47,33 @@
                     <sre:atom sre:type="Carbon">a3</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b1</sre:bond>
-                        <sre:position>1</sre:position>
+                        <sre:position>3</sre:position>
                     </sre:via>
                 </sre:neighbour>
                 <sre:neighbour sre:speech="SRE_MSG_8" sre:speech2="SRE_MSG_9" sre:location="internal">
                     <sre:atom sre:type="Carbon">a1</sre:atom>
                     <sre:via sre:type="Connecting bond">
                         <sre:bond sre:type="single">b2</sre:bond>
-                        <sre:position>3</sre:position>
+                        <sre:position>1</sre:position>
                     </sre:via>
                 </sre:neighbour>
             </sre:neighbours>
         </sre:annotation>
         <sre:annotation sre:speech="SRE_MSG_10" sre:speech2="SRE_MSG_11">
-            <sre:atom sre:type="Carbon">a3</sre:atom>
+            <sre:atom sre:type="Carbon">a1</sre:atom>
             <sre:parents>
                 <sre:atomSet>as1</sre:atomSet>
             </sre:parents>
             <sre:position>1</sre:position>
             <sre:children/>
             <sre:component>
-                <sre:bond>b1</sre:bond>
+                <sre:bond>b2</sre:bond>
             </sre:component>
             <sre:neighbours>
                 <sre:neighbour sre:speech="SRE_MSG_12" sre:speech2="SRE_MSG_13" sre:location="internal">
                     <sre:atom sre:type="Carbon">a2</sre:atom>
                     <sre:via sre:type="Connecting bond">
-                        <sre:bond sre:type="single">b1</sre:bond>
+                        <sre:bond sre:type="single">b2</sre:bond>
                         <sre:position>2</sre:position>
                     </sre:via>
                 </sre:neighbour>
