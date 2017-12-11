@@ -15,7 +15,7 @@
         <bond id="b5" atomRefs2="a5 a6" order="S"/>
     </bondArray>
     <atomSet title="Aliphatic chain" id="as1" size="5" sre:condensed="C H3 C H2 C C H2 C H3" sre:formula="C5H10">a1 a2 a3 a5 a6</atomSet>
-    <atomSet title="Functional group" id="as2" size="2" sre:condensed="C O" sre:formula="CO" sre:name="Carbonyl">a3 a4</atomSet>
+    <atomSet title="Functional group" id="as2" size="2" sre:condensed="C O" sre:formula="CO" sre:name="Ketone">a3 a4</atomSet>
     <atomSet title="Molecule" id="as3" size="6" sre:formula="C5H10O">a1 a2 a3 a4 a5 a6</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="SRE_MSG_0" sre:speech2="SRE_MSG_1">
@@ -350,7 +350,7 @@
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Enkele binding met koolstof 4.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstof 4.</sre:message>
-            <sre:message sre:msg="SRE_MSG_16">Dubbele binding met functionele groep carbonyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_16">Dubbele binding met functionele groep keton.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Dubbele binding met functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_18">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Koolstof 1.</sre:message>
@@ -390,9 +390,9 @@
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_50">Pentaan met substituent aan positie 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Koolstofketen met lengte 5 met substituent aan positie 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 3 met functionele groep carbonyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 3 met functionele groep keton.</sre:message>
             <sre:message sre:msg="SRE_MSG_53">Gedeeld atoom koolstof 3 met functionele groep C O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_54">Functionele groep carbonyl.</sre:message>
+            <sre:message sre:msg="SRE_MSG_54">Functionele groep keton.</sre:message>
             <sre:message sre:msg="SRE_MSG_55">Functionele groep C O.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">Gedeeld atoom koolstof 1 met pentaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Gedeeld atoom koolstof 1 met koolstofketen met lengte 5.</sre:message>
