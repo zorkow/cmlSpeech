@@ -265,7 +265,7 @@
             <sre:message sre:msg="SRE_MSG_3">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_30">Gedeeld atoom koolstof 1 met Ethaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_31">Gedeeld atoom koolstof 1 met koolstofketen met lengte 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_32">Aceetaldehyde.</sre:message>
+            <sre:message sre:msg="SRE_MSG_32">Ethanal.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Molecuul bestaande uit een koolstofketen met lengte 2 en functionele groep C H O.</sre:message>
             <sre:message sre:msg="SRE_MSG_4">Dubbele binding met functionele groep aldehyde.</sre:message>
             <sre:message sre:msg="SRE_MSG_5">Dubbele binding met functionele groep C H O.</sre:message>
