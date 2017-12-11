@@ -11,7 +11,7 @@
         <bond id="b3" atomRefs2="a3 a4" order="S"/>
     </bondArray>
     <atomSet title="Aliphatic chain" id="as1" size="2" sre:condensed="C H2 C H3" sre:formula="C2H5">a3 a4</atomSet>
-    <atomSet title="Functional group" id="as2" size="3" sre:condensed="C H2 O C H3" sre:formula="C2H5O" sre:name="Ether">a2 a1 a3</atomSet>
+    <atomSet title="Functional group" id="as2" size="3" sre:condensed="C H2 O C H3" sre:formula="C2H5O" sre:name="Methoxy">a1 a2 a3</atomSet>
     <atomSet title="Molecule" id="as3" size="4" sre:formula="C3H8O">a1 a2 a3 a4</atomSet>
     <sre:annotations>
         <sre:annotation sre:speech="SRE_MSG_0" sre:speech2="SRE_MSG_1">
@@ -247,7 +247,7 @@
             <sre:message sre:msg="SRE_MSG_1">Koolstof 3 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_10">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Koolstof 1 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_12">Enkele binding met functionele groep ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_12">Enkele binding met functionele groep methoxy.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met functionele groep C H2 O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met koolstof 2.</sre:message>
@@ -271,9 +271,9 @@
             <sre:message sre:msg="SRE_MSG_31">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_32">Ethaan met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_33">Koolstofketen met lengte 2 met substituent aan positie 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_34">Gedeeld atoom koolstof 1 met functionele groep ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_34">Gedeeld atoom koolstof 1 met functionele groep methoxy.</sre:message>
             <sre:message sre:msg="SRE_MSG_35">Gedeeld atoom koolstof 1 met functionele groep C H2 O C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_36">Functionele groep ether.</sre:message>
+            <sre:message sre:msg="SRE_MSG_36">Functionele groep methoxy.</sre:message>
             <sre:message sre:msg="SRE_MSG_37">Functionele groep C H2 O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_38">Gedeeld atoom koolstof 1 met Ethaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_39">Gedeeld atoom koolstof 1 met koolstofketen met lengte 2.</sre:message>
