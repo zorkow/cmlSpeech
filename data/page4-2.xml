@@ -348,9 +348,9 @@
             <sre:message sre:msg="SRE_MSG_11">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_12">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met koolstof 2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_14">Enkele binding met functionele groep ester.</sre:message>
+            <sre:message sre:msg="SRE_MSG_14">Enkele binding met functionele groep methylester.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met functionele groep C O O C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_16">Dubbele binding met functionele groep ester.</sre:message>
+            <sre:message sre:msg="SRE_MSG_16">Dubbele binding met functionele groep methylester.</sre:message>
             <sre:message sre:msg="SRE_MSG_17">Dubbele binding met functionele groep C O O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_18">Koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_19">Koolstof 1.</sre:message>
@@ -390,9 +390,9 @@
             <sre:message sre:msg="SRE_MSG_5">Koolstof 2 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_50">Propaan met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_51">Koolstofketen met lengte 3 met substituent aan positie 1.</sre:message>
-            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 1 met functionele groep ester.</sre:message>
+            <sre:message sre:msg="SRE_MSG_52">Gedeeld atoom koolstof 1 met functionele groep methylester.</sre:message>
             <sre:message sre:msg="SRE_MSG_53">Gedeeld atoom koolstof 1 met functionele groep C O O C H3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_54">Functionele groep ester.</sre:message>
+            <sre:message sre:msg="SRE_MSG_54">Functionele groep methylester.</sre:message>
             <sre:message sre:msg="SRE_MSG_55">Functionele groep C O O C H3.</sre:message>
             <sre:message sre:msg="SRE_MSG_56">Gedeeld atoom koolstof 1 met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_57">Gedeeld atoom koolstof 1 met koolstofketen met lengte 3.</sre:message>
