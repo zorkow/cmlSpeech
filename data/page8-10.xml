@@ -486,7 +486,7 @@
             <sre:message sre:msg="SRE_MSG_43">Koolstof 4 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_44">Enkele binding met zuurstof 3.</sre:message>
             <sre:message sre:msg="SRE_MSG_45">Enkele binding met zuurstof 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_46">Enkele binding met Ethaan.</sre:message>
+            <sre:message sre:msg="SRE_MSG_46">Enkele binding met ethyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_47">Enkele binding met koolstofketen met lengte 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_48">Koolstof 2 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_49">Koolstof 2 met 3 gebonden waterstofatomen.</sre:message>
@@ -510,7 +510,7 @@
             <sre:message sre:msg="SRE_MSG_65">Koolstofketen met lengte 3 met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_66">Gedeeld atoom koolstof 1 met functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_67">Gedeeld atoom koolstof 1 met functionele groep C O O C H2.</sre:message>
-            <sre:message sre:msg="SRE_MSG_68">Ethaan met substituent aan positie 1.</sre:message>
+            <sre:message sre:msg="SRE_MSG_68">Ethyl met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_69">Koolstofketen met lengte 2 met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_70">Gedeeld atoom koolstof 1 met functionele groep ester.</sre:message>
@@ -519,7 +519,7 @@
             <sre:message sre:msg="SRE_MSG_73">Functionele groep C O O C H2.</sre:message>
             <sre:message sre:msg="SRE_MSG_74">Gedeeld atoom koolstof 1 met propaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_75">Gedeeld atoom koolstof 1 met koolstofketen met lengte 3.</sre:message>
-            <sre:message sre:msg="SRE_MSG_76">Gedeeld atoom koolstof 4 met Ethaan.</sre:message>
+            <sre:message sre:msg="SRE_MSG_76">Gedeeld atoom koolstof 4 met ethyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_77">Gedeeld atoom koolstof 4 met koolstofketen met lengte 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_78">Oefening 10.</sre:message>
             <sre:message sre:msg="SRE_MSG_79">Molecuul bestaande uit een koolstofketen met lengte 3 en functionele groep C O O C H2 en koolstofketen met lengte 2.</sre:message>

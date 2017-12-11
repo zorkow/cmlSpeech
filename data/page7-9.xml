@@ -495,7 +495,7 @@
             <sre:message sre:msg="SRE_MSG_1">Koolstof 2 met 3 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_10">Koolstof 3 met 2 gebonden waterstofatomen.</sre:message>
             <sre:message sre:msg="SRE_MSG_11">Koolstof 3 met 2 gebonden waterstofatomen.</sre:message>
-            <sre:message sre:msg="SRE_MSG_12">Enkele binding met Ethaan.</sre:message>
+            <sre:message sre:msg="SRE_MSG_12">Enkele binding met ethyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_13">Enkele binding met koolstofketen met lengte 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_14">Enkele binding met zuurstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_15">Enkele binding met zuurstof 2.</sre:message>
@@ -561,7 +561,7 @@
             <sre:message sre:msg="SRE_MSG_7">Enkele binding met koolstof 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_70">Enkele binding.</sre:message>
             <sre:message sre:msg="SRE_MSG_71">Enkele binding.</sre:message>
-            <sre:message sre:msg="SRE_MSG_72">Ethaan met substituent aan positie 1.</sre:message>
+            <sre:message sre:msg="SRE_MSG_72">Ethyl met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_73">Koolstofketen met lengte 2 met substituent aan positie 1.</sre:message>
             <sre:message sre:msg="SRE_MSG_74">Gedeeld atoom koolstof 1 met functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_75">Gedeeld atoom koolstof 1 met functionele groep C O C H2 O.</sre:message>
@@ -572,7 +572,7 @@
             <sre:message sre:msg="SRE_MSG_8">Enkele binding met functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_80">Functionele groep ester.</sre:message>
             <sre:message sre:msg="SRE_MSG_81">Functionele groep C O C H2 O.</sre:message>
-            <sre:message sre:msg="SRE_MSG_82">Gedeeld atoom koolstof 3 met Ethaan.</sre:message>
+            <sre:message sre:msg="SRE_MSG_82">Gedeeld atoom koolstof 3 met ethyl.</sre:message>
             <sre:message sre:msg="SRE_MSG_83">Gedeeld atoom koolstof 3 met koolstofketen met lengte 2.</sre:message>
             <sre:message sre:msg="SRE_MSG_84">Gedeeld atoom koolstof 1 met butaan.</sre:message>
             <sre:message sre:msg="SRE_MSG_85">Gedeeld atoom koolstof 1 met koolstofketen met lengte 4.</sre:message>
